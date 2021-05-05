@@ -1,0 +1,4 @@
+export const EXPLORE_BUTTON = "EXPLORE_BUTTON";
+export const REMOVE_EXPLORE = "REMOVE_EXPLORE";
+export const SHOW_LOADER = "SHOW_LOADER";
+export const HIDE_LOADER = "HIDE_LOADER";

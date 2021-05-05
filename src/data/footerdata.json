@@ -1,0 +1,66 @@
+{
+  "footerlogo": "assets/img/footer-logo.png",
+  "footertext": "Our support team will get assistance from AI-powered, making it quicker than ever to handle support requests.",
+  "footerbg": "assets/img/bg/footer.png",
+  "socialicon": [
+    {
+      "icon": "fa fa-facebook",
+      "url": "https://www.facebook.com/codingeek.net/"
+    },
+    {
+      "icon": "fa fa-twitter",
+      "url": "https://twitter.com/codingeeknet"
+    },
+    {
+      "icon": "fa fa-linkedin",
+      "url": "https://www.linkedin.com/company/codingeek/about/"
+    }
+  ],
+  "copyrighttext": "  © 2021<a href='https://reload.ng/' target='_blank'><i class=\"fa fa-heart\"></i><span>reloadng.</span></a>",
+  "popularserces": {
+    "title": "Popular Searches",
+    "links": [
+      {
+        "title": "Apartment for Rent",
+        "url": "/property-details"
+      },
+      {
+        "title": "Apartment Low to hide",
+        "url": "/property-details"
+      },
+      {
+        "title": "Offices for Buy",
+        "url": "/property-details"
+      },
+      {
+        "title": "Offices for Rent",
+        "url": "/property-details"
+      }
+    ]
+  },
+  "Homepress": {
+    "title": "About",
+    "links": [
+      {
+        "title": "Home",
+        "url": "/"
+      },
+      {
+        "title": "About us",
+        "url": "/about"
+      },
+      {
+        "title": "Contact us",
+        "url": "/contact"
+      },
+      {
+        "title": "Faq",
+        "url": "/faq"
+      }
+    ]
+  },
+  "quicklink": {
+    "title": "Quick Links",
+    "links": "Wifitrack Nigeria Limited, 42 Old aba road, Rumuomasi, Port Harcourt , Rivers State"
+  }
+}

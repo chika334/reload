@@ -14,11 +14,11 @@ const SearchList = (props) => {
     setSearchProductData(searchProducts[productKey]);
   }, [props.location]);
 
-  console.log(props);
-  console.log(searchproductData);
+  // console.log(props);
+  // console.log(searchproductData);
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       {!searchproductData ? null : (
         <PageHeader
           headertitle={`${searchproductData.key} Products`}
@@ -26,7 +26,7 @@ const SearchList = (props) => {
         />
       )}
       <SearchListSection />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

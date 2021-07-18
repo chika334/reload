@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick.css";
 import { Card, CardContent, Button } from "@material-ui/core";
 import { FaArrowCircleRight, FaArrowCircleLeft } from "react-icons/fa";
 import { exportButton } from "../../_action/exploreProducts";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { showLoader, hideLoader } from "../../_action/loading";
 // import { products } from "../../data/products";
 
@@ -31,9 +31,10 @@ function SliderArrowNext(props) {
 }
 
 function Service(props) {
+  const getProducts = useSelector((state) => state.products);
   const history = useHistory();
-  let publicUrl = process.env.PUBLIC_URL + "/";
-  let imagealt = "image";
+  // let publicUrl = process.env.PUBLIC_URL + "/";
+  // let imagealt = "image";
   let data = sectiondata.services;
 
   const marketingTestimonials1 = {
@@ -56,23 +57,26 @@ function Service(props) {
   };
 
   const handleMove = (detail) => {
-    props.exportButton(detail.data.icon, detail.data.title);
-    localStorage.setItem("dataImage", detail.data.icon);
-    localStorage.setItem("dataTitle", detail.data.title);
+    props.showLoader();
+    // props.exportButton(detail.data.icon, detail.data.title);
+    // localStorage.setItem("dataImage", detail.data.icon);
+    // localStorage.setItem("dataTitle", detail.data.title);
 
-    console.log(detail.data);
+    console.log(detail);
 
-    let path = `product-details?product=${detail.data.key}`;
-    history.push(path);
-    // history.push({
-    //   pathname: "product-details",
-    //   search: `?product=${detail.data.title}`,
-    //   state: { details: detail },
-    // });
-    // props.showLoader();
+    setTimeout(() => {
+      props.hideLoader();
+    }, 2000);
+
+    let path = `/reloadng/product-details`;
+    history.push({
+      pathname: path,
+      search: `?product=${detail.data.productId.description}`,
+      state: detail,
+    });
   };
 
-  
+  console.log(getProducts);
 
   return (
     <div className="service-area h1-service-slider-area">
@@ -81,38 +85,54 @@ function Service(props) {
           {...marketingTestimonials1}
           className="row slider-arrows-outside slider-arrows-dark slider-dots-outside"
         >
-          {data.items.map((allData, i) => (
-            <div key={i}>
-              <Card style={{ height: "300px" }} className="m-4">
-                <CardContent>
-                  <div className="text-center">
-                    <div style={{ height: "140px" }}>
-                      <div className="d-flex justify-content-center">
-                        <img
-                          src={allData.icon}
-                          style={{
-                            width: "120px",
-                          }}
-                          alt="..."
-                        />
-                      </div>
-                      <hr />
-                      <div className="details readeal-top">
-                        <h5 style={{ fontSize: "15px" }}>{allData.title}</h5>
-                        <hr />
-                        <Button
-                          className="readmore-btn"
-                          onClick={(e) => handleMove({ data: allData })}
-                        >
-                          {allData.btntxt}
-                        </Button>
-                      </div>
-                    </div>
+          {getProducts.listProducts === null
+            ? ""
+            : getProducts.listProducts
+                .filter((item) => ![12, 15, 21, 23, 32].includes(item.id))
+                .map((listData, i) => (
+                  <div key={i}>
+                    <Card style={{ height: "300px" }} className="m-4">
+                      <CardContent>
+                        <div className="text-center">
+                          <div style={{ height: "140px" }}>
+                            <div
+                              style={{ height: "100px" }}
+                              className="d-flex justify-content-center"
+                            >
+                              <img
+                                src={listData.productId.logourl}
+                                style={{
+                                  width: "100px",
+                                }}
+                                alt="..."
+                              />
+                            </div>
+                            <hr className="pb-3" />
+                            <div className="details readeal-top">
+                              <h5 className="pb-2" style={{ fontSize: "15px" }}>
+                                {listData.productId.productname}
+                              </h5>
+                              <hr />
+                              <Button
+                                className="readmore-btn"
+                                style={{
+                                  backgroundColor: "#fda94f",
+                                  color: "#000",
+                                  fontSize: "12px",
+                                  padding: "10px",
+                                }}
+                                onClick={(e) => handleMove({ data: listData })}
+                              >
+                                {/* {listData.btntxt} */}
+                                Explore
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-          ))}
+                ))}
         </Slider>
       </div>
     </div>

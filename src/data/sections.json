@@ -23,85 +23,65 @@
     "items": [
       {
         "key": "eko-electric",
-        "title": "Eko Electric Distribution Company",
-        "icon": "assets/img/products/eko.jpeg",
+        "title": "Eko Electricity",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/EKEDC.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "phed",
-        "title": " Port Harcourt Electricity Distribution Plc",
-        "icon": "assets/img/ph.png",
-        "url": "#",
-        "btntxt": "Explore Now"
-      },
-      {
-        "key": "eedc",
-        "title": "Enugu Electricity Distribution Plc",
-        "icon": "assets/img/products/eedc.jpeg",
-        "url": "#",
-        "btntxt": "Explore Now"
-      },
-      {
-        "key": "ikeja-electric",
-        "title": "Ikeja Electric Distribution Company",
-        "icon": "assets/img/products/ikeja.jpeg",
+        "title": " Port Harcourt Electricity",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/PHED.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "dstv",
         "title": "DSTV Cable Network",
-        "icon": "assets/img/DStv-Logoso.jpg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/DSTV.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "startimes",
         "title": "Startimes Cable Network",
-        "icon": "assets/img/products/startimes.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Startimes.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "gotv",
         "title": "Gotv Cable Network",
-        "icon": "assets/img/products/gotv.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/GoTV.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "mtn",
         "title": "Mtn Network Provider",
-        "icon": "assets/img/products/mtn.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/mtn.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "Airtel",
         "title": "Airtel Network Provider",
-        "icon": "assets/img/products/airtel.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/airtel.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
-      {
-        "key": "9mobile",
-        "title": "9mobile Network Provider",
-        "icon": "assets/img/products/9mobile.jpeg",
-        "url": "#",
-        "btntxt": "Explore Now"
-      },
+
       {
         "key": "Glo",
         "title": "Glo Network Provider",
-        "icon": "assets/img/products/glo.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/GLO.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "Smile",
         "title": "Mtn Network Provider",
-        "icon": "assets/img/products/smile.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Smile.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       }
@@ -273,23 +253,6 @@
       }
     ]
   },
-  "partner": {
-    "title": "Our Partner",
-    "items": [
-      {
-        "image": "assets/img/icons/blacklogo.png"
-      },
-      {
-        "image": "assets/img/icons/interswitch_logo.svg"
-      },
-      {
-        "image": "assets/img/icons/Paystack_Logo.png"
-      },
-      {
-        "image": "assets/img/icons/remita.svg"
-      }
-    ]
-  },
   "ads": {
     "title": "Become a Real Estate Agent",
     "btntxt": "REGISTER NOW",
@@ -309,14 +272,14 @@
         "icon": "assets/img/icons/fast.png",
         "title": "Fast Service Delivery",
         "url": "#",
-        "content": "Enjoy prompt delivery of services purchased through VTpass. Our promise to you is to deliver value for every transaction made on-time, every time.",
+        "content": "Enjoy prompt delivery of services purchased through Reloadng. Our promise to you is to deliver value for every transaction made on-time, every time.",
         "class": "offset-xl-1"
       },
       {
         "icon": "assets/img/icons/shield.png",
         "title": "Safe, Secured Payment",
         "url": "#",
-        "content": "Payment on VTpass is fast and 100% secured. Enjoy seamless payment processes with zero glitches. Pay with wallet, bank transfer or card.",
+        "content": "Payment on Reloadng is fast and 100% secured. Enjoy seamless payment processes with zero glitches. Pay with wallet, bank transfer or card.",
         "class": "offset-xl-1"
       }
     ]
@@ -420,28 +383,28 @@
       {
         "key": "ikeja-electric",
         "title": "Ikeja Electric Distribution Company",
-        "icon": "assets/img/products/ikeja.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Ikeja+Electric.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "dstv",
         "title": "DSTV Cable Network",
-        "icon": "assets/img/DStv-Logoso.jpg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/DSTV.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "mtn",
         "title": "Mtn Network Provider",
-        "icon": "assets/img/products/mtn.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/mtn.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       },
       {
         "key": "Smile",
-        "title": "Mtn Network Provider",
-        "icon": "assets/img/products/smile.jpeg",
+        "title": "smile Network Provider",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Smile.jpeg",
         "url": "#",
         "btntxt": "Explore Now"
       }
@@ -528,7 +491,7 @@
       {
         "key": "eko-electric",
         "title": "Eko Electric Distribution Company",
-        "icon": "assets/img/products/eko.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/EKEDC.jpeg",
         "url": "#",
         "cat": "cat1",
         "btntxt": "Explore Now"
@@ -536,7 +499,7 @@
       {
         "key": "phed",
         "title": " Port Harcourt Electricity Distribution Plc",
-        "icon": "assets/img/ph.png",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/PHED.jpeg",
         "url": "#",
         "cat": "cat1",
         "btntxt": "Explore Now"
@@ -544,7 +507,7 @@
       {
         "key": "eedc",
         "title": "Enugu Electricity Distribution Plc",
-        "icon": "assets/img/products/eedc.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/EEDC.jpeg",
         "url": "#",
         "cat": "cat1",
         "btntxt": "Explore Now"
@@ -552,7 +515,7 @@
       {
         "key": "ikeja-electric",
         "title": "Ikeja Electric Distribution Company",
-        "icon": "assets/img/products/ikeja.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Ikeja+Electric.jpeg",
         "url": "#",
         "cat": "cat1",
         "btntxt": "Explore Now"
@@ -560,7 +523,7 @@
       {
         "key": "dstv",
         "title": "DSTV Cable Network",
-        "icon": "assets/img/DStv-Logoso.jpg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/DSTV.jpeg",
         "url": "#",
         "cat": "cat2",
         "btntxt": "Explore Now"
@@ -568,7 +531,7 @@
       {
         "key": "startimes",
         "title": "Startimes Cable Network",
-        "icon": "assets/img/products/startimes.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Startimes.jpeg",
         "url": "#",
         "cat": "cat2",
         "btntxt": "Explore Now"
@@ -576,7 +539,7 @@
       {
         "key": "gotv",
         "title": "Gotv Cable Network",
-        "icon": "assets/img/products/gotv.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/GoTV.jpeg",
         "url": "#",
         "cat": "cat2",
         "btntxt": "Explore Now"
@@ -584,7 +547,7 @@
       {
         "key": "mtn",
         "title": "Mtn Network Provider",
-        "icon": "assets/img/products/mtn.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/mtn.jpeg",
         "url": "#",
         "cat": "cat3 cat4",
         "btntxt": "Explore Now"
@@ -592,7 +555,7 @@
       {
         "key": "Airtel",
         "title": "Airtel Network Provider",
-        "icon": "assets/img/products/airtel.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/airtel.jpeg",
         "url": "#",
         "cat": "cat3 cat4",
         "btntxt": "Explore Now"
@@ -600,7 +563,7 @@
       {
         "key": "9mobile",
         "title": "9mobile Network Provider",
-        "icon": "assets/img/products/9mobile.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/9mobile.jpeg",
         "url": "#",
         "cat": "cat3 cat4",
         "btntxt": "Explore Now"
@@ -608,17 +571,25 @@
       {
         "key": "Glo",
         "title": "Glo Network Provider",
-        "icon": "assets/img/products/glo.jpeg",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/GLO.jpeg",
         "url": "#",
         "cat": "cat3 cat4",
         "btntxt": "Explore Now"
       },
       {
-        "key": "Smile",
-        "title": "Mtn Network Provider",
-        "icon": "assets/img/products/smile.jpeg",
+        "key": "Waec",
+        "title": "West African Examinations Council",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/WAEC.jpeg",
         "url": "#",
-        "cat": "cat3 cat4",
+        "cat": "cat5",
+        "btntxt": "Explore Now"
+      },
+      {
+        "key": "Jamb",
+        "title": "Joint Admissions and Matriculations Board",
+        "icon": "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Jamb.jpeg",
+        "url": "#",
+        "cat": "cat5",
         "btntxt": "Explore Now"
       }
     ]
@@ -913,20 +884,20 @@
         "number": "01",
         "title": "Our Mission",
         "url": "#",
-        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae venenatis mi"
+        "content": "we desire to build and become a technology bridge that connects, empowers and prospers  individuals, businesses, and communities."
       },
       {
         "number": "02",
         "title": "Our Approach",
         "url": "#",
-        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae venenatis mi",
+        "content": "We intend to create customer success while empowering individuals through ethical conduct and Innovative excellence.",
         "class": "offset-xl-1"
       },
       {
         "number": "03",
         "title": "Our Philosohy",
         "url": "#",
-        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae venenatis mi",
+        "content": "we are committed to shifting the borders of innovative technology and creating value by lending our voice through our services globally.",
         "class": "offset-xl-1"
       }
     ]
@@ -1237,11 +1208,13 @@
   "aboutus": {
     "subtitle": "About Us",
     "title": "We Are Dynamic Team And Business Agency",
-    "content": "Reload is a platform which gives you the easiest and most convenient access to pay for everyday service like phone airtime, data subscription, electricity bills, TV subscriptions (GOtv, DStv, Startimes), education service, quality insurance covers, merchants’ services and so much more. Payment is as simple as: Logon -Select - Pay.",
-    "secondContent": "Reload works perfectly on every device. It’s easy to navigate, easy to use and you can get started right away by creating an account using only your email and phone number or just by paying for a service.",
+    "content": "Reload.ng is a veritable platform through which you can conveniently make payments for everyday services like Mobile Phone Airtime Recharge, Internet Data bundle subscription, Cable TV subscription such as DTSV, GOTV, Startimes, Electricity bills (PHCN) and lots of other services.",
+    "secondContent": "Reload.ng is dedicated to providing Hassel free and convenient ways to paying bills of customers, families and friends in our communities.",
+    "thirdContent": "We pride ourselves as authentic in the offering this kind of service with your needs paramount on our minds. We exist to create social, environmental and economic value by ensuing that payments of billers can be made using state of the art digital technologies. Our vision is to become the leading solutions platform",
+    "fourthContent": "Our vision is to become the leading solutions platform for your everyday purchases and payment for goods and services while also providing a convenient atmosphere for providers of goods &amp; services to connect with consumers to get real value for the business relationship.",
     "btn_text": "More Service",
     "url": "#",
-    "image": "assets/img/icons/meeting.jpg"
+    "image": "../images/meeting.jpg"
   },
   "aboutusv2": {
     "title": "About <br />Luxurius Home",
@@ -1310,56 +1283,51 @@
   "servicetwo": {
     "subtitle": "Best Service",
     "title": "Service We Provide",
-    "content1": "WPartner with a top neighborhood specialist to sell your home. Combined",
-    "content2": "with our high level marketing approach, negotiation skills,",
-    "items": [
-      {
-        "title": "Our Marketing Analaysis",
-        "content1": "Describe your home online and get ",
-        "content2": "your appraisal in 5 minutes",
-        "icon": "assets/img/icons/19.png",
-        "btntxt": "Read More",
-        "url": "#"
-      },
-      {
-        "title": "Business Consultancy",
-        "content1": "Describe your home online and get ",
-        "content2": "your appraisal in 5 minutes",
-        "icon": "assets/img/icons/20.png",
-        "btntxt": "Read More",
-        "url": "#"
-      },
-      {
-        "title": "Business planing",
-        "content1": "Describe your home online and get ",
-        "content2": "your appraisal in 5 minutes",
-        "icon": "assets/img/icons/21.png",
-        "btntxt": "Read More",
-        "url": "#"
-      }
-    ]
+    "content1": "Reload is a company that specializes in online bill payments",
+    "content2": "Bills like phone airtime, data subscription, electricity bills, TV subscriptions (GOtv, DStv, Startimes), education service"
   },
   "faq": {
     "title": "Frequently <br />asked questions",
+    "subtitle": "Getting started with Reloadng",
     "image": "assets/img/others/6.png",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis enim vel leo laoreet, quis sodales purus blandit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+    "content": "If you’re new to reloadng, this guide will help you learn more about the platform and its features.",
     "items": [
       {
-        "title": "Lorem ipsum dolor sit amet, consectetur",
+        "title": "What is Reloadng?",
         "class": "show",
-        "content": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis enim vel leo laoreet, quis sodales purus blandit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        "content": "Reloadng is a platform that allows customers to conveniently make payment for their day to day services like TV subscription (DStv, GOtv, StarTimes), airtime, data, Electricity (IKEDC, AEDC, EKEDC, JEDC, PHEDC, KEDC, IBEDC), WAEC and JAMB. Signing up is quick, navigating is easy and you can get started right now by creating an account using just your email and phone number or by just making payment for a service."
       },
       {
-        "title": "Consectetur adipiscing elit. Sed lobortis",
-        "content": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis enim vel leo laoreet, quis sodales purus blandit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        "title": "Must I Create An Account Before I Can Pay For A Service?",
+        "content": "Registration is optional. All you need is your email address, phone number and a valid debit card to make payment."
       },
       {
-        "title": "Lorem ipsum dolor sit amet, consectetur",
-        "content": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis enim vel leo laoreet, quis sodales purus blandit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        "title": "What Device Can Access Reloadng?",
+        "subtitle": "Creating an account takes only a few minutes. Here you go",
+        "content": "Reloadng works perfectly on every device. You can access the Reloadng website through your computers, smart phones and tablets, simply log on to Reloadng For android users who want to download the Reloadng, go to Google Play Store to download the app or simply Click here to Sign up."
       },
       {
-        "title": "Consectetur adipiscing elit. Sed lobortis",
-        "content": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis enim vel leo laoreet, quis sodales purus blandit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        "title": "How To Create An Account",
+        "subtitle": "Creating an account takes only a few minutes. Here you go",
+        "content1": "- Visit reload.ng.",
+        "content2": "- Click on register at the top of the webpage.",
+        "content3": "- Enter your email address, phone number and a password you can easily remember. Then click on sign up."
+      },
+      {
+        "title": "How Do I Pay For A Service?",
+        "content": "You can make payments using either; Debit card, or Wallet payment (This is available for registered users only)."
+      },
+      {
+        "title": "My Transaction Failed But I Was Debited",
+        "content": "Please ensure you contact our 24-hour support team by chatting us on our Live-chat platform or dialing 08035001523 or by sending a mail to support@reload.ng immediately you experience this. Usually you should get an auto-reversal of the payment from your bank within 24 hours"
+      },
+      {
+        "title": "I Purchased Token Using a Wrong Meter Number, Can It Be Transferred?",
+        "content": "No, it cannot. Token is generated and encrypted using the meter number used. This means that token once generated can only be used by the specific meter. A transfer is impossible."
+      },
+      {
+        "title": "What Are The Card Options Available For Payment?",
+        "content": "You can pay with your MasterCard, Visa card and Verve card."
       }
     ]
   },

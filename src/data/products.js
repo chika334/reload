@@ -89,7 +89,8 @@ export const products = {
     key: "Glo",
     id: "network",
     title: "Glo Network Provider",
-    icon: "assets/img/products/glo.jpeg",
+    icon:
+      "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/GLO.jpeg",
     url: "#",
     btntxt: "Explore Now",
   },
@@ -97,8 +98,29 @@ export const products = {
     key: "Smile",
     id: "network",
     title: "Smile Network Provider",
-    icon: "assets/img/products/smile.jpeg",
+    icon:
+      "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Smile.jpeg",
     url: "#",
+    btntxt: "Explore Now",
+  },
+  Waec: {
+    key: "Waec",
+    id: "exams",
+    title: "West African Examinations Council",
+    icon:
+      "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/WAEC.jpeg",
+    url: "#",
+    cat: "cat5",
+    btntxt: "Explore Now",
+  },
+  Jamb: {
+    key: "Jamb",
+    id: "exams",
+    title: "Joint Admissions and Matriculations Board",
+    icon:
+      "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Jamb.jpeg",
+    url: "#",
+    cat: "cat5",
     btntxt: "Explore Now",
   },
 };
@@ -262,6 +284,31 @@ export const searchProducts = {
         title: "Airtel Network Provider",
         icon: "assets/img/products/airtel.jpeg",
         url: "#",
+        btntxt: "Explore Now",
+      },
+    ],
+  },
+  Exams: {
+    key: "Exams",
+    value: [
+      {
+        key: "Waec",
+        id: "exams",
+        title: "West African Examinations Council",
+        icon:
+          "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/WAEC.jpeg",
+        url: "#",
+        cat: "cat5",
+        btntxt: "Explore Now",
+      },
+      {
+        key: "Jamb",
+        id: "exams",
+        title: "Joint Admissions and Matriculations Board",
+        icon:
+          "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Jamb.jpeg",
+        url: "#",
+        cat: "cat5",
         btntxt: "Explore Now",
       },
     ],

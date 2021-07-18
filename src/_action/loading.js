@@ -1,13 +1,13 @@
 import { SHOW_LOADER, HIDE_LOADER } from "./types";
 
-export const showLoader = () => dispatch => {
+export const showLoader = () => (dispatch) => {
   dispatch({
-    type: SHOW_LOADER
-  })
-}
+    type: SHOW_LOADER,
+  });
+};
 
-export const hideLoader = () => dispatch => {
+export const hideLoader = () => (dispatch) => {
   dispatch({
-    type: HIDE_LOADER
-  })
-}
+    type: HIDE_LOADER,
+  });
+};

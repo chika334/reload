@@ -7,10 +7,10 @@ import Footer from "./global-components/footer";
 const Faq = () => {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <PageHeader headertitle="Help Center" />
       <FaqSection />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

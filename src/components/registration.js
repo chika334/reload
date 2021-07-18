@@ -7,10 +7,10 @@ import Footer from "./global-components/footer";
 const Registration = () => {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <PageHeader headertitle="Registration" />
       <RegistraionSection />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

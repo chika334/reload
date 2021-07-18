@@ -4,8 +4,15 @@ import parse from "html-react-parser";
 import { Link, withRouter } from "react-router-dom";
 import { TextField, Button } from "@material-ui/core";
 import { products, searchProducts } from "../../data/products";
+import { connect, useSelector } from "react-redux";
+import AirtimeSearchList from "../searchList/AirtimeSearchList";
+import DataSearchList from "../searchList/DataSearchList";
+import CableSearchList from "../searchList/CableSearchList";
+import ElectricSearchList from '../searchList/ElectricSearchList'
+import ExamsSearchList from '../searchList/ExamsSearchList'
 
 function SearchList(props) {
+  const getProducts = useSelector((state) => state.products);
   const [productData, setProductData] = useState();
   const [searchproductData, setSearchProductData] = useState();
   useEffect(() => {
@@ -14,14 +21,17 @@ function SearchList(props) {
     setSearchProductData(searchProducts[productKey]);
   }, [props.location]);
 
-  let publicUrl = process.env.PUBLIC_URL + "/";
-  let imagealt = "image";
+  // let publicUrl = process.env.PUBLIC_URL + "/";
+  // let imagealt = "image";
   let data = sectiondata.searchlist;
 
   const handlePay = (e, props) => {
     e.preventDefault();
-    console.log("good", props);
+    // console.log("good", props);
   };
+
+  // console.log(getProducts);
+  // console.log(props.location.search === "?product=Data");
 
   return (
     <div className="search-page-wrap pd-top-100 pd-bottom-70">
@@ -35,7 +45,7 @@ function SearchList(props) {
                   network provider
                 </div>
                 <div className="btn-wrap text-center">
-                  <Link to="/about" className="btn btn-yellow">
+                  <Link to="/reloadng/about" className="btn btn-yellow">
                     Read more
                   </Link>
                 </div>
@@ -48,9 +58,23 @@ function SearchList(props) {
                 </div>
               </div>
 
-              {!searchproductData
-                ? null
-                : searchproductData.value.map((allData, index) => (
+              {props.location.search === "?product=Airtime" && (
+                <AirtimeSearchList />
+              )}
+              {props.location.search === "?product=Data" && <DataSearchList />}
+              {props.location.search === "?product=Cable" && (
+                <CableSearchList />
+              )}
+              {props.location.search === "?product=Electric" && (
+                <ElectricSearchList />
+              )}
+              {props.location.search === "?product=Exams" && (
+                <ExamsSearchList />
+              )}
+
+              {/* {getProducts.listProducts === null
+                ? ""
+                : getProducts.listProducts.products.map((allData, index) => (
                     <div className="single-feature style-two">
                       <div className="thumb">
                         <img src={allData.icon} alt="img" />
@@ -93,7 +117,7 @@ function SearchList(props) {
                         </div>
                       </div>
                     </div>
-                  ))}
+                  ))} */}
             </div>
           </div>
         </div>

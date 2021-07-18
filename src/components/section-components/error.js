@@ -3,11 +3,11 @@ import sectiondata from "../../data/sections.json";
 import { Link } from "react-router-dom";
 
 class Error extends Component {
-  componentDidMount() {
-    const $ = window.$;
-    var preLoder = $("#preloader");
-    preLoder.fadeOut(0);
-  }
+  // componentDidMount() {
+  //   const $ = window.$;
+  //   var preLoder = $("#preloader");
+  //   preLoder.fadeOut(0);
+  // }
   render() {
     let publicUrl = process.env.PUBLIC_URL + "/";
     let imgattr = "image";

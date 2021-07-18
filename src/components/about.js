@@ -11,14 +11,14 @@ import Footer from "./global-components/footer";
 const About = () => {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <PageHeader headertitle="About" />
       <Mission />
       <AboutUs />
       <ServiceTwo />
-      <Team />
+      {/* <Team /> */}
       {/* <Client /> */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

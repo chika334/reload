@@ -1,13 +1,10 @@
 import React, { Component } from "react";
-import sectiondata from "../../data/sections.json";
+// import sectiondata from "../../data/sections.json";
+import { faq } from "../../data/faq";
 import parse from "html-react-parser";
 
 class Process extends Component {
   render() {
-    let publicUrl = process.env.PUBLIC_URL + "/";
-    let imagealt = "image";
-    let data = sectiondata.faq;
-
     return (
       <div className="faq-area pd-top-100 pd-bottom-100">
         <div className="container">
@@ -16,13 +13,14 @@ class Process extends Component {
               <div className="section-title">
                 <h2
                   className="title"
-                  dangerouslySetInnerHTML={{ __html: data.title }}
+                  dangerouslySetInnerHTML={{ __html: faq.title }}
                 ></h2>
-                <p>{data.content}</p>
+                <p>{faq.content}</p>
               </div>
               <div className="accordion" id="accordion">
                 {/* single accordion */}
-                {data.items.map((item, i) => (
+                <h5>{faq.subtitle}</h5>
+                {faq.items.map((item, i) => (
                   <div key={i} className="single-accordion card">
                     <div className="card-header" id={"headingOne" + i}>
                       <h2 className="mb-0">
@@ -34,7 +32,7 @@ class Process extends Component {
                           aria-expanded="true"
                           aria-controls={"collapseOne" + i}
                         >
-                          {item.title}
+                          <p>Question:</p>{item.title}
                         </button>
                       </h2>
                     </div>
@@ -44,7 +42,10 @@ class Process extends Component {
                       aria-labelledby={"headingOne" + i}
                       data-parent="#accordion"
                     >
-                      <div className="card-body">{item.content}</div>
+                      <p className="card-body">{item.content}</p>
+                      <p className="card-body">{item.content1}</p>
+                      <p className="card-body">{item.content2}</p>
+                      <p className="card-body">{item.content3}</p>
                     </div>
                   </div>
                 ))}
@@ -53,7 +54,7 @@ class Process extends Component {
             <div className="col-xl-5 col-lg-6 offset-xl-1">
               <div className="shape-image-list-wrap">
                 <div className="shape-image-list left-top">
-                  <img src={publicUrl + data.image} alt={imagealt} />
+                  <img src={faq.image} alt="faq" />
                 </div>
               </div>
             </div>

@@ -18,49 +18,32 @@
   ],
   "copyrighttext": "  © 2021<a href='https://reload.ng/' target='_blank'><i class=\"fa fa-heart\"></i><span>reloadng.</span></a>",
   "popularserces": {
-    "title": "Popular Searches",
-    "links": [
-      {
-        "title": "Apartment for Rent",
-        "url": "/property-details"
-      },
-      {
-        "title": "Apartment Low to hide",
-        "url": "/property-details"
-      },
-      {
-        "title": "Offices for Buy",
-        "url": "/property-details"
-      },
-      {
-        "title": "Offices for Rent",
-        "url": "/property-details"
-      }
-    ]
+    "title": "Contact",
+    "links": "Reload is a company that specializes in online bill payments. We're establishing an environment that will allow people to pay there bills online fast and very reliable."
   },
   "Homepress": {
     "title": "About",
     "links": [
       {
-        "title": "Home",
-        "url": "/"
+        "title": "Company",
+        "url": "/reloadng/about"
       },
       {
-        "title": "About us",
-        "url": "/about"
+        "title": "FAQ",
+        "url": "/reloadng/faq"
       },
       {
-        "title": "Contact us",
-        "url": "/contact"
+        "title": "Terms and Conditions",
+        "url": "/reloadng/terms"
       },
       {
-        "title": "Faq",
-        "url": "/faq"
+        "title": "Help Desk",
+        "url": "/reloadng/helpdesk"
       }
     ]
   },
   "quicklink": {
-    "title": "Quick Links",
-    "links": "Wifitrack Nigeria Limited, 42 Old aba road, Rumuomasi, Port Harcourt , Rivers State"
+    "title": "Contact",
+    "links": "RELOAD BLUEPRINT, 42 Old aba road, Rumuomasi, Port Harcourt , Rivers State"
   }
 }

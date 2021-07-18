@@ -1,17 +1,18 @@
-import React from 'react';
-import Navbar from './global-components/navbar';
-import PageHeader from './global-components/page-header';
-import UserListSection from './section-components/user-list';
-import Footer from './global-components/footer';
+import React from "react";
+import Navbar from "./global-components/navbar";
+import PageHeader from "./global-components/page-header";
+import UserListSection from "./section-components/user-list";
+import Footer from "./global-components/footer";
 
 const UserList = () => {
-    return <div>
-        <Navbar />
-        <PageHeader headertitle="User List" />
-        <UserListSection />
-        <Footer />
+  return (
+    <div>
+      {/* <Navbar /> */}
+      <PageHeader headertitle="Profile" />
+      <UserListSection />
+      {/* <Footer /> */}
     </div>
-}
+  );
+};
 
-export default UserList
-
+export default UserList;

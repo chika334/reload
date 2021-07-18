@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./global-components/navbar";
+// import Banner from "./section-components/ExportBanner";
 import Banner from "./section-components/banner";
 import Service from "./section-components/service";
 import Explore from "./section-components/explore";
@@ -15,14 +16,14 @@ import Footer from "./global-components/footer";
 const Home_V1 = () => {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <Banner />
       <Service />
-      <RecentProperties />
+      {/* <RecentProperties /> */}
       {/* <FeaturedPorject /> */}
       <WhyChooseUs />
-      <OurPartner />
-      <Footer />
+      {/* <OurPartner /> */}
+      {/* <Footer /> */}
     </div>
   );
 };

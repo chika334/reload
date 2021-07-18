@@ -7,11 +7,11 @@ import Footer from './global-components/footer';
 
 const Property = () => {
     return <div>
-        <Navbar />
+        {/* <Navbar /> */}
         <PageHeader headertitle="Products" />
         <PropertySection />
         {/* <TopAuthor /> */}
-        <Footer />
+        {/* <Footer /> */}
     </div>
 }
 

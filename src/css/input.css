@@ -1,0 +1,9 @@
+.inputSize {
+  width: 50%
+}
+
+@media (max-width: 480px) {
+  .inputSize {
+    width: 100%;
+  }
+}

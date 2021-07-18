@@ -7,24 +7,74 @@ import { hideLoader } from "../../_action/loading";
 import { Button } from "@material-ui/core";
 import ProductTable from "./productDetails/productTable";
 import { products } from "../../data/products";
-// import imageDstv from "";
+import { Form, TextField, SubmitButton } from "../Form/FormElements";
+import * as Yup from "yup";
+import FormPay from "../reg/Pay/FormPay";
+import AirtimePay from "../reg/Pay/Airtime";
+import DataPay from "../reg/Pay/DataPay";
+import CablePay from "../reg/Pay/Cable";
+import ExamPay from "../reg/Pay/Exams";
+import Electricity from "../Pay/Electricity";
+import Cable from "../Pay/Cable";
+import Airtime from "../Pay/Airtime";
+import Data from "../Pay/Data";
+import Exams from "../Pay/Exams";
+
+const formSchema = {
+  meter: {
+    type: "number",
+    label: "Meter Number",
+    placeholder: "Enter Meter Number",
+    required: true,
+  },
+};
 
 function PropertyDetails(props) {
   const exploreProducts = useSelector((state) => state.exploreProducts);
   const dispatch = useDispatch();
   const [pay, setPay] = useState(false);
   const [productData, setProductData] = useState();
+  const [type, setType] = useState("");
+  const [buttonPayment, setButtonPayment] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [validationSchema, setValidationSchema] = useState({});
+  const [amount, setAmount] = useState("");
 
-  // useEffect(() => {
-  //   if (exploreProducts.productDisplay === true) {
-  //     // setValues({ ...values, title: title, image: image });
-  //     props.hideLoader();
-  //   }
-  // }, [exploreProducts]);
+  useEffect(() => {
+    initForm(formSchema);
+  }, []);
 
-  const handlePay = (e) => {
-    e.preventDefault();
-    setPay(true);
+  const initForm = (formSchema) => {
+    let _formData = {};
+    let _validationSchema = {};
+
+    for (var key of Object.keys(formSchema)) {
+      _formData[key] = "";
+
+      if (formSchema[key].type === "number") {
+        _validationSchema[key] = Yup.string();
+      }
+
+      // console.log(formSchema[key].required);
+      if (formSchema[key].required) {
+        _validationSchema[key] = _validationSchema[key]
+          .required("Required")
+          .min(11, "Minimum of 11 charcters required");
+      }
+    }
+
+    setFormData(_formData);
+    setValidationSchema(Yup.object().shape({ ..._validationSchema }));
+  };
+
+  const onPay = (val, type) => {
+    setPay(val);
+    setType(type);
+  };
+
+  const onpaymentProcess = (data) => {
+    // console.log(data);
+    setButtonPayment(data);
   };
 
   useEffect(() => {
@@ -36,85 +86,124 @@ function PropertyDetails(props) {
   return (
     <div className="property-details-area">
       <div className="bg-gray pd-top-100 pd-bottom-90">
-        {!productData ? null : (
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-8 contact-form-wrap">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8 pb-4">
+              <div className="contact-form-wrap">
                 <div className="item">
                   <div className="d-flex align-item-center justify-content-center">
                     <img
                       width="200"
-                      // className=""
-                      src={`${productData ? productData.icon : ""}`}
+                      src={`${props.location.state.data.productId.logourl}`}
                       alt="image"
                     />
                   </div>
                 </div>
+                <div className="d-flex align-item-center justify-content-center">
+                  <h4>{props.location.state.data.title}</h4>
+                </div>
                 <div className="property-details-slider-info">
-                  {/* <ProductTable dataTitle={productData} /> */}
-                  <div className="d-flex align-item-center justify-content-center">
+                  <div className="">
                     <div className="mt-5">
                       <div>
-                        <label className="pr-3">Smart Card Number:</label>
-                        <input type="number" placeholder="Enter IUC number" />
+                        {props.location.state.data.productId.description ===
+                          "Electricity Prepaid" && (
+                          <Electricity dataPay={onPay} />
+                        )}
                       </div>
-                      <div className="pt-3">
-                        <label style={{ paddingRight: "95px" }}>
-                          Price List:{" "}
-                        </label>
-                        <select style={{ width: "202px" }}>
-                          <option>Select Amount</option>
-                          <option>1000</option>
-                          <option>2000</option>
-                          <option>3000</option>
-                          <option>4000</option>
-                          <option>5000</option>
-                          <option>6000</option>
-                        </select>
+                      {/* <div>
+                        {props.location.state.data.productId.description ===
+                          "Electricity Prepaid" &&
+                        props.location.state.data.productId.productname ===
+                          "Eko Electricity Prepaid" ? (
+                          <Electricity dataPay={onPay} />
+                        ) : (
+                          ""
+                        )}
+                      </div> */}
+                      <div>
+                        {props.location.state.data.productId.description ===
+                          "Cable" && (
+                          <Cable
+                            dataCable={props.location.state}
+                            dataPay={onPay}
+                            onpaymentProcess={onpaymentProcess}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        {props.location.state.data.productId.description ===
+                          "Airtime" && <Airtime dataPay={onPay} />}
+                      </div>
+                      <div>
+                        {props.location.state.data.productId.description ===
+                          "Data" && <Data dataPay={onPay} />}
+                      </div>
+                      <div>
+                        {props.location.state.data.productId.description ===
+                          "Exams" && (
+                          <Exams
+                            productData={props.location.state.data}
+                            dataPay={onPay}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
-                {/* <div className="col-xl-2 col-lg-4 col-md-4 readeal-top"> */}
-                <div className="d-flex align-item-center justify-content-center">
-                  <Button
-                    style={{ backgroundColor: "#fda94f", color: "#fff" }}
-                    className="btn btn-yellow mt-5"
-                    onClick={(e) => handlePay(e)}
-                  >
-                    Proceed to payment
-                  </Button>
-                </div>
               </div>
-              {pay === true && (
-                <div className="col-lg-4">
-                  <form className="contact-form-wrap contact-form-bg">
-                    <h4>Payment Process</h4>
-                    <div className="rld-single-input">
-                      <input type="text" placeholder="Name" />
-                    </div>
-                    <div className="rld-single-input">
-                      <input type="text" placeholder="Phone" />
-                    </div>
-                    <div className="rld-single-input">
-                      <input type="text" placeholder="Phone" />
-                    </div>
-                    <div className="rld-single-input">
-                      <textarea
-                        rows={10}
-                        placeholder="Message"
-                        defaultValue={""}
-                      />
-                    </div>
-                    <div className="btn-wrap text-center">
-                      <button className="btn btn-yellow">Pay</button>
-                    </div>
-                  </form>
-                </div>
-              )}
             </div>
+            {pay === true && type === "Electricity" && (
+              <div className="col-lg-4">
+                <FormPay dataTitle={props.location.state.data.title} />
+              </div>
+            )}
+            {type === "Airtime" && pay === true && (
+              <div className="col-lg-4">
+                <AirtimePay
+                  // amount={amount}
+                  dataTitle={props.location.state.data.title}
+                />
+              </div>
+            )}
+            {type === "Data" && pay === true && (
+              <div className="col-lg-4">
+                <DataPay
+                  // amount={amount}
+                  dataTitle={props.location.state.data.title}
+                />
+              </div>
+            )}
+            {type === "Cable" && pay === true && (
+              <div className="col-lg-4">
+                <CablePay
+                  // amount={amount}
+                  dataTitle={props.location.state.data.title}
+                />
+              </div>
+            )}
+            {type === "Exams" && pay === true ? (
+              <div className="col-lg-4">
+                <ExamPay
+                  TypeOfProduct={type}
+                  // amount={amount}
+                  dataTitle={props.location.state.data.title}
+                />
+              </div>
+            ) : type === "Exams" && pay === true ? (
+              <div className="col-lg-4">
+                <ExamPay
+                  TypeOfProduct={type}
+                  // amount={amount}
+                  dataTitle={props.location.state.data.title}
+                />
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-        )}
+        </div>
+        {/* )} */}
       </div>
     </div>
   );

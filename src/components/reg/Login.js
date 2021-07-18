@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import Alert from "@material-ui/lab/Alert";
 import { loginRedirect } from "../../_action/UserRedirect";
 import { clearErrors } from "../../_action/errorAction";
-import '../../css/input.css'
+import "../../css/input.css";
 
 const formSchema = {
   email: {
@@ -28,6 +28,7 @@ const formSchema = {
 function Login(props) {
   const user = useSelector((state) => state.authUser);
   const error = useSelector((state) => state.error);
+  const loginSuccRed = useSelector((state) => state.login_success_red);
   const [formData, setFormData] = useState({});
   const [validationSchema, setValidationSchema] = useState({});
   const [errMessage, setErrMessage] = useState("");
@@ -40,6 +41,11 @@ function Login(props) {
     } else {
       if (user.isLogin === true && localStorage.token) {
         props.clearErrors();
+        // if (loginSuccRed.login === true && loginSuccRed.value !== "") {
+        //   props.history.push(loginSuccRed.value);
+        // } else {
+        //   props.history.push("/reloadng");
+        // }
         window.location.href = "/reloadng";
         // props.loginRedirect();
       } else {

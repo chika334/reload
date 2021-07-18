@@ -3,8 +3,22 @@ import { withRouter } from "react-router-dom";
 import { PaymentIntent } from "../../_action/Payment";
 import { connect } from "react-redux";
 import { TextField, MenuItem, InputAdornment, Button } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function waecReg(props) {
+  const [open, setOpen] = useState(false);
+  const user = useSelector((state) =>
+    state.authUser.user === null ? "" : state.authUser.user
+  );
   const [loading, setLoading] = useState(false);
   const [select, setSelect] = useState({
     "Amount Per Candidate": "",
@@ -42,7 +56,8 @@ function waecReg(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            Email: `${values["Email"]}`,
+            // Email: `${values["Email"]}`,
+            Email: user.user.email,
             "Phone Number": `${values["Phone Number"]}`,
           },
           references: ["Email", "Phone Number"],
@@ -52,7 +67,12 @@ function waecReg(props) {
         props.data(true, "Exams");
       }
     } else {
-      props.history.push("/reloadng/registration");
+      // props.history.push("/reloadng/registration");
+      setLoading(false);
+      // const path = `${props.location.pathname}${props.location.search}`;
+      // props.loginRediectSuccess(path, props.location.state.data);
+      // props.history.push("/reloadng/registration");
+      setOpen(true);
     }
   };
 
@@ -80,10 +100,43 @@ function waecReg(props) {
     }
   }
 
-  console.log(props);
-  // console.log(fieldsArray);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleRegRedirect = () => {
+    props.history.push("/reloadng/registration");
+  };
+
   return (
     <div>
+      <div>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {"Welcome to reload.ng"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Please sign-in to process payment.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              cancel
+            </Button>
+            <Button onClick={handleRegRedirect} color="primary">
+              ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
       {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
@@ -139,25 +192,29 @@ function waecReg(props) {
               ""
             )
           )}
-          {fieldsArray.slice(2, 5).map((allField, i) => (
-            <div
-              key={i}
-              className="d-flex align-item-center justify-content-center pt-3"
-            >
-              <TextField
-                required
-                // style={{ width: "50%" }}
-                className="inputSize"
-                label={`${allField.text}`}
-                name={`${allField.text}`}
-                onChange={(e) => handleSmartCard(e, allField.text)}
-                placeholder={`Enter ${allField.text}`}
-                type={allField.text === "Email" ? "email" : "number"}
-                variant="outlined"
-                value={values[allField.text]}
-              />
-            </div>
-          ))}
+          {fieldsArray.slice(2, 5).map((allField, i) =>
+            allField.text === "Email" ? (
+              ""
+            ) : (
+              <div
+                key={i}
+                className="d-flex align-item-center justify-content-center pt-3"
+              >
+                <TextField
+                  required
+                  // style={{ width: "50%" }}
+                  className="inputSize"
+                  label={`${allField.text}`}
+                  name={`${allField.text}`}
+                  onChange={(e) => handleSmartCard(e, allField.text)}
+                  placeholder={`Enter ${allField.text}`}
+                  type={allField.text === "Email" ? "email" : "number"}
+                  variant="outlined"
+                  value={values[allField.text]}
+                />
+              </div>
+            )
+          )}
           {fieldsArray.slice(0, 1).map((allField, i) => (
             <div
               key={i}

@@ -13,11 +13,24 @@ import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../_action/errorAction";
 import { verify } from "../../_action/verify";
-import '../../css/input.css'
+import "../../css/input.css";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function Cable(props) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.authUser);
+  // const user = useSelector((state) => state.authUser);
+  const user = useSelector((state) =>
+    state.authUser.user === null ? "" : state.authUser.user
+  );
   const error = useSelector((state) => state.error);
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
@@ -25,11 +38,11 @@ function Cable(props) {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState("");
+  const [open, setOpen] = React.useState(false);
   const [smartCard, setSmartCard] = useState("");
   const [selectDetails, setSelectDetails] = useState({});
   const [email, setEmail] = useState("");
   const paymentIntent = useSelector((state) => state.paymentIntent);
-  const [monthsNumber, setMonthsNumber] = useState({});
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -67,7 +80,8 @@ function Cable(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            "E-mail": `${email}`,
+            // "E-mail": `${email}`,
+            "E-mail": user.user.email,
             "Product ": selectDetails.ItemType,
             "Customer Name": `${verifiedUser.result.account.accountName}`,
             "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
@@ -91,7 +105,8 @@ function Cable(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            "Email Address": `${email}`,
+            // "Email Address": `${email}`,
+            "Email Address": user.user.email,
             "Select Package (Amount)": selectDetails.ItemType,
             "Number of Months": "1",
             "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
@@ -117,7 +132,8 @@ function Cable(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            Email: `${email}`,
+            // Email: `${email}`,
+            Email: user.user.email,
             "Select Package (Amount)": selectDetails.ItemName,
             "Number of Months": "1",
             "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
@@ -136,9 +152,21 @@ function Cable(props) {
       // handlePaymentProcess();
     } else {
       if (!localStorage.token) {
-        props.history.push("/reloadng/registration");
+        setLoading(false);
+        // const path = `${props.location.pathname}${props.location.search}`;
+        // props.loginRediectSuccess(path, props.location.state.data);
+        // props.history.push("/reloadng/registration");
+        setOpen(true);
       }
     }
+  };
+
+  const handleRegRedirect = () => {
+    props.history.push("/reloadng/registration");
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -148,7 +176,8 @@ function Cable(props) {
       const amount = selectDetails.Amount.trim();
       const detail = {
         amount: amount,
-        email: email,
+        // email: email,
+        email: user.user.email,
         transRef: paymentIntent.detail.transRef,
         customerName: verifiedUser.result.account.accountName,
       };
@@ -266,6 +295,33 @@ function Cable(props) {
 
   return (
     <div className="property-details-area">
+      <div>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {"Welcome to reload.ng"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Please sign-in to process payment.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              cancel
+            </Button>
+            <Button onClick={handleRegRedirect} color="primary">
+              ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
       {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
@@ -388,25 +444,26 @@ function Cable(props) {
                           />
                         </div>
                       ) : allField.text === "Email" ? (
-                        <div
-                          key={i}
-                          className="d-flex align-item-center justify-content-center pt-3"
-                        >
-                          <TextField
-                            required
-                            // style={{ width: "50%" }}
-                            className="inputSize"
-                            label="Email"
-                            name="months"
-                            onChange={handleFieldChange}
-                            placeholder={`Enter Email Address`}
-                            type="email"
-                            variant="outlined"
-                            value="1"
-                            disabled
-                          />
-                        </div>
+                        ""
                       ) : (
+                        // <div
+                        //   key={i}
+                        //   className="d-flex align-item-center justify-content-center pt-3"
+                        // >
+                        //   <TextField
+                        //     required
+                        //     // style={{ width: "50%" }}
+                        //     className="inputSize"
+                        //     label="Email"
+                        //     name="months"
+                        //     onChange={handleFieldChange}
+                        //     placeholder={`Enter Email Address`}
+                        //     type="email"
+                        //     variant="outlined"
+                        //     value="1"
+                        //     disabled
+                        //   />
+                        // </div>
                         allField.text === "Product " && (
                           <div className="d-flex align-item-center justify-content-center pt-3">
                             <TextField
@@ -554,24 +611,25 @@ function Cable(props) {
                 ? fieldsArray.slice(1).map((allFields, i) =>
                     allFields.select === false &&
                     allFields.text === "Email Address" ? (
+                      ""
                       // <>
-                      <div
-                        key={i}
-                        className="d-flex align-item-center justify-content-center pt-3"
-                      >
-                        <TextField
-                          required
-                          // style={{ width: "50%" }}
-                          className="inputSize"
-                          label={allFields.text}
-                          name={allFields.text}
-                          onChange={handleFieldChange}
-                          placeholder={`Enter ${allFields.text}`}
-                          type="email"
-                          variant="outlined"
-                          value={email}
-                        />
-                      </div>
+                      // <div
+                      //   key={i}
+                      //   className="d-flex align-item-center justify-content-center pt-3"
+                      // >
+                      //   <TextField
+                      //     required
+                      //     // style={{ width: "50%" }}
+                      //     className="inputSize"
+                      //     label={allFields.text}
+                      //     name={allFields.text}
+                      //     onChange={handleFieldChange}
+                      //     placeholder={`Enter ${allFields.text}`}
+                      //     type="email"
+                      //     variant="outlined"
+                      //     value={email}
+                      //   />
+                      // </div>
                     ) : (
                       ""
                     )

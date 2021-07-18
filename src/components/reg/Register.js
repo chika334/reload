@@ -74,10 +74,6 @@ function Register(props) {
     }
   }, [user.isAuthenticated]);
 
-  // const ShowModal = () => {
-  //   props.modal(true);
-  // };
-
   useEffect(() => {
     initForm(formSchema);
   }, []);
@@ -189,8 +185,11 @@ function Register(props) {
     // console.log(values);
     setSubmitting(false);
 
-    console.log(values);
-    props.RegUser(values);
+    props.clearErrors();
+    // console.log(values);
+    setTimeout(() => {
+      props.RegUser(values);
+    }, 500);
   };
 
   return (

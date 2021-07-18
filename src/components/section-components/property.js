@@ -43,7 +43,6 @@ function Property(props) {
   );
 
   const handlePay = (details) => {
-    console.log(details);
     if (details.otherData.billerCode === null) {
       setModal(true);
     } else {

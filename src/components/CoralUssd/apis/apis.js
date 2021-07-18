@@ -1,4 +1,5 @@
 import Axios from "axios";
+var url = "https://www.poplarconnect.com";
 
 var __awaiter =
   (this && this.__awaiter) ||
@@ -134,7 +135,6 @@ var __generator =
     }
   };
 
-var url = "https://www.poplarconnect.com";
 export var coralWebHook = function (config, data, setStatus) {
   return __awaiter(void 0, void 0, void 0, function () {
     var response;
@@ -151,19 +151,15 @@ export var coralWebHook = function (config, data, setStatus) {
               tokenConfig(config.jwtToken)
             )
               .then(function (res) {
-                console.log(tokenConfig(config.jwtToken));
                 setStatus(false);
                 response = res.data;
               })
               .catch(function (err) {
-                console.log(tokenConfig(config.jwtToken));
-                setStatus(false);
                 response = err.response;
               }),
           ];
         case 1:
           _a.sent();
-          console.log(tokenConfig(config.jwtToken));
           return [2 /*return*/, response];
       }
     });

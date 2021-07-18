@@ -38,15 +38,9 @@ function Receipt(props) {
     currency: "NGN",
   });
 
-  // if (props.location.state.paymentData.customerName) {
-  //   setName(props.location.state.paymentData.customerName);
-  //   return;
-  // } else if (props.location.state.paymentData.accountName) {
-  //   setName(props.location.state.paymentData.accountName);
-  //   return;
-  // }
-
-  console.log(props.location.state);
+  const handleBack = () => {
+    window.location.href = "/reloadng/products";
+  };
 
   return (
     <div className="property-area pd-top-100">
@@ -54,6 +48,11 @@ function Receipt(props) {
         when={blocking}
         message={() => `On reload all transaction history will b lost`}
       />
+      <div className="pt-3 pl-5 pb-2">
+        <Button onClick={handleBack} variant="contained" color="primary">
+          Back
+        </Button>
+      </div>
       <div className="invoice-box">
         <table cellPadding="0" cellSpacing="0">
           <tbody>

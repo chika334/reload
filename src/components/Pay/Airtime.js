@@ -9,6 +9,16 @@ import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../_action/Payment/paymentButtons";
 import "../../css/input.css";
 import { loginRediectSuccess } from "../../_action/LoginRedirect";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function NewForm(props) {
   const dispatch = useDispatch();
@@ -16,8 +26,12 @@ function NewForm(props) {
   const verifyDetails = useSelector((state) => state.verify);
   const [verifyEnabled, setVerifiedEnabled] = useState(false);
   const paymentIntent = useSelector((state) => state.paymentIntent);
+  const user = useSelector((state) =>
+    state.authUser.user === null ? "" : state.authUser.user
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [open, setOpen] = React.useState(false);
   const [selectDetails, setSelectDetails] = useState({});
   const [smartCard, setSmartCard] = useState({
     Email: "",
@@ -46,7 +60,7 @@ function NewForm(props) {
     setSelectDetails(value);
   };
 
-  console.log(props.location);
+  // console.log(props.location);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,7 +80,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              Email: `${smartCard["Email"]}`,
+              // Email: `${smartCard["Email"]}`,
+              Email: user.user.email,
               "Product Type": selectDetails.ItemName,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -86,7 +101,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              Email: `${smartCard["Email"]}`,
+              // Email: `${smartCard["Email"]}`,
+              Email: user.user.email,
               Product: selectDetails.ItemName,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -106,7 +122,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              Email: `${smartCard["Email"]}`,
+              // Email: `${smartCard["Email"]}`,
+              Email: user.user.email,
               Product: selectDetails.ItemName,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -126,7 +143,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              Email: `${smartCard["Email"]}`,
+              // Email: `${smartCard["Email"]}`,
+              Email: user.user.email,
               Product: selectDetails.ItemName,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -137,9 +155,16 @@ function NewForm(props) {
         }
       }
     } else {
-      loginRediectSuccess();
-      props.history.push("/reloadng/registration");
+      setLoading(false);
+      // const path = `${props.location.pathname}${props.location.search}`;
+      // props.loginRediectSuccess(path, props.location.state.data);
+      // props.history.push("/reloadng/registration");
+      setOpen(true);
     }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -149,7 +174,8 @@ function NewForm(props) {
       // const amount = selectDetails.amount;
       const detail = {
         amount: Amount,
-        email: `${smartCard["Email"]}`,
+        // email: `${smartCard["Email"]}`,
+        email: user.user.email,
         transRef: paymentIntent.detail.transRef,
         customerName: `${smartCard["Phone Number"]}`,
       };
@@ -177,9 +203,42 @@ function NewForm(props) {
     }
   }
 
+  const handleRegRedirect = () => {
+    props.history.push("/reloadng/registration");
+  };
+
+  // console.log(loading);
+
   return (
     <div>
-      {loading ? (
+      <div>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {"Welcome to reload.ng"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Please sign-in to process payment.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              cancel
+            </Button>
+            <Button onClick={handleRegRedirect} color="primary">
+              ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+      {loading === true ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
             <div className="spinner">
@@ -197,31 +256,38 @@ function NewForm(props) {
             <div>
               {fieldsArray.map((allFields, i) =>
                 allFields.select !== true ? (
-                  <div
-                    key={i}
-                    className="d-flex align-item-center justify-content-center pt-3"
-                  >
-                    <TextField
-                      // style={{ width: "50%" }}
-                      className="inputSize"
-                      required
-                      label={allFields.text}
-                      name={allFields.text}
-                      onChange={(e) => handleOthers(e, allFields.text)}
-                      placeholder={`Enter ${allFields.text}`}
-                      type={allFields.text === "Email" ? "email" : "number"}
-                      value={smartCard[allFields.text]}
-                      variant="outlined"
-                      InputProps={{
-                        startAdornment:
-                          allFields.text === "Amount" ? (
-                            <InputAdornment position="start">₦</InputAdornment>
-                          ) : (
-                            ""
-                          ),
-                      }}
-                    />
-                  </div>
+                  allFields.text === "Email" ? (
+                    ""
+                  ) : (
+                    <div
+                      key={i}
+                      className="d-flex align-item-center justify-content-center pt-3"
+                    >
+                      <TextField
+                        // style={{ width: "50%" }}
+                        className="inputSize"
+                        required
+                        label={allFields.text}
+                        name={allFields.text}
+                        onChange={(e) => handleOthers(e, allFields.text)}
+                        placeholder={`Enter ${allFields.text}`}
+                        // type={allFields.text === "Email" ? "email" : "number"}
+                        type="number"
+                        value={smartCard[allFields.text]}
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment:
+                            allFields.text === "Amount" ? (
+                              <InputAdornment position="start">
+                                ₦
+                              </InputAdornment>
+                            ) : (
+                              ""
+                            ),
+                        }}
+                      />
+                    </div>
+                  )
                 ) : (
                   ""
                 )
@@ -241,7 +307,7 @@ function NewForm(props) {
                       select
                       onChange={(e) => handleOthers(e, allFields.text)}
                       placeholder={`Enter ${allFields.text}`}
-                      type={allFields.text === "Email" ? "email" : "number"}
+                      // type={allFields.text === "Email" ? "email" : "number"}
                       value={smartCard[allFields.text]}
                       variant="outlined"
                     >

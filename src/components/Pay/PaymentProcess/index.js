@@ -31,7 +31,7 @@ function Index(props) {
   };
 
   const config = {
-    public_key: `FLWPUBK_TEST-df4dfed8780fd033ae452847ae19a44c-X`,
+    public_key: `${process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY}`,
     tx_ref: Date.now(),
     amount: pay.amount,
     currency: "NGN",
@@ -54,22 +54,26 @@ function Index(props) {
 
   const handleFlutterwave = (e) => {
     // dispatch(showLoader());
-    handleFlutterPayment({
-      callback: (response) => {
-        console.log(response);
-        const ref = {
-          transRef: pay.transRef,
-          paymentRef: response.transaction_id,
-        };
+    if (paymentButton.name === "Ussd") {
+      setLoading(false);
+    } else {
+      handleFlutterPayment({
+        callback: (response) => {
+          console.log(response);
+          const ref = {
+            transRef: pay.transRef,
+            paymentRef: response.transaction_id,
+          };
 
-        dispatch(finalPayment(ref));
-        setTimeout(() => {
-          closePaymentModal();
-        }, 2000);
-      },
-      onClose: () => {},
-    });
-    setLoading(true);
+          dispatch(finalPayment(ref));
+          setTimeout(() => {
+            closePaymentModal();
+          }, 2000);
+        },
+        onClose: () => {},
+      });
+      setLoading(true);
+    }
   };
 
   // console.log(pay);
@@ -108,6 +112,8 @@ function Index(props) {
     dispatch(paymentButtons("flutterwave", true));
   };
 
+  // console.log(pay);
+
   const body = {
     traceId: "2021070109120612",
     transactionType: "0",
@@ -117,6 +123,8 @@ function Index(props) {
     terminalId: "4058RNG1",
     subMerchantName: "Reload.ng",
   };
+
+  // console.log(body);
 
   if (loading) {
     return (
@@ -143,7 +151,14 @@ function Index(props) {
   return (
     <div>
       <div className="d-flex align-item-center justify-content-center">
-        <CoralUssd visible={visible} toggle={toggle} body={body} />
+        {/* <button onClick> */}
+        <CoralUssd
+          visible={visible}
+          toggle={toggle}
+          body={body}
+          onSuccess={(res) => console.log(res)}
+        />
+        {/* </button> */}
       </div>
       <div>
         <Button onClick={handleClick}>

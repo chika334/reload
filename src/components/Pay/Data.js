@@ -8,16 +8,30 @@ import { DataOptionSelect } from "../../components/jsonData/DataSelectOption";
 import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../_action/Payment/paymentButtons";
 import { fieldSelect } from "../../_action/Payment/paymentButtons";
-import '../../css/input.css'
+import "../../css/input.css";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function NewForm(props) {
   // const dispatch1 = useDispatch();
   const dispatch = useDispatch();
+  const user = useSelector((state) =>
+    state.authUser.user === null ? "" : state.authUser.user
+  );
   const [disabled, setDisabled] = useState(false);
   const verifyDetails = useSelector((state) => state.verify);
   const [verifyEnabled, setVerifiedEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [open, setOpen] = React.useState(false);
   const [valuesDetails, setValuesDetails] = useState([]);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const [smartCard, setSmartCard] = useState({
@@ -79,7 +93,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              "E-mail": `${smartCard["E-mail"]}`,
+              // "E-mail": `${smartCard["E-mail"]}`,
+              "E-mail": user.user.email,
               "Product Type": `${selectDetails.id}`,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -102,7 +117,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              "E-mail": `${smartCard["E-mail"]}`,
+              // "E-mail": `${smartCard["E-mail"]}`,
+              "E-mail": user.user.email,
               "Product Type": `${selectDetails.id}`,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -124,7 +140,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              "Email": `${smartCard["Email"]}`,
+              // Email: `${smartCard["Email"]}`,
+              Email: user.user.email,
               "Product type": `${selectDetails.id}`,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -134,7 +151,7 @@ function NewForm(props) {
           // console.log(newValuesObj);
           props.PaymentIntent(newValuesObj);
         }
-      } else if(props.location.state.data.billerCode === "9mobiledata1") {
+      } else if (props.location.state.data.billerCode === "9mobiledata1") {
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
           // return
@@ -146,8 +163,9 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              Email: `${smartCard["Email"]}`,
-              "Product": `${selectDetails.id}`,
+              // Email: `${smartCard["Email"]}`,
+              Email: user.user.email,
+              Product: `${selectDetails.id}`,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
             references: ["Email", "Product", "Phone Number"],
@@ -158,7 +176,11 @@ function NewForm(props) {
         }
       }
     } else {
-      props.history.push("/reloadng/registration");
+      setLoading(false);
+      // const path = `${props.location.pathname}${props.location.search}`;
+      // props.loginRediectSuccess(path, props.location.state.data);
+      // props.history.push("/reloadng/registration");
+      setOpen(true);
     }
   };
 
@@ -169,17 +191,18 @@ function NewForm(props) {
       const amount = selectDetails.amount;
       const detail = {
         amount: amount,
-        email: `${
-          props.location.state.data.billerCode === "data"
-            ? smartCard["Email"]
-            : props.location.state.data.billerCode === "glo-data"
-            ? smartCard["E-mail"]
-            : props.location.state.data.billerCode === "airtel-data"
-            ? smartCard["E-mail"]
-            : props.location.state.data.billerCode === "9mobiledata1"
-            ? smartCard["Email"]
-            : ""
-        }`,
+        // email: `${
+        //   props.location.state.data.billerCode === "data"
+        //     ? smartCard["Email"]
+        //     : props.location.state.data.billerCode === "glo-data"
+        //     ? smartCard["E-mail"]
+        //     : props.location.state.data.billerCode === "airtel-data"
+        //     ? smartCard["E-mail"]
+        //     : props.location.state.data.billerCode === "9mobiledata1"
+        //     ? smartCard["Email"]
+        //     : ""
+        // }`,
+        email: user.user.email,
         transRef: paymentIntent.detail.transRef,
         customerName: `${smartCard["Phone Number"]}`,
       };
@@ -217,7 +240,7 @@ function NewForm(props) {
     }
   }
 
-  console.log(item);
+  // console.log(item);
 
   const deal = Object.values(fieldsArray);
   useEffect(() => {
@@ -237,8 +260,43 @@ function NewForm(props) {
     });
   }, []);
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleRegRedirect = () => {
+    props.history.push("/reloadng/registration");
+  };
+
   return (
     <div>
+      <div>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {"Welcome to reload.ng"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Please sign-in to process payment.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              cancel
+            </Button>
+            <Button onClick={handleRegRedirect} color="primary">
+              ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
       {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
@@ -299,50 +357,56 @@ function NewForm(props) {
               )}
               {fieldsArray.map((allFields, i) =>
                 allFields.select !== true ? (
-                  <div
-                    key={i}
-                    className="d-flex align-item-center justify-content-center pt-3"
-                  >
-                    <TextField
-                      // style={{ width: "50%" }}
-                      className="inputSize"
-                      required
-                      label={allFields.text}
-                      name={allFields.text}
-                      onChange={(e) => handleOthers(e, allFields.text)}
-                      placeholder={`Enter ${allFields.text}`}
-                      type={
-                        allFields.text === "Email" ||
-                        allFields.text === "E-mail"
-                          ? "email"
-                          : "number"
-                      }
-                      // value={values[allFields.text]}
-                      disabled={allFields.text === "Amount" && disabled}
-                      value={
-                        selectDetails.amount === undefined
-                          ? ""
-                          : allFields.text === "Amount"
-                          ? selectDetails.amount
-                          : allFields.text === "Phone Number"
-                          ? smartCard["Phone Number"]
-                          : allFields.text === "Email"
-                          ? smartCard["Email"]
-                          : allFields.text === "E-mail"
-                          ? smartCard["E-mail"]
-                          : ""
-                      }
-                      variant="outlined"
-                      InputProps={{
-                        startAdornment:
-                          allFields.text === "Amount" ? (
-                            <InputAdornment position="start">₦</InputAdornment>
-                          ) : (
-                            ""
-                          ),
-                      }}
-                    />
-                  </div>
+                  allFields.text === "Email" || allFields.text === "E-mail" ? (
+                    ""
+                  ) : (
+                    <div
+                      key={i}
+                      className="d-flex align-item-center justify-content-center pt-3"
+                    >
+                      <TextField
+                        // style={{ width: "50%" }}
+                        className="inputSize"
+                        required
+                        label={allFields.text}
+                        name={allFields.text}
+                        onChange={(e) => handleOthers(e, allFields.text)}
+                        placeholder={`Enter ${allFields.text}`}
+                        type={
+                          allFields.text === "Email" ||
+                          allFields.text === "E-mail"
+                            ? "email"
+                            : "number"
+                        }
+                        // value={values[allFields.text]}
+                        disabled={allFields.text === "Amount" && disabled}
+                        value={
+                          selectDetails.amount === undefined
+                            ? ""
+                            : allFields.text === "Amount"
+                            ? selectDetails.amount
+                            : allFields.text === "Phone Number"
+                            ? smartCard["Phone Number"]
+                            : allFields.text === "Email"
+                            ? smartCard["Email"]
+                            : allFields.text === "E-mail"
+                            ? smartCard["E-mail"]
+                            : ""
+                        }
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment:
+                            allFields.text === "Amount" ? (
+                              <InputAdornment position="start">
+                                ₦
+                              </InputAdornment>
+                            ) : (
+                              ""
+                            ),
+                        }}
+                      />
+                    </div>
+                  )
                 ) : (
                   ""
                 )

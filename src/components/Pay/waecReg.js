@@ -41,8 +41,9 @@ function waecReg(props) {
     e.preventDefault();
     if (
       props.location.state.data.productId.productname ===
-        "Waec Exams Registration" &&
-      localStorage.token !== undefined
+      "Waec Exams Registration"
+      //   &&
+      // localStorage.token !== undefined
     ) {
       if (values["Phone Number"].length < 11) {
         setError("Phone number must be 11 digits");
@@ -56,8 +57,8 @@ function waecReg(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            // Email: `${values["Email"]}`,
-            Email: user.user.email,
+            Email: `${values["Email"]}`,
+            // Email: user.user.email,
             "Phone Number": `${values["Phone Number"]}`,
           },
           references: ["Email", "Phone Number"],
@@ -67,12 +68,11 @@ function waecReg(props) {
         props.data(true, "Exams");
       }
     } else {
-      // props.history.push("/reloadng/registration");
-      setLoading(false);
-      // const path = `${props.location.pathname}${props.location.search}`;
-      // props.loginRediectSuccess(path, props.location.state.data);
-      // props.history.push("/reloadng/registration");
-      setOpen(true);
+      // setLoading(false);
+      // // const path = `${props.location.pathname}${props.location.search}`;
+      // // props.loginRediectSuccess(path, props.location.state.data);
+      // // props.history.push("/reloadng/registration");
+      // setOpen(true);
     }
   };
 
@@ -192,10 +192,11 @@ function waecReg(props) {
               ""
             )
           )}
-          {fieldsArray.slice(2, 5).map((allField, i) =>
-            allField.text === "Email" ? (
-              ""
-            ) : (
+          {fieldsArray.slice(2, 5).map(
+            (allField, i) => (
+              // allField.text === "Email" ? (
+              //   ""
+              // ) : (
               <div
                 key={i}
                 className="d-flex align-item-center justify-content-center pt-3"
@@ -214,6 +215,7 @@ function waecReg(props) {
                 />
               </div>
             )
+            // )
           )}
           {fieldsArray.slice(0, 1).map((allField, i) => (
             <div

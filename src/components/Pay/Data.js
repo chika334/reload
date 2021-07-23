@@ -77,8 +77,9 @@ function NewForm(props) {
     e.preventDefault();
     setLoading(true);
     if (
-      props.location.state.productName === "Data" &&
-      localStorage.token !== undefined
+      props.location.state.productName === "Data" 
+      // &&
+      // localStorage.token !== undefined
     ) {
       // console.log(smartCard["Phone Number"].length);
       if (props.location.state.data.billerCode === "airtel-data") {
@@ -93,8 +94,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              // "E-mail": `${smartCard["E-mail"]}`,
-              "E-mail": user.user.email,
+              "E-mail": `${smartCard["E-mail"]}`,
+              // "E-mail": user.user.email,
               "Product Type": `${selectDetails.id}`,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -117,8 +118,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              // "E-mail": `${smartCard["E-mail"]}`,
-              "E-mail": user.user.email,
+              "E-mail": `${smartCard["E-mail"]}`,
+              // "E-mail": user.user.email,
               "Product Type": `${selectDetails.id}`,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -140,8 +141,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              // Email: `${smartCard["Email"]}`,
-              Email: user.user.email,
+              Email: `${smartCard["Email"]}`,
+              // Email: user.user.email,
               "Product type": `${selectDetails.id}`,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -163,8 +164,8 @@ function NewForm(props) {
             paymentMethod: "billpayflutter",
             productId: `${props.location.state.data.productId.id}`,
             referenceValues: {
-              // Email: `${smartCard["Email"]}`,
-              Email: user.user.email,
+              Email: `${smartCard["Email"]}`,
+              // Email: user.user.email,
               Product: `${selectDetails.id}`,
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
@@ -176,11 +177,11 @@ function NewForm(props) {
         }
       }
     } else {
-      setLoading(false);
-      // const path = `${props.location.pathname}${props.location.search}`;
-      // props.loginRediectSuccess(path, props.location.state.data);
-      // props.history.push("/reloadng/registration");
-      setOpen(true);
+      // setLoading(false);
+      // // const path = `${props.location.pathname}${props.location.search}`;
+      // // props.loginRediectSuccess(path, props.location.state.data);
+      // // props.history.push("/reloadng/registration");
+      // setOpen(true);
     }
   };
 
@@ -191,18 +192,18 @@ function NewForm(props) {
       const amount = selectDetails.amount;
       const detail = {
         amount: amount,
-        // email: `${
-        //   props.location.state.data.billerCode === "data"
-        //     ? smartCard["Email"]
-        //     : props.location.state.data.billerCode === "glo-data"
-        //     ? smartCard["E-mail"]
-        //     : props.location.state.data.billerCode === "airtel-data"
-        //     ? smartCard["E-mail"]
-        //     : props.location.state.data.billerCode === "9mobiledata1"
-        //     ? smartCard["Email"]
-        //     : ""
-        // }`,
-        email: user.user.email,
+        email: `${
+          props.location.state.data.billerCode === "data"
+            ? smartCard["Email"]
+            : props.location.state.data.billerCode === "glo-data"
+            ? smartCard["E-mail"]
+            : props.location.state.data.billerCode === "airtel-data"
+            ? smartCard["E-mail"]
+            : props.location.state.data.billerCode === "9mobiledata1"
+            ? smartCard["Email"]
+            : ""
+        }`,
+        // email: user.user.email,
         transRef: paymentIntent.detail.transRef,
         customerName: `${smartCard["Phone Number"]}`,
       };
@@ -357,9 +358,9 @@ function NewForm(props) {
               )}
               {fieldsArray.map((allFields, i) =>
                 allFields.select !== true ? (
-                  allFields.text === "Email" || allFields.text === "E-mail" ? (
-                    ""
-                  ) : (
+                  // allFields.text === "Email" || allFields.text === "E-mail" ? (
+                  //   ""
+                  // ) : (
                     <div
                       key={i}
                       className="d-flex align-item-center justify-content-center pt-3"
@@ -406,7 +407,7 @@ function NewForm(props) {
                         }}
                       />
                     </div>
-                  )
+                  // )
                 ) : (
                   ""
                 )

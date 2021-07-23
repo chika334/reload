@@ -1,6 +1,4 @@
 import Axios from "axios";
-var url = "https://www.poplarconnect.com";
-
 var __awaiter =
   (this && this.__awaiter) ||
   function (thisArg, _arguments, P, generator) {
@@ -134,7 +132,7 @@ var __generator =
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   };
-
+var url = "https://www.poplarconnect.com";
 export var coralWebHook = function (config, data, setStatus) {
   return __awaiter(void 0, void 0, void 0, function () {
     var response;

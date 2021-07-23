@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { jsx as _jsx } from "react/jsx-runtime";
+import { useState, useEffect } from "react";
 import Layout from "./layout/layoout";
-import Modal from "./Modal/Modal";
+import Modal2 from "./Modal/Modal2";
 import { coralWebHookQuery } from "./apis/apis";
 var App = function (_a) {
     var _b, _c;
-    var visible = _a.visible, toggle = _a.toggle, body = _a.body, onSuccess = _a.onSuccess;
+    var /* visible, toggle,  */ body = _a.body, onSuccess = _a.onSuccess;
     var _d = useState({}), cBank = _d[0], setCbank = _d[1];
     var _e = useState(null), response = _e[0], setResponse = _e[1];
     var _f = useState(), response1 = _f[0], setResponse1 = _f[1];
@@ -13,9 +14,6 @@ var App = function (_a) {
     var _j = useState(""), message = _j[0], setMessage = _j[1];
     var _k = useState(0), count = _k[0], setCount = _k[1];
     var c = 0;
-
-    // console.log(onSuccess);
-    // console.log(body);
     var config = {
         jwtToken: "",
         url: "https://www.poplarconnect.com/CoralUssd",
@@ -52,10 +50,7 @@ var App = function (_a) {
         }
         onSuccess(response1);
     }, [start, count]);
-    return (React.createElement("div", null,
-        React.createElement(Modal, { toggle: toggle, visible: visible },
-            React.createElement(Layout, { body: body, cBank: cBank, setCbank: setCbank, response: response, setResponse: setResponse, status: status, setStatus: setStatus, setStart: setStart, start: start, message: message, response1: response1 })),
-        React.createElement("button", { style: { fontSize: "20px" }, onClick: function () { return toggle(); } }, "Open modal")));
+    return (_jsx("div", { children: _jsx(Modal2, { children: _jsx(Layout, { body: body, cBank: cBank, setCbank: setCbank, response: response, setResponse: setResponse, status: status, setStatus: setStatus, setStart: setStart, start: start, message: message, response1: response1 }, void 0) }, void 0) }, void 0));
 };
 export default App;
 //# sourceMappingURL=App.js.map

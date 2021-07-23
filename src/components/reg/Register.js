@@ -56,7 +56,7 @@ function Register(props) {
   let dispatch = useDispatch();
   let history = useHistory();
 
-  console.log(props);
+  // console.log(props);
 
   useEffect(() => {
     if (error.id === "REGISTER_FAIL") {

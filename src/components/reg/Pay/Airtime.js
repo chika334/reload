@@ -91,30 +91,6 @@ export function AirtimePay(props) {
     setValidationSchema(Yup.object().shape({ ..._validationSchema }));
   };
 
-  // const getFormElement = (elementName, elementSchema) => {
-  //   const props = {
-  //     name: elementName,
-  //     label: elementSchema.label,
-  //     options: elementSchema.options,
-  //     placeholder: elementSchema.placeholder,
-  //   };
-
-  //   if (elementSchema.type === "number") {
-  //     return (
-  //       <div>
-  //         <TextField style={{ width: "100%" }} {...props} />
-  //         <div />
-  //       </div>
-  //     );
-  //   } else if (elementSchema.type === "email") {
-  //     return (
-  //       <div>
-  //         <TextField style={{ width: "100%" }} {...props} />
-  //         <div />
-  //       </div>
-  //     );
-  //   }
-  // };
   const transactionId = Math.random() + 877298;
   const hashCode = md5(`${process.env.REACT_APP_HASHKEY}`);
   // console.log(hashCode);
@@ -171,6 +147,7 @@ export function AirtimePay(props) {
     <div className="contact-form-wrap contact-form-bg h-100">
       <div className="p-3">
         <h4 className="text-center p-3">Select Payment Method</h4>
+        <hr />
         <PaymentProcess payment={handlePayment} />
       </div>
     </div>

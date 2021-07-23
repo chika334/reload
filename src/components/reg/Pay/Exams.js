@@ -203,6 +203,7 @@ export function ExamsPay(props) {
     <div className="contact-form-wrap contact-form-bg h-100">
       <div className="p-3">
         <h4 className="text-center p-3">Select Payment Method</h4>
+        <hr />
         <PaymentProcess />
       </div>
     </div>

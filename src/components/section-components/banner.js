@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import backgroundImage from "../../images/background.jpeg";
-import { Button } from "@material-ui/core";
+import { Button, Modal } from "@material-ui/core";
 import searchLoading from "../../images/searchLoading.gif";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
@@ -14,31 +14,37 @@ import fourth from "../../images/4.jpeg";
 import fifth from "../../images/5.jpeg";
 import sixth from "../../images/6.jpeg";
 import Carousel from "react-material-ui-carousel";
+import { makeStyles } from "@material-ui/core/styles";
 
-var items = [
-  {
-    imgSrc: `${first}`,
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
   },
-  {
-    imgSrc: `${second}`,
-  },
-  {
-    imgSrc: `${third}`,
-  },
-  {
-    imgSrc: `${fourth}`,
-  },
-  {
-    imgSrc: `${fifth}`,
-  },
-  {
-    imgSrc: `${sixth}`,
-  },
-];
+}));
 
 const SearchbarDropdown = (props) => {
+  const classes = useStyles();
   const { options, onInputChange, searchStart } = props;
   const getProducts = useSelector((state) => state.products);
+  const [saveData, setSaveData] = useState([]);
+  const [modalStyle] = React.useState(getModalStyle);
+  const [modal, setModal] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -51,130 +57,186 @@ const SearchbarDropdown = (props) => {
     position: "relative",
   };
 
-  const handleMove = (details) => {
-    dispatch(showLoader());
-    // console.log(details.otherData.productId.id);
-    getProducts.listProducts === null
-      ? ""
-      : getProducts.listProducts.forEach((detail) => {
-          if (
-            details.otherData.productId.productname ===
-            detail.productId.productname
-          ) {
-            setTimeout(() => {
-              dispatch(hideLoader());
-            }, 2000);
-            let path = `/reloadng/product-details`;
-            history.push({
-              pathname: path,
-              search: `?product=${detail.productId.description}`,
-              state: {
-                data: detail,
-                productName: detail.productId.description,
-                productId: details.otherData.productId.id,
-                billerCode: detail.billerCode,
-              },
-            });
-          }
-        });
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    Promise.all([first, second, third, fourth, fifth, sixth])
+      .then((files) => {
+        setSaveData(files);
+      })
+      .catch((err) => console.log(err));
   };
 
+  const handleMove = (details) => {
+    if (details.otherData.billerCode === null) {
+      setModal(true);
+    } else {
+      if (
+        details.otherData.billerCode === "DSTV2" ||
+        details.otherData.billerCode === "startimes" ||
+        details.otherData.billerCode === "GOTV2" ||
+        details.otherData.billerCode === "KADUNA_PREPAID" ||
+        details.otherData.billerCode === "KANO_PREPAID" ||
+        details.otherData.billerCode === "ekdc prepaid" ||
+        details.otherData.billerCode === "SMILE"
+      ) {
+        setModal(true);
+      } else {
+        dispatch(showLoader());
+        getProducts.listProducts === null
+          ? ""
+          : getProducts.listProducts.forEach((detail) => {
+              if (
+                details.otherData.productId.productname ===
+                detail.productId.productname
+              ) {
+                setTimeout(() => {
+                  dispatch(hideLoader());
+                }, 2000);
+                let path = `/reloadng/product-details`;
+                history.push({
+                  pathname: path,
+                  search: `?product=${detail.productId.description}`,
+                  state: {
+                    data: detail,
+                    productName: detail.productId.description,
+                    productId: details.otherData.productId.id,
+                    billerCode: detail.billerCode,
+                  },
+                });
+              }
+            });
+      }
+    }
+  };
+
+  const handleClose = () => {
+    setModal(false);
+  };
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <div className="p-5">
+        <h4>Product not available at the moment</h4>
+      </div>
+    </div>
+  );
+
+  // console.log(options);
   return (
-    <div className="banner-area" style={inlineStyle}>
-      <div className="container">
-        <div className="banner-inner-wrap">
-          <div className="row">
-            <div className="col-12">
-              <div className="allnew">
-                <div className="banner-search-wrap">
-                  <div className="tab-content">
-                    {/* <div className="tab-content"> */}
-                    <div className="tab-pane fade show active" id="tabs_1">
-                      <div className="rld-main-search mobileBanner">
-                        <div className="row">
-                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                            <div className="search-bar-dropdown">
-                              <Carousel>
-                                {items.map((item, i) => (
-                                  <img key={i} src={item.imgSrc} />
-                                ))}
-                              </Carousel>
+    <>
+      <Modal
+        open={modal}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
+      <div className="banner-area" style={inlineStyle}>
+        <div className="container">
+          <div className="banner-inner-wrap">
+            <div className="row">
+              <div className="col-12">
+                <div className="allnew">
+                  <div className="banner-search-wrap">
+                    <div className="tab-content">
+                      {/* <div className="tab-content"> */}
+                      <div className="tab-pane fade show active" id="tabs_1">
+                        <div className="rld-main-search mobileBanner">
+                          <div className="row">
+                            {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12"> */}
+                            <div className="col-xl-9 col-lg-8 col-md-6">
+                              <div className="search-bar-dropdown">
+                                <input
+                                  id="search-bar"
+                                  type="text"
+                                  className="form-control p-2"
+                                  placeholder="Search"
+                                  onChange={onInputChange}
+                                />
+                                {searchStart === true ? (
+                                  <ul
+                                    id="results"
+                                    className="list-group"
+                                    // ref={ulRef}
+                                    style={{ zIndex: 2 }}
+                                  >
+                                    {options.length !== 0 ? (
+                                      options.map((option, index) => {
+                                        return (
+                                          <button
+                                            type="button"
+                                            key={index}
+                                            onClick={(e) => {
+                                              handleMove({
+                                                // data: option.productId.productname,
+                                                otherData: option,
+                                              });
+                                            }}
+                                            className="list-group-item list-group-item-action"
+                                          >
+                                            {option.productId.productname}
+                                          </button>
+                                        );
+                                      })
+                                    ) : (
+                                      <button>Product not found</button>
+                                    )}
+                                  </ul>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            </div>
+                            <div className="col-xl-3 col-lg-4 col-md-4 readeal-top">
+                              <Button
+                                style={{
+                                  backgroundColor: "#fda94f",
+                                  color: "#000",
+                                  fontSize: "12px",
+                                  padding: "10px",
+                                }}
+                                className="buttonSearch"
+                                // className="btn btn-yellow buttonSearch"
+                                fullWidth
+                                disabled={searchStart}
+                              >
+                                {searchStart === true ? (
+                                  <img
+                                    src={searchLoading}
+                                    width="30"
+                                    alt="search..."
+                                  />
+                                ) : (
+                                  "View"
+                                )}
+                              </Button>
                             </div>
                           </div>
                         </div>
                       </div>
+                      {/* </div> */}
                     </div>
-                    {/* </div> */}
                   </div>
-                </div>
-                <div className="banner-search-wrap">
-                  <div className="tab-content">
-                    <div className="tab-pane fade show active" id="tabs_1">
-                      <div className="rld-main-search mobileBanner">
-                        <div className="row">
-                          <div className="col-xl-9 col-lg-8 col-md-6">
-                            <div className="search-bar-dropdown">
-                              <input
-                                id="search-bar"
-                                type="text"
-                                className="form-control p-2"
-                                placeholder="Search"
-                                onChange={onInputChange}
-                              />
-                              {searchStart === true ? (
-                                <ul
-                                  id="results"
-                                  className="list-group"
-                                  // ref={ulRef}
-                                  style={{ zIndex: 2 }}
-                                >
-                                  {options !== "" &&
-                                    options.map((option, index) => {
-                                      return (
-                                        <button
-                                          type="button"
-                                          key={index}
-                                          onClick={(e) => {
-                                            handleMove({
-                                              // data: option.productId.productname,
-                                              otherData: option,
-                                            });
-                                          }}
-                                          className="list-group-item list-group-item-action"
-                                        >
-                                          {option.productId.productname}
-                                        </button>
-                                      );
-                                    })}
-                                </ul>
-                              ) : (
-                                ""
-                              )}
+                  <div className="banner-search-wrap">
+                    <div className="tab-content">
+                      <div className="tab-pane fade show active" id="tabs_1">
+                        <div className="bannerAds mobileBanner">
+                          <div className="row">
+                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                              <div className="search-bar-dropdown">
+                                <Carousel>
+                                  {!saveData || !saveData.length
+                                    ? null
+                                    : saveData.map((item, i) => (
+                                        <img width="1000" key={i} src={item} />
+                                      ))}
+                                </Carousel>
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-xl-3 col-lg-4 col-md-4 readeal-top">
-                            <Button
-                              style={{
-                                backgroundColor: "#fda94f",
-                                color: "#000",
-                                fontSize: "12px",
-                                padding: "10px",
-                              }}
-                              className="buttonSearch"
-                              // className="btn btn-yellow buttonSearch"
-                              fullWidth
-                              disabled={searchStart}
-                            >
-                              {searchStart === true ? (
-                                <img
-                                  src={searchLoading}
-                                  width="30"
-                                  alt="search..."
-                                />
-                              ) : (
-                                "View"
-                              )}
-                            </Button>
                           </div>
                         </div>
                       </div>
@@ -186,13 +248,15 @@ const SearchbarDropdown = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
 function App() {
   const seachDetails = useSelector((state) =>
-    state.search.listProducts === null ? "" : state.search.listProducts.product
+    state.search.listProducts === null
+      ? "Product Not Found"
+      : state.search.listProducts.product
   );
   // const [options, setOptions] = useState(seachDetails);
   const dispatch = useDispatch();

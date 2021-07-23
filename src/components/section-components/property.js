@@ -52,7 +52,8 @@ function Property(props) {
         details.otherData.billerCode === "GOTV2" ||
         details.otherData.billerCode === "KADUNA_PREPAID" ||
         details.otherData.billerCode === "KANO_PREPAID" ||
-        details.otherData.billerCode === "ekdc prepaid"
+        details.otherData.billerCode === "ekdc prepaid" ||
+        details.otherData.billerCode === "SMILE"
       ) {
         setModal(true);
       } else {

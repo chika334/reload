@@ -1,8 +1,24 @@
-import React, { useEffect } from "react";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useEffect } from "react";
 import { coralWebHook } from "../../apis/apis";
 import data from "../data.json";
 import "../../assets/css/ussdform.css";
 import $ from "jquery";
+var __assign =
+  (this && this.__assign) ||
+  function () {
+    __assign =
+      Object.assign ||
+      function (t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+          s = arguments[i];
+          for (var p in s)
+            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+      };
+    return __assign.apply(this, arguments);
+  };
 var __awaiter =
   (this && this.__awaiter) ||
   function (thisArg, _arguments, P, generator) {
@@ -136,7 +152,6 @@ var __generator =
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   };
-
 var config = {
   jwtToken: "",
   url: "https://www.poplarconnect.com/CoralUssd",
@@ -173,58 +188,104 @@ var UssdForm = function (_a) {
     });
     /*End Dropdown Menu*/
   }, []);
-  return React.createElement(
+  return _jsx(
     "div",
-    { className: "" },
-    React.createElement(
-      "div",
-      { className: "container" },
-      React.createElement("span", { className: "choose" }, "Choose Bank"),
-      React.createElement(
-        "div",
-        { className: "dropdown" },
-        React.createElement(
+    __assign(
+      { className: "" },
+      {
+        children: _jsx(
           "div",
-          { className: "select" },
-          React.createElement("span", null, "Select Bank"),
-          React.createElement("i", { className: "fa fa-chevron-left" })
+          __assign(
+            { className: "container" },
+            {
+              children: _jsxs(
+                "div",
+                __assign(
+                  { className: "dropdown" },
+                  {
+                    children: [
+                      _jsxs(
+                        "div",
+                        __assign(
+                          { className: "select" },
+                          {
+                            children: [
+                              _jsx("span", { children: "Select Bank" }, void 0),
+                              _jsx(
+                                "i",
+                                { className: "fa fa-chevron-left" },
+                                void 0
+                              ),
+                            ],
+                          }
+                        ),
+                        void 0
+                      ),
+                      _jsx("input", { type: "hidden", name: "gender" }, void 0),
+                      _jsx(
+                        "ul",
+                        __assign(
+                          { className: "dropdown-menu" },
+                          {
+                            children: data.map(function (d, i) {
+                              return _jsx(
+                                "li",
+                                __assign(
+                                  {
+                                    onClick: function () {
+                                      return __awaiter(
+                                        void 0,
+                                        void 0,
+                                        void 0,
+                                        function () {
+                                          var x;
+                                          return __generator(
+                                            this,
+                                            function (_a) {
+                                              switch (_a.label) {
+                                                case 0:
+                                                  return [
+                                                    4 /*yield*/,
+                                                    coralWebHook(
+                                                      config,
+                                                      body,
+                                                      setStatus
+                                                    ),
+                                                  ];
+                                                case 1:
+                                                  x = _a.sent();
+                                                  setCbank(d);
+                                                  setResponse(x);
+                                                  return [2 /*return*/];
+                                              }
+                                            }
+                                          );
+                                        }
+                                      );
+                                    },
+                                    className: "input input-" + (i + 1),
+                                  },
+                                  { children: d.bankName }
+                                ),
+                                i
+                              );
+                            }),
+                          }
+                        ),
+                        void 0
+                      ),
+                    ],
+                  }
+                ),
+                void 0
+              ),
+            }
+          ),
+          void 0
         ),
-        React.createElement("input", { type: "hidden", name: "gender" }),
-        React.createElement(
-          "ul",
-          { className: "dropdown-menu" },
-          data.map(function (d, i) {
-            return React.createElement(
-              "li",
-              {
-                key: i,
-                onClick: function () {
-                  return __awaiter(void 0, void 0, void 0, function () {
-                    var x;
-                    return __generator(this, function (_a) {
-                      switch (_a.label) {
-                        case 0:
-                          return [
-                            4 /*yield*/,
-                            coralWebHook(config, body, setStatus),
-                          ];
-                        case 1:
-                          x = _a.sent();
-                          setCbank(d);
-                          setResponse(x);
-                          return [2 /*return*/];
-                      }
-                    });
-                  });
-                },
-                className: "input input-" + (i + 1),
-              },
-              d.bankName
-            );
-          })
-        )
-      )
-    )
+      }
+    ),
+    void 0
   );
 };
 export default UssdForm;

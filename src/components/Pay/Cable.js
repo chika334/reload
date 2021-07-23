@@ -69,8 +69,9 @@ function Cable(props) {
     // props.clearErrors();
     setLoading(true);
     if (
-      props.location.state.productName === "Cable" &&
-      localStorage.token !== undefined
+      props.location.state.productName === "Cable" 
+      // &&
+      // localStorage.token !== undefined
     ) {
       if (props.location.state.data.billerCode === "startimes") {
         const newValuesObj = {
@@ -80,8 +81,8 @@ function Cable(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            // "E-mail": `${email}`,
-            "E-mail": user.user.email,
+            "E-mail": `${email}`,
+            // "E-mail": user.user.email,
             "Product ": selectDetails.ItemType,
             "Customer Name": `${verifiedUser.result.account.accountName}`,
             "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
@@ -105,8 +106,8 @@ function Cable(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            // "Email Address": `${email}`,
-            "Email Address": user.user.email,
+            "Email Address": `${email}`,
+            // "Email Address": user.user.email,
             "Select Package (Amount)": selectDetails.ItemType,
             "Number of Months": "1",
             "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
@@ -132,8 +133,8 @@ function Cable(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            // Email: `${email}`,
-            Email: user.user.email,
+            Email: `${email}`,
+            // Email: user.user.email,
             "Select Package (Amount)": selectDetails.ItemName,
             "Number of Months": "1",
             "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
@@ -152,11 +153,11 @@ function Cable(props) {
       // handlePaymentProcess();
     } else {
       if (!localStorage.token) {
-        setLoading(false);
-        // const path = `${props.location.pathname}${props.location.search}`;
-        // props.loginRediectSuccess(path, props.location.state.data);
-        // props.history.push("/reloadng/registration");
-        setOpen(true);
+        // setLoading(false);
+        // // const path = `${props.location.pathname}${props.location.search}`;
+        // // props.loginRediectSuccess(path, props.location.state.data);
+        // // props.history.push("/reloadng/registration");
+        // setOpen(true);
       }
     }
   };
@@ -176,8 +177,8 @@ function Cable(props) {
       const amount = selectDetails.Amount.trim();
       const detail = {
         amount: amount,
-        // email: email,
-        email: user.user.email,
+        email: email,
+        // email: user.user.email,
         transRef: paymentIntent.detail.transRef,
         customerName: verifiedUser.result.account.accountName,
       };
@@ -214,11 +215,11 @@ function Cable(props) {
   const SmartNumber = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (localStorage.token) {
-      let result = verifyMeterNumber();
-    } else {
-      props.history.push("/reloadng/registration");
-    }
+    let result = verifyMeterNumber();
+    // if (localStorage.token) {
+    // } else {
+    //   props.history.push("/reloadng/registration");
+    // }
   };
 
   const item = JSON.parse(props.location.state.data.productvalue);
@@ -444,26 +445,25 @@ function Cable(props) {
                           />
                         </div>
                       ) : allField.text === "Email" ? (
-                        ""
+                        <div
+                          key={i}
+                          className="d-flex align-item-center justify-content-center pt-3"
+                        >
+                          <TextField
+                            required
+                            // style={{ width: "50%" }}
+                            className="inputSize"
+                            label="Email"
+                            name="months"
+                            onChange={handleFieldChange}
+                            placeholder={`Enter Email Address`}
+                            type="email"
+                            variant="outlined"
+                            value="1"
+                            disabled
+                          />
+                        </div>
                       ) : (
-                        // <div
-                        //   key={i}
-                        //   className="d-flex align-item-center justify-content-center pt-3"
-                        // >
-                        //   <TextField
-                        //     required
-                        //     // style={{ width: "50%" }}
-                        //     className="inputSize"
-                        //     label="Email"
-                        //     name="months"
-                        //     onChange={handleFieldChange}
-                        //     placeholder={`Enter Email Address`}
-                        //     type="email"
-                        //     variant="outlined"
-                        //     value="1"
-                        //     disabled
-                        //   />
-                        // </div>
                         allField.text === "Product " && (
                           <div className="d-flex align-item-center justify-content-center pt-3">
                             <TextField
@@ -611,25 +611,25 @@ function Cable(props) {
                 ? fieldsArray.slice(1).map((allFields, i) =>
                     allFields.select === false &&
                     allFields.text === "Email Address" ? (
-                      ""
-                      // <>
-                      // <div
-                      //   key={i}
-                      //   className="d-flex align-item-center justify-content-center pt-3"
-                      // >
-                      //   <TextField
-                      //     required
-                      //     // style={{ width: "50%" }}
-                      //     className="inputSize"
-                      //     label={allFields.text}
-                      //     name={allFields.text}
-                      //     onChange={handleFieldChange}
-                      //     placeholder={`Enter ${allFields.text}`}
-                      //     type="email"
-                      //     variant="outlined"
-                      //     value={email}
-                      //   />
-                      // </div>
+                      <>
+                        <div
+                          key={i}
+                          className="d-flex align-item-center justify-content-center pt-3"
+                        >
+                          <TextField
+                            required
+                            // style={{ width: "50%" }}
+                            className="inputSize"
+                            label={allFields.text}
+                            name={allFields.text}
+                            onChange={handleFieldChange}
+                            placeholder={`Enter ${allFields.text}`}
+                            type="email"
+                            variant="outlined"
+                            value={email}
+                          />
+                        </div>
+                      </>
                     ) : (
                       ""
                     )

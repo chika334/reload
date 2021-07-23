@@ -57,6 +57,7 @@ function Index(props) {
     if (paymentButton.name === "Ussd") {
       setLoading(false);
     } else {
+      setLoading(true);
       handleFlutterPayment({
         callback: (response) => {
           console.log(response);
@@ -70,9 +71,10 @@ function Index(props) {
             closePaymentModal();
           }, 2000);
         },
-        onClose: () => {},
+        onClose: () => {
+          setLoading(false);
+        },
       });
-      setLoading(true);
     }
   };
 
@@ -124,9 +126,7 @@ function Index(props) {
     subMerchantName: "Reload.ng",
   };
 
-  // console.log(body);
-
-  if (loading) {
+  if (loading === true) {
     return (
       <div className="preloader" id="preloader">
         <div className="preloader-inner">
@@ -151,14 +151,20 @@ function Index(props) {
   return (
     <div>
       <div className="d-flex align-item-center justify-content-center">
-        {/* <button onClick> */}
-        <CoralUssd
+        {/* <CoralUssd
           visible={visible}
           toggle={toggle}
           body={body}
           onSuccess={(res) => console.log(res)}
-        />
-        {/* </button> */}
+        /> */}
+        <Button disabled>Pay with USSD</Button>
+        {/* <div className="interior">
+          {" "}
+          <a className="btn" href="">
+            {" "}
+            Button
+          </a>{" "}
+        </div> */}
       </div>
       <div>
         <Button onClick={handleClick}>

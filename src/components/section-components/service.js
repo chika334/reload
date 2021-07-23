@@ -4,13 +4,23 @@ import parse from "html-react-parser";
 import { Link, withRouter, useHistory } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-import { Card, CardContent, Button } from "@material-ui/core";
+import { Card, CardContent, Button, Modal } from "@material-ui/core";
 import { FaArrowCircleRight, FaArrowCircleLeft } from "react-icons/fa";
 import { exportButton } from "../../_action/exploreProducts";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { showLoader, hideLoader } from "../../_action/loading";
-// import { products } from "../../data/products";
+import { makeStyles } from "@material-ui/core/styles";
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 function SliderArrowPrev(props) {
   const { className, onClick } = props;
@@ -30,9 +40,24 @@ function SliderArrowNext(props) {
   );
 }
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
 function Service(props) {
   const getProducts = useSelector((state) => state.products);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const [modal, setModal] = useState(false);
+  const [modalStyle] = React.useState(getModalStyle);
   // let publicUrl = process.env.PUBLIC_URL + "/";
   // let imagealt = "image";
   let data = sectiondata.services;
@@ -55,31 +80,72 @@ function Service(props) {
       },
     ],
   };
-
-  const handleMove = (detail) => {
-    props.showLoader();
-    // props.exportButton(detail.data.icon, detail.data.title);
-    // localStorage.setItem("dataImage", detail.data.icon);
-    // localStorage.setItem("dataTitle", detail.data.title);
-
-    console.log(detail);
-
-    setTimeout(() => {
-      props.hideLoader();
-    }, 2000);
-
-    let path = `/reloadng/product-details`;
-    history.push({
-      pathname: path,
-      search: `?product=${detail.data.productId.description}`,
-      state: detail,
-    });
+  const handleMove = (details) => {
+    console.log(details);
+    if (details.otherData.billerCode === null) {
+      setModal(true);
+    } else {
+      if (
+        details.otherData.billerCode === "DSTV2" ||
+        details.otherData.billerCode === "startimes" ||
+        details.otherData.billerCode === "GOTV2" ||
+        details.otherData.billerCode === "KADUNA_PREPAID" ||
+        details.otherData.billerCode === "KANO_PREPAID" ||
+        details.otherData.billerCode === "ekdc prepaid" ||
+        details.otherData.billerCode === "SMILE"
+      ) {
+        setModal(true);
+      } else {
+        props.showLoader();
+        getProducts.listProducts === null
+          ? ""
+          : getProducts.listProducts.forEach((detail) => {
+              if (
+                details.otherData.productId.productname ===
+                detail.productId.productname
+              ) {
+                setTimeout(() => {
+                  dispatch(hideLoader());
+                }, 2000);
+                let path = `/reloadng/product-details`;
+                history.push({
+                  pathname: path,
+                  search: `?product=${detail.productId.description}`,
+                  state: {
+                    data: detail,
+                    productName: detail.productId.description,
+                    productId: details.otherData.productId.id,
+                    billerCode: detail.billerCode,
+                  },
+                });
+              }
+            });
+      }
+    }
   };
 
-  console.log(getProducts);
+  const handleClose = () => {
+    setModal(false);
+  };
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <div className="p-5">
+        <h4>Product not available at the moment</h4>
+      </div>
+    </div>
+  );
 
   return (
     <div className="service-area h1-service-slider-area">
+      <Modal
+        open={modal}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
       <div className="container">
         <Slider
           {...marketingTestimonials1}
@@ -97,6 +163,10 @@ function Service(props) {
                           <div style={{ height: "140px" }}>
                             <div
                               style={{ height: "100px" }}
+                              onClick={(e) =>
+                                handleMove({ otherData: listData })
+                              }
+                              style={{ cursor: "pointer" }}
                               className="d-flex justify-content-center"
                             >
                               <img
@@ -121,7 +191,9 @@ function Service(props) {
                                   fontSize: "12px",
                                   padding: "10px",
                                 }}
-                                onClick={(e) => handleMove({ data: listData })}
+                                onClick={(e) =>
+                                  handleMove({ otherData: listData })
+                                }
                               >
                                 {/* {listData.btntxt} */}
                                 Explore

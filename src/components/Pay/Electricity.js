@@ -91,24 +91,25 @@ function Electricity(props) {
   const SmartNumber = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (localStorage.token) {
-      let result = verifyMeterNumber();
-    } else {
-      setLoading(false);
-      // const path = `${props.location.pathname}${props.location.search}`;
-      // props.loginRediectSuccess(path, props.location.state.data);
-      // props.history.push("/reloadng/registration");
-      setOpen(true);
-      // props.history.push("/reloadng/registration");
-    }
+    let result = verifyMeterNumber();
+    // if (localStorage.token) {
+    // } else {
+    //   setLoading(false);
+    //   // const path = `${props.location.pathname}${props.location.search}`;
+    //   // props.loginRediectSuccess(path, props.location.state.data);
+    //   // props.history.push("/reloadng/registration");
+    //   setOpen(true);
+    //   // props.history.push("/reloadng/registration");
+    // }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     if (
-      props.location.state.productName === "Electricity Prepaid" &&
-      localStorage.token !== undefined
+      props.location.state.productName === "Electricity Prepaid" 
+      // &&
+      // localStorage.token !== undefined
     ) {
       if (props.location.state.data.billerCode === "ABJ_PREPAID") {
         const newValuesObj = {
@@ -118,8 +119,8 @@ function Electricity(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            // "Email Address": otherValues["Email Address"],
-            "Email Address": user.user.email,
+            "Email Address": otherValues["Email Address"],
+            // "Email Address": user.user.email,
             "Customer Name": `${verifiedUser.result.account.accountName}`,
             "customer Number": `${verifiedUser.result.account.accountNumber}`,
             "Meter Number": `${verifiedUser.result.account.accountNumber}`,
@@ -143,8 +144,8 @@ function Electricity(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            // "Email Address": `${email}`,
-            "Email Address": user.user.email,
+            "Email Address": `${email}`,
+            // "Email Address": user.user.email,
             "Account Name": `${verifiedUser.result.account.accountName}`,
             ProductCode: `${verifiedUser.result.account.accountNumber}`,
           },
@@ -160,8 +161,8 @@ function Electricity(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            // "Email Address": otherValues["Email Address"],
-            "Email Address": user.user.email,
+            "Email Address": otherValues["Email Address"],
+            // "Email Address": user.user.email,
             "Account Name": `${amount}`,
             "METER NUMBER": `${verifiedUser.result.account.accountNumber}`,
             "Phone Number": otherValues["Phone Number"],
@@ -185,8 +186,8 @@ function Electricity(props) {
           paymentMethod: "billpayflutter",
           productId: `${props.location.state.data.productId.id}`,
           referenceValues: {
-            // "Email Address": otherValues["Email Address"],
-            "Email Address": user.user.email,
+            "Email Address": otherValues["Email Address"],
+            // "Email Address": user.user.email,
             "Meter or Account Number": `${verifiedUser.result.account.accountNumber}`,
             "Ref ID": `${verifiedUser.result.account.accountName}`,
             "Meter Type": `${selectDetails.ItemType}`,
@@ -206,11 +207,11 @@ function Electricity(props) {
         props.PaymentIntent(newValuesObj);
       }
     } else {
-      setLoading(false);
-      // const path = `${props.location.pathname}${props.location.search}`;
-      // props.loginRediectSuccess(path, props.location.state.data);
-      // props.history.push("/reloadng/registration");
-      setOpen(true);
+      // setLoading(false);
+      // // const path = `${props.location.pathname}${props.location.search}`;
+      // // props.loginRediectSuccess(path, props.location.state.data);
+      // // props.history.push("/reloadng/registration");
+      // setOpen(true);
     }
   };
 
@@ -259,8 +260,8 @@ function Electricity(props) {
       setLoading(false);
       const detail = {
         amount: amount,
-        // email: otherValues["Email Address"],
-        email: user.user.email,
+        email: otherValues["Email Address"],
+        // email: user.user.email,
         transRef: paymentIntent.detail.transRef,
         customerName: verifiedUser.result.account.accountName,
       };
@@ -383,9 +384,9 @@ function Electricity(props) {
               allData.select === false &&
               allData.text !== "Amount" &&
               allData.text !== "Meter Type" ? (
-                allData.text === "Email Address" ? (
-                  ""
-                ) : (
+                // allData.text === "Email Address" ? (
+                //   ""
+                // ) : (
                   <div key={i}>
                     <div className="d-flex align-item-center justify-content-center pt-3">
                       <TextField
@@ -434,7 +435,7 @@ function Electricity(props) {
                       />
                     </div>
                   </div>
-                )
+                // )
               ) : (
                 ""
               )

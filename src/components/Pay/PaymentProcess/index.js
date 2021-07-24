@@ -10,7 +10,17 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { paymentButtons } from "../../../_action/Payment/paymentButtons";
 import { clearDetails } from "../../../_action/verify";
 import { finalPayment } from "../../../_action/Payment/finalPayment";
-import { showLoader, hideLoader } from "../../../_action/loading";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+// import { showLoader, hideLoader } from "../../../_action/loading";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function Index(props) {
   const [visible, setVisible] = useState(false);
@@ -18,12 +28,25 @@ function Index(props) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const paymentButton = useSelector((state) => state.paymentButton);
-  const error = useSelector((state) => state.error);
-  const [errors, setErrors] = useState("");
-  const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
   const pay = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone.detail : ""
   );
+  const productDetails = useSelector((state) =>
+    state.someData.detail === null ? "" : state.someData.detail
+  );
+  const error = useSelector((state) => state.error);
+  const [open, setOpen] = useState(false);
+  const [errors, setErrors] = useState("");
+  const Conveniencefee =
+    productDetails.detail.productId.productcategoryId.categoryname ===
+    "Electricity"
+      ? 100
+      : 0;
+
+  const totalAmount = Conveniencefee + JSON.parse(pay.amount);
+  const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
+
+  console.log(totalAmount);
 
   const toggle = () => {
     setVisible(!visible);
@@ -33,7 +56,7 @@ function Index(props) {
   const config = {
     public_key: `${process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY}`,
     tx_ref: Date.now(),
-    amount: pay.amount,
+    amount: totalAmount,
     currency: "NGN",
     payment_options: "card,mobilemoney,ussd",
     trackingNo: pay.transRef,
@@ -57,24 +80,28 @@ function Index(props) {
     if (paymentButton.name === "Ussd") {
       setLoading(false);
     } else {
-      setLoading(true);
-      handleFlutterPayment({
-        callback: (response) => {
-          console.log(response);
-          const ref = {
-            transRef: pay.transRef,
-            paymentRef: response.transaction_id,
-          };
+      if (JSON.parse(pay.amount) < 50) {
+        setOpen(true);
+      } else {
+        setLoading(true);
+        handleFlutterPayment({
+          callback: (response) => {
+            console.log(response);
+            const ref = {
+              transRef: pay.transRef,
+              paymentRef: response.transaction_id,
+            };
 
-          dispatch(finalPayment(ref));
-          setTimeout(() => {
-            closePaymentModal();
-          }, 2000);
-        },
-        onClose: () => {
-          setLoading(false);
-        },
-      });
+            dispatch(finalPayment(ref));
+            setTimeout(() => {
+              closePaymentModal();
+            }, 2000);
+          },
+          onClose: () => {
+            setLoading(false);
+          },
+        });
+      }
     }
   };
 
@@ -119,7 +146,7 @@ function Index(props) {
   const body = {
     traceId: "2021070109120612",
     transactionType: "0",
-    amount: `${pay.amount}`,
+    amount: `${totalAmount}`,
     merchantId: "4058RNG10000001",
     channel: "USSD",
     terminalId: "4058RNG1",
@@ -139,43 +166,63 @@ function Index(props) {
     );
   }
 
-  // console.log(body);
-  // useEffect(() => {
-  //   props.clearDetails();
-  // }, []);
-
-  const handleXpressPay = () => {
-    dispatch(paymentButtons("xpresspay", true));
+  const handleClose = () => {
+    setOpen(false);
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 300);
   };
+
+  // const handleXpressPay = () => {
+  //   dispatch(paymentButtons("xpresspay", true));
+  // };
 
   return (
     <div>
+      <div>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {"Welcome to reload.ng"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Amount too low.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
       <div className="d-flex align-item-center justify-content-center">
-        {/* <CoralUssd
-          visible={visible}
-          toggle={toggle}
-          body={body}
-          onSuccess={(res) => console.log(res)}
-        /> */}
-        <Button disabled>Pay with USSD</Button>
-        {/* <div className="interior">
+        {<CoralUssd body={body} onSuccess={(res) => console.log(res)} />}
+        <div className="interior">
           {" "}
-          <a className="btn" href="">
+          <a className="btn" href="#open-modal">
             {" "}
-            Button
+            Pay with USSD
           </a>{" "}
-        </div> */}
+        </div>
       </div>
       <div>
         <Button onClick={handleClick}>
           <img src={Flutterwave} alt="Flutterwave" />
         </Button>
       </div>
-      <div>
+      {/* <div>
         <Button onClick={handleXpressPay}>
           <img src={Xpresspay} alt="Xpresspay" />
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 }

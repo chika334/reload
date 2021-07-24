@@ -42,6 +42,7 @@ function Cable(props) {
   const [smartCard, setSmartCard] = useState("");
   const [selectDetails, setSelectDetails] = useState({});
   const [email, setEmail] = useState("");
+  const productDetails = useSelector((state) => state.someData.detail);
   const paymentIntent = useSelector((state) => state.paymentIntent);
 
   useEffect(() => {
@@ -62,24 +63,17 @@ function Cable(props) {
     }
   }, [error.error]);
 
-  // console.log(selectDetails);
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // props.clearErrors();
     setLoading(true);
-    if (
-      props.location.state.productName === "Cable" 
-      // &&
-      // localStorage.token !== undefined
-    ) {
-      if (props.location.state.data.billerCode === "startimes") {
+    if (productDetails.productname === "Cable") {
+      if (productDetails.billerCode === "startimes") {
         const newValuesObj = {
           amount: `${selectDetails.Amount}`,
           channelRef: "web",
           description: "Cable",
           paymentMethod: "billpayflutter",
-          productId: `${props.location.state.data.productId.id}`,
+          productId: `${productDetails.productId}`,
           referenceValues: {
             "E-mail": `${email}`,
             // "E-mail": user.user.email,
@@ -98,13 +92,13 @@ function Cable(props) {
         props.PaymentIntent(newValuesObj);
         // props.pay(true, "Cable");
         // props.verify("Cable", true);
-      } else if (props.location.state.data.billerCode === "DSTV2") {
+      } else if (productDetails.billerCode === "DSTV2") {
         const newValuesObj = {
           amount: selectDetails.Amount.trim(),
           channelRef: "web",
           description: "Cable",
           paymentMethod: "billpayflutter",
-          productId: `${props.location.state.data.productId.id}`,
+          productId: `${productDetails.productId}`,
           referenceValues: {
             "Email Address": `${email}`,
             // "Email Address": user.user.email,
@@ -123,15 +117,15 @@ function Cable(props) {
             "Customer Details",
           ],
         };
-        // console.log(newValuesObj);
+
         props.PaymentIntent(newValuesObj);
-      } else if (props.location.state.data.billerCode === "GOTV2") {
+      } else if (productDetails.billerCode === "GOTV2") {
         const newValuesObj = {
           amount: `${selectDetails.Amount.trim()}`,
           channelRef: "web",
           description: "Cable",
           paymentMethod: "billpayflutter",
-          productId: `${props.location.state.data.productId.id}`,
+          productId: `${productDetails.productId}`,
           referenceValues: {
             Email: `${email}`,
             // Email: user.user.email,
@@ -203,7 +197,7 @@ function Cable(props) {
 
   const verifyMeterNumber = async () => {
     const details = {
-      product: props.location.state.productId,
+      product: productDetails.productId,
       accountNumber: smartCard,
     };
 
@@ -222,7 +216,9 @@ function Cable(props) {
     // }
   };
 
-  const item = JSON.parse(props.location.state.data.productvalue);
+  // console.log(productDetails);
+
+  const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
@@ -243,10 +239,11 @@ function Cable(props) {
     });
   }, []);
 
-  const verifyNumber = JSON.parse(props.location.state.data.productvalue)
-    .field0;
+  const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
 
-  const packages = JSON.parse(props.location.state.data.productvalue).field1
+  // console.log(productDetails);
+
+  const packages = JSON.parse(productDetails.detail.productvalue).field1
     .options;
 
   const fieldsOptions = [];
@@ -259,8 +256,8 @@ function Cable(props) {
 
   // console.log(fieldsOptions);
 
-  const startimesOptions = JSON.parse(props.location.state.data.productvalue)
-    .field3.options;
+  const startimesOptions = JSON.parse(productDetails.detail.productvalue).field3
+    .options;
 
   const fieldsStartimes = [];
   for (const key in startimesOptions) {
@@ -270,8 +267,8 @@ function Cable(props) {
     }
   }
 
-  const numberOfMonths = JSON.parse(props.location.state.data.productvalue)
-    .field2.options;
+  const numberOfMonths = JSON.parse(productDetails.detail.productvalue).field2
+    .options;
 
   const fieldsNumber = [];
   for (const key in numberOfMonths) {

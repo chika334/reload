@@ -9,11 +9,11 @@ import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../_action/Payment/paymentButtons";
 import "../../css/input.css";
 import { loginRediectSuccess } from "../../_action/LoginRedirect";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+// import Dialog from "@material-ui/core/Dialog";
+// import DialogActions from "@material-ui/core/DialogActions";
+// import DialogContent from "@material-ui/core/DialogContent";
+// import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -26,6 +26,7 @@ function NewForm(props) {
   const verifyDetails = useSelector((state) => state.verify);
   const [verifyEnabled, setVerifiedEnabled] = useState(false);
   const paymentIntent = useSelector((state) => state.paymentIntent);
+  const productDetails = useSelector((state) => state.someData.detail);
   const user = useSelector((state) =>
     state.authUser.user === null ? "" : state.authUser.user
   );
@@ -60,17 +61,17 @@ function NewForm(props) {
     setSelectDetails(value);
   };
 
-  console.log(props.location);
+  // console.log(props.location);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     if (
-      props.location.state.productName === "Airtime"
+      productDetails.productname === "Airtime"
       //  &&
       // localStorage.token !== undefined
     ) {
-      if (props.location.state.data.billerCode === "airtel") {
+      if (productDetails.billerCode === "airtel") {
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
         } else {
@@ -80,7 +81,7 @@ function NewForm(props) {
             description: "Airtime",
             email: `${smartCard["Email"]}`,
             paymentMethod: "billpayflutter",
-            productId: `${props.location.state.data.productId.id}`,
+            productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
               // Email: user.user.email,
@@ -92,7 +93,7 @@ function NewForm(props) {
           // console.log(newValuesObj);
           props.PaymentIntent(newValuesObj);
         }
-      } else if (props.location.state.data.billerCode === "mtn") {
+      } else if (productDetails.billerCode === "mtn") {
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
         } else {
@@ -102,7 +103,7 @@ function NewForm(props) {
             email: `${smartCard["Email"]}`,
             description: "Airtime",
             paymentMethod: "billpayflutter",
-            productId: `${props.location.state.data.productId.id}`,
+            productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
               // Email: user.user.email,
@@ -114,7 +115,7 @@ function NewForm(props) {
           // console.log(newValuesObj);
           props.PaymentIntent(newValuesObj);
         }
-      } else if (prop.location.state.data.billerCode === "9MOBILEAIRTIME") {
+      } else if (productDetails.billerCode === "9MOBILEAIRTIME") {
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
         } else {
@@ -124,7 +125,7 @@ function NewForm(props) {
             description: "Airtime",
             email: `${smartCard["Email"]}`,
             paymentMethod: "billpayflutter",
-            productId: `${props.location.state.data.productId.id}`,
+            productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
               // Email: user.user.email,
@@ -136,7 +137,7 @@ function NewForm(props) {
           // console.log(newValuesObj);
           props.PaymentIntent(newValuesObj);
         }
-      } else if (prop.location.state.data.billerCode === "glo") {
+      } else if (productDetails.billerCode === "glo") {
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
         } else {
@@ -146,7 +147,7 @@ function NewForm(props) {
             email: `${smartCard["Email"]}`,
             description: "Airtime",
             paymentMethod: "billpayflutter",
-            productId: `${props.location.state.data.productId.id}`,
+            productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
               // Email: user.user.email,
@@ -192,13 +193,13 @@ function NewForm(props) {
     }
   }, [paymentIntent.success]);
 
-  const item = JSON.parse(props.location.state.data.productvalue);
+  const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
 
-  const packages = JSON.parse(props.location.state.data.productvalue).field3
+  const packages = JSON.parse(productDetails.detail.productvalue).field3
     .options;
 
   const fieldsOptions = [];

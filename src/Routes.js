@@ -27,7 +27,7 @@ import Footer from "./components/global-components/footer";
 import TermNCondition from "./components/TermNCondition";
 import Transaction from "./components/transaction";
 import HelpDesk from "./components/Help";
-import Receipt from './components/Pay/PaymentProcess/receipt'
+import Receipt from "./components/Pay/PaymentProcess/printReceipt";
 
 import { showLoader, hideLoader } from "./_action/loading";
 import { useSelector, connect } from "react-redux";
@@ -78,7 +78,7 @@ function Routes(props) {
               `/reloadng/profile`,
               `/reloadng/transactions`,
               `/reloadng/helpdesk`,
-              `/reloadng/receipt`
+              `/reloadng/receipt`,
             ]}
           >
             <Switch location={location} key={location.pathname}>
@@ -139,11 +139,7 @@ function Routes(props) {
                 path="/reloadng/successMessage"
                 component={SuccessMessage}
               />
-              <ProtectedRoutes
-                exact
-                path="/reloadng/receipt"
-                component={Receipt}
-              />
+              <Route exact path="/reloadng/receipt" component={Receipt} />
               <Route exact component={Error} />
             </Switch>
           </Route>

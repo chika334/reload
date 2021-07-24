@@ -14,6 +14,7 @@ import fourth from "../../images/4.jpeg";
 import fifth from "../../images/5.jpeg";
 import sixth from "../../images/6.jpeg";
 import Carousel from "react-material-ui-carousel";
+import { someData } from "../../_action/passingData";
 import { makeStyles } from "@material-ui/core/styles";
 
 function getModalStyle() {
@@ -44,6 +45,7 @@ const SearchbarDropdown = (props) => {
   const getProducts = useSelector((state) => state.products);
   const [saveData, setSaveData] = useState([]);
   const [modalStyle] = React.useState(getModalStyle);
+  const [imgsLoaded, setImgsLoaded] = useState(false);
   const [modal, setModal] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -64,51 +66,69 @@ const SearchbarDropdown = (props) => {
   const fetchData = () => {
     Promise.all([first, second, third, fourth, fifth, sixth])
       .then((files) => {
-        setSaveData(files);
+        setTimeout(() => {
+          setSaveData(files);
+        }, 500);
       })
       .catch((err) => console.log(err));
   };
 
   const handleMove = (details) => {
-    if (details.otherData.billerCode === null) {
+    console.log(details);
+    if (
+      details.otherData.productId.productname === "Smile Data" ||
+      details.otherData.productId.productname === "Dstv Cable" ||
+      details.otherData.productId.productname === "Gotv Cable" ||
+      details.otherData.productId.productname === "Startime Cable" ||
+      details.otherData.productId.productname ===
+        "Ibadan Electricity Prepaid" ||
+      details.otherData.productId.productname === "Eko Electricity Prepaid" ||
+      details.otherData.productId.productname === "Benin Electricity Prepaid" ||
+      details.otherData.productId.productname ===
+        "Kaduna Electricity Prepaid" ||
+      details.otherData.productId.productname === "Jos Electricity Prepaid" ||
+      details.otherData.productId.productname === "Kano Electricity Prepaid" ||
+      details.otherData.productId.productname === "Jamb Exams" ||
+      details.otherData.productId.productname === "Waec Exams Registration"
+    ) {
       setModal(true);
     } else {
-      if (
-        details.otherData.billerCode === "DSTV2" ||
-        details.otherData.billerCode === "startimes" ||
-        details.otherData.billerCode === "GOTV2" ||
-        details.otherData.billerCode === "KADUNA_PREPAID" ||
-        details.otherData.billerCode === "KANO_PREPAID" ||
-        details.otherData.billerCode === "ekdc prepaid" ||
-        details.otherData.billerCode === "SMILE"
-      ) {
-        setModal(true);
-      } else {
-        dispatch(showLoader());
-        getProducts.listProducts === null
-          ? ""
-          : getProducts.listProducts.forEach((detail) => {
-              if (
-                details.otherData.productId.productname ===
-                detail.productId.productname
-              ) {
-                setTimeout(() => {
-                  dispatch(hideLoader());
-                }, 2000);
-                let path = `/reloadng/product-details`;
-                history.push({
-                  pathname: path,
-                  search: `?product=${detail.productId.description}`,
-                  state: {
-                    data: detail,
-                    productName: detail.productId.description,
-                    productId: details.otherData.productId.id,
-                    billerCode: detail.billerCode,
-                  },
-                });
-              }
-            });
-      }
+      dispatch(showLoader());
+      getProducts.listProducts === null
+        ? ""
+        : getProducts.listProducts.forEach((detail) => {
+            if (
+              details.otherData.productId.productname ===
+              detail.productId.productname
+            ) {
+              setTimeout(() => {
+                dispatch(hideLoader());
+              }, 2000);
+              // let path = `/reloadng/product-details`;
+              // history.push({
+              //   pathname: path,
+              //   search: `?product=${detail.productId.description}`,
+              //   state: {
+              //     data: detail,
+              //     productName: detail.productId.description,
+              //     productId: details.otherData.productId.id,
+              //     billerCode: detail.billerCode,
+              //   },
+              // });
+              const data = {
+                detail,
+                productname: detail.productId.description,
+                productId: details.otherData.productId.id,
+                billerCode: detail.billerCode,
+              };
+              dispatch(someData(data));
+              let path = `/reloadng/product-details`;
+              history.push({
+                pathname: path,
+                search: `product=${detail.productId.description}`,
+              });
+            }
+          });
     }
   };
 
@@ -124,7 +144,6 @@ const SearchbarDropdown = (props) => {
     </div>
   );
 
-  // console.log(options);
   return (
     <>
       <Modal
@@ -143,11 +162,9 @@ const SearchbarDropdown = (props) => {
                 <div className="allnew">
                   <div className="banner-search-wrap">
                     <div className="tab-content">
-                      {/* <div className="tab-content"> */}
                       <div className="tab-pane fade show active" id="tabs_1">
                         <div className="rld-main-search mobileBanner">
                           <div className="row">
-                            {/* <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12"> */}
                             <div className="col-xl-9 col-lg-8 col-md-6">
                               <div className="search-bar-dropdown">
                                 <input
@@ -164,27 +181,25 @@ const SearchbarDropdown = (props) => {
                                     // ref={ulRef}
                                     style={{ zIndex: 2 }}
                                   >
-                                    {options.length !== 0 ? (
-                                      options.map((option, index) => {
-                                        return (
-                                          <button
-                                            type="button"
-                                            key={index}
-                                            onClick={(e) => {
-                                              handleMove({
-                                                // data: option.productId.productname,
-                                                otherData: option,
-                                              });
-                                            }}
-                                            className="list-group-item list-group-item-action"
-                                          >
-                                            {option.productId.productname}
-                                          </button>
-                                        );
-                                      })
-                                    ) : (
-                                      <button>Product not found</button>
-                                    )}
+                                    {options.length !== 0
+                                      ? options.map((option, index) => {
+                                          // console.log(option);
+                                          return (
+                                            <button
+                                              type="button"
+                                              key={index}
+                                              onClick={(e) => {
+                                                handleMove({
+                                                  otherData: option,
+                                                });
+                                              }}
+                                              className="list-group-item list-group-item-action"
+                                            >
+                                              {option.productId.productname}
+                                            </button>
+                                          );
+                                        })
+                                      : ""}
                                   </ul>
                                 ) : (
                                   ""
@@ -228,12 +243,14 @@ const SearchbarDropdown = (props) => {
                           <div className="row">
                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                               <div className="search-bar-dropdown">
-                                <Carousel>
-                                  {!saveData || !saveData.length
-                                    ? null
-                                    : saveData.map((item, i) => (
-                                        <img width="1000" key={i} src={item} />
-                                      ))}
+                                <Carousel style={{ position: "fixed" }}>
+                                  {!saveData || !saveData.length ? (
+                                    <img width="1000" src={first} />
+                                  ) : (
+                                    saveData.map((item, i) => (
+                                      <img width="1000" key={i} src={item} />
+                                    ))
+                                  )}
                                 </Carousel>
                               </div>
                             </div>
@@ -254,9 +271,7 @@ const SearchbarDropdown = (props) => {
 
 function App() {
   const seachDetails = useSelector((state) =>
-    state.search.listProducts === null
-      ? "Product Not Found"
-      : state.search.listProducts.product
+    state.search.listProducts === null ? "" : state.search.listProducts.product
   );
   // const [options, setOptions] = useState(seachDetails);
   const dispatch = useDispatch();
@@ -295,5 +310,5 @@ function App() {
 }
 
 export default withRouter(
-  connect(null, { hideLoader, showLoader, SearchProducts })(App)
+  connect(null, { hideLoader, showLoader, SearchProducts, someData })(App)
 );

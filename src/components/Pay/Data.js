@@ -33,6 +33,7 @@ function NewForm(props) {
   const [error, setError] = useState("");
   const [open, setOpen] = React.useState(false);
   const [valuesDetails, setValuesDetails] = useState([]);
+  const productDetails = useSelector((state) => state.someData.detail);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const [smartCard, setSmartCard] = useState({
     "E-mail": "",
@@ -71,18 +72,16 @@ function NewForm(props) {
     setSmartCard(newValues);
   };
 
-  console.log(props.location.state.data.billerCode);
+  // console.log(productDetails.billerCode);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     if (
-      props.location.state.productName === "Data" 
-      // &&
-      // localStorage.token !== undefined
+      productDetails.productname === "Data" 
     ) {
       // console.log(smartCard["Phone Number"].length);
-      if (props.location.state.data.billerCode === "airtel-data") {
+      if (productDetails.billerCode === "airtel-data") {
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
           // return
@@ -92,7 +91,7 @@ function NewForm(props) {
             channelRef: "web",
             description: "Data",
             paymentMethod: "billpayflutter",
-            productId: `${props.location.state.data.productId.id}`,
+            productId: `${productDetails.productId}`,
             referenceValues: {
               "E-mail": `${smartCard["E-mail"]}`,
               // "E-mail": user.user.email,
@@ -106,7 +105,7 @@ function NewForm(props) {
           props.PaymentIntent(newValuesObj);
           // props.pay(true, "Data");
         }
-      } else if (props.location.state.data.billerCode === "glo-data") {
+      } else if (productDetails.billerCode === "glo-data") {
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
           // return
@@ -116,7 +115,7 @@ function NewForm(props) {
             channelRef: "web",
             description: "Data",
             paymentMethod: "billpayflutter",
-            productId: `${props.location.state.data.productId.id}`,
+            productId: `${productDetails.productId}`,
             referenceValues: {
               "E-mail": `${smartCard["E-mail"]}`,
               // "E-mail": user.user.email,
@@ -129,7 +128,7 @@ function NewForm(props) {
           // console.log(newValuesObj);
           props.PaymentIntent(newValuesObj);
         }
-      } else if (props.location.state.data.billerCode === "data") {
+      } else if (productDetails.billerCode === "data") {
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
           // return
@@ -139,7 +138,7 @@ function NewForm(props) {
             channelRef: "web",
             description: "Data",
             paymentMethod: "billpayflutter",
-            productId: `${props.location.state.data.productId.id}`,
+            productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
               // Email: user.user.email,
@@ -152,7 +151,7 @@ function NewForm(props) {
           // console.log(newValuesObj);
           props.PaymentIntent(newValuesObj);
         }
-      } else if (props.location.state.data.billerCode === "9mobiledata1") {
+      } else if (productDetails.billerCode === "9mobiledata1") {
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
           // return
@@ -162,7 +161,7 @@ function NewForm(props) {
             channelRef: "web",
             description: "Data",
             paymentMethod: "billpayflutter",
-            productId: `${props.location.state.data.productId.id}`,
+            productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
               // Email: user.user.email,
@@ -179,7 +178,7 @@ function NewForm(props) {
     } else {
       // setLoading(false);
       // // const path = `${props.location.pathname}${props.location.search}`;
-      // // props.loginRediectSuccess(path, props.location.state.data);
+      // // props.loginRediectSuccess(path, productDetails);
       // // props.history.push("/reloadng/registration");
       // setOpen(true);
     }
@@ -193,13 +192,13 @@ function NewForm(props) {
       const detail = {
         amount: amount,
         email: `${
-          props.location.state.data.billerCode === "data"
+          productDetails.billerCode === "data"
             ? smartCard["Email"]
-            : props.location.state.data.billerCode === "glo-data"
+            : productDetails.billerCode === "glo-data"
             ? smartCard["E-mail"]
-            : props.location.state.data.billerCode === "airtel-data"
+            : productDetails.billerCode === "airtel-data"
             ? smartCard["E-mail"]
-            : props.location.state.data.billerCode === "9mobiledata1"
+            : productDetails.billerCode === "9mobiledata1"
             ? smartCard["Email"]
             : ""
         }`,
@@ -208,13 +207,12 @@ function NewForm(props) {
         customerName: `${smartCard["Phone Number"]}`,
       };
 
-      console.log(detail);
       dispatch(pay(detail));
       props.dataPay(true, "Data");
     }
   }, [paymentIntent.success]);
 
-  const item = JSON.parse(props.location.state.data.productvalue);
+  const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);

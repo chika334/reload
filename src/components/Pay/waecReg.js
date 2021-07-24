@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { PaymentIntent } from "../../_action/Payment";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { TextField, MenuItem, InputAdornment, Button } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -16,6 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function waecReg(props) {
   const [open, setOpen] = useState(false);
+  const productDetails = useSelector((state) => state.someData.detail);
   const user = useSelector((state) =>
     state.authUser.user === null ? "" : state.authUser.user
   );
@@ -40,7 +41,7 @@ function waecReg(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-      props.location.state.data.productId.productname ===
+      productDetails.productname ===
       "Waec Exams Registration"
       //   &&
       // localStorage.token !== undefined
@@ -55,7 +56,7 @@ function waecReg(props) {
           channelRef: "web",
           description: "Exams",
           paymentMethod: "billpayflutter",
-          productId: `${props.location.state.data.productId.id}`,
+          productId: `${productDetails.productId}`,
           referenceValues: {
             Email: `${values["Email"]}`,
             // Email: user.user.email,
@@ -70,7 +71,7 @@ function waecReg(props) {
     } else {
       // setLoading(false);
       // // const path = `${props.location.pathname}${props.location.search}`;
-      // // props.loginRediectSuccess(path, props.location.state.data);
+      // // props.loginRediectSuccess(path, productDetails.detail);
       // // props.history.push("/reloadng/registration");
       // setOpen(true);
     }
@@ -83,22 +84,22 @@ function waecReg(props) {
     setValues(newValues);
   };
 
-  const item = JSON.parse(props.location.state.data.productvalue);
+  const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
 
-  const packages = JSON.parse(props.location.state.data.productvalue).field1
-    .options;
+  // const packages = JSON.parse(productDetails.detail.productvalue).field1
+  //   .options;
 
-  const fieldsOptions = [];
-  for (const key in packages) {
-    if (packages.hasOwnProperty(key)) {
-      var value = packages[key];
-      fieldsOptions.push(value);
-    }
-  }
+  // const fieldsOptions = [];
+  // for (const key in packages) {
+  //   if (packages.hasOwnProperty(key)) {
+  //     var value = packages[key];
+  //     fieldsOptions.push(value);
+  //   }
+  // }
 
   const handleClose = () => {
     setOpen(false);

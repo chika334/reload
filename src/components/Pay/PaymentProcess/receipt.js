@@ -6,21 +6,49 @@ import { withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
 import { Button } from "@material-ui/core";
+import ReactToPrint from "react-to-print";
 
 function Receipt(props) {
+  const componentRef = React.useRef();
   const [blocking, setBlocking] = useState(false);
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
   const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
   const paymentButton = useSelector((state) => state.paymentButton);
+  const verify = useSelector((state) => state.verify);
+  const productDetails = useSelector((state) => state.someData.detail);
   const pay = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone.detail : ""
   );
-  // console.log(props.location.state.data.state.data.productId.productname);
-  // console.log(pay);
+  const Conveniencefee =
+    productDetails.detail.productId.productcategoryId.categoryname ===
+    "Electricity"
+      ? 100
+      : 0;
+  const total = JSON.parse(pay.amount) + Conveniencefee;
 
   useEffect(() => {
     block();
   }, []);
+
+  const splitString =
+    productDetails.detail.productId.productcategoryId.categoryname ===
+    "Electricity"
+      ? JSON.parse(verify.result.account.extras)
+      : "";
+
+  const customerSplit =
+    productDetails.detail.productId.productcategoryId.categoryname ===
+    "Electricity"
+      ? splitString.extra.split(" |")
+      : "";
+
+  const tokenSplit =
+    productDetails.detail.productId.productcategoryId.categoryname ===
+    "Electricity"
+      ? finalPaymentSuccess.result.productResult.split(" | ")
+      : "";
+
+  console.log(tokenSplit[1]);
 
   const block = () => {
     window.onbeforeunload = function () {
@@ -42,18 +70,28 @@ function Receipt(props) {
     window.location.href = "/reloadng/products";
   };
 
+  // console.log(JSON.stringify(finalPaymentSuccess.result.productResult));
+
   return (
     <div className="property-area pd-top-100">
       <Prompt
         when={blocking}
         message={() => `On reload all transaction history will b lost`}
       />
-      <div className="pt-3 pl-5 pb-2">
-        <Button onClick={handleBack} variant="contained" color="primary">
-          Back
-        </Button>
+      <div className="allnew container">
+        <div className="pt-3 pb-2">
+          <Button onClick={handleBack} variant="contained" color="primary">
+            Back
+          </Button>
+        </div>
+        <div>
+          <ReactToPrint
+            trigger={() => <button>Download Receipt</button>}
+            content={() => componentRef.current}
+          />
+        </div>
       </div>
-      <div className="invoice-box">
+      <div ref={componentRef} className="invoice-box">
         <table cellPadding="0" cellSpacing="0">
           <tbody>
             <tr className="top">
@@ -69,7 +107,7 @@ function Receipt(props) {
                       </td>
 
                       <td>
-                        Invoice #: 123
+                        Invoice #: {pay.transRef}
                         <br />
                         Printed date:{" "}
                         <Moment format="D MMM YYYY" withTitle>
@@ -88,11 +126,8 @@ function Receipt(props) {
                   <tbody>
                     <tr>
                       <td>
-                        RELOAD BLUEPRINT,
+                        reload.ng
                         <br />
-                        42 Old aba road, Rumuomasi, Port Harcourt,
-                        <br />
-                        Rivers State
                       </td>
 
                       <td>
@@ -106,6 +141,26 @@ function Receipt(props) {
               </td>
             </tr>
 
+            {productDetails.detail.productId.productcategoryId.categoryname ===
+            "Electricity" ? (
+              <>
+                <tr className="total">
+                  <td></td>
+                  <td>{customerSplit[0]}</td>
+                </tr>
+                <tr className="total">
+                  <td></td>
+                  <td>{tokenSplit[1]}</td>
+                </tr>
+                <hr />
+                <tr>
+                  <td>Meter Number: </td>
+                  <td>{verify.result.account.accountNumber}</td>
+                </tr>
+              </>
+            ) : (
+              ""
+            )}
             <tr className="heading">
               <td>Payment Method</td>
 
@@ -125,28 +180,25 @@ function Receipt(props) {
             </tr>
 
             <tr className="item">
-              <td>
-                {props.location.state.data.state.data.productId.productname}
-              </td>
+              <td>{productDetails.detail.productId.productname}</td>
 
               <td>{formatter.format(pay.amount)}</td>
             </tr>
 
             <tr className="item">
-              <td>VAT</td>
+              <td>Convenience fee</td>
 
-              <td>{formatter.format(0)}</td>
+              <td>{formatter.format(Conveniencefee)}</td>
             </tr>
 
             <tr className="total">
               <td></td>
 
-              <td>Total: {formatter.format(pay.amount)}</td>
+              <td>Total: {formatter.format(total)}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <Button></Button>
     </div>
   );
 }

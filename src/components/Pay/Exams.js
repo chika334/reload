@@ -3,14 +3,16 @@ import { Form, TextField, SubmitButton } from "../Form/FormElements";
 import * as Yup from "yup";
 import FormPay from "../reg/Pay/FormPay";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import WaecReg from "./waecReg";
 
 function Exams(props) {
+  const productDetails = useSelector((state) => state.someData.detail);
+  console.log(productDetails);
   return (
     <div>
-      {props.productData.productId.productname ===
-        "Waec Exams Registration" && <WaecReg data={props.pay} />}
+      {productDetails.productname ===
+        "Exams" && <WaecReg data={props.pay} />}
       {/* {props.productData.productId.productname === "Jamb Exams" && (
         <div className="property-details-area">
           <Form

@@ -10,6 +10,7 @@ import { exportButton } from "../../_action/exploreProducts";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { showLoader, hideLoader } from "../../_action/loading";
 import { makeStyles } from "@material-ui/core/styles";
+import { someData } from "../../_action/passingData";
 
 function getModalStyle() {
   const top = 50;
@@ -92,6 +93,7 @@ function Service(props) {
         details.otherData.billerCode === "KADUNA_PREPAID" ||
         details.otherData.billerCode === "KANO_PREPAID" ||
         details.otherData.billerCode === "ekdc prepaid" ||
+        details.otherData.billerCode === "JOS_PREPAID" ||
         details.otherData.billerCode === "SMILE"
       ) {
         setModal(true);
@@ -107,16 +109,29 @@ function Service(props) {
                 setTimeout(() => {
                   dispatch(hideLoader());
                 }, 2000);
+                // let path = `/reloadng/product-details`;
+                // history.push({
+                //   pathname: path,
+                //   search: `?product=${detail.productId.description}`,
+                //   state: {
+                //     data: detail,
+                //     productName: detail.productId.description,
+                //     productId: details.otherData.productId.id,
+                //     billerCode: detail.billerCode,
+                //   },
+                // });
+
+                const data = {
+                  detail,
+                  productname: detail.productId.description,
+                  productId: details.otherData.productId.id,
+                  billerCode: detail.billerCode,
+                };
+                dispatch(someData(data));
                 let path = `/reloadng/product-details`;
                 history.push({
                   pathname: path,
-                  search: `?product=${detail.productId.description}`,
-                  state: {
-                    data: detail,
-                    productName: detail.productId.description,
-                    productId: details.otherData.productId.id,
-                    billerCode: detail.billerCode,
-                  },
+                  search: `product=${detail.productId.description}`,
                 });
               }
             });
@@ -216,5 +231,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, { exportButton, showLoader, hideLoader })(Service)
+  connect(mapStateToProps, { exportButton, showLoader, hideLoader, someData })(
+    Service
+  )
 );

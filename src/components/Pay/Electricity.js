@@ -40,6 +40,7 @@ function Electricity(props) {
   const [selectDetails, setSelectDetails] = useState({});
   const verifiedUser = useSelector((state) => state.verify);
   const paymentButton = useSelector((state) => state.paymentButton);
+  const productDetails = useSelector((state) => state.someData.detail);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const pays = useSelector((state) =>
@@ -73,11 +74,11 @@ function Electricity(props) {
 
   const verifyMeterNumber = async () => {
     const details = {
-      product: props.location.state.productId,
+      product: productDetails.productId,
       accountNumber: smartCard,
       extras: {
         field1: null,
-        billerCode: props.location.state.data.billerCode,
+        billerCode: productDetails.billerCode,
         field2: "PREPAID",
         field3: "",
         field4: "",
@@ -103,21 +104,22 @@ function Electricity(props) {
     // }
   };
 
+  console.log(productDetails);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    if (
-      props.location.state.productName === "Electricity Prepaid" 
-      // &&
-      // localStorage.token !== undefined
-    ) {
-      if (props.location.state.data.billerCode === "ABJ_PREPAID") {
+    // if (
+    //   productDetails.productId.productcategoryId.categoryname ===
+    //   "Electricity"
+    // ) {
+      if (productDetails.billerCode === "ABJ_PREPAID") {
         const newValuesObj = {
           amount: `${amount}`,
           channelRef: "web",
           description: "Electricity Prepaid",
           paymentMethod: "billpayflutter",
-          productId: `${props.location.state.data.productId.id}`,
+          productId: `${productDetails.productId}`,
           referenceValues: {
             "Email Address": otherValues["Email Address"],
             // "Email Address": user.user.email,
@@ -136,13 +138,13 @@ function Electricity(props) {
         };
 
         props.PaymentIntent(newValuesObj);
-      } else if (props.location.state.data.billerCode === "ekdc prepaid") {
+      } else if (productDetails.billerCode === "ekdc prepaid") {
         const newValuesObj = {
           amount: `${amount}`,
           channelRef: "web",
           description: "Electricity Prepaid",
           paymentMethod: "billpayflutter",
-          productId: `${props.location.state.data.productId.id}`,
+          productId: `${productDetails.productId}`,
           referenceValues: {
             "Email Address": `${email}`,
             // "Email Address": user.user.email,
@@ -153,13 +155,13 @@ function Electricity(props) {
         };
 
         props.PaymentIntent(newValuesObj);
-      } else if (props.location.state.data.billerCode === "iedc") {
+      } else if (productDetails.billerCode === "iedc") {
         const newValuesObj = {
           amount: `${amount}`,
           channelRef: "web",
           description: "Electricity Prepaid",
           paymentMethod: "billpayflutter",
-          productId: `${props.location.state.data.productId.id}`,
+          productId: `${productDetails.productId}`,
           referenceValues: {
             "Email Address": otherValues["Email Address"],
             // "Email Address": user.user.email,
@@ -178,13 +180,13 @@ function Electricity(props) {
         };
 
         props.PaymentIntent(newValuesObj);
-      } else if (props.location.state.data.billerCode === "PHEDDIR2") {
+      } else if (productDetails.billerCode === "PHEDDIR2") {
         const newValuesObj = {
           amount: `${amount}`,
           channelRef: "web",
           description: "Electricity Prepaid",
           paymentMethod: "billpayflutter",
-          productId: `${props.location.state.data.productId.id}`,
+          productId: `${productDetails.productId}`,
           referenceValues: {
             "Email Address": otherValues["Email Address"],
             // "Email Address": user.user.email,
@@ -206,13 +208,13 @@ function Electricity(props) {
         };
         props.PaymentIntent(newValuesObj);
       }
-    } else {
-      // setLoading(false);
-      // // const path = `${props.location.pathname}${props.location.search}`;
-      // // props.loginRediectSuccess(path, props.location.state.data);
-      // // props.history.push("/reloadng/registration");
-      // setOpen(true);
-    }
+    // } else {
+    //   // setLoading(false);
+    //   // // const path = `${props.location.pathname}${props.location.search}`;
+    //   // // props.loginRediectSuccess(path, props.location.state.data);
+    //   // // props.history.push("/reloadng/registration");
+    //   // setOpen(true);
+    // }
   };
 
   // console.log(verifiedUser.result);
@@ -231,19 +233,19 @@ function Electricity(props) {
     setSelectDetails(value);
   };
 
-  const item = JSON.parse(props.location.state.data.productvalue);
+  const item = JSON.parse(productDetails.detail.productvalue);
+  console.log(item);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
 
-  const verifyNumber = JSON.parse(props.location.state.data.productvalue)
-    .field0;
+  const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
 
   const Options =
-    JSON.parse(props.location.state.data.productvalue).field6 === undefined
+    JSON.parse(productDetails.detail.productvalue).field6 === undefined
       ? ""
-      : JSON.parse(props.location.state.data.productvalue).field6.options;
+      : JSON.parse(productDetails.detail.productvalue).field6.options;
 
   const fieldsOption = [];
   for (const key in Options) {
@@ -387,56 +389,56 @@ function Electricity(props) {
                 // allData.text === "Email Address" ? (
                 //   ""
                 // ) : (
-                  <div key={i}>
-                    <div className="d-flex align-item-center justify-content-center pt-3">
-                      <TextField
-                        required
-                        // style={{ width: "50%" }}
-                        className="inputSize"
-                        label={allData.text}
-                        name={allData.text}
-                        onChange={(e) => handleFieldChange(e, allData.text)}
-                        placeholder={`Enter ${allData.text}`}
-                        type={
-                          allData.text === "Email Address"
-                            ? "email"
-                            : allData.text === "Customer Name"
-                            ? "text"
-                            : allData.text === "Customer Number"
-                            ? "number"
-                            : allData.text === "Account description"
-                            ? "number"
-                            : allData.text === "Account Name"
-                            ? "text"
-                            : allData.text === "Phone number"
-                            ? "number"
-                            : ""
-                        }
-                        variant="outlined"
-                        value={
-                          allData.text === "Customer Name"
-                            ? verifiedUser.result.account.accountName
-                            : allData.text === "Customer Number"
-                            ? verifiedUser.result.account.accountNumber
-                            : allData.text === "Email Address"
-                            ? otherValues["Email Address"]
-                            : allData.text === "Account description"
-                            ? verifiedUser.result.account.accountNumber
-                            : allData.text === "Account Name"
-                            ? verifiedUser.result.account.accountName
-                            : allData.text === "Customer Details"
-                            ? verifiedUser.result.account.accountNumber
-                            : allData.text === "Ref ID"
-                            ? verifiedUser.result.account.accountName
-                            : allData.text === "Phone Number"
-                            ? otherValues["Phone Number"]
-                            : ""
-                        }
-                      />
-                    </div>
+                <div key={i}>
+                  <div className="d-flex align-item-center justify-content-center pt-3">
+                    <TextField
+                      required
+                      // style={{ width: "50%" }}
+                      className="inputSize"
+                      label={allData.text}
+                      name={allData.text}
+                      onChange={(e) => handleFieldChange(e, allData.text)}
+                      placeholder={`Enter ${allData.text}`}
+                      type={
+                        allData.text === "Email Address"
+                          ? "email"
+                          : allData.text === "Customer Name"
+                          ? "text"
+                          : allData.text === "Customer Number"
+                          ? "number"
+                          : allData.text === "Account description"
+                          ? "number"
+                          : allData.text === "Account Name"
+                          ? "text"
+                          : allData.text === "Phone number"
+                          ? "number"
+                          : ""
+                      }
+                      variant="outlined"
+                      value={
+                        allData.text === "Customer Name"
+                          ? verifiedUser.result.account.accountName
+                          : allData.text === "Customer Number"
+                          ? verifiedUser.result.account.accountNumber
+                          : allData.text === "Email Address"
+                          ? otherValues["Email Address"]
+                          : allData.text === "Account description"
+                          ? verifiedUser.result.account.accountNumber
+                          : allData.text === "Account Name"
+                          ? verifiedUser.result.account.accountName
+                          : allData.text === "Customer Details"
+                          ? verifiedUser.result.account.accountNumber
+                          : allData.text === "Ref ID"
+                          ? verifiedUser.result.account.accountName
+                          : allData.text === "Phone Number"
+                          ? otherValues["Phone Number"]
+                          : ""
+                      }
+                    />
                   </div>
-                // )
+                </div>
               ) : (
+                // )
                 ""
               )
             )

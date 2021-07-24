@@ -84,6 +84,7 @@ export const FINAL_PAYMENT_ERROR = "FINAL_PAYMENT_ERROR";
 
 // data
 export const SOMEDATA = "SOMEDATA";
+export const REMOVEDATA = "REMOVEDATA";
 
 // login redirect success
-export const LOGIN_REDIRECT_SUCCESS = "LOGIN_REDIRECT_SUCCESS"
+export const LOGIN_REDIRECT_SUCCESS = "LOGIN_REDIRECT_SUCCESS";

@@ -1,14 +1,22 @@
-import { SOMEDATA } from "../_action/types";
+import { SOMEDATA, REMOVEDATA } from "../_action/types";
+
+let someDetails = localStorage.getItem("data");
 
 const initialState = {
-  detail: null,
+  detail: JSON.parse(someDetails),
 };
 
 function someData(state = initialState, action) {
   switch (action.type) {
     case SOMEDATA:
+      localStorage.setItem("data", JSON.stringify(action.detail));
       return {
-        detail: action.data,
+        detail: action.detail,
+      };
+    case REMOVEDATA:
+      localStorage.removeItem("data");
+      return {
+        detail: null,
       };
     default:
       return state;

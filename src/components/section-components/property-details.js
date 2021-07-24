@@ -31,6 +31,7 @@ const formSchema = {
 
 function PropertyDetails(props) {
   const exploreProducts = useSelector((state) => state.exploreProducts);
+  const productDetails = useSelector((state) => state.someData.detail);
   const dispatch = useDispatch();
   const [pay, setPay] = useState(false);
   const [productData, setProductData] = useState();
@@ -72,6 +73,8 @@ function PropertyDetails(props) {
     setType(type);
   };
 
+  // console.log(productDetails.detail.productId.description);
+
   const onpaymentProcess = (data) => {
     // console.log(data);
     setButtonPayment(data);
@@ -94,20 +97,45 @@ function PropertyDetails(props) {
                   <div className="d-flex align-item-center justify-content-center">
                     <img
                       width="200"
-                      src={`${props.location.state.data.productId.logourl}`}
+                      // src={`${props.location.state.data.productId.logourl}`}
+                      src={`${productDetails.detail.productId.logourl}`}
                       alt="image"
                     />
                   </div>
                 </div>
                 <div className="d-flex align-item-center justify-content-center">
-                  <h4>{props.location.state.data.title}</h4>
+                  {/* <h4>{props.location.state.data.title}</h4> */}
                 </div>
                 <div className="property-details-slider-info">
                   <div className="">
                     <div className="mt-5">
                       <div>
-                        {props.location.state.data.productId.description ===
-                          "Electricity Prepaid" && (
+                        {productDetails.detail.productId.description ===
+                          "Electricity Prepaid (IKEDC)" && (
+                          <Electricity dataPay={onPay} />
+                        )}
+                        {productDetails.detail.productId.description ===
+                          "Electricity Prepaid (EKEDC)" && (
+                          <Electricity dataPay={onPay} />
+                        )}
+                        {productDetails.detail.productId.description ===
+                          "Electricity Prepaid (AEDC)" && (
+                          <Electricity dataPay={onPay} />
+                        )}
+                        {productDetails.detail.productId.description ===
+                          "Electricity Prepaid (KAEDCO)" && (
+                          <Electricity dataPay={onPay} />
+                        )}
+                        {productDetails.detail.productId.description ===
+                          "Electricity Prepaid (KEDCO)" && (
+                          <Electricity dataPay={onPay} />
+                        )}
+                        {productDetails.detail.productId.description ===
+                          "Electricity Prepaid (phed)" && (
+                          <Electricity dataPay={onPay} />
+                        )}
+                        {productDetails.detail.productId.description ===
+                          "Electricity Prepaid (JED)" && (
                           <Electricity dataPay={onPay} />
                         )}
                       </div>
@@ -122,7 +150,7 @@ function PropertyDetails(props) {
                         )}
                       </div> */}
                       <div>
-                        {props.location.state.data.productId.description ===
+                        {productDetails.detail.productId.description ===
                           "Cable" && (
                           <Cable
                             dataCable={props.location.state}
@@ -132,18 +160,18 @@ function PropertyDetails(props) {
                         )}
                       </div>
                       <div>
-                        {props.location.state.data.productId.description ===
+                        {productDetails.detail.productId.description ===
                           "Airtime" && <Airtime dataPay={onPay} />}
                       </div>
                       <div>
-                        {props.location.state.data.productId.description ===
+                        {productDetails.detail.productId.description ===
                           "Data" && <Data dataPay={onPay} />}
                       </div>
                       <div>
-                        {props.location.state.data.productId.description ===
+                        {productDetails.detail.productId.description ===
                           "Exams" && (
                           <Exams
-                            productData={props.location.state.data}
+                            productData={props.location.state}
                             dataPay={onPay}
                           />
                         )}
@@ -155,30 +183,32 @@ function PropertyDetails(props) {
             </div>
             {pay === true && type === "Electricity" && (
               <div className="col-lg-4">
-                <FormPay dataTitle={props.location.state.data.title} />
+                <FormPay
+                // dataTitle={props.location.state.data.title}
+                />
               </div>
             )}
             {type === "Airtime" && pay === true && (
               <div className="col-lg-4">
                 <AirtimePay
-                  // amount={amount}
-                  dataTitle={props.location.state.data.title}
+                // amount={amount}
+                // dataTitle={props.location.state.data.title}
                 />
               </div>
             )}
             {type === "Data" && pay === true && (
               <div className="col-lg-4">
                 <DataPay
-                  // amount={amount}
-                  dataTitle={props.location.state.data.title}
+                // amount={amount}
+                // dataTitle={props.location.state.data.title}
                 />
               </div>
             )}
             {type === "Cable" && pay === true && (
               <div className="col-lg-4">
                 <CablePay
-                  // amount={amount}
-                  dataTitle={props.location.state.data.title}
+                // amount={amount}
+                // dataTitle={props.location.state.data.title}
                 />
               </div>
             )}
@@ -187,7 +217,7 @@ function PropertyDetails(props) {
                 <ExamPay
                   TypeOfProduct={type}
                   // amount={amount}
-                  dataTitle={props.location.state.data.title}
+                  // dataTitle={props.location.state.data.title}
                 />
               </div>
             ) : type === "Exams" && pay === true ? (
@@ -195,7 +225,7 @@ function PropertyDetails(props) {
                 <ExamPay
                   TypeOfProduct={type}
                   // amount={amount}
-                  dataTitle={props.location.state.data.title}
+                  // dataTitle={props.location.state.data.title}
                 />
               </div>
             ) : (

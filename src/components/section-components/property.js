@@ -43,6 +43,7 @@ function Property(props) {
   );
 
   const handlePay = (details) => {
+    // console.log(details.otherData.billerCode);
     if (details.otherData.billerCode === null) {
       setModal(true);
     } else {
@@ -53,6 +54,7 @@ function Property(props) {
         details.otherData.billerCode === "KADUNA_PREPAID" ||
         details.otherData.billerCode === "KANO_PREPAID" ||
         details.otherData.billerCode === "ekdc prepaid" ||
+        details.otherData.billerCode === "JOS_PREPAID" ||
         details.otherData.billerCode === "SMILE"
       ) {
         setModal(true);
@@ -71,16 +73,28 @@ function Property(props) {
                 setTimeout(() => {
                   dispatch(hideLoader());
                 }, 2000);
+                // let path = `/reloadng/product-details`;
+                // history.push({
+                //   pathname: path,
+                //   search: `?product=${detail.productId.description}`,
+                //   state: {
+                //     data: detail,
+                //     productName: detail.productId.description,
+                //     productId: details.otherData.productId.id,
+                //     billerCode: detail.billerCode,
+                //   },
+                // });
+                const data = {
+                  detail,
+                  productname: detail.productId.description,
+                  productId: details.otherData.productId.id,
+                  billerCode: detail.billerCode,
+                };
+                dispatch(someData(data));
                 let path = `/reloadng/product-details`;
                 history.push({
                   pathname: path,
-                  search: `?product=${detail.productId.description}`,
-                  state: {
-                    data: detail,
-                    productName: detail.productId.description,
-                    productId: details.otherData.productId.id,
-                    billerCode: detail.billerCode,
-                  },
+                  search: `product=${detail.productId.description}`,
                 });
               }
             });
@@ -128,7 +142,14 @@ function Property(props) {
         getProducts.listProducts === null
           ? []
           : getProducts.listProducts.filter(
-              (item) => item.productId.description === "Electricity Prepaid"
+              (item) =>
+                item.productId.description === "Electricity Prepaid (IKEDC)" ||
+                item.productId.description === "Electricity Prepaid (EKEDC)" ||
+                item.productId.description === "Electricity Prepaid (AEDC)" ||
+                item.productId.description === "Electricity Prepaid (KAEDCO)" ||
+                item.productId.description === "Electricity Prepaid (KEDCO)" ||
+                item.productId.description === "Electricity Prepaid (phed)" ||
+                item.productId.description === "Electricity Prepaid (JED)"
             );
       setProductData(filtered);
     } else if (word === "Exams") {

@@ -11,6 +11,7 @@ import { getUser } from "./_action/userAction";
 import { getProducts, getProductsById } from "./_action/products";
 import { Offline, Online } from "react-detect-offline";
 import NoInternet from "./components/section-components/NoInternet";
+import Layout from "./components/CoralUssd/layout/layoout";
 
 class App extends Component {
   componentDidMount() {
@@ -26,11 +27,13 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
+        {/* <Layout /> */}
         <Router>
           {/* // checks if user has internet connection */}
           {/* {navigator.onLine ? <Routes /> : <NoInternet />} */}
           {/* <Online> */}
-            <Routes />
+          <Routes />
+          {/* </Layout> */}
           {/* </Online> */}
           {/* <Offline>
             <NoInternet />

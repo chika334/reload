@@ -28,6 +28,7 @@ import TermNCondition from "./components/TermNCondition";
 import Transaction from "./components/transaction";
 import HelpDesk from "./components/Help";
 import Receipt from "./components/Pay/PaymentProcess/printReceipt";
+import Layout from "./Layout";
 
 import { showLoader, hideLoader } from "./_action/loading";
 import { useSelector, connect } from "react-redux";
@@ -51,6 +52,7 @@ function Routes(props) {
         <Loading />
       ) : (
         <Suspense fallback={<Loading />}>
+          {/* <Layout /> */}
           <Navbar />
           <Switch>
             <Redirect exact from="/" to="/reloadng" />
@@ -144,6 +146,7 @@ function Routes(props) {
             </Switch>
           </Route>
           <Footer />
+          {/* </Layout> */}
         </Suspense>
       )}
     </div>

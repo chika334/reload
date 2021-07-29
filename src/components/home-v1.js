@@ -12,6 +12,7 @@ import FeaturedPorject from "./section-components/featured-project";
 import WhyChooseUs from "./section-components/why-choose-us";
 import OurPartner from "./section-components/our-partner";
 import Footer from "./global-components/footer";
+import GoogleAd from "../Layout";
 
 const Home_V1 = () => {
   return (
@@ -22,6 +23,7 @@ const Home_V1 = () => {
       {/* <RecentProperties /> */}
       {/* <FeaturedPorject /> */}
       <WhyChooseUs />
+      {/* <GoogleAd slot="5153321367" timeout={1000} classNames="page-bottom" /> */}
       {/* <OurPartner /> */}
       {/* <Footer /> */}
     </div>

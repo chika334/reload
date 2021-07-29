@@ -31,6 +31,11 @@ function Index(props) {
   const pay = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone.detail : ""
   );
+  const paymentIntent = useSelector((state) =>
+    state.paymentIntent.success === true
+      ? state.paymentIntent.detail.result
+      : ""
+  );
   const productDetails = useSelector((state) =>
     state.someData.detail === null ? "" : state.someData.detail
   );
@@ -46,8 +51,6 @@ function Index(props) {
   const totalAmount = Conveniencefee + JSON.parse(pay.amount);
   const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
 
-  console.log(totalAmount);
-
   const toggle = () => {
     setVisible(!visible);
     dispatch(paymentButtons("Ussd", true));
@@ -56,7 +59,7 @@ function Index(props) {
   const config = {
     public_key: `${process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY}`,
     tx_ref: Date.now(),
-    amount: totalAmount,
+    amount: paymentIntent.totalAmount,
     currency: "NGN",
     payment_options: "card,mobilemoney,ussd",
     trackingNo: pay.transRef,
@@ -146,7 +149,7 @@ function Index(props) {
   const body = {
     traceId: "2021070109120612",
     transactionType: "0",
-    amount: `${totalAmount}`,
+    amount: `${paymentIntent.totalAmount}`,
     merchantId: "4058RNG10000001",
     channel: "USSD",
     terminalId: "4058RNG1",

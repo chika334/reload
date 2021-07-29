@@ -19,11 +19,16 @@ function Receipt(props) {
   const pay = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone.detail : ""
   );
+  const paymentIntent = useSelector((state) =>
+    state.paymentIntent.success === true
+      ? state.paymentIntent.detail.result
+      : ""
+  );
   const Conveniencefee =
     productDetails.detail.productId.productcategoryId.categoryname ===
     "Electricity"
-      ? 100
-      : 0;
+      ? paymentIntent.fee
+      : paymentIntent.fee;
   const total = JSON.parse(pay.amount) + Conveniencefee;
 
   useEffect(() => {

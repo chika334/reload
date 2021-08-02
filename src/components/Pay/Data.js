@@ -77,9 +77,8 @@ function NewForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    if (
-      productDetails.productname === "Data" 
-    ) {
+    const value = e.target.value;
+    if (productDetails.productname === "Data") {
       // console.log(smartCard["Phone Number"].length);
       if (productDetails.billerCode === "airtel-data") {
         if (smartCard["Phone Number"].length < 11) {
@@ -90,7 +89,9 @@ function NewForm(props) {
             amount: `${selectDetails.amount}`,
             channelRef: "web",
             description: "Data",
-            paymentMethod: "billpayflutter",
+            // paymentMethod: "billpayflutter",
+            paymentMethod:
+              value === "card" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               "E-mail": `${smartCard["E-mail"]}`,
@@ -114,7 +115,9 @@ function NewForm(props) {
             amount: `${selectDetails.amount}`,
             channelRef: "web",
             description: "Data",
-            paymentMethod: "billpayflutter",
+            // paymentMethod: "billpayflutter",
+            paymentMethod:
+              value === "card" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               "E-mail": `${smartCard["E-mail"]}`,
@@ -137,7 +140,9 @@ function NewForm(props) {
             amount: `${selectDetails.amount}`,
             channelRef: "web",
             description: "Data",
-            paymentMethod: "billpayflutter",
+            // paymentMethod: "billpayflutter",
+            paymentMethod:
+              value === "card" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -160,7 +165,9 @@ function NewForm(props) {
             amount: `${selectDetails.amount}`,
             channelRef: "web",
             description: "Data",
-            paymentMethod: "billpayflutter",
+            // paymentMethod: "billpayflutter",
+            paymentMethod:
+              value === "card" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -307,7 +314,7 @@ function NewForm(props) {
         </div>
       ) : (
         <>
-          <form onSubmit={handleSubmit}>
+          <div>
             <div className="d-flex align-item-center justify-content-center">
               {error && <Alert severity="error">{error}</Alert>}
             </div>
@@ -359,73 +366,89 @@ function NewForm(props) {
                   // allFields.text === "Email" || allFields.text === "E-mail" ? (
                   //   ""
                   // ) : (
-                    <div
-                      key={i}
-                      className="d-flex align-item-center justify-content-center pt-3"
-                    >
-                      <TextField
-                        // style={{ width: "50%" }}
-                        className="inputSize"
-                        required
-                        label={allFields.text}
-                        name={allFields.text}
-                        onChange={(e) => handleOthers(e, allFields.text)}
-                        placeholder={`Enter ${allFields.text}`}
-                        type={
-                          allFields.text === "Email" ||
-                          allFields.text === "E-mail"
-                            ? "email"
-                            : "number"
-                        }
-                        // value={values[allFields.text]}
-                        disabled={allFields.text === "Amount" && disabled}
-                        value={
-                          selectDetails.amount === undefined
-                            ? ""
-                            : allFields.text === "Amount"
-                            ? selectDetails.amount
-                            : allFields.text === "Phone Number"
-                            ? smartCard["Phone Number"]
-                            : allFields.text === "Email"
-                            ? smartCard["Email"]
-                            : allFields.text === "E-mail"
-                            ? smartCard["E-mail"]
-                            : ""
-                        }
-                        variant="outlined"
-                        InputProps={{
-                          startAdornment:
-                            allFields.text === "Amount" ? (
-                              <InputAdornment position="start">
-                                ₦
-                              </InputAdornment>
-                            ) : (
-                              ""
-                            ),
-                        }}
-                      />
-                    </div>
-                  // )
+                  <div
+                    key={i}
+                    className="d-flex align-item-center justify-content-center pt-3"
+                  >
+                    <TextField
+                      // style={{ width: "50%" }}
+                      className="inputSize"
+                      required
+                      label={allFields.text}
+                      name={allFields.text}
+                      onChange={(e) => handleOthers(e, allFields.text)}
+                      placeholder={`Enter ${allFields.text}`}
+                      type={
+                        allFields.text === "Email" ||
+                        allFields.text === "E-mail"
+                          ? "email"
+                          : "number"
+                      }
+                      // value={values[allFields.text]}
+                      disabled={allFields.text === "Amount" && disabled}
+                      value={
+                        selectDetails.amount === undefined
+                          ? ""
+                          : allFields.text === "Amount"
+                          ? selectDetails.amount
+                          : allFields.text === "Phone Number"
+                          ? smartCard["Phone Number"]
+                          : allFields.text === "Email"
+                          ? smartCard["Email"]
+                          : allFields.text === "E-mail"
+                          ? smartCard["E-mail"]
+                          : ""
+                      }
+                      variant="outlined"
+                      InputProps={{
+                        startAdornment:
+                          allFields.text === "Amount" ? (
+                            <InputAdornment position="start">₦</InputAdornment>
+                          ) : (
+                            ""
+                          ),
+                      }}
+                    />
+                  </div>
                 ) : (
+                  // )
                   ""
                 )
               )}
             </div>
-            <div className="d-flex align-item-center justify-content-center">
-              <Button
-                onSubmit={handleSubmit}
-                type="submit"
-                style={{
-                  backgroundColor: "#fda94f",
-                  color: "#000",
-                  fontSize: "12px",
-                  padding: "11px",
-                }}
-              >
-                Proceed to payment
-              </Button>
+            <div className="ButtonSide">
+              <div>
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  value="card"
+                  type="submit"
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "12px",
+                    padding: "11px",
+                  }}
+                >
+                  Proceed to Card
+                </button>
+              </div>
+              <div>
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  value="ussd"
+                  type="submit"
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "12px",
+                    padding: "11px",
+                  }}
+                >
+                  Proceed to Ussd
+                </button>
+              </div>
             </div>
-          </form>
+          </div>
         </>
       )}
     </div>

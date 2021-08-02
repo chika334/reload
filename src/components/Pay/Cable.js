@@ -66,13 +66,16 @@ function Cable(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+    const value = e.target.value;
     if (productDetails.productname === "Cable") {
       if (productDetails.billerCode === "startimes") {
         const newValuesObj = {
           amount: `${selectDetails.Amount}`,
           channelRef: "web",
           description: "Cable",
-          paymentMethod: "billpayflutter",
+          // paymentMethod: "billpayflutter",
+          paymentMethod:
+            value === "card" ? "billpayflutter" : "billpaycoralpay",
           productId: `${productDetails.productId}`,
           referenceValues: {
             "E-mail": `${email}`,
@@ -97,7 +100,9 @@ function Cable(props) {
           amount: selectDetails.Amount.trim(),
           channelRef: "web",
           description: "Cable",
-          paymentMethod: "billpayflutter",
+          // paymentMethod: "billpayflutter",
+          paymentMethod:
+            value === "card" ? "billpayflutter" : "billpaycoralpay",
           productId: `${productDetails.productId}`,
           referenceValues: {
             "Email Address": `${email}`,
@@ -124,7 +129,9 @@ function Cable(props) {
           amount: `${selectDetails.Amount.trim()}`,
           channelRef: "web",
           description: "Cable",
-          paymentMethod: "billpayflutter",
+          // paymentMethod: "billpayflutter",
+          paymentMethod:
+            value === "card" ? "billpayflutter" : "billpaycoralpay",
           productId: `${productDetails.productId}`,
           referenceValues: {
             Email: `${email}`,
@@ -378,7 +385,7 @@ function Cable(props) {
               )}
             </div>
           </div>
-          <form onSubmit={handleSubmit}>
+          <div>
             <div>
               {verifyUserdetails.onclick === true &&
               verifyUserdetails.name === "Cable"
@@ -634,25 +641,43 @@ function Cable(props) {
                 : ""}
               {verifyUserdetails.onclick === true &&
               verifyUserdetails.name === "Cable" ? (
-                <div className="d-flex align-item-center justify-content-center">
-                  <Button
-                    onSubmit={handleSubmit}
-                    type="submit"
-                    style={{
-                      backgroundColor: "#fda94f",
-                      color: "#000",
-                      fontSize: "12px",
-                      padding: "11px",
-                    }}
-                  >
-                    Proceed to payment
-                  </Button>
+                <div className="ButtonSide">
+                  <div>
+                    <button
+                      onClick={(e) => handleSubmit(e)}
+                      value="card"
+                      type="submit"
+                      style={{
+                        backgroundColor: "#fda94f",
+                        color: "#000",
+                        fontSize: "12px",
+                        padding: "11px",
+                      }}
+                    >
+                      Proceed to Card
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      onClick={(e) => handleSubmit(e)}
+                      value="ussd"
+                      type="submit"
+                      style={{
+                        backgroundColor: "#fda94f",
+                        color: "#000",
+                        fontSize: "12px",
+                        padding: "11px",
+                      }}
+                    >
+                      Proceed to Ussd
+                    </button>
+                  </div>
                 </div>
               ) : (
                 ""
               )}
             </div>
-          </form>
+          </div>
         </>
       )}
     </div>

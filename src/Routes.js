@@ -28,6 +28,7 @@ import TermNCondition from "./components/TermNCondition";
 import Transaction from "./components/transaction";
 import HelpDesk from "./components/Help";
 import Receipt from "./components/Pay/PaymentProcess/printReceipt";
+import Loan from "./components/Loan";
 import Layout from "./Layout";
 
 import { showLoader, hideLoader } from "./_action/loading";
@@ -81,6 +82,7 @@ function Routes(props) {
               `/reloadng/transactions`,
               `/reloadng/helpdesk`,
               `/reloadng/receipt`,
+              "/reloadng/loan",
             ]}
           >
             <Switch location={location} key={location.pathname}>
@@ -141,6 +143,7 @@ function Routes(props) {
                 path="/reloadng/successMessage"
                 component={SuccessMessage}
               />
+              <Route exact path="/reloadng/loan" component={Loan} />
               <Route exact path="/reloadng/receipt" component={Receipt} />
               <Route exact component={Error} />
             </Switch>

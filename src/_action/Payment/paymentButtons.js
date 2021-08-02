@@ -1,6 +1,7 @@
 // { name: "USSD", onclick: true }
 import { BUTTON_CLICKED, CLEAR_PAY_BUTTON, PAYMENT_DETIALS } from "../types";
 export const FIELD_SET = "FIELD_SET";
+
 export const paymentButtons = (name, onclick) => {
   // console.log(name, onclick);
   return {

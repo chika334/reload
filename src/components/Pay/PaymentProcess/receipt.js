@@ -24,16 +24,21 @@ function Receipt(props) {
       ? state.paymentIntent.detail.result
       : ""
   );
-  const Conveniencefee =
-    productDetails.detail.productId.productcategoryId.categoryname ===
-    "Electricity"
-      ? paymentIntent.fee
-      : paymentIntent.fee;
-  const total = JSON.parse(pay.amount) + Conveniencefee;
+  const paymentIntentStatus = useSelector((state) =>
+    state.paymentIntent.success === true ? state.paymentIntent.detail : ""
+  );
+
+  console.log(paymentIntentStatus);
+  // const Conveniencefee =
+  //   productDetails.detail.productId.productcategoryId.categoryname ===
+  //   "Electricity"
+  //     ? paymentIntent.fee
+  //     : paymentIntent.fee;
+  // const total = JSON.parse(pay.amount) + Conveniencefee;
 
   useEffect(() => {
     block();
-  }, []);
+  }, [!paymentIntentStatus.status]);
 
   const splitString =
     productDetails.detail.productId.productcategoryId.categoryname ===
@@ -53,7 +58,7 @@ function Receipt(props) {
       ? finalPaymentSuccess.result.productResult.split(" | ")
       : "";
 
-  console.log(tokenSplit[1]);
+  // console.log(tokenSplit[1]);
 
   const block = () => {
     window.onbeforeunload = function () {
@@ -155,7 +160,7 @@ function Receipt(props) {
                 </tr>
                 <tr className="total">
                   <td></td>
-                  <td>{tokenSplit[1]}</td>
+                  <td>{finalPaymentSuccess.result.productResult}</td>
                 </tr>
                 <hr />
                 <tr>
@@ -193,13 +198,13 @@ function Receipt(props) {
             <tr className="item">
               <td>Convenience fee</td>
 
-              <td>{formatter.format(Conveniencefee)}</td>
+              <td>{formatter.format(paymentIntent.fee)}</td>
             </tr>
 
             <tr className="total">
               <td></td>
 
-              <td>Total: {formatter.format(total)}</td>
+              <td>Total: {formatter.format(paymentIntent.totalAmount)}</td>
             </tr>
           </tbody>
         </table>

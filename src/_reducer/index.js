@@ -17,12 +17,14 @@ import paymentIntent from "./paymentIntent";
 import FinalPayment from "./finalPayment";
 import someData from "./someData";
 import login_success_red from "./login_Success_red";
+import UssdSuccess from "./ussdSuccess";
 
 export default combineReducers({
   authUser,
   verify,
   verifyUserdetails,
   FinalPayment,
+  UssdSuccess,
   error,
   changePassword,
   products,

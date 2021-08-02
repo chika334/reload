@@ -1,0 +1,6 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "origin"]
+	url = https://chika334@bitbucket.org/blackcoders2019/reload-react-sources.git

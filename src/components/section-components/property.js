@@ -73,17 +73,6 @@ function Property(props) {
                 setTimeout(() => {
                   dispatch(hideLoader());
                 }, 2000);
-                // let path = `/reloadng/product-details`;
-                // history.push({
-                //   pathname: path,
-                //   search: `?product=${detail.productId.description}`,
-                //   state: {
-                //     data: detail,
-                //     productName: detail.productId.description,
-                //     productId: details.otherData.productId.id,
-                //     billerCode: detail.billerCode,
-                //   },
-                // });
                 const data = {
                   detail,
                   productname: detail.productId.description,
@@ -160,6 +149,9 @@ function Property(props) {
               (item) => item.productId.description === "Exams"
             );
       setProductData(filtered);
+    } else if (word === "Loan") {
+      alert("Work in process")
+      // history.push("/reloadng/loan");
     }
   };
 
@@ -222,6 +214,13 @@ function Property(props) {
                     onClick={handleBtn}
                   >
                     Electricity
+                  </button>
+                  <button
+                    style={{ backgroundColor: "#fda94f", color: "#000" }}
+                    value="Loan"
+                    onClick={handleBtn}
+                  >
+                    Loan
                   </button>
                   <button
                     style={{ backgroundColor: "#fda94f", color: "#000" }}

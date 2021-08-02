@@ -88,3 +88,9 @@ export const REMOVEDATA = "REMOVEDATA";
 
 // login redirect success
 export const LOGIN_REDIRECT_SUCCESS = "LOGIN_REDIRECT_SUCCESS";
+
+// ussd success
+export const USSD_SUCCESS = "USSD_SUCCESS";
+
+// inteswitch token
+export const INTERSWITCH_TOKEN = "INTERSWITCH_TOKEN";

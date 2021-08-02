@@ -27,6 +27,8 @@ function NewForm(props) {
   const [verifyEnabled, setVerifiedEnabled] = useState(false);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const productDetails = useSelector((state) => state.someData.detail);
+  const [paymentMethod, setPaymentMethod] = useState("");
+  // const [disable, setDisable] = React.useState(false);
   const user = useSelector((state) =>
     state.authUser.user === null ? "" : state.authUser.user
   );
@@ -61,17 +63,26 @@ function NewForm(props) {
     setSelectDetails(value);
   };
 
-  // console.log(props.location);
+  // console.log(paymentMethod);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // console.log(e.target.value);
+    const value = e.target.value;
     setLoading(true);
     if (
       productDetails.productname === "Airtime"
-      //  &&
+      // paymentMethod !== ""
       // localStorage.token !== undefined
     ) {
+      if (value === "card") {
+        setDisabled(true);
+      } else if (value === "ussd") {
+        setDisabled(true);
+      }
+
       if (productDetails.billerCode === "airtel") {
+        setPaymentMethod(value);
         if (smartCard["Phone Number"].length < 11) {
           setError("Phone number must be 11 digits");
         } else {
@@ -80,7 +91,8 @@ function NewForm(props) {
             channelRef: "web",
             description: "Airtime",
             email: `${smartCard["Email"]}`,
-            paymentMethod: "billpayflutter",
+            paymentMethod:
+              value === "card" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -90,7 +102,7 @@ function NewForm(props) {
             },
             references: ["Email", "Phone Number", "Product Type"],
           };
-          // console.log(newValuesObj);
+
           props.PaymentIntent(newValuesObj);
         }
       } else if (productDetails.billerCode === "mtn") {
@@ -102,7 +114,8 @@ function NewForm(props) {
             channelRef: "web",
             email: `${smartCard["Email"]}`,
             description: "Airtime",
-            paymentMethod: "billpayflutter",
+            paymentMethod:
+              value === "card" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -112,7 +125,7 @@ function NewForm(props) {
             },
             references: ["Email", "Phone Number", "Product"],
           };
-          // console.log(newValuesObj);
+
           props.PaymentIntent(newValuesObj);
         }
       } else if (productDetails.billerCode === "9MOBILEAIRTIME") {
@@ -124,7 +137,8 @@ function NewForm(props) {
             channelRef: "web",
             description: "Airtime",
             email: `${smartCard["Email"]}`,
-            paymentMethod: "billpayflutter",
+            paymentMethod:
+              value === "card" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -134,7 +148,7 @@ function NewForm(props) {
             },
             references: ["Email", "Phone Number", "Product"],
           };
-          // console.log(newValuesObj);
+
           props.PaymentIntent(newValuesObj);
         }
       } else if (productDetails.billerCode === "glo") {
@@ -146,7 +160,8 @@ function NewForm(props) {
             channelRef: "web",
             email: `${smartCard["Email"]}`,
             description: "Airtime",
-            paymentMethod: "billpayflutter",
+            paymentMethod:
+              value === "card" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -156,19 +171,30 @@ function NewForm(props) {
             },
             references: ["Email", "Phone Number", "Product"],
           };
-          // console.log(newValuesObj);
+
           props.PaymentIntent(newValuesObj);
         }
       }
     } else {
       console.log("error");
-      // setLoading(false);
-      // const path = `${props.location.pathname}${props.location.search}`;
-      // props.loginRediectSuccess(path, props.location.state.data);
-      // props.history.push("/reloadng/registration");
-      // setOpen(true);
     }
   };
+
+  // console.log(paymentMethod);
+
+  // const handlePayment = (paymentMethods) => {
+  //   const card = "billpayflutter";
+  //   const ussd = "billpaycoralpay";
+  //   if (paymentMethods === "card") {
+  //     setPaymentMethod(card);
+  //   } else {
+  //     setPaymentMethod(ussd);
+  //   }
+
+  //   setTimeout(() => {
+  //     handleSubmit();
+  //   }, 1000);
+  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -209,6 +235,8 @@ function NewForm(props) {
       fieldsOptions.push(value);
     }
   }
+
+  console.log(paymentMethod);
 
   // const handleRegRedirect = () => {
   //   props.history.push("/reloadng/registration");
@@ -254,7 +282,7 @@ function NewForm(props) {
         </div>
       ) : (
         <>
-          <form onSubmit={handleSubmit}>
+          <div>
             <div className="d-flex align-item-center justify-content-center">
               {error && <Alert severity="error">{error}</Alert>}
             </div>
@@ -337,21 +365,41 @@ function NewForm(props) {
                 )
               )}
             </div>
-            <div className="d-flex align-item-center justify-content-center">
-              <Button
-                onSubmit={handleSubmit}
-                type="submit"
-                style={{
-                  backgroundColor: "#fda94f",
-                  color: "#000",
-                  fontSize: "12px",
-                  padding: "11px",
-                }}
-              >
-                Proceed to payment
-              </Button>
+            <div className="ButtonSide">
+              <div>
+                <button
+                  disabled={disabled}
+                  onClick={(e) => handleSubmit(e)}
+                  type="submit"
+                  value="card"
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "12px",
+                    padding: "9px",
+                  }}
+                >
+                  Proceed with Card
+                </button>
+              </div>
+              <div>
+                <button
+                  disabled={disabled}
+                  onClick={(e) => handleSubmit(e)}
+                  value="ussd"
+                  type="submit"
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "12px",
+                    padding: "9px",
+                  }}
+                >
+                  Proceed with USSD
+                </button>
+              </div>
             </div>
-          </form>
+          </div>
         </>
       )}
     </div>

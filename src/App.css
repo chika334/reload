@@ -192,3 +192,40 @@ div .new4:not(:last-child) {
     padding: 10px;
   }
 }
+
+
+/* all */
+/* Button position */
+.ButtonSide {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ButtonSide > div {
+  /* margin: 20px; */
+  /* padding: 2px; */
+  width: 50%;
+  /* background-color: red; */
+}
+@media (min-width: 600px) {
+  .ButtonSide {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  .ButtonSide > div {
+    /* padding: 10px; */
+    width: 50%;
+  }
+}
+
+@media (max-width: 599px) {
+  .ButtonSide {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .ButtonSide > div {
+    padding: 10px;
+  }
+}

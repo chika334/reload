@@ -16,6 +16,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
+import { ussdSuccess } from "../../../_action/Payment/ussdSuccessAct";
+// import { date } from "yup/lib/locale";
 // import { showLoader, hideLoader } from "../../../_action/loading";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -28,6 +30,7 @@ function Index(props) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const paymentButton = useSelector((state) => state.paymentButton);
+  const [response, setResponse] = useState(null);
   const pay = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone.detail : ""
   );
@@ -36,19 +39,15 @@ function Index(props) {
       ? state.paymentIntent.detail.result
       : ""
   );
+  const [stop, setStop] = useState(false);
+  const ussdSuccess = useSelector((state) => state.UssdSuccess);
   const productDetails = useSelector((state) =>
     state.someData.detail === null ? "" : state.someData.detail
   );
   const error = useSelector((state) => state.error);
   const [open, setOpen] = useState(false);
   const [errors, setErrors] = useState("");
-  const Conveniencefee =
-    productDetails.detail.productId.productcategoryId.categoryname ===
-    "Electricity"
-      ? 100
-      : 0;
-
-  const totalAmount = Conveniencefee + JSON.parse(pay.amount);
+  const [count, setCount] = useState(0);
   const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
 
   const toggle = () => {
@@ -66,7 +65,6 @@ function Index(props) {
     customer: {
       email: pay.email,
       name: pay.customerName,
-      phonenumber: "09077426203",
     },
     customizations: {
       title: "my Payment Title",
@@ -76,9 +74,43 @@ function Index(props) {
     },
   };
 
+  // const PaymentSuccess = (res) => {
+  //   if (paymentButton.name === "flutterwave") {
+  //     const ref = {
+  //       transRef: pay.transRef,
+  //       paymentRef: res.transaction_id,
+  //     };
+
+  //     dispatch(finalPayment(ref));
+  //   } else if (paymentButton.name === "Ussd") {
+  //     // console.log(res);
+  //     const ref = {
+  //       transRef: pay.transRef,
+  //       paymentRef: pay.transRef,
+  //     };
+
+  //     dispatch(finalPayment(ref));
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   // setStop(true);
+  //   if (response) {
+  //     // console.log("res fire", response);
+  //     const ref = {
+  //       transRef: pay.transRef,
+  //       paymentRef: response.TransactionID,
+  //     };
+
+  //     dispatch(finalPayment(ref));
+  //     setCount(1);
+  //     setStop(true);
+  //   }
+  // }, [response]);
+
   const handleFlutterPayment = useFlutterwave(config);
 
-  const handleFlutterwave = (e) => {
+  const handlePayment = (e) => {
     // dispatch(showLoader());
     if (paymentButton.name === "Ussd") {
       setLoading(false);
@@ -89,7 +121,7 @@ function Index(props) {
         setLoading(true);
         handleFlutterPayment({
           callback: (response) => {
-            console.log(response);
+            // console.log(response);
             const ref = {
               transRef: pay.transRef,
               paymentRef: response.transaction_id,
@@ -107,8 +139,6 @@ function Index(props) {
       }
     }
   };
-
-  // console.log(pay);
 
   useEffect(() => {
     if (finalPaymentSuccess.finalPayment === true) {
@@ -135,7 +165,7 @@ function Index(props) {
 
   useEffect(() => {
     if (paymentButton.onclick === true) {
-      handleFlutterwave();
+      handlePayment();
     }
   }, [paymentButton.onclick]);
 
@@ -144,10 +174,8 @@ function Index(props) {
     dispatch(paymentButtons("flutterwave", true));
   };
 
-  // console.log(pay);
-
   const body = {
-    traceId: "2021070109120612",
+    traceId: pay.transRef,
     transactionType: "0",
     amount: `${paymentIntent.totalAmount}`,
     merchantId: "4058RNG10000001",
@@ -176,9 +204,30 @@ function Index(props) {
     }, 300);
   };
 
+  if (response) {
+    setLoading(true);
+    const ref = {
+      transRef: pay.transRef,
+      paymentRef: response.TransactionID,
+    };
+
+    let count = 0;
+    setTimeout(() => {
+      // while (count < 1) {
+      dispatch(finalPayment(ref));
+      // count++;
+      // }
+    }, 60000);
+    // setLoading(false);
+  }
+
   // const handleXpressPay = () => {
   //   dispatch(paymentButtons("xpresspay", true));
   // };
+
+  const handleUSSD = () => {
+    dispatch(paymentButtons("Ussd", true));
+  };
 
   return (
     <div>
@@ -207,8 +256,14 @@ function Index(props) {
         </Dialog>
       </div>
       <div className="d-flex align-item-center justify-content-center">
-        {<CoralUssd body={body} onSuccess={(res) => console.log(res)} />}
-        <div className="interior">
+        {<CoralUssd body={body} onSuccess={(res) => setResponse(res)} />}
+        {/* {
+          <CoralUssd
+            body={body}
+            onSuccess={(e, res) => handleUssdSuccess({ e, res })}
+          />
+        } */}
+        <div onClick={handleUSSD} className="interior">
           {" "}
           <a className="btn" href="#open-modal">
             {" "}
@@ -235,6 +290,7 @@ export default withRouter(
     paymentButtons,
     clearDetails,
     finalPayment,
+    ussdSuccess,
     // showLoader,
     // hideLoader,
   })(Index)

@@ -1,22 +1,24 @@
 import { BUTTON_CLICKED } from "../_action/types.js";
 import { FIELD_SET } from "../_action/Payment/paymentButtons";
+
+
 const initialState = {
   name: "",
   onclick: false,
-  labels: [],
+  // labels: [],
 };
-const fieldSel = (key, data) => {
-  switch (key) {
-    case "airtel-data":
-      return (labels = JSON.parse(data).field2.options);
+// const fieldSel = (key, data) => {
+//   switch (key) {
+//     case "airtel-data":
+//       return (labels = JSON.parse(data).field2.options);
 
-    case "glo-data":
-      return (labels = JSON.parse(data));
+//     case "glo-data":
+//       return (labels = JSON.parse(data));
 
-    default:
-      return null;
-  }
-};
+//     default:
+//       return null;
+//   }
+// };
 
 function paymentButton(state = initialState, action) {
   switch (action.type) {
@@ -25,16 +27,10 @@ function paymentButton(state = initialState, action) {
         name: action.payload.name,
         onclick: action.payload.onclick,
       };
-    case FIELD_SET:
-      return {
-        ...state,
-        labels: fieldSel(action.key, action.data),
-      };
-
-    // case CLEAR_ERROR:
+    // case FIELD_SET:
     //   return {
-    //     name: "",
-    //     onclick: false,
+    //     ...state,
+    //     labels: fieldSel(action.key, action.data),
     //   };
     default:
       return state;

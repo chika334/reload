@@ -46,7 +46,6 @@ function Electricity(props) {
   const pays = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone.detail : ""
   );
-  // const
 
   const handleSmartCard = (e) => {
     setSmartCard(e.target.value);
@@ -70,7 +69,7 @@ function Electricity(props) {
     }
   }, [error.error]);
 
-  console.log(props.location);
+  // console.log(props.location);
 
   const verifyMeterNumber = async () => {
     const details = {
@@ -113,101 +112,106 @@ function Electricity(props) {
     //   productDetails.productId.productcategoryId.categoryname ===
     //   "Electricity"
     // ) {
-      if (productDetails.billerCode === "ABJ_PREPAID") {
-        const newValuesObj = {
-          amount: `${amount}`,
-          channelRef: "web",
-          description: "Electricity Prepaid",
-          paymentMethod: "billpayflutter",
-          productId: `${productDetails.productId}`,
-          referenceValues: {
-            "Email Address": otherValues["Email Address"],
-            // "Email Address": user.user.email,
-            "Customer Name": `${verifiedUser.result.account.accountName}`,
-            "customer Number": `${verifiedUser.result.account.accountNumber}`,
-            "Meter Number": `${verifiedUser.result.account.accountNumber}`,
-            "Meter Type": selectDetails.ItemType,
-          },
-          references: [
-            "Email Address",
-            "customer Number",
-            "Customer Name",
-            "Meter Number",
-            "Meter Type",
-          ],
-        };
+    const value = e.target.value;
+    if (productDetails.billerCode === "ABJ_PREPAID") {
+      const newValuesObj = {
+        amount: `${amount}`,
+        channelRef: "web",
+        description: "Electricity Prepaid",
+        // paymentMethod: "billpayflutter",
+        paymentMethod: value === "card" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "Email Address": otherValues["Email Address"],
+          // "Email Address": user.user.email,
+          "Customer Name": `${verifiedUser.result.account.accountName}`,
+          "customer Number": `${verifiedUser.result.account.accountNumber}`,
+          "Meter Number": `${verifiedUser.result.account.accountNumber}`,
+          "Meter Type": selectDetails.ItemType,
+        },
+        references: [
+          "Email Address",
+          "customer Number",
+          "Customer Name",
+          "Meter Number",
+          "Meter Type",
+        ],
+      };
 
-        props.PaymentIntent(newValuesObj);
-      } else if (productDetails.billerCode === "ekdc prepaid") {
-        const newValuesObj = {
-          amount: `${amount}`,
-          channelRef: "web",
-          description: "Electricity Prepaid",
-          paymentMethod: "billpayflutter",
-          productId: `${productDetails.productId}`,
-          referenceValues: {
-            "Email Address": `${email}`,
-            // "Email Address": user.user.email,
-            "Account Name": `${verifiedUser.result.account.accountName}`,
-            ProductCode: `${verifiedUser.result.account.accountNumber}`,
-          },
-          references: ["Email Address", "Account Name", "ProductCode"],
-        };
+      props.PaymentIntent(newValuesObj);
+    } else if (productDetails.billerCode === "ekdc prepaid") {
+      const newValuesObj = {
+        amount: `${amount}`,
+        channelRef: "web",
+        description: "Electricity Prepaid",
+        // paymentMethod: "billpayflutter",
+        paymentMethod: value === "card" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "Email Address": `${email}`,
+          // "Email Address": user.user.email,
+          "Account Name": `${verifiedUser.result.account.accountName}`,
+          ProductCode: `${verifiedUser.result.account.accountNumber}`,
+        },
+        references: ["Email Address", "Account Name", "ProductCode"],
+      };
 
-        props.PaymentIntent(newValuesObj);
-      } else if (productDetails.billerCode === "iedc") {
-        const newValuesObj = {
-          amount: `${amount}`,
-          channelRef: "web",
-          description: "Electricity Prepaid",
-          paymentMethod: "billpayflutter",
-          productId: `${productDetails.productId}`,
-          referenceValues: {
-            "Email Address": otherValues["Email Address"],
-            // "Email Address": user.user.email,
-            "Account Name": `${amount}`,
-            "METER NUMBER": `${verifiedUser.result.account.accountNumber}`,
-            "Phone Number": otherValues["Phone Number"],
-            "Customer Details": `${verifiedUser.result.account.accountName}`,
-          },
-          references: [
-            "Email Address",
-            "Account Name",
-            "METER NUMBER",
-            "Phone Number",
-            "Customer Details",
-          ],
-        };
+      props.PaymentIntent(newValuesObj);
+    } else if (productDetails.billerCode === "iedc") {
+      const newValuesObj = {
+        amount: `${amount}`,
+        channelRef: "web",
+        description: "Electricity Prepaid",
+        // paymentMethod: "billpayflutter",
+        paymentMethod: value === "card" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "Email Address": otherValues["Email Address"],
+          // "Email Address": user.user.email,
+          "Account Name": `${amount}`,
+          "METER NUMBER": `${verifiedUser.result.account.accountNumber}`,
+          "Phone Number": otherValues["Phone Number"],
+          "Customer Details": `${verifiedUser.result.account.accountName}`,
+        },
+        references: [
+          "Email Address",
+          "Account Name",
+          "METER NUMBER",
+          "Phone Number",
+          "Customer Details",
+        ],
+      };
 
-        props.PaymentIntent(newValuesObj);
-      } else if (productDetails.billerCode === "PHEDDIR2") {
-        const newValuesObj = {
-          amount: `${amount}`,
-          channelRef: "web",
-          description: "Electricity Prepaid",
-          paymentMethod: "billpayflutter",
-          productId: `${productDetails.productId}`,
-          referenceValues: {
-            "Email Address": otherValues["Email Address"],
-            // "Email Address": user.user.email,
-            "Meter or Account Number": `${verifiedUser.result.account.accountNumber}`,
-            "Ref ID": `${verifiedUser.result.account.accountName}`,
-            "Meter Type": `${selectDetails.ItemType}`,
-            "Phone Number": otherValues["Phone Number"],
-            "Customer Details": JSON.parse(verifiedUser.result.account.extras)
-              .extra,
-          },
-          references: [
-            "Email Address",
-            "Meter or Account Number",
-            "Ref ID",
-            "Meter Type",
-            "Phone Number",
-            "Customer Details",
-          ],
-        };
-        props.PaymentIntent(newValuesObj);
-      }
+      props.PaymentIntent(newValuesObj);
+    } else if (productDetails.billerCode === "PHEDDIR2") {
+      const newValuesObj = {
+        amount: `${amount}`,
+        channelRef: "web",
+        description: "Electricity Prepaid",
+        // paymentMethod: "billpayflutter",
+        paymentMethod: value === "card" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "Email Address": otherValues["Email Address"],
+          // "Email Address": user.user.email,
+          "Meter or Account Number": `${verifiedUser.result.account.accountNumber}`,
+          "Ref ID": `${verifiedUser.result.account.accountName}`,
+          "Meter Type": `${selectDetails.ItemType}`,
+          "Phone Number": otherValues["Phone Number"],
+          "Customer Details": JSON.parse(verifiedUser.result.account.extras)
+            .extra,
+        },
+        references: [
+          "Email Address",
+          "Meter or Account Number",
+          "Ref ID",
+          "Meter Type",
+          "Phone Number",
+          "Customer Details",
+        ],
+      };
+      props.PaymentIntent(newValuesObj);
+    }
     // } else {
     //   // setLoading(false);
     //   // // const path = `${props.location.pathname}${props.location.search}`;
@@ -216,8 +220,6 @@ function Electricity(props) {
     //   // setOpen(true);
     // }
   };
-
-  // console.log(verifiedUser.result);
 
   const handleFieldChange = (e, name) => {
     const newValues = { ...otherValues };
@@ -234,7 +236,6 @@ function Electricity(props) {
   };
 
   const item = JSON.parse(productDetails.detail.productvalue);
-  console.log(item);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
@@ -376,7 +377,7 @@ function Electricity(props) {
           </div>
         </div>
       )}
-      <form onSubmit={handleSubmit}>
+      <div>
         <div className="d-flex align-item-center justify-content-center">
           {failure && <Alert severity="error">{failure}</Alert>}
         </div>
@@ -508,25 +509,43 @@ function Electricity(props) {
         <div>
           {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Electricity" ? (
-            <div className="d-flex align-item-center justify-content-center">
-              <Button
-                onSubmit={handleSubmit}
-                type="submit"
-                style={{
-                  backgroundColor: "#fda94f",
-                  color: "#000",
-                  fontSize: "12px",
-                  padding: "11px",
-                }}
-              >
-                Proceed to payment
-              </Button>
+            <div className="ButtonSide">
+              <div>
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  value="card"
+                  type="submit"
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "12px",
+                    padding: "11px",
+                  }}
+                >
+                  Proceed to Card
+                </button>
+              </div>
+              <div>
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  value="ussd"
+                  type="submit"
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "12px",
+                    padding: "11px",
+                  }}
+                >
+                  Proceed to Ussd
+                </button>
+              </div>
             </div>
           ) : (
             ""
           )}
         </div>
-      </form>
+      </div>
     </div>
   );
 }

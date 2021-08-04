@@ -1,33 +1,52 @@
 import { INTERSWITCH_TOKEN } from "../types";
+import axios from "axios";
+import qs from "qs";
 
-export const interswitchToken = (getState) => {
+export const interswitchToken = () => (dispatch) => {
   const client_id = process.env.REACT_APP_CLIENT_ID;
   const secretKey = process.env.REACT_APP_SECRET_KEY;
 
-  const user = `${client_id}:${secretKey}`;
-  const base64 = Buffer.from(user).toString("base64");
+  const userToken = `${client_id}:${secretKey}`;
+  // const base64 = Buffer.from(userToken).toString("base64");
 
-  console.log(base64);
-  // Get token from localstorage
-  // const token = getState().authUser.token;
+  var details = {
+    grant_type: "client_credentials",
+    scope: "profile",
+  };
 
-  // // set Header
-  // const config = {
-  //   headers: {
-  //     merchantKey: "099035353",
-  //     "Content-Type": "application/json",
-  //   },
-  // };
+  const body = {};
 
-  // // if token, add to header
-  // if (token) {
-  //   config.headers["Authorization"] = `Token ${token}`;
+  // var formBody = [];
+  // for (var property in details) {
+  //   var encodedKey = encodeURIComponent(property);
+  //   var encodedValue = encodeURIComponent(details[property]);
+  //   formBody.push(encodedKey + "=" + encodedValue);
   // }
-  // return config;
+  // formBody = formBody.join("&");
 
-  axios.post(
-    `${process.env.REACT_APP_API}/passport/oauth/token`,
-    passwordDetails,
-    secondTokenConfig(getState)
-  );
+  // console.log(base64);
+  const config = {
+    "Content-Type": "application/x-www-form-urlencoded",
+    // Authorization: `Basic ${base64}`,
+  };
+
+  axios({
+    method: "post",
+    url: `${process.env.REACT_APP_API_INTERSWITCH}/passport/oauth/token`,
+    data: qs.stringify(details),
+    auth: {
+      username: client_id,
+      password: secretKey,
+    },
+    // body: body,
+    // data: formBody,
+    headers: config,
+  })
+    .then((res) =>
+      dispatch({
+        type: INTERSWITCH_TOKEN,
+        payload: res.data,
+      })
+    )
+    .catch((err) => console.log(err));
 };

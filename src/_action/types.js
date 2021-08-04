@@ -94,3 +94,7 @@ export const USSD_SUCCESS = "USSD_SUCCESS";
 
 // inteswitch token
 export const INTERSWITCH_TOKEN = "INTERSWITCH_TOKEN";
+
+// interswitch provider
+export const INTERSWITCH_PROVIDER = "INTERSWITCH_PROVIDER";
+export const PROVIDERS_LOADING = "PROVIDERS_LOADING";

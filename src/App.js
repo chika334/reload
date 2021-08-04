@@ -9,6 +9,8 @@ import "./App.css";
 // _actions
 import { getUser } from "./_action/userAction";
 import { getProducts, getProductsById } from "./_action/products";
+import { interswitchToken } from "./_action/Loan/token";
+import { interswitchProvider } from "./_action/Loan/providers";
 import { Offline, Online } from "react-detect-offline";
 import NoInternet from "./components/section-components/NoInternet";
 import Layout from "./components/CoralUssd/layout/layoout";
@@ -18,6 +20,8 @@ class App extends Component {
     if (localStorage.getItem("token")) {
       store.dispatch(getUser());
       store.dispatch(getProducts());
+      store.dispatch(interswitchToken());
+      store.dispatch(interswitchProvider(localStorage.access_token));
     } else {
       store.dispatch(getProducts());
       return <Redirect to={`/reloadng`} />;

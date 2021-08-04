@@ -18,12 +18,16 @@ import FinalPayment from "./finalPayment";
 import someData from "./someData";
 import login_success_red from "./login_Success_red";
 import UssdSuccess from "./ussdSuccess";
+import Providers from "./Loan/providersRed";
+import Token from "./Loan/tokenLoan";
 
 export default combineReducers({
   authUser,
   verify,
   verifyUserdetails,
   FinalPayment,
+  Providers,
+  Token,
   UssdSuccess,
   error,
   changePassword,

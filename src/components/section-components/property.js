@@ -150,8 +150,8 @@ function Property(props) {
             );
       setProductData(filtered);
     } else if (word === "Loan") {
-      alert("Work in process")
-      // history.push("/reloadng/loan");
+      // alert("Work in process")
+      history.push("/reloadng/loan");
     }
   };
 

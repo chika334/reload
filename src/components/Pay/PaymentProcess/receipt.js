@@ -136,7 +136,7 @@ function Receipt(props) {
                   <tbody>
                     <tr>
                       <td>
-                        reload.ng
+                        {/* reload.ng */}
                         <br />
                       </td>
 

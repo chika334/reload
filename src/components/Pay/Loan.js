@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import sectiondata from "../../data/sections.json";
 import parse from "html-react-parser";
 import { Link, useHistory, withRouter } from "react-router-dom";
@@ -7,6 +7,8 @@ import { Button, Modal } from "@material-ui/core";
 import { showLoader, hideLoader } from "../../_action/loading";
 import { someData } from "../../_action/passingData";
 import { makeStyles } from "@material-ui/core/styles";
+import { interswitchToken } from "../../_action/Loan/token";
+import { interswitchProvider } from "../../_action/Loan/providers";
 
 function getModalStyle() {
   const top = 50;
@@ -41,6 +43,19 @@ function Property(props) {
   const [productData, setProductData] = useState(
     getProducts.listProducts === null ? "" : getProducts.listProducts
   );
+
+  const token = useSelector((state) => state.Token);
+  const Providers = useSelector((state) => state.Providers);
+
+  // console.log(token.tokenInterSwitch);
+  // console.log(Providers);
+
+  // useEffect(() => {
+  // dispatch(interswitchToken());
+  // });
+
+  // dispatch(interswitchToken());
+  // dispatch(interswitchProvider(localStorage.access_token));
 
   // const handlePay = (details) => {
   //   // console.log(details.otherData.billerCode);

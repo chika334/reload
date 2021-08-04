@@ -25,6 +25,7 @@
     "moment": "^2.29.1",
     "nodemon": "^2.0.10",
     "owl.carousel": "^2.3.4",
+    "qs": "^6.10.1",
     "react": "^16.12.0",
     "react-adsense": "^0.1.0",
     "react-detect-offline": "^2.4.4",

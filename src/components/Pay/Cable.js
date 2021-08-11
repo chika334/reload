@@ -40,10 +40,15 @@ function Cable(props) {
   const [errors, setErrors] = useState("");
   const [open, setOpen] = React.useState(false);
   const [smartCard, setSmartCard] = useState("");
-  const [selectDetails, setSelectDetails] = useState({});
+  const [selectDetails, setSelectDetails] = useState(null);
   const [email, setEmail] = useState("");
   const productDetails = useSelector((state) => state.someData.detail);
   const paymentIntent = useSelector((state) => state.paymentIntent);
+  const [verifiedAccount, setVerifiedAccount] = useState(null);
+  const [verifiedProducts, setVerifiedProducts] = useState(null);
+
+  console.log(verifiedAccount);
+  console.log(verifiedProducts);
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -63,12 +68,14 @@ function Cable(props) {
     }
   }, [error.error]);
 
+  console.log(selectDetails);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     const value = e.target.value;
     if (productDetails.productname === "Cable") {
-      if (productDetails.billerCode === "startimes") {
+      if (productDetails.billerCode === "STARTIMES") {
         const newValuesObj = {
           amount: `${selectDetails.Amount}`,
           channelRef: "web",
@@ -95,9 +102,9 @@ function Cable(props) {
         props.PaymentIntent(newValuesObj);
         // props.pay(true, "Cable");
         // props.verify("Cable", true);
-      } else if (productDetails.billerCode === "DSTV2") {
+      } else if (productDetails.billerCode === "DSTV") {
         const newValuesObj = {
-          amount: selectDetails.Amount.trim(),
+          amount: selectDetails.productAmount,
           channelRef: "web",
           description: "Cable",
           // paymentMethod: "billpayflutter",
@@ -105,26 +112,19 @@ function Cable(props) {
             value === "card" ? "billpayflutter" : "billpaycoralpay",
           productId: `${productDetails.productId}`,
           referenceValues: {
-            "Email Address": `${email}`,
-            // "Email Address": user.user.email,
-            "Select Package (Amount)": selectDetails.ItemType,
-            "Number of Months": "1",
             "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-            "Customer Number": selectDetails.Amount.trim(),
-            "Customer Details": `${verifiedUser.result.account.accountName}`,
+            "Email Address": `${email}`,
+            "Select Package (Amount)": selectDetails.productName,
           },
           references: [
+            "SmartCard Number",
             "Email Address",
             "Select Package (Amount)",
-            "Number of Months",
-            "SmartCard Number",
-            "Customer Number",
-            "Customer Details",
           ],
         };
 
         props.PaymentIntent(newValuesObj);
-      } else if (productDetails.billerCode === "GOTV2") {
+      } else if (productDetails.billerCode === "GOTV") {
         const newValuesObj = {
           amount: `${selectDetails.Amount.trim()}`,
           channelRef: "web",
@@ -163,19 +163,11 @@ function Cable(props) {
     }
   };
 
-  const handleRegRedirect = () => {
-    props.history.push("/reloadng/registration");
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   useEffect(() => {
     if (paymentIntent.success === true) {
       // pro
       setLoading(false);
-      const amount = selectDetails.Amount.trim();
+      let amount = selectDetails.productAmount;
       const detail = {
         amount: amount,
         email: email,
@@ -195,7 +187,12 @@ function Cable(props) {
   };
 
   const handleSelect = (name, value) => {
-    setSelectDetails(value);
+    const data = {
+      productName: name,
+      productAmount: value,
+    };
+
+    setSelectDetails(data);
   };
 
   const handleSmartCard = (e) => {
@@ -223,110 +220,40 @@ function Cable(props) {
     // }
   };
 
-  // console.log(productDetails);
-
   const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
 
-  const deal = Object.values(fieldsArray);
-  useEffect(() => {
-    deal.map((allData) => {
-      if (allData.text === "Product type") {
-        if (allData.select !== true) {
-          return setDisabled(false);
-        } else {
-          return setDisabled(true);
-        }
-      } else {
-        return setDisabled(false);
-      }
-    });
-  }, []);
+  // const deal = Object.values(fieldsArray);
+  // useEffect(() => {
+  //   deal.map((allData) => {
+  //     if (allData.text === "Product type") {
+  //       if (allData.select !== true) {
+  //         return setDisabled(false);
+  //       } else {
+  //         return setDisabled(true);
+  //       }
+  //     } else {
+  //       return setDisabled(false);
+  //     }
+  //   });
+  // }, []);
 
   const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
-
-  // console.log(productDetails);
-
-  const packages = JSON.parse(productDetails.detail.productvalue).field1
-    .options;
-
-  const fieldsOptions = [];
-  for (const key in packages) {
-    if (packages.hasOwnProperty(key)) {
-      var value = packages[key];
-      fieldsOptions.push(value);
-    }
-  }
-
-  // console.log(fieldsOptions);
-
-  const startimesOptions = JSON.parse(productDetails.detail.productvalue).field3
-    .options;
-
-  const fieldsStartimes = [];
-  for (const key in startimesOptions) {
-    if (startimesOptions.hasOwnProperty(key)) {
-      var value = startimesOptions[key];
-      fieldsStartimes.push(value);
-    }
-  }
-
-  const numberOfMonths = JSON.parse(productDetails.detail.productvalue).field2
-    .options;
-
-  const fieldsNumber = [];
-  for (const key in numberOfMonths) {
-    if (numberOfMonths.hasOwnProperty(key)) {
-      var value = numberOfMonths[key];
-      fieldsNumber.push(value);
-    }
-  }
 
   useEffect(() => {
     if (verifiedUser.verifySuccess === true) {
       setLoading(false);
+      setVerifiedProducts(verifiedUser.result.product);
+      setVerifiedAccount(verifiedUser.result.account);
       props.verify("Cable", true);
     }
   }, [verifiedUser.verifySuccess]);
 
-  // console.log(props);
-
-  // useEffect(() => {
-  //   props.clearVerified();
-  // }, []);
-
   return (
     <div className="property-details-area">
-      <div>
-        <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle id="alert-dialog-slide-title">
-            {"Welcome to reload.ng"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              Please sign-in to process payment.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              cancel
-            </Button>
-            <Button onClick={handleRegRedirect} color="primary">
-              ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
       {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
@@ -345,13 +272,11 @@ function Cable(props) {
             <div>
               {verifyUserdetails.onclick === false &&
               verifyUserdetails.name === "" ? (
-                verifyNumber.text === "GoTv Smart Card Number" ||
-                "SmartCard Number" ? (
+                verifyNumber.text === "SmartCard Number" ? (
                   <>
                     <div className="d-flex align-item-center justify-content-center">
                       <TextField
                         required
-                        // style={{ width: "50%" }}
                         className="inputSize"
                         label={verifyNumber.text}
                         name="smartCard"
@@ -386,135 +311,91 @@ function Cable(props) {
             </div>
           </div>
           <div>
-            <div>
-              {verifyUserdetails.onclick === true &&
-              verifyUserdetails.name === "Cable"
-                ? fieldsArray.slice(1).map(
-                    (allField, i) =>
-                      allField.select === true &&
-                      (allField.text === "Select Package (Amount)" ? (
-                        <div key={i}>
-                          <div className="d-flex align-item-center justify-content-center pt-3">
-                            <TextField
-                              // style={{ width: "50%" }}
-                              className="inputSize"
-                              required
-                              label={allField.text}
-                              name={allField.text}
-                              placeholder={`Enter ${allField.text}`}
-                              select
-                              type="text"
-                              // value={values[allField.text]}
-                              variant="outlined"
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            >
-                              <MenuItem>Select Data Type</MenuItem>
-                              {fieldsOptions.map((option, index) => {
-                                const detail = JSON.parse(option);
-                                // console.log(detail);
-                                return (
-                                  <MenuItem
-                                    key={index}
-                                    value={detail.ItemName}
-                                    onClick={(e) =>
-                                      handleSelect(allField.text, detail)
-                                    }
-                                  >
-                                    {detail.ItemName}
-                                  </MenuItem>
-                                );
-                              })}
-                            </TextField>
-                          </div>
-                        </div>
-                      ) : allField.text === "Number of Months" ? (
-                        <div
-                          key={i}
-                          className="d-flex align-item-center justify-content-center pt-3"
-                        >
-                          <TextField
-                            required
-                            // style={{ width: "50%" }}
-                            className="inputSize"
-                            label="Number of Months"
-                            name="months"
-                            // onChange={handleSmartCard}
-                            placeholder={`Enter Number of Months`}
-                            type="number"
-                            variant="outlined"
-                            value="1"
-                            disabled
-                          />
-                        </div>
-                      ) : allField.text === "Email" ? (
-                        <div
-                          key={i}
-                          className="d-flex align-item-center justify-content-center pt-3"
-                        >
-                          <TextField
-                            required
-                            // style={{ width: "50%" }}
-                            className="inputSize"
-                            label="Email"
-                            name="months"
-                            onChange={handleFieldChange}
-                            placeholder={`Enter Email Address`}
-                            type="email"
-                            variant="outlined"
-                            value="1"
-                            disabled
-                          />
-                        </div>
-                      ) : (
-                        allField.text === "Product " && (
-                          <div className="d-flex align-item-center justify-content-center pt-3">
-                            <TextField
-                              // style={{ width: "50%" }}
-                              className="inputSize"
-                              required
-                              label={allField.text}
-                              name={allField.text}
-                              placeholder={`Enter ${allField.text}`}
-                              select
-                              type="text"
-                              // value={values[allField.text]}
-                              variant="outlined"
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            >
-                              <MenuItem>Select Data Type</MenuItem>
-                              {fieldsStartimes.map((option, index) => {
-                                const detail = JSON.parse(option);
-                                console.log(detail);
-                                return (
-                                  <MenuItem
-                                    key={index}
-                                    value={detail.ItemName}
-                                    onClick={(e) =>
-                                      handleSelect(allField.text, detail)
-                                    }
-                                  >
-                                    {detail.ItemName}
-                                  </MenuItem>
-                                );
-                              })}
-                            </TextField>
-                          </div>
-                        )
-                      ))
-                  )
-                : ""}
-              {verifyUserdetails.onclick === true &&
-              verifyUserdetails.name === "Cable"
-                ? fieldsArray.slice(1).map((allFields, i) =>
-                    allFields.select === false &&
-                    allFields.text !== "Email Address" &&
-                    allFields.text !== "Customers Name" &&
-                    allFields.text !== "SmartCard Number" ? (
-                      // <>
+            {verifyUserdetails.onclick === true &&
+            verifyUserdetails.name === "Cable" ? (
+              <div>
+                <div>
+                  <div className="d-flex align-item-center justify-content-center">
+                    <div className="inputSize text-right allnew">
+                      <p>Account Name</p>
+                      <p
+                        style={{
+                          display: "flex",
+                          right: 0,
+                          marginLeft: "20px",
+                        }}
+                      >
+                        {verifiedAccount === null
+                          ? ""
+                          : verifiedAccount.accountName}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="d-flex align-item-center justify-content-center">
+                    <div className="inputSize text-right pt-3 allnew">
+                      <p>Account Number</p>
+                      <p
+                        className=""
+                        style={{
+                          display: "flex",
+                          right: 0,
+                          marginLeft: "20px",
+                        }}
+                      >
+                        {verifiedAccount === null
+                          ? ""
+                          : verifiedAccount.accountNumber}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* dropdown */}
+                <TextField
+                  className="inputSize pt-3"
+                  required
+                  label="Bouquet"
+                  // name={allField.text}
+                  placeholder={`Please Select Bouquet`}
+                  select
+                  type="text"
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                >
+                  <MenuItem>Select Data Type</MenuItem>
+                  {verifiedProducts === null
+                    ? ""
+                    : verifiedProducts.map((allData, index) => {
+                        return (
+                          <MenuItem
+                            key={index}
+                            value={allData.productName}
+                            onClick={(e) =>
+                              handleSelect(
+                                allData.productName,
+                                allData.productAmount
+                              )
+                            }
+                          >
+                            {allData.productName}
+                          </MenuItem>
+                        );
+                      })}
+                </TextField>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {/* Email address */}
+            {verifyUserdetails.onclick === true &&
+            verifyUserdetails.name === "Cable"
+              ? fieldsArray.slice(1).map((allFields, i) =>
+                  allFields.select === false &&
+                  allFields.text === "Email Address" ? (
+                    <>
                       <div
                         key={i}
                         className="d-flex align-item-center justify-content-center pt-3"
@@ -527,157 +408,96 @@ function Cable(props) {
                           name={allFields.text}
                           onChange={handleFieldChange}
                           placeholder={`Enter ${allFields.text}`}
-                          type={
-                            allFields.text === "Subscription Amount" ||
-                            allFields.text === "Amount"
-                              ? allFields.type
-                              : ""
-                          }
+                          type="email"
                           variant="outlined"
-                          InputProps={{
-                            startAdornment:
-                              allFields.text === "Subscription Amount" ||
-                              allFields.text === "Amount" ? (
-                                <InputAdornment position="start">
-                                  ₦
-                                </InputAdornment>
-                              ) : (
-                                ""
-                              ),
-                          }}
-                          disabled={
-                            allFields.text === "Subscription Amount" ||
-                            (allFields.text === "Amount" && disabled)
-                          }
-                          value={
-                            allFields.text === "Customer Name"
-                              ? verifiedUser.result.account.accountName
-                              : allFields.text === "Customer Number"
-                              ? verifiedUser.result.account.accountNumber
-                              : allFields.text === "Customer Details"
-                              ? verifiedUser.result.account.accountName
-                              : selectDetails.Amount === undefined
-                              ? ""
-                              : allFields.text === "Amount"
-                              ? selectDetails.Amount
-                              : allFields.text === "Subscription Amount"
-                              ? selectDetails.Amount
-                              : values[allFields.text]
-                          }
+                          value={email}
                         />
                       </div>
-                    ) : (
-                      ""
-                    )
+                    </>
+                  ) : (
+                    ""
                   )
-                : ""}
-              {verifyUserdetails.onclick === true &&
-              verifyUserdetails.name === "Cable"
-                ? fieldsArray.slice(1).map(
-                    (allFields, i) =>
-                      allFields.select === false &&
-                      allFields.text !== "Email Address" &&
-                      allFields.text === "Customers Name" && (
-                        // <>
-                        <div
-                          key={i}
-                          className="d-flex align-item-center justify-content-center pt-3"
-                        >
-                          <TextField
-                            required
-                            // style={{ width: "50%" }}
-                            className="inputSize"
-                            label={allFields.text}
-                            name={allFields.text}
-                            onChange={handleFieldChange}
-                            placeholder={`Enter ${allFields.text}`}
-                            type={
-                              allFields.text === "Customers Name"
-                                ? allFields.type
-                                : ""
-                            }
-                            disabled
-                            variant="outlined"
-                            value={
-                              allFields.text === "Customer Name"
-                                ? verifiedUser.result.account.accountName
-                                : allFields.text === "Customers Name"
-                                ? verifiedUser.result.account.accountName
-                                : values[allFields.text]
-                            }
-                          />
-                        </div>
-                      )
-                  )
-                : ""}
-              {verifyUserdetails.onclick === true &&
-              verifyUserdetails.name === "Cable"
-                ? fieldsArray.slice(1).map((allFields, i) =>
-                    allFields.select === false &&
-                    allFields.text === "Email Address" ? (
-                      <>
-                        <div
-                          key={i}
-                          className="d-flex align-item-center justify-content-center pt-3"
-                        >
-                          <TextField
-                            required
-                            // style={{ width: "50%" }}
-                            className="inputSize"
-                            label={allFields.text}
-                            name={allFields.text}
-                            onChange={handleFieldChange}
-                            placeholder={`Enter ${allFields.text}`}
-                            type="email"
-                            variant="outlined"
-                            value={email}
-                          />
-                        </div>
-                      </>
-                    ) : (
-                      ""
-                    )
-                  )
-                : ""}
-              {verifyUserdetails.onclick === true &&
-              verifyUserdetails.name === "Cable" ? (
-                <div className="ButtonSide">
-                  <div>
-                    <button
-                      onClick={(e) => handleSubmit(e)}
-                      value="card"
-                      type="submit"
-                      style={{
-                        backgroundColor: "#fda94f",
-                        color: "#000",
-                        fontSize: "12px",
-                        padding: "11px",
-                      }}
+                )
+              : ""}
+
+            {/* amount */}
+            {verifyUserdetails.onclick === true &&
+            verifyUserdetails.name === "Cable"
+              ? fieldsArray.slice(1).map((allFields, i) =>
+                  allFields.select === false &&
+                  allFields.text !== "Email Address" ? (
+                    // <>
+                    <div
+                      key={i}
+                      className="d-flex align-item-center justify-content-center pt-3"
                     >
-                      Proceed to Card
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      onClick={(e) => handleSubmit(e)}
-                      value="ussd"
-                      type="submit"
-                      style={{
-                        backgroundColor: "#fda94f",
-                        color: "#000",
-                        fontSize: "12px",
-                        padding: "11px",
-                      }}
-                    >
-                      Proceed to Ussd
-                    </button>
-                  </div>
+                      <TextField
+                        required
+                        // style={{ width: "50%" }}
+                        className="inputSize"
+                        label={allFields.text}
+                        name={allFields.text}
+                        // onChange={handleFieldChange}
+                        value={
+                          selectDetails === null
+                            ? ""
+                            : selectDetails.productAmount
+                        }
+                        placeholder={`Enter ${allFields.text}`}
+                        type="number"
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">₦</InputAdornment>
+                          ),
+                        }}
+                        disabled={disabled}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )
+                )
+              : ""}
+            {verifyUserdetails.onclick === true &&
+            verifyUserdetails.name === "Cable" ? (
+              <div className="ButtonSide">
+                <div>
+                  <button
+                    onClick={(e) => handleSubmit(e)}
+                    value="card"
+                    type="submit"
+                    style={{
+                      backgroundColor: "#fda94f",
+                      color: "#000",
+                      fontSize: "12px",
+                      padding: "11px",
+                    }}
+                  >
+                    Proceed to Card
+                  </button>
                 </div>
-              ) : (
-                ""
-              )}
-            </div>
+                <div>
+                  <button
+                    onClick={(e) => handleSubmit(e)}
+                    value="ussd"
+                    type="submit"
+                    style={{
+                      backgroundColor: "#fda94f",
+                      color: "#000",
+                      fontSize: "12px",
+                      padding: "11px",
+                    }}
+                  >
+                    Proceed to Ussd
+                  </button>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
+          {/* </div> */}
         </>
       )}
     </div>

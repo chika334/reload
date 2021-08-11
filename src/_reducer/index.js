@@ -20,6 +20,10 @@ import login_success_red from "./login_Success_red";
 import UssdSuccess from "./ussdSuccess";
 import Providers from "./Loan/providersRed";
 import Token from "./Loan/tokenLoan";
+import getOffers from "./Loan/getOffers";
+import getLoanData from "./Loan/getLoanDataRed";
+import acceptOffers from "./Loan/acceptLoan";
+import someLoanData from "./Loan/sendSomeLoanDataRed";
 
 export default combineReducers({
   authUser,
@@ -28,6 +32,10 @@ export default combineReducers({
   FinalPayment,
   Providers,
   Token,
+  someLoanData,
+  getOffers,
+  acceptOffers,
+  getLoanData,
   UssdSuccess,
   error,
   changePassword,

@@ -3,307 +3,323 @@ import sectiondata from "../../data/sections.json";
 import parse from "html-react-parser";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
-import { Button, Modal } from "@material-ui/core";
+import { Button, Modal, TextField, MenuItem } from "@material-ui/core";
 import { showLoader, hideLoader } from "../../_action/loading";
 import { someData } from "../../_action/passingData";
-import { makeStyles } from "@material-ui/core/styles";
 import { interswitchToken } from "../../_action/Loan/token";
 import { interswitchProvider } from "../../_action/Loan/providers";
-
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
+import { makeStyles } from "@material-ui/core/styles";
+import { BankCodes } from "../jsonData/BankCodes";
+import { getOffer } from "../../_action/Loan/getOffers";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+import Table from "../Table/index";
+import { getLoanData } from "../../_action/Loan/getLoanData";
+import { someloanData } from "../../_action/Loan/sendSomeLoanData";
+import "../Table/table.scss";
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: "40ch",
   },
 }));
 
-function Property(props) {
-  const history = useHistory();
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+function Property({ breakOn = "medium" }) {
   const classes = useStyles();
+  const history = useHistory();
   const dispatch = useDispatch();
-  const [modalStyle] = React.useState(getModalStyle);
-  const [modal, setModal] = useState(false);
-  const getProducts = useSelector((state) => state.products);
-  // const someData
-  const [productData, setProductData] = useState(
-    getProducts.listProducts === null ? "" : getProducts.listProducts
-  );
-
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const token = useSelector((state) => state.Token);
+  const getOfferResult = useSelector((state) => state.getOffers);
+  const [offerData, setOfferData] = useState(null);
   const Providers = useSelector((state) => state.Providers);
+  const [bankDetails, setBankDetails] = useState();
+  // const [providersDetails, setProvidersDetails] = useState(null);
+  // const [offerId, setOfferId] = useState(null);
+  const [getData, setGetData] = useState({
+    amount: "",
+    serviceType: "Money",
+    phone: "",
+    providerCode: "",
+  });
 
-  // console.log(token.tokenInterSwitch);
-  // console.log(Providers);
+  let tableClass = "table-container__table";
 
-  // useEffect(() => {
-  // dispatch(interswitchToken());
-  // });
+  if (breakOn === "small") {
+    tableClass += " table-container__table--break-sm";
+  } else if (breakOn === "medium") {
+    tableClass += " table-container__table--break-md";
+  } else if (breakOn === "large") {
+    tableClass += " table-container__table--break-lg";
+  }
 
-  // dispatch(interswitchToken());
-  // dispatch(interswitchProvider(localStorage.access_token));
+  const handleChange = (e, data) => {
+    const newValues = { ...getData };
+    newValues[data] = e.target.value;
 
-  // const handlePay = (details) => {
-  //   // console.log(details.otherData.billerCode);
-  //   if (details.otherData.billerCode === null) {
-  //     setModal(true);
-  //   } else {
-  //     if (
-  //       details.otherData.billerCode === "DSTV2" ||
-  //       details.otherData.billerCode === "startimes" ||
-  //       details.otherData.billerCode === "GOTV2" ||
-  //       details.otherData.billerCode === "KADUNA_PREPAID" ||
-  //       details.otherData.billerCode === "KANO_PREPAID" ||
-  //       details.otherData.billerCode === "ekdc prepaid" ||
-  //       details.otherData.billerCode === "JOS_PREPAID" ||
-  //       details.otherData.billerCode === "SMILE"
-  //     ) {
-  //       setModal(true);
-  //     } else {
-  //       props.showLoader();
-  //       setTimeout(() => {
-  //         props.hideLoader();
-  //       }, 3000);
-  //       getProducts.listProducts === null
-  //         ? ""
-  //         : getProducts.listProducts.forEach((detail) => {
-  //             if (
-  //               details.otherData.productId.productname ===
-  //               detail.productId.productname
-  //             ) {
-  //               setTimeout(() => {
-  //                 dispatch(hideLoader());
-  //               }, 2000);
-  //               const data = {
-  //                 detail,
-  //                 productname: detail.productId.description,
-  //                 productId: details.otherData.productId.id,
-  //                 billerCode: detail.billerCode,
-  //               };
-  //               dispatch(someData(data));
-  //               let path = `/reloadng/product-details`;
-  //               history.push({
-  //                 pathname: path,
-  //                 search: `product=${detail.productId.description}`,
-  //               });
-  //             }
-  //           });
-  //     }
-  //   }
-  // };
+    setGetData(newValues);
+  };
 
   const handleClose = () => {
-    setModal(false);
+    setOpen(false);
   };
 
-  const handleBtn = (e) => {
-    let word = e.target.value;
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    if (word === "*") {
-      setProductData(
-        getProducts.listProducts === null ? "" : getProducts.listProducts
-      );
-    } else if (word === "Airtime") {
-      const filtered =
-        getProducts.listProducts === null
-          ? []
-          : getProducts.listProducts.filter(
-              (item) => item.productId.description === "Airtime"
-            );
-      setProductData(filtered);
-    } else if (word === "Data") {
-      const filtered =
-        getProducts.listProducts === null
-          ? []
-          : getProducts.listProducts.filter(
-              (item) => item.productId.description === "Data"
-            );
-      setProductData(filtered);
-    } else if (word === "Cable") {
-      const filtered =
-        getProducts.listProducts === null
-          ? []
-          : getProducts.listProducts.filter(
-              (item) => item.productId.description === "Cable"
-            );
-      setProductData(filtered);
-    } else if (word === "Electricity") {
-      const filtered =
-        getProducts.listProducts === null
-          ? []
-          : getProducts.listProducts.filter(
-              (item) =>
-                item.productId.description === "Electricity Prepaid (IKEDC)" ||
-                item.productId.description === "Electricity Prepaid (EKEDC)" ||
-                item.productId.description === "Electricity Prepaid (AEDC)" ||
-                item.productId.description === "Electricity Prepaid (KAEDCO)" ||
-                item.productId.description === "Electricity Prepaid (KEDCO)" ||
-                item.productId.description === "Electricity Prepaid (phed)" ||
-                item.productId.description === "Electricity Prepaid (JED)"
-            );
-      setProductData(filtered);
-    } else if (word === "Exams") {
-      const filtered =
-        getProducts.listProducts === null
-          ? []
-          : getProducts.listProducts.filter(
-              (item) => item.productId.description === "Exams"
-            );
-      setProductData(filtered);
-    } else if (word === "Loan") {
-      history.push("/reloadng/loan");
+    setLoading(true);
+    dispatch(getLoanData(getData));
+    dispatch(getOffer(getData));
+  };
+
+  useEffect(() => {
+    if (getOfferResult.success) {
+      setTimeout(() => {
+        setLoading(false);
+        setOpen(true);
+        setOfferData(getOfferResult.data);
+      }, 1000);
     }
-  };
+  }, [getOfferResult.success]);
 
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <div className="p-5">
-        <h4>Product not available at the moment</h4>
-      </div>
-    </div>
-  );
+  console.log(open);
+
+  const handleOffer = (e, data) => {
+    console.log(data);
+    setOpen(false);
+    setLoading(true);
+    const someData = {
+      offerId: data,
+      initalData: getData,
+    };
+
+    dispatch(someloanData(someData));
+    // setOfferId(data);
+    setTimeout(() => {
+      setLoading(false);
+      history.push({
+        pathname: "/reloadng/loan/accept-loan-offer",
+      });
+    }, 500);
+  };
 
   return (
     <div>
-      <Modal
-        open={modal}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
-      <div className="property-area pd-top-100">
-        <div className="container">
-          <div className="row custom-gutter">
-            <div className="col-lg-12">
-              <div className="property-filter-menu-wrap">
-                <div className="property-filter-menu portfolio-filter text-center">
-                  <button
-                    style={{ backgroundColor: "#fda94f", color: "#000" }}
-                    value="*"
-                    onClick={handleBtn}
-                    className="active"
-                  >
-                    All Properties
-                  </button>
-                  <button
-                    style={{ backgroundColor: "#fda94f", color: "#000" }}
-                    value="Airtime"
-                    onClick={handleBtn}
-                  >
-                    Airtime
-                  </button>
-                  <button
-                    style={{ backgroundColor: "#fda94f", color: "#000" }}
-                    value="Data"
-                    onClick={handleBtn}
-                  >
-                    Data
-                  </button>
-                  <button
-                    style={{ backgroundColor: "#fda94f", color: "#000" }}
-                    value="Cable"
-                    onClick={handleBtn}
-                  >
-                    Cable
-                  </button>
-                  <button
-                    style={{ backgroundColor: "#fda94f", color: "#000" }}
-                    value="Electricity"
-                    onClick={handleBtn}
-                  >
-                    Electricity
-                  </button>
-                  <button
-                    style={{ backgroundColor: "#fda94f", color: "#000" }}
-                    value="Loan"
-                    onClick={handleBtn}
-                  >
-                    Electricity
-                  </button>
-                  <button
-                    style={{ backgroundColor: "#fda94f", color: "#000" }}
-                    value="Exams"
-                    onClick={handleBtn}
-                  >
-                    Exams
-                  </button>
-                </div>
+      <div>
+        {open === true ? (
+          <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            maxWidth="lg"
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle id="alert-dialog-slide-title">
+              {"Select an offer"}
+            </DialogTitle>
+            <DialogContent>
+              <div className="table-container">
+                <table className={tableClass}>
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Amount Offered</th>
+                      <th>interest</th>
+                      <th>Amount Payable</th>
+                      <th>Tenure</th>
+                      <th>Expiry Date</th>
+                      <th>Tax</th>
+                      <th>Terms</th>
+                      <th>##</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {getOfferResult.data.offers.map((allData, index) => {
+                      return (
+                        <tr key={index}>
+                          <td data-heading="Id">{index + 1}</td>
+                          <td data-heading="Amount Offered">
+                            {allData.amountOffered}
+                          </td>
+                          <td data-heading="interest">{allData.interest}</td>
+                          <td data-heading="Amount Payable">
+                            {allData.amountPayable}
+                          </td>
+                          <td data-heading="Tenure">{allData.tenure}</td>
+                          <td data-heading="Expiry Date">
+                            {allData.expiryDate === undefined
+                              ? "no value"
+                              : allData.expiryDate}
+                          </td>
+                          <td data-heading="Tax">
+                            {allData.fees === undefined
+                              ? "no value"
+                              : allData.fees.map((details) => details.amount)}
+                          </td>
+                          <td className="terms" data-heading="Terms">
+                            {allData.terms === undefined
+                              ? "no value"
+                              : allData.terms}
+                          </td>
+                          <td data-heading="##">
+                            <button
+                              onClick={(e) => handleOffer(e, allData.offerId)}
+                              type="submit"
+                              style={{
+                                backgroundColor: "#fda94f",
+                                color: "#000",
+                                fontSize: "12px",
+                                padding: "9px",
+                              }}
+                            >
+                              Accept Offer
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ) : (
+          ""
+        )}
+      </div>
+      <div className="property-details-area">
+        {loading === true ? (
+          <div className="preloader" id="preloader">
+            <div className="preloader-inner">
+              <div className="spinner">
+                <div className="dot1"></div>
+                <div className="dot2"></div>
               </div>
             </div>
           </div>
-          {/*Products filter Start*/}
-          <div className="property-filter-area row custom-gutter">
-            {/* <div className="gallery-sizer col-1" /> */}
-            {productData !== "" &&
-              productData.map((item, i) => (
-                // console.log(item)
-                <div
-                  key={i}
-                  className={
-                    "rld-filter-item  col-lg-3 col-sm-6 " +
-                    item.productId.description
-                  }
-                >
-                  <div className="single-feature">
-                    <div className="details">
-                      <img
-                        src={item.productId.logourl}
-                        style={{ width: "30%" }}
-                        alt="img"
-                      />
-                      <h6 className="title readeal-top">
-                        <Button
-                          disabled
-                          style={{ color: "#fda94f" }}
-                          to={item.url}
-                        >
-                          {item.productId.productname}
-                        </Button>
-                      </h6>
-
-                      <ul className="info-list">
-                        <li></li>
-                      </ul>
-                      <ul className="contact-list">
-                        <li className="readeal-top">
+        ) : (
+          <>
+            <div className="bg-gray pd-top-70 pd-bottom-30">
+              <div className="container d-flex justify-content-center">
+                {/* <div className="row custom-gutter"> */}
+                <div className="col-lg-6">
+                  <div className="property-filter-area custom-gutter">
+                    <div className="single-feature bg-light">
+                      <form onSubmit={handleSubmit} className="pb-5">
+                        <div className="mt-5">
+                          <TextField
+                            label="Enter Loan Amount"
+                            onChange={(e) => handleChange(e, "amount")}
+                            value={getData["amount"]}
+                            className={classes.textField}
+                          />
+                        </div>
+                        <div className="mt-5">
+                          <TextField
+                            label="Enter Phone Number"
+                            onChange={(e) => handleChange(e, "phone")}
+                            value={getData["phone"]}
+                            className={classes.textField}
+                          />
+                        </div>
+                        {/* <div className="mt-5">
+                    <TextField
+                      label="Enter Account Number"
+                      value=""
+                      onChange={handleChange("accountNumber")}
+                      className={classes.textField}
+                    />
+                  </div> */}
+                        {/* <div className="mt-5">
+                    <TextField
+                      id="standard-select-currency"
+                      select
+                      label="Select"
+                      value={bankDetails}
+                      onChange={handleChange("bankDetails")}
+                      className={classes.textField}
+                      helperText="Please select your Bank"
+                    >
+                      {BankCodes.ListBanks.map((option) => (
+                        // console.log(option)
+                        <MenuItem key={option.bankCode} value={option.bankName}>
+                          {option.bankName}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </div> */}
+                        <div className="mt-5">
+                          <TextField
+                            id="standard-select-currency"
+                            select
+                            label="Select"
+                            value={getData["providerCode"] || ""}
+                            onChange={(e) => handleChange(e, "providerCode")}
+                            className={classes.textField}
+                            helperText="Please select your Bank"
+                          >
+                            {Providers.providers === null
+                              ? ""
+                              : Providers.providers.providers.map((option) => (
+                                  <MenuItem
+                                    key={option.code}
+                                    value={option.code}
+                                  >
+                                    {option.name}
+                                  </MenuItem>
+                                ))}
+                          </TextField>
+                        </div>
+                        <div className="mt-5">
                           <Button
-                            // onClick={(e) => handlePay({ otherData: item })}
+                            type="submit"
                             style={{
                               backgroundColor: "#fda94f",
                               color: "#000",
                             }}
+                            onSubmit={handleSubmit}
                           >
-                            Buy
+                            Submit
                           </Button>
-                        </li>
-                      </ul>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
-              ))}
-          </div>
-        </div>
+                {/* </div> */}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 }
 
 export default withRouter(
-  connect(null, { showLoader, hideLoader, someData })(Property)
+  connect(null, {
+    showLoader,
+    hideLoader,
+    someData,
+    getOffer,
+    getLoanData,
+    someloanData,
+  })(Property)
 );

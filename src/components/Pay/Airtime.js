@@ -9,11 +9,6 @@ import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../_action/Payment/paymentButtons";
 import "../../css/input.css";
 import { loginRediectSuccess } from "../../_action/LoginRedirect";
-// import Dialog from "@material-ui/core/Dialog";
-// import DialogActions from "@material-ui/core/DialogActions";
-// import DialogContent from "@material-ui/core/DialogContent";
-// import DialogContentText from "@material-ui/core/DialogContentText";
-// import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -63,8 +58,6 @@ function NewForm(props) {
     setSelectDetails(value);
   };
 
-  // console.log(paymentMethod);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log(e.target.value);
@@ -72,8 +65,6 @@ function NewForm(props) {
     setLoading(true);
     if (
       productDetails.productname === "Airtime"
-      // paymentMethod !== ""
-      // localStorage.token !== undefined
     ) {
       if (value === "card") {
         setDisabled(true);
@@ -180,22 +171,6 @@ function NewForm(props) {
     }
   };
 
-  // console.log(paymentMethod);
-
-  // const handlePayment = (paymentMethods) => {
-  //   const card = "billpayflutter";
-  //   const ussd = "billpaycoralpay";
-  //   if (paymentMethods === "card") {
-  //     setPaymentMethod(card);
-  //   } else {
-  //     setPaymentMethod(ussd);
-  //   }
-
-  //   setTimeout(() => {
-  //     handleSubmit();
-  //   }, 1000);
-  // };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -238,39 +213,8 @@ function NewForm(props) {
 
   console.log(paymentMethod);
 
-  // const handleRegRedirect = () => {
-  //   props.history.push("/reloadng/registration");
-  // };
-
   return (
     <div>
-      {/* <div>
-        <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle id="alert-dialog-slide-title">
-            {"Welcome to reload.ng"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              Please sign-in to process payment.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              cancel
-            </Button>
-            <Button onClick={handleRegRedirect} color="primary">
-              ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div> */}
       {loading === true ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">

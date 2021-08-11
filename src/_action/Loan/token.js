@@ -1,52 +1,53 @@
-import { INTERSWITCH_TOKEN } from "../types";
 import axios from "axios";
 import qs from "qs";
+import { INTERSWITCH_TOKEN, INTERSWITCH_TOKEN_FAILED } from "../types";
+import { Base64 } from "js-base64";
+var btoa = require("btoa");
 
 export const interswitchToken = () => (dispatch) => {
   const client_id = process.env.REACT_APP_CLIENT_ID;
   const secretKey = process.env.REACT_APP_SECRET_KEY;
 
-  const userToken = `${client_id}:${secretKey}`;
-  // const base64 = Buffer.from(userToken).toString("base64");
+  const userDetails = `${client_id}:${secretKey}`;
+
+  // const b64 = Base64.btoa(userDetails);
+  const b64 = Buffer.from(userDetails).toString("base64");
 
   var details = {
     grant_type: "client_credentials",
     scope: "profile",
   };
 
-  const body = {};
-
-  // var formBody = [];
-  // for (var property in details) {
-  //   var encodedKey = encodeURIComponent(property);
-  //   var encodedValue = encodeURIComponent(details[property]);
-  //   formBody.push(encodedKey + "=" + encodedValue);
-  // }
-  // formBody = formBody.join("&");
-
-  // console.log(base64);
   const config = {
-    "Content-Type": "application/x-www-form-urlencoded",
-    // Authorization: `Basic ${base64}`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${b64}`,
+    },
   };
 
-  axios({
-    method: "post",
-    url: `${process.env.REACT_APP_API_INTERSWITCH}/passport/oauth/token`,
-    data: qs.stringify(details),
-    auth: {
-      username: client_id,
-      password: secretKey,
-    },
-    // body: body,
-    // data: formBody,
-    headers: config,
-  })
+  // console.log(b64);
+  axios
+    .post(
+      `${process.env.REACT_APP_API_INTERSWITCH}/passport/oauth/token`,
+      qs.stringify(details),
+      config
+    )
     .then((res) =>
       dispatch({
         type: INTERSWITCH_TOKEN,
         payload: res.data,
       })
     )
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      dispatch(
+        returnErrors(
+          err.response,
+          err.response.status,
+          "INTERSWITCH_TOKEN_FAILED"
+        )
+      );
+      dispatch({
+        type: INTERSWITCH_TOKEN_FAILED,
+      });
+    });
 };

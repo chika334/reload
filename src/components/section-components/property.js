@@ -48,12 +48,12 @@ function Property(props) {
       setModal(true);
     } else {
       if (
-        details.otherData.billerCode === "DSTV2" ||
-        details.otherData.billerCode === "startimes" ||
-        details.otherData.billerCode === "GOTV2" ||
+        // details.otherData.billerCode === "DSTV2" ||
+        // details.otherData.billerCode === "startimes" ||
+        // details.otherData.billerCode === "GOTV2" ||
         details.otherData.billerCode === "KADUNA_PREPAID" ||
         details.otherData.billerCode === "KANO_PREPAID" ||
-        details.otherData.billerCode === "ekdc prepaid" ||
+        // details.otherData.billerCode === "ekdc prepaid" ||
         details.otherData.billerCode === "JOS_PREPAID" ||
         details.otherData.billerCode === "SMILE"
       ) {

@@ -94,7 +94,24 @@ export const USSD_SUCCESS = "USSD_SUCCESS";
 
 // inteswitch token
 export const INTERSWITCH_TOKEN = "INTERSWITCH_TOKEN";
+export const INTERSWITCH_TOKEN_FAILED = "INTERSWITCH_TOKEN_FAILED";
 
 // interswitch provider
 export const INTERSWITCH_PROVIDER = "INTERSWITCH_PROVIDER";
 export const PROVIDERS_LOADING = "PROVIDERS_LOADING";
+export const INTERSWITCH_PTOVIDERS_FAILED = "INTERSWITCH_PTOVIDERS_FAILED";
+
+// get offers
+export const GET_OFFER_LOADING = "GET_OFFER_LOADING";
+export const GET_OFFER_SUCCESS = "GET_OFFER_SUCCESS";
+
+// get loan data
+export const GET_LOAN_DATA = "GET_LOAN_DATA";
+export const GET_LOAN_OFFERS_FAILED = "GET_LOAN_OFFERS_FAILED";
+
+// ACCEPT LOAN OFFERS
+export const ACCEPT_LOAN_OFFERS = "ACCEPT_LOAN_OFFERS";
+export const ACCEPT_LOAN_FAILED = "ACCEPT_LOAN_FAILED";
+
+// send some loan data
+export const SOME_LOAN_DATA = "SOME_LOAN_DATA";

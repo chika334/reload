@@ -26,7 +26,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function Electricity(props) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  // const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const user = useSelector((state) =>
     state.authUser.user === null ? "" : state.authUser.user
   );
@@ -139,7 +139,7 @@ function Electricity(props) {
       };
 
       props.PaymentIntent(newValuesObj);
-    } else if (productDetails.billerCode === "ekdc prepaid") {
+    } else if (productDetails.billerCode === "PHCNEKO") {
       const newValuesObj = {
         amount: `${amount}`,
         channelRef: "web",
@@ -148,10 +148,9 @@ function Electricity(props) {
         paymentMethod: value === "card" ? "billpayflutter" : "billpaycoralpay",
         productId: `${productDetails.productId}`,
         referenceValues: {
+          accountNumber: `${verifiedUser.result.account.accountNumber}`,
           "Email Address": `${email}`,
-          // "Email Address": user.user.email,
           "Account Name": `${verifiedUser.result.account.accountName}`,
-          ProductCode: `${verifiedUser.result.account.accountNumber}`,
         },
         references: ["Email Address", "Account Name", "ProductCode"],
       };
@@ -291,7 +290,7 @@ function Electricity(props) {
 
   return (
     <div className="property-details-area">
-      <div>
+      {/* <div>
         <Dialog
           open={open}
           TransitionComponent={Transition}
@@ -317,7 +316,7 @@ function Electricity(props) {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </div> */}
       {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">

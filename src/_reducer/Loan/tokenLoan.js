@@ -1,4 +1,7 @@
-import { INTERSWITCH_TOKEN } from "../../_action/types";
+import {
+  INTERSWITCH_TOKEN,
+  INTERSWITCH_TOKEN_FAILED,
+} from "../../_action/types";
 
 const initialState = {
   loading: false,
@@ -15,6 +18,11 @@ const Token = (state = initialState, action) => {
         loading: false,
         success: true,
         tokenInterSwitch: action.payload.access_token,
+      };
+    case INTERSWITCH_TOKEN_FAILED:
+      return {
+        ...state,
+        success: false,
       };
     default:
       return state;

@@ -47,18 +47,19 @@ function Property(props) {
     if (details.otherData.billerCode === null) {
       setModal(true);
     } else {
-      if (
-        // details.otherData.billerCode === "DSTV2" ||
-        // details.otherData.billerCode === "startimes" ||
-        // details.otherData.billerCode === "GOTV2" ||
-        details.otherData.billerCode === "KADUNA_PREPAID" ||
-        details.otherData.billerCode === "KANO_PREPAID" ||
-        // details.otherData.billerCode === "ekdc prepaid" ||
-        details.otherData.billerCode === "JOS_PREPAID" ||
-        details.otherData.billerCode === "SMILE"
-      ) {
-        setModal(true);
-      } else {
+      // if (
+      //   // details.otherData.billerCode === "DSTV2" ||
+      //   // details.otherData.billerCode === "startimes" ||
+      //   // details.otherData.billerCode === "GOTV2" ||
+      //   // details.otherData.billerCode === "KADUNA_PREPAID" ||
+      //   // details.otherData.billerCode === "KANO_PREPAID" ||
+      //   // // details.otherData.billerCode === "ekdc prepaid" ||
+      //   // details.otherData.billerCode === "JOS_PREPAID" 
+      //   // ||
+      //   // details.otherData.billerCode === "SMILE"
+      // ) {
+      //   setModal(true);
+      // } else {
         props.showLoader();
         setTimeout(() => {
           props.hideLoader();
@@ -80,14 +81,14 @@ function Property(props) {
                   billerCode: detail.billerCode,
                 };
                 dispatch(someData(data));
-                let path = `/reloadng/product-details`;
+                let path = `/product-details`;
                 history.push({
                   pathname: path,
-                  search: `product=${detail.productId.description}`,
+                  // search: `product=${detail.productId.description}`,
                 });
               }
             });
-      }
+      // }
     }
   };
 
@@ -151,7 +152,7 @@ function Property(props) {
       setProductData(filtered);
     } else if (word === "Loan") {
       // alert("Work in process")
-      history.push("/reloadng/loan");
+      history.push("/loan");
     }
   };
 

@@ -7,7 +7,7 @@ export default function printReceipt() {
   const componentRef = useRef();
 
   const handleBack = () => {
-    window.location.href = "/reloadng/products";
+    window.location.href = "/products";
   };
   return (
     <div>

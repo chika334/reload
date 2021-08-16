@@ -2,7 +2,7 @@ import axios from "axios";
 import qs from "qs";
 import { INTERSWITCH_TOKEN, INTERSWITCH_TOKEN_FAILED } from "../types";
 import { Base64 } from "js-base64";
-var btoa = require("btoa");
+import { returnErrors } from "../errorAction";
 
 export const interswitchToken = () => (dispatch) => {
   const client_id = process.env.REACT_APP_CLIENT_ID;
@@ -10,7 +10,6 @@ export const interswitchToken = () => (dispatch) => {
 
   const userDetails = `${client_id}:${secretKey}`;
 
-  // const b64 = Base64.btoa(userDetails);
   const b64 = Buffer.from(userDetails).toString("base64");
 
   var details = {
@@ -25,7 +24,6 @@ export const interswitchToken = () => (dispatch) => {
     },
   };
 
-  // console.log(b64);
   axios
     .post(
       `${process.env.REACT_APP_API_INTERSWITCH}/passport/oauth/token`,

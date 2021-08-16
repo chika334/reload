@@ -65,9 +65,8 @@ function Register(props) {
       if (user.isRegister === true && localStorage.token) {
         props.clearErrors();
         props.regRedirect();
-        // props.history.push("/reloadng/registration");
-        window.location.href = "/reloadng";
-        // ShowModal();
+        // props.history.push("/registration");
+        window.location.href = "/";
       } else {
         props.hideLoader();
       }

@@ -21,6 +21,7 @@ import Table from "../Table/index";
 import { getLoanData } from "../../_action/Loan/getLoanData";
 import { someloanData } from "../../_action/Loan/sendSomeLoanData";
 import "../Table/table.scss";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +50,8 @@ function Property({ breakOn = "medium" }) {
   const [offerData, setOfferData] = useState(null);
   const Providers = useSelector((state) => state.Providers);
   const [bankDetails, setBankDetails] = useState();
+  const [error, setError] = useState(null);
+  const errors = useSelector((state) => state.error);
   // const [providersDetails, setProvidersDetails] = useState(null);
   // const [offerId, setOfferId] = useState(null);
   const [getData, setGetData] = useState({
@@ -67,6 +70,13 @@ function Property({ breakOn = "medium" }) {
   } else if (breakOn === "large") {
     tableClass += " table-container__table--break-lg";
   }
+
+  useEffect(() => {
+    if (errors.id === "GET_LOAN_OFFERS_FAILED") {
+      setLoading(false);
+      setError(errors.message.data.responseMessage);
+    }
+  }, [errors.error === true]);
 
   const handleChange = (e, data) => {
     const newValues = { ...getData };
@@ -89,15 +99,15 @@ function Property({ breakOn = "medium" }) {
 
   useEffect(() => {
     if (getOfferResult.success) {
+      setLoading(false);
       setTimeout(() => {
-        setLoading(false);
         setOpen(true);
         setOfferData(getOfferResult.data);
       }, 1000);
     }
   }, [getOfferResult.success]);
 
-  console.log(open);
+  // console.log(open);
 
   const handleOffer = (e, data) => {
     console.log(data);
@@ -113,7 +123,7 @@ function Property({ breakOn = "medium" }) {
     setTimeout(() => {
       setLoading(false);
       history.push({
-        pathname: "/reloadng/loan/accept-loan-offer",
+        pathname: "/loan/accept-loan-offer",
       });
     }, 500);
   };
@@ -223,6 +233,11 @@ function Property({ breakOn = "medium" }) {
                   <div className="property-filter-area custom-gutter">
                     <div className="single-feature bg-light">
                       <form onSubmit={handleSubmit} className="pb-5">
+                        {error !== null ? (
+                          <Alert severity="error">{error}</Alert>
+                        ) : (
+                          ""
+                        )}
                         <div className="mt-5">
                           <TextField
                             label="Enter Loan Amount"
@@ -239,32 +254,6 @@ function Property({ breakOn = "medium" }) {
                             className={classes.textField}
                           />
                         </div>
-                        {/* <div className="mt-5">
-                    <TextField
-                      label="Enter Account Number"
-                      value=""
-                      onChange={handleChange("accountNumber")}
-                      className={classes.textField}
-                    />
-                  </div> */}
-                        {/* <div className="mt-5">
-                    <TextField
-                      id="standard-select-currency"
-                      select
-                      label="Select"
-                      value={bankDetails}
-                      onChange={handleChange("bankDetails")}
-                      className={classes.textField}
-                      helperText="Please select your Bank"
-                    >
-                      {BankCodes.ListBanks.map((option) => (
-                        // console.log(option)
-                        <MenuItem key={option.bankCode} value={option.bankName}>
-                          {option.bankName}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </div> */}
                         <div className="mt-5">
                           <TextField
                             id="standard-select-currency"
@@ -303,7 +292,6 @@ function Property({ breakOn = "medium" }) {
                     </div>
                   </div>
                 </div>
-                {/* </div> */}
               </div>
             </div>
           </>

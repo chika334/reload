@@ -8,6 +8,7 @@ import { DataOptionSelect } from "../../components/jsonData/DataSelectOption";
 import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../_action/Payment/paymentButtons";
 import "../../css/input.css";
+import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
 import { loginRediectSuccess } from "../../_action/LoginRedirect";
 import Slide from "@material-ui/core/Slide";
 
@@ -18,6 +19,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function NewForm(props) {
   const dispatch = useDispatch();
   const [disabled, setDisabled] = useState(false);
+  const [disabledCard, setDisabledCard] = useState(false);
+  const [disabledUssd, setDisabledUssd] = useState(false);
+  const [buttonValue, setButtonValue] = useState(null);
   const verifyDetails = useSelector((state) => state.verify);
   const [verifyEnabled, setVerifiedEnabled] = useState(false);
   const paymentIntent = useSelector((state) => state.paymentIntent);
@@ -58,19 +62,21 @@ function NewForm(props) {
     setSelectDetails(value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // console.log(e.target.value);
-    const value = e.target.value;
-    setLoading(true);
-    if (
-      productDetails.productname === "Airtime"
-    ) {
-      if (value === "card") {
-        setDisabled(true);
-      } else if (value === "ussd") {
-        setDisabled(true);
-      }
+  const handleSubmit = (value) => {
+    setButtonValue(value);
+    if (value === "FLUTTERWAVE") {
+      setDisabledCard(true);
+    } else if (value === "USSD") {
+      setDisabledUssd(true);
+    }
+
+    // setLoading(true);
+    if (productDetails.productname === "Airtime") {
+      // if (value === "card") {
+      //   setDisabled(true);
+      // } else if (value === "ussd") {
+      //   setDisabled(true);
+      // }
 
       if (productDetails.billerCode === "airtel") {
         setPaymentMethod(value);
@@ -83,7 +89,7 @@ function NewForm(props) {
             description: "Airtime",
             email: `${smartCard["Email"]}`,
             paymentMethod:
-              value === "card" ? "billpayflutter" : "billpaycoralpay",
+              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -106,7 +112,7 @@ function NewForm(props) {
             email: `${smartCard["Email"]}`,
             description: "Airtime",
             paymentMethod:
-              value === "card" ? "billpayflutter" : "billpaycoralpay",
+              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -129,7 +135,7 @@ function NewForm(props) {
             description: "Airtime",
             email: `${smartCard["Email"]}`,
             paymentMethod:
-              value === "card" ? "billpayflutter" : "billpaycoralpay",
+              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -152,7 +158,7 @@ function NewForm(props) {
             email: `${smartCard["Email"]}`,
             description: "Airtime",
             paymentMethod:
-              value === "card" ? "billpayflutter" : "billpaycoralpay",
+              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -184,6 +190,8 @@ function NewForm(props) {
         amount: Amount,
         email: `${smartCard["Email"]}`,
         // email: user.user.email,
+        product: productDetails.productname,
+        buttonClick: buttonValue,
         transRef: paymentIntent.detail.transRef,
         customerName: `${smartCard["Phone Number"]}`,
       };
@@ -311,36 +319,74 @@ function NewForm(props) {
             </div>
             <div className="ButtonSide">
               <div>
-                <button
-                  disabled={disabled}
-                  onClick={(e) => handleSubmit(e)}
-                  type="submit"
-                  value="card"
-                  style={{
-                    backgroundColor: "#fda94f",
-                    color: "#000",
-                    fontSize: "12px",
-                    padding: "9px",
-                  }}
-                >
-                  Proceed with Card
-                </button>
+                {disabledCard === true ? (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.href = `/product-details?${productDetails.productname}`;
+                      // state: productDetails.productname,
+                      // });
+                    }}
+                  >
+                    Go Back
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // console.log(payment);
+                      handleSubmit(FLUTTERWAVE_KEY);
+                    }}
+                    type="submit"
+                    style={{
+                      backgroundColor: "#fda94f",
+                      cursor: disabledUssd === true ? "not-allowed" : "pointer",
+                      color: "#000",
+                      fontSize: "12px",
+                      padding: "11px",
+                    }}
+                    disabled={disabledUssd}
+                  >
+                    Proceed to Card
+                  </button>
+                )}
               </div>
               <div>
-                <button
-                  disabled={disabled}
-                  onClick={(e) => handleSubmit(e)}
-                  value="ussd"
-                  type="submit"
-                  style={{
-                    backgroundColor: "#fda94f",
-                    color: "#000",
-                    fontSize: "12px",
-                    padding: "9px",
-                  }}
-                >
-                  Proceed with USSD
-                </button>
+                {disabledUssd === true ? (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.href = `/product-details?${productDetails.productname}`;
+                      // state: productDetails.productname,
+                      // });
+                    }}
+                  >
+                    Go Back
+                  </button>
+                ) : (
+                  <div style={{ marginTop: "25px" }}>
+                    <a
+                      onClick={(e) => {
+                        // e.preventDefault();
+                        handleSubmit(USSD_KEY);
+                      }}
+                      // className="btn"
+                      value={USSD_KEY}
+                      href="#open-modal"
+                      style={{
+                        backgroundColor: "#fda94f",
+                        cursor:
+                          disabledCard === true ? "not-allowed" : "pointer",
+                        color: "#000",
+                        fontSize: "12px",
+                        padding: "11px",
+                      }}
+                      disabled={disabledCard}
+                    >
+                      Pay with Ussd
+                    </a>{" "}
+                  </div>
+                )}
               </div>
             </div>
           </div>

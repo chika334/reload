@@ -26,19 +26,19 @@
     "links": [
       {
         "title": "Company",
-        "url": "/reloadng/about"
+        "url": "/about"
       },
       {
         "title": "FAQ",
-        "url": "/reloadng/faq"
+        "url": "/faq"
       },
       {
         "title": "Terms and Conditions",
-        "url": "/reloadng/terms"
+        "url": "/terms"
       },
       {
         "title": "Help Desk",
-        "url": "/reloadng/helpdesk"
+        "url": "/helpdesk"
       }
     ]
   },

@@ -24,7 +24,7 @@ class App extends Component {
       store.dispatch(interswitchProvider(localStorage.access_token));
     } else {
       store.dispatch(getProducts());
-      return <Redirect to={`/reloadng`} />;
+      return <Redirect to={`/`} />;
     }
   }
 
@@ -32,7 +32,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         {/* <Layout /> */}
-        <Router>
+        <Router basename="/reloadng">
           {/* // checks if user has internet connection */}
           {/* {navigator.onLine ? <Routes /> : <NoInternet />} */}
           {/* <Online> */}

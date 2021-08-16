@@ -28,7 +28,7 @@ function Receipt(props) {
     state.paymentIntent.success === true ? state.paymentIntent.detail : ""
   );
 
-  console.log(paymentIntentStatus);
+  // console.log(paymentIntentStatus);
   // const Conveniencefee =
   //   productDetails.detail.productId.productcategoryId.categoryname ===
   //   "Electricity"
@@ -67,7 +67,7 @@ function Receipt(props) {
     }.bind(this);
 
     if (finalPaymentSuccess.finalPayment === false) {
-      window.location.href = `/reloadng/products`;
+      window.location.href = `/products`;
     }
   };
 
@@ -77,10 +77,8 @@ function Receipt(props) {
   });
 
   const handleBack = () => {
-    window.location.href = "/reloadng/products";
+    window.location.href = "/products";
   };
-
-  // console.log(JSON.stringify(finalPaymentSuccess.result.productResult));
 
   return (
     <div className="property-area pd-top-100">

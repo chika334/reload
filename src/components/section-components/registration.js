@@ -36,11 +36,11 @@ function Registration(props) {
       // let path = `/`;
       // history.push(path);
       // window.location.reload(false);
-      window.location.href = "/reloadng";
+      window.location.href = "/";
     } else if (userRedirect.register === true) {
-      let path = `/reloadng/registration`;
+      let path = `/registration`;
       history.push(path);
-      // let path = `/reloadng/welcome`;
+      // let path = `/welcome`;
       // history.push(path);
       // window.location.href = "/welcome";
     }
@@ -56,24 +56,6 @@ function Registration(props) {
     }
   }, [error]);
 
-  // const showModal = (data) => {
-  //   setModal(data);
-  //   // console.log(data);
-  // };
-
-  // const closeModal = () => {
-  //   setModal(false);
-  // };
-
-  // const body = (
-  //   <div className={classes.paper}>
-  //     {/* <h2 id="simple-modal-title">Welcome</h2> */}
-  //     <p id="simple-modal-description">
-  //       welcome to Reloadng, you can Login.
-  //     </p>
-  //   </div>
-  // );
-
   return (
     <div className="register-page-area pd-bottom-100">
       <div className="container">
@@ -87,18 +69,6 @@ function Registration(props) {
           {/* registration */}
         </div>
       </div>
-      {/* <div>
-        <Modal
-          open={modal}
-          onClose={closeModal}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          className="d-flex justify-content-center align-content-center"
-          style={{ marginTop: "10%" }}
-        >
-          {body}
-        </Modal>
-      </div> */}
     </div>
   );
 }

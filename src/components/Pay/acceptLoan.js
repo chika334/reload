@@ -48,6 +48,8 @@ function Property(props, { breakOn = "medium" }) {
   const acceptLoanOffer = useSelector((state) => state.acceptOffers);
   const [providersDetails, setProvidersDetails] = useState(null);
   const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
+  const errors = useSelector((state) => state.error);
   const [getData, setGetData] = useState({
     accountNumber: "",
     bankDetails: "",
@@ -62,6 +64,14 @@ function Property(props, { breakOn = "medium" }) {
   } else if (breakOn === "large") {
     tableClass += " table-container__table--break-lg";
   }
+
+  useEffect(() => {
+    if (errors.id === "INTERSWITCH_PTOVIDERS_FAILED") {
+      // console.log("nice");
+      setLoading(false)
+      setError(errors.message.data.responseMessage);
+    }
+  }, [errors.id === "INTERSWITCH_PTOVIDERS_FAILED"]);
 
   const handleChange = (e, data) => {
     const newValues = { ...getData };
@@ -92,27 +102,22 @@ function Property(props, { breakOn = "medium" }) {
     };
 
     setLoading(true);
-    console.log(acceptLoan);
     dispatch(acceptOffer(acceptLoan, secondValue));
     // dispatch(getOffer(getData));
   };
 
   useEffect(() => {
     if (acceptLoanOffer.success === true) {
+      setLoading(false);
       setMessage(acceptLoanOffer.data.responseMessage);
     }
   }, [acceptLoanOffer.success]);
 
   useEffect(() => {
     if (getOfferResult.data === null) {
-      history.push("/reloadng/loan");
+      history.push("/loan");
     }
   }, [getOfferResult.data]);
-
-  // const handleOffer = () => {
-  //   history.push("/reloadng/loan/accept-loan-offer");
-  //   console.log("offer selected");
-  // };
 
   return (
     <div>
@@ -145,15 +150,22 @@ function Property(props, { breakOn = "medium" }) {
                                 color: "#000",
                                 fontSize: "12px",
                                 padding: "9px",
-                                marginTop: "50px"
+                                marginTop: "50px",
                               }}
                             >
-                              <Link to="/reloadng/products">Proceed with USSD</Link>
+                              <Link to="/products">
+                                Go Back
+                              </Link>
                             </button>
                           </div>
                         </>
                       ) : (
                         <form onSubmit={handleSubmit} className="pb-5">
+                          {error !== null ? (
+                            <Alert severity="error">{error}</Alert>
+                          ) : (
+                            ""
+                          )}
                           <div className="mt-5">
                             <TextField
                               label="Enter Account Number"
@@ -199,7 +211,6 @@ function Property(props, { breakOn = "medium" }) {
                     </div>
                   </div>
                 </div>
-                {/* </div> */}
               </div>
             </div>
           </>

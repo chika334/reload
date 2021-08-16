@@ -21,7 +21,7 @@ class Page_header extends Component {
                 <h1 className="page-title text-dark">{HeaderTitle}</h1>
                 <ul className="page-list">
                   <li>
-                    <Link to="/reloadng">Home</Link>
+                    <Link to="/">Home</Link>
                   </li>
                   <li>{Subheader}</li>
                 </ul>

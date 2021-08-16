@@ -32,7 +32,7 @@ function Navbar(props) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleReg = () => {
-    history.push("/reloadng/registration");
+    history.push("/registration");
   };
 
   const handleClick = (event) => {
@@ -54,12 +54,12 @@ function Navbar(props) {
     e.preventDefault();
     // console.log(name);
     if (name === "profile") {
-      history.push("/reloadng/profile");
+      history.push("/profile");
     } else if (name === "settings") {
-      history.push("/reloadng/settings");
+      history.push("/settings");
     } else if (name === "logout") {
       if (localStorage.token) {
-        window.location.href = `/reloadng/registration`;
+        window.location.href = `/registration`;
         props.logout();
       }
     }
@@ -86,7 +86,7 @@ function Navbar(props) {
               </button>
             </div>
             <div className="logo readeal-top">
-              <Link to="/reloadng">
+              <Link to="/">
                 <img src={logo} width="120px" alt="logo" />
               </Link>
             </div>
@@ -160,26 +160,26 @@ function Navbar(props) {
               {/* <div className="header-nav-menu d-none navbar-collapse"> */}
               <ul className="navbar-nav menu-open readeal-top">
                 <li className="current-menu-item">
-                  <Link to="/reloadng">Home</Link>
+                  <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <Link to="/reloadng/about">About</Link>
+                  <Link to="/about">About</Link>
                 </li>
                 <li>
-                  <Link to="/reloadng/products">Our Products</Link>
+                  <Link to="/products">Our Products</Link>
                 </li>
                 {user.isAuthenticated === true ? (
                   <li>
-                    <Link to="/reloadng/transactions">Transactions</Link>
+                    <Link to="/transactions">Transactions</Link>
                   </li>
                 ) : (
                   ""
                 )}
                 <li>
-                  <Link to="/reloadng/contact">Contact Us</Link>
+                  <Link to="/contact">Contact Us</Link>
                 </li>
                 <li>
-                  <Link to="/reloadng/faq">FAQ</Link>
+                  <Link to="/faq">FAQ</Link>
                 </li>
               </ul>
             </div>
@@ -263,26 +263,26 @@ function Navbar(props) {
                 <div className="header-nav-menu">
                   <ul className="navbar-nav menu-open readeal-top">
                     <li className="current-menu-item">
-                      <Link to="/reloadng">Home</Link>
+                      <Link to="">Home</Link>
                     </li>
                     <li>
-                      <Link to="/reloadng/about">About</Link>
+                      <Link to="/about">About</Link>
                     </li>
                     <li>
-                      <Link to="/reloadng/products">Our Products</Link>
+                      <Link to="/products">Our Products</Link>
                     </li>
                     {user.isAuthenticated === true ? (
                       <li>
-                        <Link to="/reloadng/transactions">Transactions</Link>
+                        <Link to="/transactions">Transactions</Link>
                       </li>
                     ) : (
                       ""
                     )}
                     <li>
-                      <Link to="/reloadng/contact">Contact Us</Link>
+                      <Link to="/contact">Contact Us</Link>
                     </li>
                     <li>
-                      <Link to="/reloadng/faq">FAQ</Link>
+                      <Link to="/faq">FAQ</Link>
                     </li>
                   </ul>
                 </div>

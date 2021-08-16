@@ -72,7 +72,7 @@ function waecReg(props) {
       // setLoading(false);
       // // const path = `${props.location.pathname}${props.location.search}`;
       // // props.loginRediectSuccess(path, productDetails.detail);
-      // // props.history.push("/reloadng/registration");
+      // // props.history.push("/registration");
       // setOpen(true);
     }
   };
@@ -106,7 +106,7 @@ function waecReg(props) {
   };
 
   const handleRegRedirect = () => {
-    props.history.push("/reloadng/registration");
+    props.history.push("/registration");
   };
 
   return (

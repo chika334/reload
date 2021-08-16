@@ -15,6 +15,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
+import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -27,6 +28,8 @@ function NewForm(props) {
     state.authUser.user === null ? "" : state.authUser.user
   );
   const [disabled, setDisabled] = useState(false);
+  const [disabledCard, setDisabledCard] = useState(false);
+  const [disabledUssd, setDisabledUssd] = useState(false);
   const verifyDetails = useSelector((state) => state.verify);
   const [verifyEnabled, setVerifiedEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,6 +38,7 @@ function NewForm(props) {
   const [valuesDetails, setValuesDetails] = useState([]);
   const productDetails = useSelector((state) => state.someData.detail);
   const paymentIntent = useSelector((state) => state.paymentIntent);
+  const [buttonValue, setButtonValue] = useState(null);
   const [smartCard, setSmartCard] = useState({
     "E-mail": "",
     "Phone Number": "",
@@ -74,11 +78,19 @@ function NewForm(props) {
 
   // console.log(productDetails.billerCode);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const value = e.target.value;
-    if (productDetails.productname === "Data") {
+  const handleSubmit = (value) => {
+    // e.preventDefault()
+    setButtonValue(value);
+    if (value === "FLUTTERWAVE") {
+      setDisabledCard(true);
+    } else if (value === "USSD") {
+      setDisabledUssd(true);
+    }
+
+    // console.log(value);
+    // const value = e.target.value;
+    if (selectDetails !== null) {
+      setLoading(true);
       // console.log(smartCard["Phone Number"].length);
       if (productDetails.billerCode === "airtel-data") {
         if (smartCard["Phone Number"].length < 11) {
@@ -91,7 +103,7 @@ function NewForm(props) {
             description: "Data",
             // paymentMethod: "billpayflutter",
             paymentMethod:
-              value === "card" ? "billpayflutter" : "billpaycoralpay",
+              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               "E-mail": `${smartCard["E-mail"]}`,
@@ -117,7 +129,7 @@ function NewForm(props) {
             description: "Data",
             // paymentMethod: "billpayflutter",
             paymentMethod:
-              value === "card" ? "billpayflutter" : "billpaycoralpay",
+              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               "E-mail": `${smartCard["E-mail"]}`,
@@ -142,7 +154,7 @@ function NewForm(props) {
             description: "Data",
             // paymentMethod: "billpayflutter",
             paymentMethod:
-              value === "card" ? "billpayflutter" : "billpaycoralpay",
+              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -167,7 +179,7 @@ function NewForm(props) {
             description: "Data",
             // paymentMethod: "billpayflutter",
             paymentMethod:
-              value === "card" ? "billpayflutter" : "billpaycoralpay",
+              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
@@ -186,7 +198,7 @@ function NewForm(props) {
       // setLoading(false);
       // // const path = `${props.location.pathname}${props.location.search}`;
       // // props.loginRediectSuccess(path, productDetails);
-      // // props.history.push("/reloadng/registration");
+      // // props.history.push("/registration");
       // setOpen(true);
     }
   };
@@ -198,6 +210,8 @@ function NewForm(props) {
       const amount = selectDetails.amount;
       const detail = {
         amount: amount,
+        buttonClick: buttonValue,
+        product: productDetails.productname,
         email: `${
           productDetails.billerCode === "data"
             ? smartCard["Email"]
@@ -225,28 +239,59 @@ function NewForm(props) {
     fieldsArray.push(item[data]);
   }
 
+  console.log(item.field2.select);
   const fieldsOptions = [];
+  const secondOptions = [];
+
+  // if (item.field3.select === true) {
+  //   const data = item.field3.options;
+  //   console.log(data);
+  //   if (item.field3.text === "Select Data Package") {
+  //     for (const key in data) {
+  //       if (data.hasOwnProperty(key)) {
+  //         var value = data[key];
+  //         fieldsOptions.push(value);
+  //       }
+  //     }
+  //   }
+  // } 
+  // if (item.field2.select === true) {
+  //   console.log("how");
+  //   // if (item.field2.text === "Invoice Id") {
+  //     const data = item.field2.options;
+  //     console.log(data);
+  //     for (const key in data) {
+  //       // if (data.hasOwnProperty(key)) {
+  //       //   var value = data[key];
+  //       //   console.log("invoice");
+  //       //   secondOptions.push(value);
+  //       // }
+  //     // }
+  //   }
+  // }
+
   if (item.field3.select === true) {
     const data = item.field3.options;
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         var value = data[key];
         fieldsOptions.push(value);
-        // setValuesDetails(...valuesDetails, value);
       }
     }
-  } else if (item.field2.select === true) {
+  } 
+  if (item.field2.select === true) {
     const data = item.field2.options;
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         var value = data[key];
-        fieldsOptions.push(value);
-        // setValuesDetails(...valuesDetails, value);
+        secondOptions.push(value);
       }
     }
   }
 
-  // console.log(item);
+  console.log(item);
+  console.log(fieldsOptions);
+  console.log(secondOptions);
 
   const deal = Object.values(fieldsArray);
   useEffect(() => {
@@ -271,12 +316,12 @@ function NewForm(props) {
   };
 
   const handleRegRedirect = () => {
-    props.history.push("/reloadng/registration");
+    props.history.push("/registration");
   };
 
   return (
     <div>
-      <div>
+      {/* <div>
         <Dialog
           open={open}
           TransitionComponent={Transition}
@@ -302,7 +347,7 @@ function NewForm(props) {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </div> */}
       {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
@@ -418,34 +463,76 @@ function NewForm(props) {
             </div>
             <div className="ButtonSide">
               <div>
-                <button
-                  onClick={(e) => handleSubmit(e)}
-                  value="card"
-                  type="submit"
-                  style={{
-                    backgroundColor: "#fda94f",
-                    color: "#000",
-                    fontSize: "12px",
-                    padding: "11px",
-                  }}
-                >
-                  Proceed to Card
-                </button>
+                {disabledCard === true ? (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.href = `/product-details?${productDetails.productname}`;
+                      // state: productDetails.productname,
+                      // });
+                    }}
+                  >
+                    Go Back
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // console.log(payment);
+                      handleSubmit(FLUTTERWAVE_KEY);
+                    }}
+                    type="submit"
+                    style={{
+                      backgroundColor: "#fda94f",
+                      cursor: disabledUssd === true ? "not-allowed" : "pointer",
+                      color: "#000",
+                      fontSize: "12px",
+                      padding: "11px",
+                    }}
+                    disabled={disabledUssd}
+                  >
+                    Proceed to Card
+                  </button>
+                )}
               </div>
               <div>
-                <button
-                  onClick={(e) => handleSubmit(e)}
-                  value="ussd"
-                  type="submit"
-                  style={{
-                    backgroundColor: "#fda94f",
-                    color: "#000",
-                    fontSize: "12px",
-                    padding: "11px",
-                  }}
-                >
-                  Proceed to Ussd
-                </button>
+                {disabledUssd === true ? (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.href = `/product-details?${productDetails.productname}`;
+                      // state: productDetails.productname,
+                      // });
+                    }}
+                  >
+                    Go Back
+                  </button>
+                ) : (
+                  <div
+                    onClick={(e) => {
+                      // e.preventDefault();
+                      handleSubmit(USSD_KEY);
+                    }}
+                    style={{ marginTop: "25px" }}
+                  >
+                    <a
+                      // className="btn"
+                      value={USSD_KEY}
+                      href="#open-modal"
+                      style={{
+                        backgroundColor: "#fda94f",
+                        cursor:
+                          disabledCard === true ? "not-allowed" : "pointer",
+                        color: "#000",
+                        fontSize: "12px",
+                        padding: "11px",
+                      }}
+                      disabled={disabledCard}
+                    >
+                      Pay with Ussd
+                    </a>{" "}
+                  </div>
+                )}
               </div>
             </div>
           </div>

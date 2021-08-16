@@ -86,18 +86,19 @@ function Service(props) {
     if (details.otherData.billerCode === null) {
       setModal(true);
     } else {
-      if (
-        details.otherData.billerCode === "DSTV2" ||
-        details.otherData.billerCode === "startimes" ||
-        details.otherData.billerCode === "GOTV2" ||
-        details.otherData.billerCode === "KADUNA_PREPAID" ||
-        details.otherData.billerCode === "KANO_PREPAID" ||
-        details.otherData.billerCode === "ekdc prepaid" ||
-        details.otherData.billerCode === "JOS_PREPAID" ||
-        details.otherData.billerCode === "SMILE"
-      ) {
-        setModal(true);
-      } else {
+      // if (
+      //   // details.otherData.billerCode === "DSTV2" ||
+      //   // details.otherData.billerCode === "startimes" ||
+      //   // details.otherData.billerCode === "GOTV2" ||
+      //   // details.otherData.billerCode === "KADUNA_PREPAID" ||
+      //   // details.otherData.billerCode === "KANO_PREPAID" ||
+      //   // details.otherData.billerCode === "ekdc prepaid" ||
+      //   // details.otherData.billerCode === "JOS_PREPAID" 
+      //   // ||
+      //   // details.otherData.billerCode === "SMILE"
+      // ) {
+      //   setModal(true);
+      // } else {
         props.showLoader();
         getProducts.listProducts === null
           ? ""
@@ -109,7 +110,7 @@ function Service(props) {
                 setTimeout(() => {
                   dispatch(hideLoader());
                 }, 2000);
-                // let path = `/reloadng/product-details`;
+                // let path = `/product-details`;
                 // history.push({
                 //   pathname: path,
                 //   search: `?product=${detail.productId.description}`,
@@ -128,14 +129,14 @@ function Service(props) {
                   billerCode: detail.billerCode,
                 };
                 dispatch(someData(data));
-                let path = `/reloadng/product-details`;
+                let path = `/product-details`;
                 history.push({
                   pathname: path,
-                  search: `product=${detail.productId.description}`,
+                  // search: `product=${detail.productId.description}`,
                 });
               }
             });
-      }
+      // }
     }
   };
 

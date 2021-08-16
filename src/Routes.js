@@ -36,6 +36,7 @@ import { showLoader, hideLoader } from "./_action/loading";
 import { useSelector, connect } from "react-redux";
 import Loading from "./components/global-components/loading";
 import ProtectedRoutes from "./protectedRoutes";
+import PrivateRouteReceipt from './preventReceipt'
 
 function Routes(props) {
   const location = useLocation();
@@ -56,98 +57,98 @@ function Routes(props) {
         <Suspense fallback={<Loading />}>
           {/* <Layout /> */}
           <Navbar />
-          <Switch>
-            <Redirect exact from="/" to="/reloadng" />
-          </Switch>
-          <Route path={[`/reloadng`]}>
+          {/* <Switch>
+            <Redirect exact from="/" to="/" />
+          </Switch> */}
+          <Route path={[`/`]}>
             <Switch location={location} key={location.pathname}>
-              <Route exact path="/reloadng" component={HomeV1} />
+              <Route exact path="/" component={HomeV1} />
             </Switch>
           </Route>
           <Route
             path={[
-              `/reloadng/about`,
-              `/reloadng/registration`,
-              `/reloadng/settings`,
-              `/reloadng/faq`,
-              `/reloadng/products`,
-              // `/reloadng/error`,
-              `/reloadng/product-details/buy`,
-              `/reloadng/forgotpassword`,
-              `/reloadng/terms`,
-              `/reloadng/product-details`,
-              `/reloadng/welcome`,
-              `/reloadng/contact`,
-              `/reloadng/successMessage`,
-              `/reloadng/profile`,
-              `/reloadng/transactions`,
-              `/reloadng/helpdesk`,
-              `/reloadng/receipt`,
-              `/reloadng/loan`,
-              `/reloadng/loan/accept-loan-offer`
+              `/about`,
+              `/registration`,
+              `/settings`,
+              `/faq`,
+              `/products`,
+              // `/error`,
+              `/product-details/buy`,
+              `/forgotpassword`,
+              `/terms`,
+              `/product-details`,
+              `/welcome`,
+              `/contact`,
+              `/successMessage`,
+              `/profile`,
+              `/transactions`,
+              `/helpdesk`,
+              `/receipt`,
+              `/loan`,
+              `/loan/accept-loan-offer`
             ]}
           >
             <Switch location={location} key={location.pathname}>
-              <Route exact path="/reloadng/about" component={About} />
+              <Route exact path="/about" component={About} />
               <Route
                 exact
-                path="/reloadng/registration"
+                path="/registration"
                 component={Registraion}
               />
               {/* <Route
               exact
-              path="/reloadng/profile"
+              path="/profile"
               component={Profile}
             /> */}
               <ProtectedRoutes
                 exact
-                path="/reloadng/settings"
+                path="/settings"
                 component={Settings}
               />
               <ProtectedRoutes
                 exact
-                path="/reloadng/transactions"
+                path="/transactions"
                 component={Transaction}
               />
-              {/* <Route exact path="/reloadng/error" component={Error} /> */}
-              <Route exact path="/reloadng/faq" component={Faq} />
-              <Route exact path="/reloadng/products" component={Property} />
+              {/* <Route exact path="/error" component={Error} /> */}
+              <Route exact path="/faq" component={Faq} />
+              <Route exact path="/products" component={Property} />
               <Route
                 exact
-                path="/reloadng/product-details/buy"
+                path="/product-details/buy"
                 component={BuyProduct}
               />
-              <Route exact path="/reloadng/helpdesk" component={HelpDesk} />
+              <Route exact path="/helpdesk" component={HelpDesk} />
               <Route
                 exact
-                path="/reloadng/forgotpassword"
+                path="/forgotpassword"
                 component={ForgotPassword}
               />
-              <Route exact path="/reloadng/terms" component={TermNCondition} />
+              <Route exact path="/terms" component={TermNCondition} />
               <Route
                 exact
-                path="/reloadng/product-details"
+                path="/product-details"
                 component={PropertyDetails}
               />
               <ProtectedRoutes
                 exact
-                path="/reloadng/welcome"
+                path="/welcome"
                 component={Welcome}
               />
               <ProtectedRoutes
                 exact
-                path="/reloadng/profile"
+                path="/profile"
                 component={Profile}
               />
-              <Route exact path="/reloadng/contact" component={Contact} />
+              <Route exact path="/contact" component={Contact} />
               <Route
                 exact
-                path="/reloadng/successMessage"
+                path="/successMessage"
                 component={SuccessMessage}
               />
-              <ProtectedRoutes exact path="/reloadng/loan" component={Loan} />
-              <ProtectedRoutes exact path="/reloadng/loan/accept-loan-offer" component={AcceptLoan} />
-              <Route exact path="/reloadng/receipt" component={Receipt} />
+              <ProtectedRoutes exact path="/loan" component={Loan} />
+              <ProtectedRoutes exact path="/loan/accept-loan-offer" component={AcceptLoan} />
+              <Route exact path="/receipt" component={Receipt} />
               <Route exact component={Error} />
             </Switch>
           </Route>

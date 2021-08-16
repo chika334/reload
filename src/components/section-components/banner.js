@@ -76,18 +76,18 @@ const SearchbarDropdown = (props) => {
   const handleMove = (details) => {
     console.log(details);
     if (
-      details.otherData.productId.productname === "Smile Data" ||
-      details.otherData.productId.productname === "Dstv Cable" ||
-      details.otherData.productId.productname === "Gotv Cable" ||
-      details.otherData.productId.productname === "Startime Cable" ||
+      // details.otherData.productId.productname === "Smile Data" ||
+      // details.otherData.productId.productname === "Dstv Cable" ||
+      // details.otherData.productId.productname === "Gotv Cable" ||
+      // details.otherData.productId.productname === "Startime Cable" ||
       details.otherData.productId.productname ===
         "Ibadan Electricity Prepaid" ||
-      details.otherData.productId.productname === "Eko Electricity Prepaid" ||
+      // details.otherData.productId.productname === "Eko Electricity Prepaid" ||
       details.otherData.productId.productname === "Benin Electricity Prepaid" ||
-      details.otherData.productId.productname ===
-        "Kaduna Electricity Prepaid" ||
-      details.otherData.productId.productname === "Jos Electricity Prepaid" ||
-      details.otherData.productId.productname === "Kano Electricity Prepaid" ||
+      // details.otherData.productId.productname ===
+      //   "Kaduna Electricity Prepaid" ||
+      // details.otherData.productId.productname === "Jos Electricity Prepaid" ||
+      // details.otherData.productId.productname === "Kano Electricity Prepaid" ||
       details.otherData.productId.productname === "Jamb Exams" ||
       details.otherData.productId.productname === "Waec Exams Registration"
     ) {
@@ -104,7 +104,7 @@ const SearchbarDropdown = (props) => {
               setTimeout(() => {
                 dispatch(hideLoader());
               }, 2000);
-              // let path = `/reloadng/product-details`;
+              // let path = `/product-details`;
               // history.push({
               //   pathname: path,
               //   search: `?product=${detail.productId.description}`,
@@ -122,10 +122,10 @@ const SearchbarDropdown = (props) => {
                 billerCode: detail.billerCode,
               };
               dispatch(someData(data));
-              let path = `/reloadng/product-details`;
+              let path = `/product-details`;
               history.push({
                 pathname: path,
-                search: `product=${detail.productId.description}`,
+                // search: `product=${detail.productId.description}`,
               });
             }
           });

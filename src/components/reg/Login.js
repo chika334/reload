@@ -44,9 +44,9 @@ function Login(props) {
         // if (loginSuccRed.login === true && loginSuccRed.value !== "") {
         //   props.history.push(loginSuccRed.value);
         // } else {
-        //   props.history.push("/reloadng");
+        //   props.history.push("/");
         // }
-        window.location.href = "/reloadng";
+        window.location.href = "/";
         // props.loginRedirect();
       } else {
         props.hideLoader();
@@ -159,7 +159,7 @@ function Login(props) {
               padding: "15px",
             }}
           >
-            <a href="/reloadng/forgotpassword">Forgot Password</a>
+            <a href="/forgotpassword">Forgot Password</a>
           </div>
           <div className="d-flex align-items-center justify-content-center mt-3">
             <SubmitButton

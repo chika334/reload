@@ -15,9 +15,9 @@ function forgotPassword(props) {
 
   useEffect(() => {
     if (userRedirect.login === true) {
-      window.location.href = "/reloadng";
+      window.location.href = "/";
     } else if (userRedirect.register === true) {
-      let path = `/reloadng/welcome`;
+      let path = `/welcome`;
       history.push(path);
     }
   }, [userRedirect]);

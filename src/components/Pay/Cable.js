@@ -6,20 +6,17 @@ import {
   verifySmartcardNumber,
   clearVerified,
 } from "../../_action/verifyNumber";
+import CoralUssd from "../../components/CoralUssd/App";
 import { MenuItem, TextField, Button } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../_action/Payment/index";
 import Alert from "@material-ui/lab/Alert";
-import { pay } from "../../_action/Payment/paymentButtons";
+import { pay, paymentButtons } from "../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../_action/errorAction";
 import { verify } from "../../_action/verify";
 import "../../css/input.css";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
+import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -35,7 +32,9 @@ function Cable(props) {
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const paymentButton = useSelector((state) => state.paymentButton);
-  const [disabled, setDisabled] = useState(false);
+  const [disabledCard, setDisabledCard] = useState(false);
+  const [disabledUssd, setDisabledUssd] = useState(false);
+  const [buttonValue, setButtonValue] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -46,9 +45,9 @@ function Cable(props) {
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const [verifiedAccount, setVerifiedAccount] = useState(null);
   const [verifiedProducts, setVerifiedProducts] = useState(null);
-
-  console.log(verifiedAccount);
-  console.log(verifiedProducts);
+  // const payment = useSelector((state) =>
+  //   state.paymentDone.payment === true ? state.paymentDone : state.paymentDone
+  // );
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -56,7 +55,6 @@ function Cable(props) {
       setErrors(error.message.message);
       setTimeout(() => {
         props.clearErrors();
-        setErrors("");
       }, 5000);
     } else if (error.id === "BUY_DATA_FAILURE") {
       setLoading(false);
@@ -65,120 +63,136 @@ function Cable(props) {
         props.clearErrors();
         setErrors("");
       }, 5000);
+    } else if (error.id === "FINAL_PAYMENT_ERROR") {
+      setLoading(false);
+      setErrors(error.message.message);
+      setTimeout(() => {
+        props.clearErrors();
+        setErrors("");
+      }, 5000);
     }
-  }, [error.error]);
+  }, [error.error === true]);
 
-  console.log(selectDetails);
+  // console.log(selectDetails);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const value = e.target.value;
-    if (productDetails.productname === "Cable") {
-      if (productDetails.billerCode === "STARTIMES") {
-        const newValuesObj = {
-          amount: `${selectDetails.Amount}`,
-          channelRef: "web",
-          description: "Cable",
-          // paymentMethod: "billpayflutter",
-          paymentMethod:
-            value === "card" ? "billpayflutter" : "billpaycoralpay",
-          productId: `${productDetails.productId}`,
-          referenceValues: {
-            "E-mail": `${email}`,
-            // "E-mail": user.user.email,
-            "Product ": selectDetails.ItemType,
-            "Customer Name": `${verifiedUser.result.account.accountName}`,
-            "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-          },
-          references: [
-            "E-mail",
-            "Product ",
-            "Customer Name",
-            "SmartCard Number",
-          ],
-        };
-
-        props.PaymentIntent(newValuesObj);
-        // props.pay(true, "Cable");
-        // props.verify("Cable", true);
-      } else if (productDetails.billerCode === "DSTV") {
-        const newValuesObj = {
-          amount: selectDetails.productAmount,
-          channelRef: "web",
-          description: "Cable",
-          // paymentMethod: "billpayflutter",
-          paymentMethod:
-            value === "card" ? "billpayflutter" : "billpaycoralpay",
-          productId: `${productDetails.productId}`,
-          referenceValues: {
-            "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-            "Email Address": `${email}`,
-            "Select Package (Amount)": selectDetails.productName,
-          },
-          references: [
-            "SmartCard Number",
-            "Email Address",
-            "Select Package (Amount)",
-          ],
-        };
-
-        props.PaymentIntent(newValuesObj);
-      } else if (productDetails.billerCode === "GOTV") {
-        const newValuesObj = {
-          amount: `${selectDetails.Amount.trim()}`,
-          channelRef: "web",
-          description: "Cable",
-          // paymentMethod: "billpayflutter",
-          paymentMethod:
-            value === "card" ? "billpayflutter" : "billpaycoralpay",
-          productId: `${productDetails.productId}`,
-          referenceValues: {
-            Email: `${email}`,
-            // Email: user.user.email,
-            "Select Package (Amount)": selectDetails.ItemName,
-            "Number of Months": "1",
-            "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-          },
-          references: [
-            "Email",
-            "Select Package (Amount)",
-            "Number of Months",
-            "SmartCard Number",
-          ],
-        };
-        // props.pay(true, "Cable");
-        props.PaymentIntent(newValuesObj);
-        // props.verify("Cable", true);
-      }
-      // handlePaymentProcess();
-    } else {
-      if (!localStorage.token) {
-        // setLoading(false);
-        // // const path = `${props.location.pathname}${props.location.search}`;
-        // // props.loginRediectSuccess(path, props.location.state.data);
-        // // props.history.push("/reloadng/registration");
-        // setOpen(true);
-      }
+  const handleSubmit = (value) => {
+    setButtonValue(value);
+    if (value === "FLUTTERWAVE") {
+      setDisabledCard(true);
+    } else if (value === "USSD") {
+      setDisabledUssd(true);
     }
+
+    // if()
+    // if (selectDetails !== null) {
+    if (productDetails.billerCode === "STARTIMES") {
+      const newValuesObj = {
+        amount: `${selectDetails.Amount}`,
+        channelRef: "web",
+        description: "Cable",
+        // paymentMethod: "billpayflutter",
+        paymentMethod:
+          value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
+          "Email Address": `${email}`,
+          "Select Package":
+            selectDetails === null ? "" : selectDetails.productName,
+        },
+        references: ["Email Address", "Select Package ", "SmartCard Number"],
+      };
+
+      props.PaymentIntent(newValuesObj);
+      // props.pay(true, "Cable");
+      // props.verify("Cable", true);
+    } else if (productDetails.billerCode === "DSTV") {
+      const newValuesObj = {
+        amount: selectDetails.productAmount,
+        channelRef: "web",
+        description: "Cable",
+        // paymentMethod: "billpayflutter",
+        paymentMethod:
+          value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
+          "Email Address": `${email}`,
+          "Select Package (Amount)":
+            selectDetails === null ? "" : selectDetails.productName,
+        },
+        references: [
+          "SmartCard Number",
+          "Email Address",
+          "Select Package (Amount)",
+        ],
+      };
+
+      props.PaymentIntent(newValuesObj);
+    } else if (productDetails.billerCode === "GOTV") {
+      const newValuesObj = {
+        // amount: `${selectDetails.productAmount}`,
+        amount: "100",
+        channelRef: "web",
+        description: "Cable",
+        // paymentMethod: "billpayflutter",
+        paymentMethod:
+          value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
+          "Email Address": `${email}`,
+          "Select Package (Amount)":
+            selectDetails === null ? "" : selectDetails.productName,
+        },
+        references: [
+          "Email",
+          "Select Package (Amount)",
+          "Number of Months",
+          "SmartCard Number",
+        ],
+      };
+      // props.pay(true, "Cable");
+      props.PaymentIntent(newValuesObj);
+      // props.verify("Cable", true);
+    }
+    // handlePaymentProcess();
+    // } else {
+    //   if (!localStorage.token) {
+    //     // setLoading(false);
+    //     // // const path = `${props.location.pathname}${props.location.search}`;
+    //     // // props.loginRediectSuccess(path, props.location.state.data);
+    //     // // props.history.push("/registration");
+    //     // setOpen(true);
+    //   }
+    // }
   };
 
   useEffect(() => {
     if (paymentIntent.success === true) {
       // pro
       setLoading(false);
-      let amount = selectDetails.productAmount;
+      let amount = selectDetails === null ? "" : selectDetails.productAmount;
       const detail = {
         amount: amount,
         email: email,
-        // email: user.user.email,
+        product: productDetails.productname,
+        accountNumber:
+          verifiedUser.result === null
+            ? ""
+            : verifiedUser.result.account.accountNumber,
+        buttonClick: buttonValue,
         transRef: paymentIntent.detail.transRef,
-        customerName: verifiedUser.result.account.accountName,
+        customerName:
+          verifiedUser.result === null
+            ? ""
+            : verifiedUser.result.account.accountName,
       };
 
       // console.log(detail);
       dispatch(pay(detail));
       props.dataPay(true, "Cable");
+      // props.onpaymentProcess(buttonValue);
     }
   }, [paymentIntent.success]);
 
@@ -216,7 +230,7 @@ function Cable(props) {
     let result = verifyMeterNumber();
     // if (localStorage.token) {
     // } else {
-    //   props.history.push("/reloadng/registration");
+    //   props.history.push("/registration");
     // }
   };
 
@@ -354,7 +368,7 @@ function Cable(props) {
                 <TextField
                   className="inputSize pt-3"
                   required
-                  label="Bouquet"
+                  label="Please Select your present bouquet plan"
                   // name={allField.text}
                   placeholder={`Please Select Bouquet`}
                   select
@@ -451,7 +465,7 @@ function Cable(props) {
                             <InputAdornment position="start">₦</InputAdornment>
                           ),
                         }}
-                        disabled={disabled}
+                        disabled
                       />
                     </div>
                   ) : (
@@ -463,34 +477,77 @@ function Cable(props) {
             verifyUserdetails.name === "Cable" ? (
               <div className="ButtonSide">
                 <div>
-                  <button
-                    onClick={(e) => handleSubmit(e)}
-                    value="card"
-                    type="submit"
-                    style={{
-                      backgroundColor: "#fda94f",
-                      color: "#000",
-                      fontSize: "12px",
-                      padding: "11px",
-                    }}
-                  >
-                    Proceed to Card
-                  </button>
+                  {disabledCard === true ? (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = `/product-details?${productDetails.productname}`;
+                        // state: productDetails.productname,
+                        // });
+                      }}
+                    >
+                      Go Back
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        // console.log(payment);
+                        handleSubmit(FLUTTERWAVE_KEY);
+                      }}
+                      type="submit"
+                      style={{
+                        backgroundColor: "#fda94f",
+                        cursor:
+                          disabledUssd === true ? "not-allowed" : "pointer",
+                        color: "#000",
+                        fontSize: "12px",
+                        padding: "11px",
+                      }}
+                      disabled={disabledUssd}
+                    >
+                      Proceed to Card
+                    </button>
+                  )}
                 </div>
                 <div>
-                  <button
-                    onClick={(e) => handleSubmit(e)}
-                    value="ussd"
-                    type="submit"
-                    style={{
-                      backgroundColor: "#fda94f",
-                      color: "#000",
-                      fontSize: "12px",
-                      padding: "11px",
-                    }}
-                  >
-                    Proceed to Ussd
-                  </button>
+                  {disabledUssd === true ? (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = `/product-details?${productDetails.productname}`;
+                        // state: productDetails.productname,
+                        // });
+                      }}
+                    >
+                      Go Back
+                    </button>
+                  ) : (
+                    <div
+                      onClick={(e) => {
+                        // e.preventDefault();
+                        handleSubmit(USSD_KEY);
+                      }}
+                      style={{ marginTop: "25px" }}
+                    >
+                      <a
+                        // className="btn"
+                        value={USSD_KEY}
+                        href="#open-modal"
+                        style={{
+                          backgroundColor: "#fda94f",
+                          cursor:
+                            disabledCard === true ? "not-allowed" : "pointer",
+                          color: "#000",
+                          fontSize: "12px",
+                          padding: "11px",
+                        }}
+                        disabled={disabledCard}
+                      >
+                        Pay with Ussd
+                      </a>{" "}
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (

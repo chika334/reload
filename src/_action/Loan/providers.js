@@ -3,6 +3,7 @@ import {
   PROVIDERS_LOADING,
   INTERSWITCH_PTOVIDERS_FAILED,
 } from "../types";
+import { returnErrors } from "../errorAction";
 import axios from "axios";
 
 export const interswitchProvider = () => (dispatch, getState) => {

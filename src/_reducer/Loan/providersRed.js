@@ -1,4 +1,8 @@
-import { INTERSWITCH_PROVIDER, PROVIDERS_LOADING } from "../../_action/types";
+import {
+  INTERSWITCH_PROVIDER,
+  PROVIDERS_LOADING,
+  INTERSWITCH_PTOVIDERS_FAILED,
+} from "../../_action/types";
 
 const initialState = {
   loading: false,

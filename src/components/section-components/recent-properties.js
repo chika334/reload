@@ -16,7 +16,7 @@ function RecentProperties() {
       <div className="container">
         <div className="section-title">
           <h2 className="title">Our Other Products</h2>
-          <Link className="btn-view-all" to="/reloadng/products">
+          <Link className="btn-view-all" to="/products">
             View All
           </Link>
         </div>

@@ -2,7 +2,7 @@
   "name": "reloadng",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://www.reload.ng",
+  "homepage": "/reloadng",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",

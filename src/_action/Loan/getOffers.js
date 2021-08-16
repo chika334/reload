@@ -4,6 +4,7 @@ import {
   GET_OFFER_SUCCESS,
   GET_LOAN_OFFERS_FAILED,
 } from "../types";
+import { returnErrors } from "../errorAction";
 import { interSwitchConfig } from "./providers";
 
 export const getOffer = (value) => (dispatch, getState) => {

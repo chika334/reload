@@ -36,7 +36,7 @@ import { showLoader, hideLoader } from "./_action/loading";
 import { useSelector, connect } from "react-redux";
 import Loading from "./components/global-components/loading";
 import ProtectedRoutes from "./protectedRoutes";
-import PrivateRouteReceipt from './preventReceipt'
+import PrivateRouteReceipt from "./preventReceipt";
 
 function Routes(props) {
   const location = useLocation();
@@ -46,7 +46,7 @@ function Routes(props) {
     props.showLoader();
     setTimeout(() => {
       props.hideLoader();
-    }, 2000);
+    }, 1000);
   }, []);
 
   return (
@@ -57,42 +57,54 @@ function Routes(props) {
         <Suspense fallback={<Loading />}>
           {/* <Layout /> */}
           <Navbar />
-          {/* <Switch>
-            <Redirect exact from="/" to="/" />
-          </Switch> */}
-          <Route path={[`/`]}>
-            <Switch location={location} key={location.pathname}>
-              <Route exact path="/" component={HomeV1} />
+          <Switch location={location} key={location.pathname}>
+            <Redirect
+              exact
+              from="/"
+              to={`/${process.env.REACT_APP_RELOADNG}`}
+            />
+          </Switch>
+          <Route path={[`/${process.env.REACT_APP_RELOADNG}`]}>
+            <Switch>
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}`}
+                component={HomeV1}
+              />
             </Switch>
           </Route>
           <Route
             path={[
-              `/about`,
-              `/registration`,
-              `/settings`,
-              `/faq`,
-              `/products`,
+              `/${process.env.REACT_APP_RELOADNG}/about`,
+              `/${process.env.REACT_APP_RELOADNG}/registration`,
+              `/${process.env.REACT_APP_RELOADNG}/settings`,
+              `/${process.env.REACT_APP_RELOADNG}/faq`,
+              `/${process.env.REACT_APP_RELOADNG}/products`,
               // `/error`,
-              `/product-details/buy`,
-              `/forgotpassword`,
-              `/terms`,
-              `/product-details`,
-              `/welcome`,
-              `/contact`,
-              `/successMessage`,
-              `/profile`,
-              `/transactions`,
-              `/helpdesk`,
-              `/receipt`,
-              `/loan`,
-              `/loan/accept-loan-offer`
+              `/${process.env.REACT_APP_RELOADNG}/product-details/buy`,
+              `/${process.env.REACT_APP_RELOADNG}/forgotpassword`,
+              `/${process.env.REACT_APP_RELOADNG}/terms`,
+              `/${process.env.REACT_APP_RELOADNG}/product-details`,
+              // `/${process.env.REACT_APP_RELOADNG}/welcome`,
+              `/${process.env.REACT_APP_RELOADNG}/contact`,
+              // `/successMessage`,
+              // `/profile`,
+              `/${process.env.REACT_APP_RELOADNG}/transactions`,
+              `/${process.env.REACT_APP_RELOADNG}/helpdesk`,
+              `/${process.env.REACT_APP_RELOADNG}/receipt`,
+              `/${process.env.REACT_APP_RELOADNG}/loan`,
+              `/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`,
             ]}
           >
             <Switch location={location} key={location.pathname}>
-              <Route exact path="/about" component={About} />
               <Route
                 exact
-                path="/registration"
+                path={`/${process.env.REACT_APP_RELOADNG}/about`}
+                component={About}
+              />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/registration`}
                 component={Registraion}
               />
               {/* <Route
@@ -102,53 +114,85 @@ function Routes(props) {
             /> */}
               <ProtectedRoutes
                 exact
-                path="/settings"
+                path={`/${process.env.REACT_APP_RELOADNG}/settings`}
                 component={Settings}
               />
               <ProtectedRoutes
                 exact
-                path="/transactions"
+                path={`/${process.env.REACT_APP_RELOADNG}/transactions`}
                 component={Transaction}
               />
               {/* <Route exact path="/error" component={Error} /> */}
-              <Route exact path="/faq" component={Faq} />
-              <Route exact path="/products" component={Property} />
               <Route
                 exact
-                path="/product-details/buy"
+                path={`/${process.env.REACT_APP_RELOADNG}/faq`}
+                component={Faq}
+              />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/products`}
+                component={Property}
+              />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/product-details/buy`}
                 component={BuyProduct}
               />
-              <Route exact path="/helpdesk" component={HelpDesk} />
               <Route
                 exact
-                path="/forgotpassword"
+                path={`/${process.env.REACT_APP_RELOADNG}/helpdesk`}
+                component={HelpDesk}
+              />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/forgotpassword`}
                 component={ForgotPassword}
               />
-              <Route exact path="/terms" component={TermNCondition} />
               <Route
                 exact
-                path="/product-details"
+                path={`/${process.env.REACT_APP_RELOADNG}/terms`}
+                component={TermNCondition}
+              />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/product-details`}
                 component={PropertyDetails}
               />
-              <ProtectedRoutes
+              {/* <ProtectedRoutes
                 exact
                 path="/welcome"
                 component={Welcome}
-              />
-              <ProtectedRoutes
+              /> */}
+              {/* <ProtectedRoutes
                 exact
                 path="/profile"
                 component={Profile}
-              />
-              <Route exact path="/contact" component={Contact} />
+              /> */}
               <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/contact`}
+                component={Contact}
+              />
+              {/* <Route
                 exact
                 path="/successMessage"
                 component={SuccessMessage}
+              /> */}
+              <ProtectedRoutes
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/loan`}
+                component={Loan}
               />
-              <ProtectedRoutes exact path="/loan" component={Loan} />
-              <ProtectedRoutes exact path="/loan/accept-loan-offer" component={AcceptLoan} />
-              <Route exact path="/receipt" component={Receipt} />
+              <ProtectedRoutes
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`}
+                component={AcceptLoan}
+              />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/receipt`}
+                component={Receipt}
+              />
               <Route exact component={Error} />
             </Switch>
           </Route>

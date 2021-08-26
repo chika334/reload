@@ -86,19 +86,27 @@ function Service(props) {
     if (details.otherData.billerCode === null) {
       setModal(true);
     } else {
-      // if (
-      //   // details.otherData.billerCode === "DSTV2" ||
-      //   // details.otherData.billerCode === "startimes" ||
-      //   // details.otherData.billerCode === "GOTV2" ||
-      //   // details.otherData.billerCode === "KADUNA_PREPAID" ||
-      //   // details.otherData.billerCode === "KANO_PREPAID" ||
-      //   // details.otherData.billerCode === "ekdc prepaid" ||
-      //   // details.otherData.billerCode === "JOS_PREPAID" 
-      //   // ||
-      //   // details.otherData.billerCode === "SMILE"
-      // ) {
-      //   setModal(true);
-      // } else {
+      if (
+        details.otherData.billerCode === "NTELBundle" ||
+        // details.otherData.billerCode === "DSTV2" ||
+        // details.otherData.billerCode === "startimes" ||
+        // details.otherData.billerCode === "GOTV2" ||
+        // details.otherData.billerCode === "KADUNA_PREPAID" ||
+        // details.otherData.billerCode === "KANO_PREPAID" ||
+        details.otherData.billerCode === "PHCNEKO" ||
+        // details.otherData.billerCode === "JOS_PREPAID"
+        // ||
+        // details.otherData.billerCode === "9mobiledata1" ||
+        details.otherData.productId.productname ===
+          "Ibadan Electricity Prepaid" ||
+        // details.otherData.productId.billerCode === "PHEDDIR2" ||
+        details.otherData.billerCode === "SMILE" ||
+        details.otherData.productId.productname === "Jamb Exams" ||
+        details.otherData.productId.productname === "Waec Exams Registration" ||
+        details.otherData.productId.productname === "Benin Electricity Prepaid"
+      ) {
+        setModal(true);
+      } else {
         props.showLoader();
         getProducts.listProducts === null
           ? ""
@@ -129,14 +137,14 @@ function Service(props) {
                   billerCode: detail.billerCode,
                 };
                 dispatch(someData(data));
-                let path = `/product-details`;
+                let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                 history.push({
                   pathname: path,
                   // search: `product=${detail.productId.description}`,
                 });
               }
             });
-      // }
+      }
     }
   };
 

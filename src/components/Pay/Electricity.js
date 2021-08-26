@@ -7,7 +7,7 @@ import { verifySmartcardNumber } from "../../_action/verifyNumber";
 import { verify } from "../../_action/verify";
 import { showLoader, hideLoader } from "../../_action/loading";
 import { pay } from "../../_action/Payment/paymentButtons";
-import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
+// import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { finalPayment } from "../../_action/Payment/finalPayment";
 import Alert from "@material-ui/lab/Alert";
 import { clearErrors } from "../../_action/errorAction";
@@ -17,9 +17,9 @@ import Slide from "@material-ui/core/Slide";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import NativeSelect from "@material-ui/core/NativeSelect";
+// import NativeSelect from "@material-ui/core/NativeSelect";
 import InputBase from "@material-ui/core/InputBase";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 
 const BootstrapInput = withStyles((theme) => ({
@@ -75,7 +75,7 @@ function Electricity(props) {
   const error = useSelector((state) => state.error);
   const [errors, setErrors] = useState("");
   const [failure, setFailure] = useState("");
-  const [otherValues, setOtherValues] = useState({});
+  const [otherValues, setOtherValues] = useState("");
   const [amount, setAmount] = useState("");
   const [smartCard, setSmartCard] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -89,11 +89,15 @@ function Electricity(props) {
   const pays = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone.detail : ""
   );
+  const [verifiedAccount, setVerifiedAccount] = useState(null);
+  const [verifiedProducts, setVerifiedProducts] = useState(null);
   // const [age, setAge] = React.useState("");
 
   const handleSelectMeterType = (event) => {
     setMeterType(event.target.value);
   };
+
+  console.log(otherValues);
 
   const handleSmartCard = (e) => {
     setSmartCard(e.target.value);
@@ -109,7 +113,7 @@ function Electricity(props) {
       }, 5000);
     } else if (error.id === "FINAL_PAYMENT_ERROR") {
       setLoading(false);
-      setFailure(error.message.data.result.productResult);
+      setFailure(error.message.data.message);
       setTimeout(() => {
         props.clearErrors();
         setErrors("");
@@ -117,22 +121,51 @@ function Electricity(props) {
     }
   }, [error.error === true]);
 
-  console.log(verifiedUser);
+  console.log(buttonValue);
 
   const verifyMeterNumber = async () => {
+    if (productDetails.billerCode === "KANO_PREPAID") {
+      const details = {
+        product: productDetails.productId,
+        billerCode: productDetails.billerCode,
+        accountNumber: smartCard,
+        extras: {
+          customerAccountType: meterType === "PREPAID" ? "KANO_PREPAID" : "",
+          field1: null,
+          field2: meterType === "PREPAID" ? "KANO_PREPAID" : "",
+          field3: null,
+        },
+      };
+
+      props.verifySmartcardNumber(details);
+    }
     if (productDetails.billerCode === "JOS_PREPAID") {
       const details = {
         product: productDetails.productId,
         billerCode: productDetails.billerCode,
         accountNumber: smartCard,
         extras: {
-          customerAccountType: "Jos_Disco",
-          field1: null,
-          field2: null,
-          field3: null,
-        }
+          customerAccountType: meterType === "PREPAID" ? "Jos_Disco" : "",
+          field1: "1111111111",
+          field2: "v.law149@gmail.com",
+          field3: "2000",
+        },
       };
-      // console.log(details);
+
+      props.verifySmartcardNumber(details);
+    } else if (productDetails.billerCode === "KADUNA_PREPAID") {
+      const details = {
+        product: productDetails.productId,
+        billerCode: productDetails.billerCode,
+        accountNumber: smartCard,
+        extras: {
+          customerAccountType:
+            meterType === "PREPAID" ? "Kaduna_Electricity_Disco" : "",
+          field1: "1111111111",
+          field2: "v.law149@gmail.com",
+          field3: "2000",
+        },
+      };
 
       props.verifySmartcardNumber(details);
     } else {
@@ -273,6 +306,94 @@ function Electricity(props) {
         ],
       };
       props.PaymentIntent(newValuesObj);
+    } else if (productDetails.billerCode === "JOS_PREPAID") {
+      const newValuesObj = {
+        amount: `${amount}`,
+        channelRef: "web",
+        description: "Electricity Prepaid",
+        // paymentMethod: "billpayflutter",
+        paymentMethod:
+          value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "Email Address": otherValues["Email Address"],
+          "Meter Number": `${verifiedUser.result.account.accountNumber}`,
+          "Invoice Number": `${verifiedUser.result.extra}`,
+          "Product Type": meterType === "PREPAID" ? "Jos_Disco" : "",
+          "Phone Number": otherValues["Phone Number"],
+          "Customer Name": `${verifiedUser.result.account.accountName}`,
+        },
+        references: [
+          "Email Address",
+          "Invoice Number",
+          "Meter Number",
+          "Product Type",
+          "Phone Number",
+          "Customer Name",
+        ],
+      };
+
+      // console.log(newValuesObj);
+      props.PaymentIntent(newValuesObj);
+    } else if (productDetails.billerCode === "KADUNA_PREPAID") {
+      const newValuesObj = {
+        amount: `${amount}`,
+        channelRef: "web",
+        description: "Electricity Prepaid",
+        // paymentMethod: "billpayflutter",
+        paymentMethod:
+          value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "Email Address": otherValues["Email Address"],
+          "Meter Number": `${verifiedUser.result.account.accountNumber}`,
+          "Invoice Number": `${verifiedUser.result.extra}`,
+          "Product Type":
+            meterType === "PREPAID" ? "Kaduna_Electricity_Disco" : "",
+          "Phone Number": otherValues["Phone Number"],
+          "Customer Name": `${verifiedUser.result.account.accountName}`,
+        },
+        references: [
+          "Email Address",
+          "Invoice Number",
+          "Meter Number",
+          "Product Type",
+          "Phone Number",
+          "Customer Name",
+        ],
+      };
+
+      console.log(newValuesObj);
+      props.PaymentIntent(newValuesObj);
+    } else if (productDetails.billerCode === "KANO_PREPAID") {
+      const newValuesObj = {
+        amount: `${amount}`,
+        channelRef: "web",
+        description: "Electricity Prepaid",
+        // paymentMethod: "billpayflutter",
+        paymentMethod:
+          value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+        productId: `${productDetails.productId}`,
+        referenceValues: {
+          "Email Address": otherValues["Email Address"],
+          "Meter Number": `${verifiedUser.result.account.accountNumber}`,
+          "Invoice Number": `${verifiedUser.result.extra}`,
+          "Product Type": "PREPAID",
+          "Phone Number": otherValues["Phone Number"],
+          "Customer Name": `${verifiedUser.result.account.accountName}`,
+        },
+        references: [
+          "Email Address",
+          "Invoice Number",
+          "Meter Number",
+          "Product Type",
+          "Phone Number",
+          "Customer Name",
+        ],
+      };
+
+      // console.log(newValuesObj);
+      props.PaymentIntent(newValuesObj);
     }
     // } else {
     //   // setLoading(false);
@@ -283,7 +404,14 @@ function Electricity(props) {
     // }
   };
 
-  // console.log(buttonValue);
+  useEffect(() => {
+    if (verifiedUser.verifySuccess === true) {
+      setLoading(false);
+      setVerifiedProducts(verifiedUser.result.product);
+      setVerifiedAccount(verifiedUser.result.account);
+      props.verify("Electricity", true);
+    }
+  }, [verifiedUser.verifySuccess]);
 
   const handleFieldChange = (e, name) => {
     const newValues = { ...otherValues };
@@ -320,27 +448,6 @@ function Electricity(props) {
     }
   }
 
-  // console.log(buttonValue);
-
-  // useEffect(() => {
-  //   if (paymentIntent.success === true) {
-  //     setLoading(false);
-  //     const detail = {
-  //       amount: amount,
-  //       email: otherValues["Email Address"],
-  //       buttonClick: buttonValue,
-  //       product: productDetails.productname,
-  //       transRef: paymentIntent.detail.transRef,
-  //       customerName:
-  //         verifiedUser.result === null
-  //           ? ""
-  //           : verifiedUser.result.account.accountName,
-  //     };
-
-  //     dispatch(pay(detail));
-  //     props.dataPay(true, "Electricity");
-  //   }
-  // }, [paymentIntent.success]);
   useEffect(() => {
     if (paymentIntent.success === true) {
       // pro
@@ -362,12 +469,13 @@ function Electricity(props) {
             : verifiedUser.result.account.accountName,
       };
 
+      console.log(detail);
+
       dispatch(pay(detail));
       props.dataPay(true, "Cable");
       // props.onpaymentProcess(buttonValue);
     }
   }, [paymentIntent.success]);
-
 
   useEffect(() => {
     if (verifiedUser.verifySuccess === true) {
@@ -415,25 +523,27 @@ function Electricity(props) {
                       value={smartCard}
                     />
                   </div>
-                  <FormControl className="inputSize">
-                    <InputLabel id="demo-customized-select-label">
-                      Meter Type
-                    </InputLabel>
-                    <Select
-                      labelId="demo-customized-select-label"
-                      id="demo-customized-select"
-                      value={meterType}
-                      onChange={handleSelectMeterType}
-                      placeholder="Select Meter Type"
-                      input={<BootstrapInput />}
-                    >
-                      <MenuItem value="Select Meter Type">
-                        <em>Select Meter Type</em>
-                      </MenuItem>
-                      <MenuItem value="POSTPAID">PostPaid</MenuItem>
-                      <MenuItem value="PREPAID">PrePaid</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <div className="d-flex align-item-center justify-content-center pt-3">
+                    <FormControl className="inputSize">
+                      <InputLabel id="demo-customized-select-label">
+                        Meter Type
+                      </InputLabel>
+                      <Select
+                        labelId="demo-customized-select-label"
+                        id="demo-customized-select"
+                        value={meterType}
+                        onChange={handleSelectMeterType}
+                        placeholder="Select Meter Type"
+                        input={<BootstrapInput />}
+                      >
+                        <MenuItem value="Select Meter Type">
+                          <em>Select Meter Type</em>
+                        </MenuItem>
+                        <MenuItem value="POSTPAID">PostPaid</MenuItem>
+                        <MenuItem value="PREPAID">PrePaid</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
                   <div className="d-flex align-item-center justify-content-center">
                     <Button
                       onClick={SmartNumber}
@@ -594,13 +704,13 @@ function Electricity(props) {
         <div>
           {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Electricity" ? (
-            <div className="ButtonSide">
+            <div className="ButtonSide pt-3">
               <div>
-                {disabledCard === true ? (
+                {props.disabledCard === true ? (
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      window.location.href = `/product-details?${productDetails.productname}`;
+                      window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                       // state: productDetails.productname,
                       // });
                     }}
@@ -618,23 +728,24 @@ function Electricity(props) {
                     type="submit"
                     style={{
                       backgroundColor: "#fda94f",
-                      cursor: disabledUssd === true ? "not-allowed" : "pointer",
+                      cursor:
+                        props.disabledUssd === true ? "not-allowed" : "pointer",
                       color: "#000",
                       fontSize: "12px",
                       padding: "11px",
                     }}
-                    disabled={disabledUssd}
+                    disabled={props.disabledUssd}
                   >
                     Proceed to Card
                   </button>
                 )}
               </div>
               <div>
-                {disabledUssd === true ? (
+                {props.disabledUssd === true ? (
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      window.location.href = `/product-details?${productDetails.productname}`;
+                      window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                       // state: productDetails.productname,
                       // });
                     }}
@@ -642,27 +753,29 @@ function Electricity(props) {
                     Go Back
                   </button>
                 ) : (
-                  <div style={{ marginTop: "25px" }}>
-                    <a
+                  <div>
+                    <Button
                       onClick={(e) => {
                         // e.preventDefault();
                         handleSubmit(USSD_KEY);
                       }}
                       // className="btn"
                       value={USSD_KEY}
-                      href="#open-modal"
+                      // href="#open-modal"
                       style={{
                         backgroundColor: "#fda94f",
                         cursor:
-                          disabledCard === true ? "not-allowed" : "pointer",
+                          props.disabledCard === true
+                            ? "not-allowed"
+                            : "pointer",
                         color: "#000",
                         fontSize: "12px",
                         padding: "11px",
                       }}
-                      disabled={disabledCard}
+                      disabled={props.disabledCard}
                     >
                       Pay with Ussd
-                    </a>{" "}
+                    </Button>{" "}
                   </div>
                 )}
               </div>

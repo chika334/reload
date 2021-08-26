@@ -22,6 +22,9 @@ import { getLoanData } from "../../_action/Loan/getLoanData";
 import { someloanData } from "../../_action/Loan/sendSomeLoanData";
 import "../Table/table.scss";
 import Alert from "@material-ui/lab/Alert";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: "40ch",
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
   },
 }));
 
@@ -52,8 +59,6 @@ function Property({ breakOn = "medium" }) {
   const [bankDetails, setBankDetails] = useState();
   const [error, setError] = useState(null);
   const errors = useSelector((state) => state.error);
-  // const [providersDetails, setProvidersDetails] = useState(null);
-  // const [offerId, setOfferId] = useState(null);
   const [getData, setGetData] = useState({
     amount: "",
     serviceType: "Money",
@@ -123,7 +128,7 @@ function Property({ breakOn = "medium" }) {
     setTimeout(() => {
       setLoading(false);
       history.push({
-        pathname: "/loan/accept-loan-offer",
+        pathname: `/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`,
       });
     }, 500);
   };
@@ -238,24 +243,26 @@ function Property({ breakOn = "medium" }) {
                         ) : (
                           ""
                         )}
-                        <div className="mt-5">
+                        <div className="d-flex justify-content-center mt-5">
                           <TextField
                             label="Enter Loan Amount"
+                            type="number"
                             onChange={(e) => handleChange(e, "amount")}
                             value={getData["amount"]}
                             className={classes.textField}
                           />
                         </div>
-                        <div className="mt-5">
+                        <div className="d-flex justify-content-center mt-5">
                           <TextField
                             label="Enter Phone Number"
+                            type="number"
                             onChange={(e) => handleChange(e, "phone")}
                             value={getData["phone"]}
                             className={classes.textField}
                           />
                         </div>
-                        <div className="mt-5">
-                          <TextField
+                        <div className="d-flex justify-content-center mt-5">
+                          {/* <TextField
                             id="standard-select-currency"
                             select
                             label="Select"
@@ -274,9 +281,34 @@ function Property({ breakOn = "medium" }) {
                                     {option.name}
                                   </MenuItem>
                                 ))}
-                          </TextField>
+                          </TextField> */}
+                          <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="grouped-native-select">
+                              Grouping
+                            </InputLabel>
+                            <Select
+                              native
+                              className={classes.textField}
+                              defaultValue=""
+                              id="grouped-native-select"
+                            >
+                              <option aria-label="None" value="" />
+                              {Providers.providers === null
+                                ? ""
+                                : Providers.providers.providers.map(
+                                    (option) => (
+                                      <option
+                                        key={option.code}
+                                        value={option.code}
+                                      >
+                                        {option.name}
+                                      </option>
+                                    )
+                                  )}
+                            </Select>
+                          </FormControl>
                         </div>
-                        <div className="mt-5">
+                        <div className="mt-5 d-flex justify-content-center">
                           <Button
                             type="submit"
                             style={{

@@ -46,7 +46,7 @@ function Login(props) {
         // } else {
         //   props.history.push("/");
         // }
-        window.location.href = "/";
+        window.location.href = `/${process.env.REACT_APP_RELOADNG}`;
         // props.loginRedirect();
       } else {
         props.hideLoader();
@@ -159,7 +159,7 @@ function Login(props) {
               padding: "15px",
             }}
           >
-            <a href="/forgotpassword">Forgot Password</a>
+            <a href={`/${process.env.REACT_APP_RELOADNG}/forgotpassword`}>Forgot Password</a>
           </div>
           <div className="d-flex align-items-center justify-content-center mt-3">
             <SubmitButton

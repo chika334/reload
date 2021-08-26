@@ -198,12 +198,14 @@ div .new4:not(:last-child) {
 /* Button position */
 .ButtonSide {
   display: flex;
-  flex-wrap: wrap;
+  justify-content:start;
+  /* background-color: red */
+  /* flex-wrap: wrap; */
 }
 
 .ButtonSide > div {
-  /* margin: 20px; */
-  /* padding: 2px; */
+  margin-left: 60px;
+  padding-left: 50px;
   width: 50%;
   /* background-color: red; */
 }

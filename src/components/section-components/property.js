@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import sectiondata from "../../data/sections.json";
-import parse from "html-react-parser";
+// import sectiondata from "../../data/sections.json";
+// import parse from "html-react-parser";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { Button, Modal } from "@material-ui/core";
@@ -43,23 +43,30 @@ function Property(props) {
   );
 
   const handlePay = (details) => {
-    // console.log(details.otherData.billerCode);
+    console.log(details.otherData.billerCode);
     if (details.otherData.billerCode === null) {
       setModal(true);
     } else {
-      // if (
-      //   // details.otherData.billerCode === "DSTV2" ||
-      //   // details.otherData.billerCode === "startimes" ||
-      //   // details.otherData.billerCode === "GOTV2" ||
-      //   // details.otherData.billerCode === "KADUNA_PREPAID" ||
-      //   // details.otherData.billerCode === "KANO_PREPAID" ||
-      //   // // details.otherData.billerCode === "ekdc prepaid" ||
-      //   // details.otherData.billerCode === "JOS_PREPAID" 
-      //   // ||
-      //   // details.otherData.billerCode === "SMILE"
-      // ) {
-      //   setModal(true);
-      // } else {
+      if (
+        // details.otherData.billerCode === "DSTV2" ||
+        // details.otherData.billerCode === "startimes" ||
+        // details.otherData.billerCode === "GOTV2" ||
+        // details.otherData.billerCode === "KADUNA_PREPAID" ||
+        // details.otherData.billerCode === "KANO_PREPAID" ||
+        details.otherData.billerCode === "PHCNEKO" ||
+        // details.otherData.billerCode === "JOS_PREPAID"
+        // details.otherData.billerCode === "9mobiledata1" ||
+        details.otherData.billerCode === "NTELBundle" ||
+        details.otherData.productId.productname ===
+          "Ibadan Electricity Prepaid" ||
+        // details.otherData.productId.billerCode === "PHEDDIR2" ||
+        details.otherData.billerCode === "SMILE" ||
+        details.otherData.productId.productname === "Jamb Exams" ||
+        details.otherData.productId.productname === "Waec Exams Registration" ||
+        details.otherData.productId.productname === "Benin Electricity Prepaid"
+      ) {
+        setModal(true);
+      } else {
         props.showLoader();
         setTimeout(() => {
           props.hideLoader();
@@ -81,14 +88,15 @@ function Property(props) {
                   billerCode: detail.billerCode,
                 };
                 dispatch(someData(data));
-                let path = `/product-details`;
+                let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+                console.log(path);
                 history.push({
                   pathname: path,
                   // search: `product=${detail.productId.description}`,
                 });
               }
             });
-      // }
+      }
     }
   };
 
@@ -152,7 +160,8 @@ function Property(props) {
       setProductData(filtered);
     } else if (word === "Loan") {
       // alert("Work in process")
-      history.push("/loan");
+      // history.push("/loan");
+      window.location.href = `/${process.env.REACT_APP_RELOADNG}/loan`;
     }
   };
 

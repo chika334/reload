@@ -274,10 +274,10 @@ function Index(props) {
         } */}
         <div onClick={handleUSSD} className="interior">
           {" "}
-          <a className="btn" href="#open-modal">
+          {/* <a className="btn" href="#open-modal">
             {" "}
             Pay with USSD
-          </a>{" "}
+          </a>{" "} */}
         </div>
       </div>
       <div>

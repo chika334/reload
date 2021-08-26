@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MenuItem, TextField, Button } from "@material-ui/core";
+import { MenuItem, TextField, Button, ButtonBase } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
@@ -15,18 +15,26 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
+import {
+  verifySmartcardNumber,
+  clearVerified,
+} from "../../_action/verifyNumber";
+import { verify } from "../../_action/verify";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
+import Smile from "./Smile";
+import Ntel from "./Ntel";
+import Spectranet from "./Spectranet";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function NewForm(props) {
-  // const dispatch1 = useDispatch();
   const dispatch = useDispatch();
   const user = useSelector((state) =>
     state.authUser.user === null ? "" : state.authUser.user
   );
+  const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const [disabled, setDisabled] = useState(false);
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
@@ -39,6 +47,7 @@ function NewForm(props) {
   const productDetails = useSelector((state) => state.someData.detail);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const [buttonValue, setButtonValue] = useState(null);
+  const [smileNumber, setSmileNumber] = useState("");
   const [smartCard, setSmartCard] = useState({
     "E-mail": "",
     "Phone Number": "",
@@ -56,6 +65,8 @@ function NewForm(props) {
     amount: "",
     name: "",
   });
+  const [otherDataValues, setOtherDataValues] = useState(null);
+  const [intentData, setIntentData] = useState(null);
 
   const { phone, email } = smartCard;
   const { id, amount, name } = selectDetails;
@@ -76,135 +87,131 @@ function NewForm(props) {
     setSmartCard(newValues);
   };
 
-  // console.log(productDetails.billerCode);
-
-  const handleSubmit = (value) => {
-    // e.preventDefault()
+  const handleSubmit = (value, data) => {
     setButtonValue(value);
-    if (value === "FLUTTERWAVE") {
-      setDisabledCard(true);
-    } else if (value === "USSD") {
-      setDisabledUssd(true);
-    }
+    setOtherDataValues(data);
+    console.log(value, data);
+    if (productDetails.billerCode === "airtel-data") {
+      if (smartCard["Phone Number"].length < 11) {
+        setError("Phone number must be 11 digits");
+        // return
+      } else {
+        const newValuesObj = {
+          amount: `${selectDetails.amount}`,
+          channelRef: "web",
+          description: "Data",
+          paymentMethod:
+            value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+          productId: `${productDetails.productId}`,
+          referenceValues: {
+            "E-mail": `${smartCard["E-mail"]}`,
+            "Product Type": `${selectDetails.id}`,
+            "Phone Number": `${smartCard["Phone Number"]}`,
+          },
+          references: ["E-mail", "Product Type", "Phone Number"],
+        };
 
-    // console.log(value);
-    // const value = e.target.value;
-    if (selectDetails !== null) {
-      setLoading(true);
-      // console.log(smartCard["Phone Number"].length);
-      if (productDetails.billerCode === "airtel-data") {
-        if (smartCard["Phone Number"].length < 11) {
-          setError("Phone number must be 11 digits");
-          // return
-        } else {
-          const newValuesObj = {
-            amount: `${selectDetails.amount}`,
-            channelRef: "web",
-            description: "Data",
-            // paymentMethod: "billpayflutter",
-            paymentMethod:
-              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-            productId: `${productDetails.productId}`,
-            referenceValues: {
-              "E-mail": `${smartCard["E-mail"]}`,
-              // "E-mail": user.user.email,
-              "Product Type": `${selectDetails.id}`,
-              "Phone Number": `${smartCard["Phone Number"]}`,
-            },
-            references: ["E-mail", "Product Type", "Phone Number"],
-          };
-
-          // console.log(newValuesObj);
-          props.PaymentIntent(newValuesObj);
-          // props.pay(true, "Data");
-        }
-      } else if (productDetails.billerCode === "glo-data") {
-        if (smartCard["Phone Number"].length < 11) {
-          setError("Phone number must be 11 digits");
-          // return
-        } else {
-          const newValuesObj = {
-            amount: `${selectDetails.amount}`,
-            channelRef: "web",
-            description: "Data",
-            // paymentMethod: "billpayflutter",
-            paymentMethod:
-              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-            productId: `${productDetails.productId}`,
-            referenceValues: {
-              "E-mail": `${smartCard["E-mail"]}`,
-              // "E-mail": user.user.email,
-              "Product Type": `${selectDetails.id}`,
-              "Phone Number": `${smartCard["Phone Number"]}`,
-            },
-            references: ["E-mail", "Product Type", "Phone Number"],
-          };
-
-          // console.log(newValuesObj);
-          props.PaymentIntent(newValuesObj);
-        }
-      } else if (productDetails.billerCode === "data") {
-        if (smartCard["Phone Number"].length < 11) {
-          setError("Phone number must be 11 digits");
-          // return
-        } else {
-          const newValuesObj = {
-            amount: `${selectDetails.amount}`,
-            channelRef: "web",
-            description: "Data",
-            // paymentMethod: "billpayflutter",
-            paymentMethod:
-              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-            productId: `${productDetails.productId}`,
-            referenceValues: {
-              Email: `${smartCard["Email"]}`,
-              // Email: user.user.email,
-              "Product type": `${selectDetails.id}`,
-              "Phone Number": `${smartCard["Phone Number"]}`,
-            },
-            references: ["Email", "Product type", "Phone Number"],
-          };
-
-          // console.log(newValuesObj);
-          props.PaymentIntent(newValuesObj);
-        }
-      } else if (productDetails.billerCode === "9mobiledata1") {
-        if (smartCard["Phone Number"].length < 11) {
-          setError("Phone number must be 11 digits");
-          // return
-        } else {
-          const newValuesObj = {
-            amount: `${selectDetails.amount}`,
-            channelRef: "web",
-            description: "Data",
-            // paymentMethod: "billpayflutter",
-            paymentMethod:
-              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-            productId: `${productDetails.productId}`,
-            referenceValues: {
-              Email: `${smartCard["Email"]}`,
-              // Email: user.user.email,
-              Product: `${selectDetails.id}`,
-              "Phone Number": `${smartCard["Phone Number"]}`,
-            },
-            references: ["Email", "Product", "Phone Number"],
-          };
-
-          // console.log(newValuesObj);
-          props.PaymentIntent(newValuesObj);
-        }
+        // console.log(newValuesObj);
+        props.PaymentIntent(newValuesObj);
       }
-    } else {
-      // setLoading(false);
-      // // const path = `${props.location.pathname}${props.location.search}`;
-      // // props.loginRediectSuccess(path, productDetails);
-      // // props.history.push("/registration");
-      // setOpen(true);
+    } else if (productDetails.billerCode === "glo-data") {
+      if (smartCard["Phone Number"].length < 11) {
+        setError("Phone number must be 11 digits");
+        // return
+      } else {
+        const newValuesObj = {
+          amount: `${selectDetails.amount}`,
+          channelRef: "web",
+          description: "Data",
+          // paymentMethod: "billpayflutter",
+          paymentMethod:
+            value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+          productId: `${productDetails.productId}`,
+          referenceValues: {
+            "E-mail": `${smartCard["E-mail"]}`,
+            // "E-mail": user.user.email,
+            "Product Type": `${selectDetails.id}`,
+            "Phone Number": `${smartCard["Phone Number"]}`,
+          },
+          references: ["E-mail", "Product Type", "Phone Number"],
+        };
+
+        // console.log(newValuesObj);
+        props.PaymentIntent(newValuesObj);
+      }
+    } else if (productDetails.billerCode === "data") {
+      if (smartCard["Phone Number"].length < 11) {
+        setError("Phone number must be 11 digits");
+        // return
+      } else {
+        const newValuesObj = {
+          amount: `${selectDetails.amount}`,
+          channelRef: "web",
+          description: "Data",
+          // paymentMethod: "billpayflutter",
+          paymentMethod:
+            value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+          productId: `${productDetails.productId}`,
+          referenceValues: {
+            Email: `${smartCard["Email"]}`,
+            // Email: user.user.email,
+            "Product type": `${selectDetails.id}`,
+            "Phone Number": `${smartCard["Phone Number"]}`,
+          },
+          references: ["Email", "Product type", "Phone Number"],
+        };
+
+        // console.log(newValuesObj);
+        props.PaymentIntent(newValuesObj);
+      }
+    } else if (productDetails.billerCode === "9mobiledata1") {
+      if (smartCard["Phone Number"].length < 11) {
+        setError("Phone number must be 11 digits");
+        // return
+      } else {
+        const newValuesObj = {
+          amount: `${selectDetails.amount}`,
+          channelRef: "web",
+          description: "Data",
+          paymentMethod:
+            value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+          productId: `${productDetails.productId}`,
+          referenceValues: {
+            Email: `${smartCard["Email"]}`,
+            "9Mobile Data Plan": `${selectDetails.id}`,
+            Product: "Data",
+            "Phone Number": `${smartCard["Phone Number"]}`,
+          },
+          references: ["Product", "Email", "9Mobile Data Plan", "Phone Number"],
+        };
+
+        console.log(newValuesObj);
+        props.PaymentIntent(newValuesObj);
+      }
+    } else if (productDetails.billerCode === "SMILE") {
+      console.log(data);
+      props.PaymentIntent(data);
+    } else if (productDetails.billerCode === "NTELBundle") {
+      // console.log(newValuesObj);
+      props.PaymentIntent(data);
+    } else if (productDetails.billerCode === "SPECTRANET") {
+      props.PaymentIntent(data);
     }
   };
 
   useEffect(() => {
     if (paymentIntent.success === true) {
+      const ntelEmail = otherDataValues
+        ? otherDataValues.referenceValues.Email
+        : "";
+
+      const accountNumber = otherDataValues
+        ? otherDataValues.referenceValues.accountNumber
+        : "";
+
+      const spectEmail = otherDataValues
+        ? otherDataValues.referenceValues["Email"]
+        : "";
       // pro
       setLoading(false);
       const amount = selectDetails.amount;
@@ -212,6 +219,7 @@ function NewForm(props) {
         amount: amount,
         buttonClick: buttonValue,
         product: productDetails.productname,
+        accountNumber: accountNumber,
         email: `${
           productDetails.billerCode === "data"
             ? smartCard["Email"]
@@ -221,6 +229,12 @@ function NewForm(props) {
             ? smartCard["E-mail"]
             : productDetails.billerCode === "9mobiledata1"
             ? smartCard["Email"]
+            : productDetails.billerCode === "NTELBundle"
+            ? ntelEmail
+            : productDetails.billerCode === "SMILE"
+            ? ntelEmail
+            : productDetails.billerCode === "SPECTRANET"
+            ? spectEmail
             : ""
         }`,
         // email: user.user.email,
@@ -239,61 +253,34 @@ function NewForm(props) {
     fieldsArray.push(item[data]);
   }
 
-  console.log(item.field2.select);
+  console.log(item);
+
   const fieldsOptions = [];
-  const secondOptions = [];
-
-  // if (item.field3.select === true) {
-  //   const data = item.field3.options;
-  //   console.log(data);
-  //   if (item.field3.text === "Select Data Package") {
-  //     for (const key in data) {
-  //       if (data.hasOwnProperty(key)) {
-  //         var value = data[key];
-  //         fieldsOptions.push(value);
-  //       }
-  //     }
-  //   }
-  // } 
-  // if (item.field2.select === true) {
-  //   console.log("how");
-  //   // if (item.field2.text === "Invoice Id") {
-  //     const data = item.field2.options;
-  //     console.log(data);
-  //     for (const key in data) {
-  //       // if (data.hasOwnProperty(key)) {
-  //       //   var value = data[key];
-  //       //   console.log("invoice");
-  //       //   secondOptions.push(value);
-  //       // }
-  //     // }
-  //   }
-  // }
-
-  if (item.field3.select === true) {
-    const data = item.field3.options;
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        var value = data[key];
-        fieldsOptions.push(value);
+  if (item.field3) {
+    if (item.field3.select === true) {
+      const data = item.field3.options;
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          var value = data[key];
+          fieldsOptions.push(value);
+        }
       }
     }
-  } 
-  if (item.field2.select === true) {
-    const data = item.field2.options;
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        var value = data[key];
-        secondOptions.push(value);
+  }
+  if (item.field2) {
+    if (item.field2.select === true) {
+      const data = item.field2.options;
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          var value = data[key];
+          fieldsOptions.push(value);
+        }
       }
     }
   }
 
-  console.log(item);
-  console.log(fieldsOptions);
-  console.log(secondOptions);
-
   const deal = Object.values(fieldsArray);
+
   useEffect(() => {
     deal.map((allData) => {
       // console.log(allData);
@@ -311,43 +298,14 @@ function NewForm(props) {
     });
   }, []);
 
-  const handleClose = () => {
-    setOpen(false);
+  const getData = (data) => {
+    setIntentData(data);
   };
 
-  const handleRegRedirect = () => {
-    props.history.push("/registration");
-  };
+  console.log(productDetails.billerCode);
 
   return (
     <div>
-      {/* <div>
-        <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle id="alert-dialog-slide-title">
-            {"Welcome to reload.ng"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              Please sign-in to process payment.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              cancel
-            </Button>
-            <Button onClick={handleRegRedirect} color="primary">
-              ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div> */}
       {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
@@ -364,177 +322,235 @@ function NewForm(props) {
               {error && <Alert severity="error">{error}</Alert>}
             </div>
             <div>
-              {fieldsArray.map((allFields, i) =>
-                allFields.select === true ? (
-                  <div
-                    key={i}
-                    className="d-flex align-item-center justify-content-center pt-3"
-                  >
-                    <TextField
-                      // style={{ width: "50%" }}
-                      className="inputSize"
-                      required
-                      label={allFields.text}
-                      name={allFields.text}
-                      placeholder={`Enter ${allFields.text}`}
-                      select
-                      type="text"
-                      value={values[allFields.text]}
-                      variant="outlined"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    >
-                      <MenuItem>Select Data Type</MenuItem>
-                      {fieldsOptions.map((option, index) => {
-                        const detail = JSON.parse(option);
-                        return (
-                          <MenuItem
-                            key={index}
-                            value={detail.ItemName}
-                            onClick={(event) =>
-                              handleSelect(allFields.text, detail)
-                            }
-                          >
-                            {detail.ItemName}
-                          </MenuItem>
-                        );
-                      })}
-                    </TextField>
-                  </div>
-                ) : (
-                  ""
-                )
-              )}
-              {fieldsArray.map((allFields, i) =>
-                allFields.select !== true ? (
-                  // allFields.text === "Email" || allFields.text === "E-mail" ? (
-                  //   ""
-                  // ) : (
-                  <div
-                    key={i}
-                    className="d-flex align-item-center justify-content-center pt-3"
-                  >
-                    <TextField
-                      // style={{ width: "50%" }}
-                      className="inputSize"
-                      required
-                      label={allFields.text}
-                      name={allFields.text}
-                      onChange={(e) => handleOthers(e, allFields.text)}
-                      placeholder={`Enter ${allFields.text}`}
-                      type={
-                        allFields.text === "Email" ||
-                        allFields.text === "E-mail"
-                          ? "email"
-                          : "number"
-                      }
-                      // value={values[allFields.text]}
-                      disabled={allFields.text === "Amount" && disabled}
-                      value={
-                        selectDetails.amount === undefined
-                          ? ""
-                          : allFields.text === "Amount"
-                          ? selectDetails.amount
-                          : allFields.text === "Phone Number"
-                          ? smartCard["Phone Number"]
-                          : allFields.text === "Email"
-                          ? smartCard["Email"]
-                          : allFields.text === "E-mail"
-                          ? smartCard["E-mail"]
-                          : ""
-                      }
-                      variant="outlined"
-                      InputProps={{
-                        startAdornment:
-                          allFields.text === "Amount" ? (
-                            <InputAdornment position="start">₦</InputAdornment>
-                          ) : (
-                            ""
-                          ),
-                      }}
-                    />
-                  </div>
-                ) : (
-                  // )
-                  ""
-                )
+              {productDetails.billerCode === "SMILE" ? (
+                <div>
+                  <Smile
+                    getData={getData}
+                    handleSubmit={handleSubmit}
+                    disabledCard={props.disabledCard}
+                    disabledUssd={props.disabledUssd}
+                  />
+                </div>
+              ) : (
+                ""
               )}
             </div>
-            <div className="ButtonSide">
-              <div>
-                {disabledCard === true ? (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.href = `/product-details?${productDetails.productname}`;
-                      // state: productDetails.productname,
-                      // });
-                    }}
-                  >
-                    Go Back
-                  </button>
-                ) : (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // console.log(payment);
-                      handleSubmit(FLUTTERWAVE_KEY);
-                    }}
-                    type="submit"
-                    style={{
-                      backgroundColor: "#fda94f",
-                      cursor: disabledUssd === true ? "not-allowed" : "pointer",
-                      color: "#000",
-                      fontSize: "12px",
-                      padding: "11px",
-                    }}
-                    disabled={disabledUssd}
-                  >
-                    Proceed to Card
-                  </button>
-                )}
-              </div>
-              <div>
-                {disabledUssd === true ? (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.href = `/product-details?${productDetails.productname}`;
-                      // state: productDetails.productname,
-                      // });
-                    }}
-                  >
-                    Go Back
-                  </button>
-                ) : (
-                  <div
-                    onClick={(e) => {
-                      // e.preventDefault();
-                      handleSubmit(USSD_KEY);
-                    }}
-                    style={{ marginTop: "25px" }}
-                  >
-                    <a
-                      // className="btn"
-                      value={USSD_KEY}
-                      href="#open-modal"
+
+            <div>
+              {productDetails.billerCode === "NTELBundle" ? (
+                <div>
+                  <Ntel
+                    getData={getData}
+                    handleSubmit={handleSubmit}
+                    disabledCard={props.disabledCard}
+                    disabledUssd={props.disabledUssd}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+
+            <div>
+              {productDetails.billerCode === "SPECTRANET" ? (
+                <Spectranet
+                  getData={getData}
+                  handleSubmit={handleSubmit}
+                  disabledCard={props.disabledCard}
+                  disabledUssd={props.disabledUssd}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+
+            <div>
+              {productDetails.billerCode !== "SMILE" &&
+              productDetails.billerCode !== "NTELBundle" &&
+              productDetails.billerCode !== "SPECTRANET" ? (
+                <div>
+                  {fieldsArray.map((allFields, i) =>
+                    allFields.text !== "Select Product" &&
+                    allFields.text !== "Invoice Id" &&
+                    allFields.text !== "Product" &&
+                    allFields.select === true ? (
+                      <div
+                        key={i}
+                        className="d-flex align-item-center justify-content-center pt-3"
+                      >
+                        <TextField
+                          // style={{ width: "50%" }}
+                          className="inputSize"
+                          required
+                          label={allFields.text}
+                          name={allFields.text}
+                          placeholder={`Enter ${allFields.text}`}
+                          select
+                          type="text"
+                          value={values[allFields.text]}
+                          variant="outlined"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        >
+                          <MenuItem>Select Data Type</MenuItem>
+                          {fieldsOptions.map((option, index) => {
+                            const detail = JSON.parse(option);
+                            return (
+                              <MenuItem
+                                key={index}
+                                value={detail.ItemName}
+                                onClick={(event) =>
+                                  handleSelect(allFields.text, detail)
+                                }
+                              >
+                                {detail.ItemName}
+                              </MenuItem>
+                            );
+                          })}
+                        </TextField>
+                      </div>
+                    ) : (
+                      ""
+                    )
+                  )}
+                  {fieldsArray.map((allFields, i) =>
+                    allFields.text !== "Smile Account Number" &&
+                    allFields.select !== true ? (
+                      <div
+                        key={i}
+                        className="d-flex align-item-center justify-content-center pt-3"
+                      >
+                        {console.log(allFields)}
+                        <TextField
+                          // style={{ width: "50%" }}
+                          className="inputSize"
+                          required
+                          label={allFields.text}
+                          name={allFields.text}
+                          onChange={(e) => handleOthers(e, allFields.text)}
+                          placeholder={`Enter ${allFields.text}`}
+                          type={
+                            allFields.text === "Email" ||
+                            allFields.text === "E-mail"
+                              ? "email"
+                              : "number"
+                          }
+                          // value={values[allFields.text]}
+                          disabled={allFields.text === "Amount" && disabled}
+                          value={
+                            selectDetails.amount === undefined
+                              ? ""
+                              : allFields.text === "Amount"
+                              ? selectDetails.amount
+                              : allFields.text === "Phone Number"
+                              ? smartCard["Phone Number"]
+                              : allFields.text === "Email"
+                              ? smartCard["Email"]
+                              : allFields.text === "E-mail"
+                              ? smartCard["E-mail"]
+                              : ""
+                          }
+                          variant="outlined"
+                          InputProps={{
+                            startAdornment:
+                              allFields.text === "Amount" ? (
+                                <InputAdornment position="start">
+                                  ₦
+                                </InputAdornment>
+                              ) : (
+                                ""
+                              ),
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )
+                  )}
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+            {productDetails.billerCode !== "SMILE" &&
+            productDetails.billerCode !== "NTELBundle" &&
+            productDetails.billerCode !== "SPECTRANET" ? (
+              <div className="ButtonSide">
+                <div>
+                  {props.disabledCard === true ? (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+                      }}
+                    >
+                      Go Back
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        // console.log(payment);
+                        handleSubmit(FLUTTERWAVE_KEY);
+                      }}
+                      type="submit"
                       style={{
                         backgroundColor: "#fda94f",
                         cursor:
-                          disabledCard === true ? "not-allowed" : "pointer",
+                          props.disabledUssd === true
+                            ? "not-allowed"
+                            : "pointer",
                         color: "#000",
                         fontSize: "12px",
                         padding: "11px",
                       }}
-                      disabled={disabledCard}
+                      disabled={props.disabledUssd}
                     >
-                      Pay with Ussd
-                    </a>{" "}
-                  </div>
-                )}
+                      Proceed to Card
+                    </button>
+                  )}
+                </div>
+                <div>
+                  {props.disabledUssd === true ? (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+                      }}
+                    >
+                      Go Back
+                    </button>
+                  ) : (
+                    <div>
+                      <button
+                        // className="btn"
+                        value={USSD_KEY}
+                        onClick={(e) => {
+                          // e.preventDefault();
+                          handleSubmit(USSD_KEY);
+                        }}
+                        style={{
+                          backgroundColor: "#fda94f",
+                          cursor:
+                            props.disabledCard === true
+                              ? "not-allowed"
+                              : "pointer",
+                          color: "#000",
+                          fontSize: "12px",
+                          padding: "11px",
+                        }}
+                        disabled={props.disabledCard}
+                      >
+                        Pay with Ussd
+                      </button>{" "}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
         </>
       )}
@@ -542,4 +558,6 @@ function NewForm(props) {
   );
 }
 
-export default withRouter(connect(null, { PaymentIntent })(NewForm));
+export default withRouter(
+  connect(null, { PaymentIntent, verifySmartcardNumber, verify })(NewForm)
+);

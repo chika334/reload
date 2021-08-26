@@ -64,7 +64,7 @@ function NewForm(props) {
         props.pay(true, "Airtime");
       }
     } else {
-      props.history.push("/registration");
+      props.history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
     }
   };
 

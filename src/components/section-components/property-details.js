@@ -8,19 +8,14 @@ import { hideLoader } from "../../_action/loading";
 import { Button } from "@material-ui/core";
 // import ProductTable from "./productDetails/productTable";
 import { products } from "../../data/products";
-// import { Form, TextField, SubmitButton } from "../Form/FormElements";
-// import * as Yup from "yup";
-// import FormPay from "../reg/Pay/FormPay";
-// import AirtimePay from "../reg/Pay/Airtime";
-// import DataPay from "../reg/Pay/DataPay";
-// import CablePay from "../reg/Pay/Cable";
-// import ExamPay from "../reg/Pay/Exams";
+import Ntel from "../Pay/Ntel";
 import Electricity from "../Pay/Electricity";
 import Cable from "../Pay/Cable";
 import Airtime from "../Pay/Airtime";
 import Data from "../Pay/Data";
 import Exams from "../Pay/Exams";
 import { usePaymentGateway } from "../Pay/PaymentProcess/hooks";
+import { useUSSD } from "../CoralUssd";
 import CoralUssd from "../CoralUssd/App";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -53,19 +48,22 @@ function PropertyDetails(props) {
   const [productData, setProductData] = useState();
   const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
   const [type, setType] = useState("");
-  const [buttonPayment, setButtonPayment] = useState(false);
-  const [formData, setFormData] = useState({});
-  const [validationSchema, setValidationSchema] = useState({});
-  const [amount, setAmount] = useState("");
+  // const [buttonPayment, setButtonPayment] = useState(false);
+  // const [formData, setFormData] = useState({});
+  // const [validationSchema, setValidationSchema] = useState({});
+  // const [amount, setAmount] = useState("");
+  const [disabledUssd, setDisabledUssd] = useState(false);
+  const [disabledCard, setDisabledCard] = useState(false);
   const payment = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone : state.paymentDone
   );
-
+  const { isModalOpen, toggleIt } = useUSSD();
   const {
     ussdPayload,
     grabUssdResponse,
     startPayment,
     loading: secondaryLoading,
+    errorMessage,
     open,
     setOpen,
   } = usePaymentGateway();
@@ -77,25 +75,28 @@ function PropertyDetails(props) {
 
   const handleClose = () => {
     setOpen(false);
-    window.location.href = "/product-details";
+    window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
   };
 
   const makePayment = () => {
     if (payment.detail.buttonClick !== null) {
-      console.log("daniel", payment);
+      // console.log("daniel", payment);
       startPayment(payment.detail.buttonClick);
       if (payment.detail.buttonClick === "USSD") {
-        setTimeout(() => {
-          // setLoading(secondaryLoading);
-        }, 500);
+        toggleIt();
+        setDisabledUssd(true);
+      } else if (payment.detail.buttonClick === "FLUTTERWAVE") {
+        setDisabledCard(true);
       }
     }
   };
 
+  console.log(finalPaymentSuccess);
+
   useEffect(() => {
     if (finalPaymentSuccess.finalPayment === true) {
       history.push({
-        pathname: `/receipt`,
+        pathname: `/${process.env.REACT_APP_RELOADNG}/receipt`,
         // search: `?query=abc`,
         state: { data: props.location, pay },
       });
@@ -110,12 +111,9 @@ function PropertyDetails(props) {
 
   useEffect(() => {
     if (payment.detail !== null) {
-      // setLoading(secondaryLoading);
       makePayment();
     }
   }, [payment]);
-
-  console.log(payment);
 
   return (
     <>
@@ -128,11 +126,11 @@ function PropertyDetails(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          UnSuccessful USSD Transaction
+          Amount Input Error
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Please call the USSD code on your phone to pay with ussd. Thank you
+            Amount should not be less than 50 Naira or above 100,000 Naira
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -162,7 +160,6 @@ function PropertyDetails(props) {
                         <div className="d-flex align-item-center justify-content-center">
                           <img
                             width="200"
-                            // src={`${props.location.state.data.productId.logourl}`}
                             src={`${productDetails.detail.productId.logourl}`}
                             alt="image"
                           />
@@ -173,58 +170,85 @@ function PropertyDetails(props) {
                       </div>
                       <div className="property-details-slider-info">
                         <div className="">
+                          {errorMessage && (
+                            <Alert severity="error">{errorMessage}</Alert>
+                          )}
                           <div className="mt-5">
                             <div>
                               {productDetails.detail.productId.description ===
                                 "Electricity Prepaid (IKEDC)" && (
-                                <Electricity dataPay={onPay} />
+                                <Electricity
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
                               )}
                               {productDetails.detail.productId.description ===
                                 "Electricity Prepaid (EKEDC)" && (
-                                <Electricity dataPay={onPay} />
+                                <Electricity
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
                               )}
                               {productDetails.detail.productId.description ===
                                 "Electricity Prepaid (AEDC)" && (
-                                <Electricity dataPay={onPay} />
+                                <Electricity
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
                               )}
                               {productDetails.detail.productId.description ===
                                 "Electricity Prepaid (KAEDCO)" && (
-                                <Electricity dataPay={onPay} />
+                                <Electricity
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
                               )}
                               {productDetails.detail.productId.description ===
                                 "Electricity Prepaid (KEDCO)" && (
-                                <Electricity dataPay={onPay} />
+                                <Electricity
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
                               )}
                               {productDetails.detail.productId.description ===
                                 "Electricity Prepaid (phed)" && (
-                                <Electricity dataPay={onPay} />
+                                <Electricity
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
                               )}
                               {productDetails.detail.productId.description ===
                                 "Electricity Prepaid (JED)" && (
-                                <Electricity dataPay={onPay} />
+                                <Electricity
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
                               )}
                             </div>
-                            {/* <div>
-                        {props.location.state.data.productId.description ===
-                          "Electricity Prepaid" &&
-                        props.location.state.data.productId.productname ===
-                          "Eko Electricity Prepaid" ? (
-                          <Electricity dataPay={onPay} />
-                        ) : (
-                          ""
-                        )}
-                      </div> */}
                             {
                               <CoralUssd
-                                body={ussdPayload}
+                                data={ussdPayload}
+                                isModalOpen={isModalOpen}
+                                toggleIt={toggleIt}
+                                // useUSSD={App}
                                 onSuccess={grabUssdResponse}
                               />
                             }
+                            {productDetails.detail.productId.desctiption === ""}
                             <div>
                               {productDetails.detail.productId.description ===
                                 "Cable" && (
                                 <Cable
                                   loading={secondaryLoading}
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
                                   dataCable={props.location.state}
                                   dataPay={onPay}
                                 />
@@ -232,11 +256,23 @@ function PropertyDetails(props) {
                             </div>
                             <div>
                               {productDetails.detail.productId.description ===
-                                "Airtime" && <Airtime dataPay={onPay} />}
+                                "Airtime" && (
+                                <Airtime
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
+                              )}
                             </div>
                             <div>
                               {productDetails.detail.productId.description ===
-                                "Data" && <Data dataPay={onPay} />}
+                                "Data" && (
+                                <Data
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
+                              )}
                             </div>
                             <div>
                               {productDetails.detail.productId.description ===

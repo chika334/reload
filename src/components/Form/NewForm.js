@@ -71,7 +71,7 @@ function NewForm(props) {
       props.PaymentIntent(newValuesObj);
       props.pay(true, "Data");
     } else {
-      props.history.push("/reloadng/registration");
+      props.history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
     }
   };
 

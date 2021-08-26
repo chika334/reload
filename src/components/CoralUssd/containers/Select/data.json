@@ -1,0 +1,29 @@
+[
+    {
+        "label": "GTB",
+        "value": "737"
+    },
+    {
+        "label": "First Bank",
+        "value": "894"
+    },
+    {
+        "label": "Zenith Bank",
+        "value": "966"
+    },
+    { "label": "UBA", "value": "919" },
+    { "label": "Stanbic Bank", "value": "909" },
+    { "label": "Sterling Bank", "value": "822" },
+    { "label": "Unity Bank", "value": "7799" },
+    { "label": "Keystone Bank", "value": "7111" },
+    { "label": "Fidelity Bank", "value": "770" },
+    { "label": "Ecobank", "value": "326" },
+    { "label": "Wema Bank", "value": "945" },
+    { "label": "Access Bank", "value": "901" },
+    { "label": "Access (Diamond)", "value": "426" },
+    { "label": "FCMB", "value": "329" },
+    { "label": "Heritage Bank", "value": "745" },
+    { "label": "Union Bank", "value": "826" },
+    { "label": "VFD MFB", "value": "5037" },
+    { "label": "Rubies (Highstreet) MFB", "value": "7797" }
+]

@@ -34,10 +34,10 @@ function ResetPassword(props) {
       setErrMessage(error.message);
     } else {
       if (user.isLogin === true && localStorage.token) {
-        console.log("good");
+        // console.log("good");
       } else {
         props.hideLoader();
-        console.log("issues");
+        // console.log("issues");
       }
     }
   }, [user.isAuthenticated]);

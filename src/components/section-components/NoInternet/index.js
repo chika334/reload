@@ -14,7 +14,7 @@ class Error extends Component {
         <div className="error-page text-center">
           <div className="container">
             <div className="error-page-wrap d-inline-block">
-              <Link to="/">Go Back</Link>
+              <Link to={`/${process.env.REACT_APP_RELOADNG}`}>Go Back</Link>
               <br />
               <h4>User has no Internet</h4>
             </div>

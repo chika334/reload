@@ -1,56 +1,67 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import Layout from "./layout/layoout";
-import Modal2 from "./Modal/Modal2";
-import { coralWebHookQuery } from "./apis/apis";
+import { ModalProvider } from "react-simple-hook-modal";
+import Main from "./containers/Main";
+import "react-simple-hook-modal/dist/styles.css";
+import { firstRequest, queryRequest } from "./api/apis";
 var App = function (_a) {
-    var _b, _c;
-    var /* visible, toggle,  */ body = _a.body, onSuccess = _a.onSuccess;
-    var _d = useState({}), cBank = _d[0], setCbank = _d[1];
-    var _e = useState(null), response = _e[0], setResponse = _e[1];
-    var _f = useState(), response1 = _f[0], setResponse1 = _f[1];
-    var _g = useState(false), status = _g[0], setStatus = _g[1];
-    var _h = useState(false), start = _h[0], setStart = _h[1];
-    var _j = useState(""), message = _j[0], setMessage = _j[1];
-    var _k = useState(0), count = _k[0], setCount = _k[1];
-    var c = 0;
-    var config = {
-        jwtToken: "",
-        url: "https://www.poplarconnect.com/CoralUssd",
-        fullName: "",
-        email: "",
-    };
-    var data1 = {
-        transactionId: (_b = response === null || response === void 0 ? void 0 : response.ResponseDetails) === null || _b === void 0 ? void 0 : _b.TransactionID,
-        amount: (_c = response === null || response === void 0 ? void 0 : response.ResponseDetails) === null || _c === void 0 ? void 0 : _c.Amount,
-        merchantId: body === null || body === void 0 ? void 0 : body.merchantId,
-        channel: body === null || body === void 0 ? void 0 : body.channel,
-        terminalId: body === null || body === void 0 ? void 0 : body.terminalId,
-    };
-    /*  const onSuccess = (data) => {
-      return data;
+    var data = _a.data, onSuccess = _a.onSuccess, isModalOpen = _a.isModalOpen, toggleIt = _a.toggleIt;
+    /*  const data = {
+      amount: 50,
+      channel: "USSD",
+      merchantId: "4058RNG10000001",
+      subMerchantName: "Reload.ng",
+      terminalId: "4058RNG1",
+      traceId: "bp02108160000820",
+      transactionType: "0",
     }; */
+    var _b = useState(""), value = _b[0], setValue = _b[1];
+    var _c = useState(false), start = _c[0], setStart = _c[1];
+    var _d = useState(0), count = _d[0], setCount = _d[1];
+    var _e = useState({}), response = _e[0], setResponse = _e[1];
+    var _f = useState(null), result = _f[0], setResult = _f[1];
+    var _g = useState({}), queryData = _g[0], setQueryData = _g[1];
+    var _h = useState(""), message = _h[0], setMessage = _h[1];
+    var _j = useState(true), modal = _j[0], setModal = _j[1];
+    var toggleModal = function () {
+        setModal(!modal);
+    };
     useEffect(function () {
-        if (start && count < 30 && (response1 === null || response1 === void 0 ? void 0 : response1.responseCode) !== "00") {
+        firstRequest(data, setResponse);
+    }, []);
+    var toggle = function (e) {
+        setValue(e);
+        setQueryData({
+            transactionId: response.TransactionID,
+            amount: data.amount,
+            merchantId: data.merchantId,
+            channel: data.channel,
+            terminalId: data.terminalId,
+        });
+    };
+    useEffect(function () {
+        if (start && count < 30) {
             setTimeout(function () {
-                coralWebHookQuery(config, data1, setStatus).then(function (res) {
-                    setResponse1(res);
-                    setCount(count + 1);
-                });
+                queryRequest(queryData, setResult);
+                setCount(count + 1);
             }, 2000);
         }
-        else {
-            if ((response1 === null || response1 === void 0 ? void 0 : response1.responseCode) === "00") {
+        if (result && start) {
+            if (result.responseCode === "00") {
                 setMessage("Ussd Payment was Successful");
             }
-            else {
+            if (result.responseCode === "00") {
+                setStart(false);
+                onSuccess(result);
+            }
+            if (result.responseCode === "09" && count === 30) {
+                setStart(false);
+                onSuccess(result);
                 setMessage("Ussd Payment was not Successful");
             }
-            setStart(false);
         }
-        onSuccess(response1);
     }, [start, count]);
-    return (_jsx("div", { children: _jsx(Modal2, { children: _jsx(Layout, { body: body, cBank: cBank, setCbank: setCbank, response: response, setResponse: setResponse, status: status, setStatus: setStatus, setStart: setStart, start: start, message: message, response1: response1 }, void 0) }, void 0) }, void 0));
+    return (_jsx(ModalProvider, { children: _jsx(Main, { value: value, start: start, toggle: toggle, isModalOpen: isModalOpen, openModal: toggleIt, closeModal: toggleIt, setQueryData: setQueryData, queryData: queryData, message: message, setStart: setStart, response: response, result: result, toggleModal: toggleModal }, void 0) }, void 0));
 };
 export default App;
 //# sourceMappingURL=App.js.map

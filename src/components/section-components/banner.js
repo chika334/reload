@@ -16,6 +16,7 @@ import sixth from "../../images/6.jpeg";
 import Carousel from "react-material-ui-carousel";
 import { someData } from "../../_action/passingData";
 import { makeStyles } from "@material-ui/core/styles";
+import GoogleAd from "../../Layout";
 
 function getModalStyle() {
   const top = 50;
@@ -76,13 +77,16 @@ const SearchbarDropdown = (props) => {
   const handleMove = (details) => {
     console.log(details);
     if (
-      // details.otherData.productId.productname === "Smile Data" ||
+      details.otherData.productId.productname === "Smile Data" ||
+      details.otherData.productId.billerCode === "NTELBundle" ||
+      // details.otherData.productId.billerCode === "9mobiledata1" ||
       // details.otherData.productId.productname === "Dstv Cable" ||
       // details.otherData.productId.productname === "Gotv Cable" ||
       // details.otherData.productId.productname === "Startime Cable" ||
       details.otherData.productId.productname ===
         "Ibadan Electricity Prepaid" ||
-      // details.otherData.productId.productname === "Eko Electricity Prepaid" ||
+      // details.otherData.productId.billerCode === "PHEDDIR2" ||
+      details.otherData.productId.productname === "Eko Electricity Prepaid" ||
       details.otherData.productId.productname === "Benin Electricity Prepaid" ||
       // details.otherData.productId.productname ===
       //   "Kaduna Electricity Prepaid" ||
@@ -122,7 +126,7 @@ const SearchbarDropdown = (props) => {
                 billerCode: detail.billerCode,
               };
               dispatch(someData(data));
-              let path = `/product-details`;
+              let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
               history.push({
                 pathname: path,
                 // search: `product=${detail.productId.description}`,

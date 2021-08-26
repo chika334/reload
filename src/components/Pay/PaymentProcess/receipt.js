@@ -67,7 +67,7 @@ function Receipt(props) {
     }.bind(this);
 
     if (finalPaymentSuccess.finalPayment === false) {
-      window.location.href = `/products`;
+      window.location.href = `/${process.env.REACT_APP_RELOADNG}/products`;
     }
   };
 
@@ -77,8 +77,10 @@ function Receipt(props) {
   });
 
   const handleBack = () => {
-    window.location.href = "/products";
+    window.location.href = `/${process.env.REACT_APP_RELOADNG}/products`;
   };
+
+  console.log(paymentIntent);
 
   return (
     <div className="property-area pd-top-100">
@@ -190,7 +192,7 @@ function Receipt(props) {
             <tr className="item">
               <td>{productDetails.detail.productId.productname}</td>
 
-              <td>{formatter.format(pay.amount)}</td>
+              <td>{formatter.format(paymentIntent.amount)}</td>
             </tr>
 
             <tr className="item">

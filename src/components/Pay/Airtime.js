@@ -8,6 +8,8 @@ import { DataOptionSelect } from "../../components/jsonData/DataSelectOption";
 import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../_action/Payment/paymentButtons";
 import "../../css/input.css";
+import { useUSSD } from "../CoralUssd";
+import CoralUssd from "../CoralUssd/App";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
 import { loginRediectSuccess } from "../../_action/LoginRedirect";
 import Slide from "@material-ui/core/Slide";
@@ -40,6 +42,7 @@ function NewForm(props) {
     "Phone Number": "",
     Amount: "",
   });
+  const [amount, setAmount] = useState("");
   const [detailValues, setDetailValues] = useState({
     values: {},
     mainValues: {
@@ -48,6 +51,8 @@ function NewForm(props) {
       price: 0,
     },
   });
+
+  const { isModalOpen, toggleIt } = useUSSD();
 
   const { phone, email, Amount } = smartCard;
   const { values, mainValues } = detailValues;
@@ -58,9 +63,9 @@ function NewForm(props) {
     setSmartCard(newValues);
   };
 
-  const handleSelect = (name, value) => {
-    setSelectDetails(value);
-  };
+  // const handleSelect = (name, value) => {
+  //   setSelectDetails(value);
+  // };
 
   const handleSubmit = (value) => {
     setButtonValue(value);
@@ -70,14 +75,10 @@ function NewForm(props) {
       setDisabledUssd(true);
     }
 
+    // console.log(value);
+
     // setLoading(true);
     if (productDetails.productname === "Airtime") {
-      // if (value === "card") {
-      //   setDisabled(true);
-      // } else if (value === "ussd") {
-      //   setDisabled(true);
-      // }
-
       if (productDetails.billerCode === "airtel") {
         setPaymentMethod(value);
         if (smartCard["Phone Number"].length < 11) {
@@ -93,8 +94,7 @@ function NewForm(props) {
             productId: `${productDetails.productId}`,
             referenceValues: {
               Email: `${smartCard["Email"]}`,
-              // Email: user.user.email,
-              "Product Type": selectDetails.ItemName,
+              "Product Type": "AIRTEL-VTU",
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
             references: ["Email", "Phone Number", "Product Type"],
@@ -117,7 +117,7 @@ function NewForm(props) {
             referenceValues: {
               Email: `${smartCard["Email"]}`,
               // Email: user.user.email,
-              Product: selectDetails.ItemName,
+              Product: "AIRTIME",
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
             references: ["Email", "Phone Number", "Product"],
@@ -140,7 +140,7 @@ function NewForm(props) {
             referenceValues: {
               Email: `${smartCard["Email"]}`,
               // Email: user.user.email,
-              Product: selectDetails.ItemName,
+              Product: "AIRTIME",
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
             references: ["Email", "Phone Number", "Product"],
@@ -163,7 +163,7 @@ function NewForm(props) {
             referenceValues: {
               Email: `${smartCard["Email"]}`,
               // Email: user.user.email,
-              Product: selectDetails.ItemName,
+              Product: "AIRTIME",
               "Phone Number": `${smartCard["Phone Number"]}`,
             },
             references: ["Email", "Phone Number", "Product"],
@@ -208,18 +208,18 @@ function NewForm(props) {
     fieldsArray.push(item[data]);
   }
 
-  const packages = JSON.parse(productDetails.detail.productvalue).field3
-    .options;
+  // const packages = JSON.parse(productDetails.detail.productvalue).field3
+  //   .options;
 
   const fieldsOptions = [];
-  for (const key in packages) {
-    if (packages.hasOwnProperty(key)) {
-      var value = packages[key];
-      fieldsOptions.push(value);
-    }
-  }
+  // for (const key in packages) {
+  //   if (packages.hasOwnProperty(key)) {
+  //     var value = packages[key];
+  //     fieldsOptions.push(value);
+  //   }
+  // }
 
-  console.log(paymentMethod);
+  console.log(item);
 
   return (
     <div>
@@ -241,15 +241,11 @@ function NewForm(props) {
             <div>
               {fieldsArray.map((allFields, i) =>
                 allFields.select !== true ? (
-                  // allFields.text === "Email" ? (
-                  //   ""
-                  // ) : (
                   <div
                     key={i}
                     className="d-flex align-item-center justify-content-center pt-3"
                   >
                     <TextField
-                      // style={{ width: "50%" }}
                       className="inputSize"
                       required
                       label={allFields.text}
@@ -257,7 +253,6 @@ function NewForm(props) {
                       onChange={(e) => handleOthers(e, allFields.text)}
                       placeholder={`Enter ${allFields.text}`}
                       type={allFields.text === "Email" ? "email" : "number"}
-                      // type="number"
                       value={smartCard[allFields.text]}
                       variant="outlined"
                       InputProps={{
@@ -271,18 +266,17 @@ function NewForm(props) {
                     />
                   </div>
                 ) : (
-                  // )
                   ""
                 )
               )}
-              {fieldsArray.map((allFields, i) =>
+              {/* {fieldsArray.map((allFields, i) =>
+
                 allFields.select === true ? (
                   <div
                     key={i}
                     className="d-flex align-item-center justify-content-center pt-3"
                   >
                     <TextField
-                      // style={{ width: "50%" }}
                       className="inputSize"
                       required
                       label={allFields.text}
@@ -290,14 +284,12 @@ function NewForm(props) {
                       select
                       onChange={(e) => handleOthers(e, allFields.text)}
                       placeholder={`Enter ${allFields.text}`}
-                      // type={allFields.text === "Email" ? "email" : "number"}
                       value={smartCard[allFields.text]}
                       variant="outlined"
                     >
                       <MenuItem>Select Data Type</MenuItem>
                       {fieldsOptions.map((option, index) => {
                         const detail = JSON.parse(option);
-                        // console.log(detail);
                         return (
                           <MenuItem
                             key={index}
@@ -315,7 +307,7 @@ function NewForm(props) {
                 ) : (
                   ""
                 )
-              )}
+              )} */}
             </div>
             <div className="ButtonSide">
               <div>
@@ -323,9 +315,7 @@ function NewForm(props) {
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      window.location.href = `/product-details?${productDetails.productname}`;
-                      // state: productDetails.productname,
-                      // });
+                      window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                     }}
                   >
                     Go Back
@@ -356,23 +346,19 @@ function NewForm(props) {
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      window.location.href = `/product-details?${productDetails.productname}`;
-                      // state: productDetails.productname,
-                      // });
+                      window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                     }}
                   >
                     Go Back
                   </button>
                 ) : (
-                  <div style={{ marginTop: "25px" }}>
-                    <a
+                  <div>
+                    <button
                       onClick={(e) => {
-                        // e.preventDefault();
                         handleSubmit(USSD_KEY);
+                        // setDisabledUssd(true);
                       }}
-                      // className="btn"
                       value={USSD_KEY}
-                      href="#open-modal"
                       style={{
                         backgroundColor: "#fda94f",
                         cursor:
@@ -384,7 +370,7 @@ function NewForm(props) {
                       disabled={disabledCard}
                     >
                       Pay with Ussd
-                    </a>{" "}
+                    </button>{" "}
                   </div>
                 )}
               </div>

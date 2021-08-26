@@ -115,7 +115,7 @@ function Property(props, { breakOn = "medium" }) {
 
   useEffect(() => {
     if (getOfferResult.data === null) {
-      history.push("/loan");
+      history.push(`/${process.env.REACT_APP_RELOADNG}/loan`);
     }
   }, [getOfferResult.data]);
 
@@ -153,7 +153,7 @@ function Property(props, { breakOn = "medium" }) {
                                 marginTop: "50px",
                               }}
                             >
-                              <Link to="/products">
+                              <Link to={`/${process.env.REACT_APP_RELOADNG}/products`}>
                                 Go Back
                               </Link>
                             </button>

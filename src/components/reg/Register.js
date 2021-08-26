@@ -66,7 +66,7 @@ function Register(props) {
         props.clearErrors();
         props.regRedirect();
         // props.history.push("/registration");
-        window.location.href = "/";
+        window.location.href = `/${process.env.REACT_APP_RELOADNG}`;
       } else {
         props.hideLoader();
       }

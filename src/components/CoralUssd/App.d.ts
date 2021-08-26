@@ -1,8 +1,4 @@
 import { FC } from "react";
-import { QueryProps, CoralWebhookData } from "./types";
-declare type Appp = {
-    body: CoralWebhookData;
-    onSuccess: (response: QueryProps) => void;
-};
-declare const App: FC<Appp>;
+import "react-simple-hook-modal/dist/styles.css";
+declare const App: FC<any>;
 export default App;

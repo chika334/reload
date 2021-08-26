@@ -6,7 +6,7 @@ import {
   verifySmartcardNumber,
   clearVerified,
 } from "../../_action/verifyNumber";
-import CoralUssd from "../../components/CoralUssd/App";
+// import CoralUssd from "../../components/CorralUssd/App";
 import { MenuItem, TextField, Button } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../_action/Payment/index";
@@ -73,8 +73,6 @@ function Cable(props) {
     }
   }, [error.error === true]);
 
-  // console.log(selectDetails);
-
   const handleSubmit = (value) => {
     setButtonValue(value);
     if (value === "FLUTTERWAVE") {
@@ -85,6 +83,7 @@ function Cable(props) {
 
     // if()
     // if (selectDetails !== null) {
+    // setLoading(true);
     if (productDetails.billerCode === "STARTIMES") {
       const newValuesObj = {
         amount: `${selectDetails.Amount}`,
@@ -131,8 +130,8 @@ function Cable(props) {
       props.PaymentIntent(newValuesObj);
     } else if (productDetails.billerCode === "GOTV") {
       const newValuesObj = {
-        // amount: `${selectDetails.productAmount}`,
-        amount: "100",
+        amount: `${selectDetails.productAmount}`,
+        // amount: "100",
         channelRef: "web",
         description: "Cable",
         // paymentMethod: "billpayflutter",
@@ -477,11 +476,11 @@ function Cable(props) {
             verifyUserdetails.name === "Cable" ? (
               <div className="ButtonSide">
                 <div>
-                  {disabledCard === true ? (
+                  {props.disabledCard === true ? (
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        window.location.href = `/product-details?${productDetails.productname}`;
+                        window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                         // state: productDetails.productname,
                         // });
                       }}
@@ -499,53 +498,51 @@ function Cable(props) {
                       style={{
                         backgroundColor: "#fda94f",
                         cursor:
-                          disabledUssd === true ? "not-allowed" : "pointer",
+                          props.disabledUssd === true
+                            ? "not-allowed"
+                            : "pointer",
                         color: "#000",
                         fontSize: "12px",
                         padding: "11px",
                       }}
-                      disabled={disabledUssd}
+                      disabled={props.disabledUssd}
                     >
                       Proceed to Card
                     </button>
                   )}
                 </div>
                 <div>
-                  {disabledUssd === true ? (
+                  {props.disabledUssd === true ? (
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        window.location.href = `/product-details?${productDetails.productname}`;
-                        // state: productDetails.productname,
-                        // });
+                        window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                       }}
                     >
                       Go Back
                     </button>
                   ) : (
-                    <div
-                      onClick={(e) => {
-                        // e.preventDefault();
-                        handleSubmit(USSD_KEY);
-                      }}
-                      style={{ marginTop: "25px" }}
-                    >
-                      <a
+                    <div>
+                      <button
                         // className="btn"
                         value={USSD_KEY}
-                        href="#open-modal"
+                        onClick={(e) => {
+                          handleSubmit(USSD_KEY);
+                        }}
                         style={{
                           backgroundColor: "#fda94f",
                           cursor:
-                            disabledCard === true ? "not-allowed" : "pointer",
+                            props.disabledCard === true
+                              ? "not-allowed"
+                              : "pointer",
                           color: "#000",
                           fontSize: "12px",
                           padding: "11px",
                         }}
-                        disabled={disabledCard}
+                        disabled={props.disabledCard}
                       >
                         Pay with Ussd
-                      </a>{" "}
+                      </button>{" "}
                     </div>
                   )}
                 </div>
@@ -554,7 +551,6 @@ function Cable(props) {
               ""
             )}
           </div>
-          {/* </div> */}
         </>
       )}
     </div>

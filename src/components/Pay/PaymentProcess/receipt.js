@@ -49,7 +49,9 @@ function Receipt(props) {
   const customerSplit =
     productDetails.detail.productId.productcategoryId.categoryname ===
     "Electricity"
-      ? splitString.extra.split(" |")
+      ? productDetails.detail.productId.billerCode === "PHEDDIR2"
+        ? splitString.extra.split(" |")[0]
+        : `Customer Name: ${verify.result.account.accountName}`
       : "";
 
   const tokenSplit =
@@ -156,7 +158,7 @@ function Receipt(props) {
               <>
                 <tr className="total">
                   <td></td>
-                  <td>{customerSplit[0]}</td>
+                  <td>{customerSplit}</td>
                 </tr>
                 <tr className="total">
                   <td></td>

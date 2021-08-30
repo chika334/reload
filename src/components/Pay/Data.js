@@ -89,8 +89,7 @@ function NewForm(props) {
 
   const handleSubmit = (value, data) => {
     setButtonValue(value);
-    setOtherDataValues(data);
-    console.log(value, data);
+    // console.log(value, data);
     if (productDetails.billerCode === "airtel-data") {
       if (smartCard["Phone Number"].length < 11) {
         setError("Phone number must be 11 digits");
@@ -189,12 +188,19 @@ function NewForm(props) {
         props.PaymentIntent(newValuesObj);
       }
     } else if (productDetails.billerCode === "SMILE") {
-      console.log(data);
+      // console.log(data);
+      setOtherDataValues(data);
+      setSelectDetails({ ...selectDetails, amount: data.amount });
       props.PaymentIntent(data);
     } else if (productDetails.billerCode === "NTELBundle") {
       // console.log(newValuesObj);
+      setOtherDataValues(data);
+      setSelectDetails({ ...selectDetails, amount: data.amount });
       props.PaymentIntent(data);
     } else if (productDetails.billerCode === "SPECTRANET") {
+      // console.log(data);
+      setOtherDataValues(data);
+      setSelectDetails({ ...selectDetails, amount: data.amount });
       props.PaymentIntent(data);
     }
   };
@@ -202,8 +208,10 @@ function NewForm(props) {
   useEffect(() => {
     if (paymentIntent.success === true) {
       const ntelEmail = otherDataValues
-        ? otherDataValues.referenceValues.Email
+        ? otherDataValues.referenceValues["E-mail"]
         : "";
+
+      console.log(otherDataValues);
 
       const accountNumber = otherDataValues
         ? otherDataValues.referenceValues.accountNumber
@@ -241,6 +249,8 @@ function NewForm(props) {
         transRef: paymentIntent.detail.transRef,
         customerName: `${smartCard["Phone Number"]}`,
       };
+
+      console.log(detail);
 
       dispatch(pay(detail));
       props.dataPay(true, "Data");

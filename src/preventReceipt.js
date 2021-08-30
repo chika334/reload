@@ -17,7 +17,7 @@ const PrivateRouteReceipt = ({
       ) : (
         <Redirect
           to={{
-            pathname: `/products`,
+            pathname: `/${process.env.REACT_APP_RELOADNG}/products`,
           }}
         />
       )

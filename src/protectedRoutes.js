@@ -11,7 +11,7 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
       ) : (
         <Redirect
           to={{
-            pathname: `/registration`,
+            pathname: `/${process.env.REACT_APP_RELOADNG}/registration`,
           }}
         />
       )

@@ -60,6 +60,8 @@ const SearchbarDropdown = (props) => {
     position: "relative",
   };
 
+  console.log(props);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -77,8 +79,8 @@ const SearchbarDropdown = (props) => {
   const handleMove = (details) => {
     console.log(details);
     if (
-      details.otherData.productId.productname === "Smile Data" ||
-      details.otherData.productId.billerCode === "NTELBundle" ||
+      // details.otherData.productId.productname === "Smile Data" ||
+      // details.otherData.productId.billerCode === "NTELBundle" ||
       // details.otherData.productId.billerCode === "9mobiledata1" ||
       // details.otherData.productId.productname === "Dstv Cable" ||
       // details.otherData.productId.productname === "Gotv Cable" ||
@@ -86,7 +88,7 @@ const SearchbarDropdown = (props) => {
       details.otherData.productId.productname ===
         "Ibadan Electricity Prepaid" ||
       // details.otherData.productId.billerCode === "PHEDDIR2" ||
-      details.otherData.productId.productname === "Eko Electricity Prepaid" ||
+      // details.otherData.productId.productname === "Eko Electricity Prepaid" ||
       details.otherData.productId.productname === "Benin Electricity Prepaid" ||
       // details.otherData.productId.productname ===
       //   "Kaduna Electricity Prepaid" ||
@@ -160,57 +162,104 @@ const SearchbarDropdown = (props) => {
       </Modal>
       <div className="banner-area" style={inlineStyle}>
         <div className="container">
+          {/* <div className="mt-5">
+            <h2>Reload, swift payment. Buy airtime, cable, electricity...</h2>
+          </div> */}
           <div className="banner-inner-wrap">
             <div className="row">
-              <div className="col-12">
-                <div className="allnew">
-                  <div className="banner-search-wrap">
-                    <div className="tab-content">
-                      <div className="tab-pane fade show active" id="tabs_1">
-                        <div className="rld-main-search mobileBanner">
-                          <div className="row">
-                            <div className="col-xl-9 col-lg-8 col-md-6">
-                              <div className="search-bar-dropdown">
-                                <input
-                                  id="search-bar"
-                                  type="text"
-                                  className="form-control p-2"
-                                  placeholder="Search"
-                                  onChange={onInputChange}
-                                />
-                                {searchStart === true ? (
-                                  <ul
-                                    id="results"
-                                    className="list-group"
-                                    // ref={ulRef}
-                                    style={{ zIndex: 2 }}
-                                  >
-                                    {options.length !== 0
-                                      ? options.map((option, index) => {
-                                          // console.log(option);
-                                          return (
-                                            <button
-                                              type="button"
-                                              key={index}
-                                              onClick={(e) => {
-                                                handleMove({
-                                                  otherData: option,
-                                                });
-                                              }}
-                                              className="list-group-item list-group-item-action"
-                                            >
-                                              {option.productId.productname}
-                                            </button>
-                                          );
-                                        })
-                                      : ""}
-                                  </ul>
+              <div className="col-12 mt-3" style={{ color: "#fff" }}>
+                <div className="banner-inner">
+                  <h3 className="text-light text-center">
+                    Reload, swift payment.
+                  </h3>
+                  <h5 className="text-light text-center">
+                    Buy Airtime, Cable, Electricity...
+                  </h5>
+                </div>
+              </div>
+              {/* <div className="col-lg-12 col-sm-0"> */}
+              <div className="allnewMobile">
+                <div className="banner-search-wrap">
+                  <div className="tab-content">
+                    <div className="tab-pane fade show active" id="tabs_1">
+                      <div className="bannerAds mobileBanner">
+                        <div className="row">
+                          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <div className="search-bar-dropdown">
+                              <Carousel style={{ position: "fixed" }}>
+                                {!saveData || !saveData.length ? (
+                                  <img width="1000" src={first} />
                                 ) : (
-                                  ""
+                                  saveData.map((item, i) => (
+                                    <img width="1000" key={i} src={item} />
+                                  ))
                                 )}
-                              </div>
+                              </Carousel>
                             </div>
-                            <div className="col-xl-3 col-lg-4 col-md-4 readeal-top">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="banner-search-wrap">
+                  <div className="tab-content">
+                    <div className="tab-pane fade show active" id="tabs_1">
+                      <div className="rld-main-search mobileBanner">
+                        <div className="row">
+                          <div className="col-xl-12 col-lg-8 col-md-12">
+                            <div className="search-bar-dropdown">
+                              <input
+                                id="search-bar"
+                                type="text"
+                                className="form-control p-2"
+                                placeholder="Search for biller eg Mtn, Dstv…"
+                                onChange={onInputChange}
+                              />
+                              {searchStart === true ? (
+                                <ul
+                                  id="results"
+                                  className="list-group"
+                                  // ref={ulRef}
+                                  style={{ zIndex: 2 }}
+                                >
+                                  {options.length !== 0 ? (
+                                    options.map((option, index) => {
+                                      // console.log(option);
+                                      return (
+                                        // <div className="">
+                                        <button
+                                          type="button"
+                                          key={index}
+                                          onClick={(e) => {
+                                            handleMove({
+                                              otherData: option,
+                                            });
+                                          }}
+                                          className="list-group-item list-group-item-action"
+                                        >
+                                          <img
+                                            width="40"
+                                            src={option.productId.logourl}
+                                            alt="..."
+                                          />
+                                          {option.productId.productname}
+                                        </button>
+                                        // {/* </div> */}
+                                      );
+                                    })
+                                  ) : (
+                                    <div className="list-group-item list-group-item-action text-center">
+                                      No items found.
+                                    </div>
+                                  )}
+                                </ul>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </div>
+                          {/* <div className="col-xl-3 col-lg-4 col-md-4 readeal-top">
                               <Button
                                 style={{
                                   backgroundColor: "#fda94f",
@@ -233,38 +282,15 @@ const SearchbarDropdown = (props) => {
                                   "View"
                                 )}
                               </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      {/* </div> */}
-                    </div>
-                  </div>
-                  <div className="banner-search-wrap">
-                    <div className="tab-content">
-                      <div className="tab-pane fade show active" id="tabs_1">
-                        <div className="bannerAds mobileBanner">
-                          <div className="row">
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                              <div className="search-bar-dropdown">
-                                <Carousel style={{ position: "fixed" }}>
-                                  {!saveData || !saveData.length ? (
-                                    <img width="1000" src={first} />
-                                  ) : (
-                                    saveData.map((item, i) => (
-                                      <img width="1000" key={i} src={item} />
-                                    ))
-                                  )}
-                                </Carousel>
-                              </div>
-                            </div>
-                          </div>
+                            </div> */}
                         </div>
                       </div>
                     </div>
+                    {/* </div> */}
                   </div>
                 </div>
               </div>
+              {/* </div> */}
             </div>
           </div>
         </div>

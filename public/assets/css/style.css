@@ -2439,6 +2439,13 @@ ul {
   align-items: center;
 }
 
+/* @media (min-width: 576px) {
+  .banner-inner-wrap {
+    width: 100vh;
+    background-color: red;
+  }
+} */
+
 .banner-inner-area {
   position: relative;
 }
@@ -3457,7 +3464,7 @@ ul {
 }
 
 .h1-service-slider-area {
-  margin-top: -140px;
+  margin-top: -70px;
   z-index: 2;
 }
 

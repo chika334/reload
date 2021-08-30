@@ -87,20 +87,20 @@ function Service(props) {
       setModal(true);
     } else {
       if (
-        details.otherData.billerCode === "NTELBundle" ||
+        // details.otherData.billerCode === "NTELBundle" ||
         // details.otherData.billerCode === "DSTV2" ||
         // details.otherData.billerCode === "startimes" ||
         // details.otherData.billerCode === "GOTV2" ||
         // details.otherData.billerCode === "KADUNA_PREPAID" ||
         // details.otherData.billerCode === "KANO_PREPAID" ||
-        details.otherData.billerCode === "PHCNEKO" ||
+        // details.otherData.billerCode === "PHCNEKO" ||
         // details.otherData.billerCode === "JOS_PREPAID"
         // ||
         // details.otherData.billerCode === "9mobiledata1" ||
         details.otherData.productId.productname ===
           "Ibadan Electricity Prepaid" ||
         // details.otherData.productId.billerCode === "PHEDDIR2" ||
-        details.otherData.billerCode === "SMILE" ||
+        // details.otherData.billerCode === "SMILE" ||
         details.otherData.productId.productname === "Jamb Exams" ||
         details.otherData.productId.productname === "Waec Exams Registration" ||
         details.otherData.productId.productname === "Benin Electricity Prepaid"
@@ -161,7 +161,7 @@ function Service(props) {
   );
 
   return (
-    <div className="service-area h1-service-slider-area">
+    <div className="h1-service-slider-area">
       <Modal
         open={modal}
         onClose={handleClose}

@@ -41,22 +41,33 @@ function Smile(props) {
     setSmileNumber(e.target.value);
   };
 
-  console.log(smartCard);
+  // console.log(smartCard);
 
   const handleSelect = (field, value) => {
+    // console.log(field, value);
     setSelectDetails({
       ...selectDetails,
       id: value.ItemType,
       amount: value.Amount,
-      name: value.ItemName,
+      field: value,
     });
+    // setSelectDetails({
+    //   ...selectDetails,
+    //   id: value.ItemType,
+    //   amount: value.Amount,
+    //   name: value.ItemName,
+    // });
   };
 
   const handleOthers = (e, name) => {
     const newValues = { ...smartCard };
     newValues[name] = e.target.value;
+
+    // console.log(e.target.value);
     setSmartCard(newValues);
   };
+
+  console.log(smartCard);
 
   const verifyMeterNumber = async () => {
     const details = {
@@ -84,11 +95,12 @@ function Smile(props) {
         value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
       productId: `${productDetails.productId}`,
       referenceValues: {
-        Email: `${smartCard["E-mail"]}`,
-        Product: `${selectDetails.id}`,
-        // "Phone Number": `${smartCard["Phone Number"]}`,
+        "E-mail": `${smartCard["E-mail"]}`,
+        // Product: `${selectDetails.id}`,
+        "Phone Number": `${smartCard["Phone Number"]}`,
+        "Product Type": selectDetails.id,
       },
-      references: ["E-mail", "Product"],
+      references: ["E-mail", "Phone Number", "Product Type"],
     };
 
     console.log(newValuesObj);
@@ -107,7 +119,7 @@ function Smile(props) {
       setLoading(false);
       setVerifiedProducts(verifiedUser.result.product);
       setVerifiedAccount(verifiedUser.result.account);
-      props.verify("SMILE", true);
+      props.verify("NTEL", true);
     }
   }, [verifiedUser.verifySuccess]);
 
@@ -117,7 +129,7 @@ function Smile(props) {
     fieldsArray.push(item[data]);
   }
 
-  console.log(item);
+  console.log(selectDetails);
 
   const fieldsOptions = [];
 
@@ -253,7 +265,7 @@ function Smile(props) {
                       placeholder={`Enter ${allFields.text}`}
                       select
                       type="text"
-                      value={values[allFields.text]}
+                      // value={values[allFields.text]}
                       variant="outlined"
                       InputLabelProps={{
                         shrink: true,
@@ -283,7 +295,7 @@ function Smile(props) {
                       label="Amount"
                       name="smileNumber"
                       onChange={handleSmartCard}
-                      placeholder={`Enter AMount`}
+                      placeholder={`Enter Amount`}
                       type="number"
                       variant="outlined"
                       value={selectDetails["amount"]}

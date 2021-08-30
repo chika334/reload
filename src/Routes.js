@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react";
+import React, { lazy, useEffect, Suspense } from "react";
 import ReactDOM from "react-dom";
 import {
   BrowserRouter as Router,
@@ -8,29 +8,35 @@ import {
   useLocation,
 } from "react-router-dom";
 import "./App.css";
-import HomeV1 from "./components/home-v1";
-import Property from "./components/property";
-import Navbar from "./components/global-components/navbar";
-import PropertyDetails from "./components/property-details";
-import BuyProduct from "./components/section-components/BuyProduct";
-import About from "./components/about";
-import Profile from "./components/user-list";
-import Registraion from "./components/registration";
-import Error from "./components/error";
-import Faq from "./components/faq";
-import Contact from "./components/contact";
-import SuccessMessage from "./components/SuccessMessage";
-import Welcome from "./components/reg/Welcome";
-import Settings from "./components/settings";
-import ForgotPassword from "./components/forgotPassword";
-import Footer from "./components/global-components/footer";
-import TermNCondition from "./components/TermNCondition";
-import Transaction from "./components/transaction";
-import HelpDesk from "./components/Help";
-import Receipt from "./components/Pay/PaymentProcess/printReceipt";
-import AcceptLoan from "./components/AcceptLoan";
-import Loan from "./components/Loan";
-import Layout from "./Layout";
+
+// component
+const HomeV1 = lazy(() => import("./components/home-v1"));
+const Property = lazy(() => import("./components/property"));
+const Navbar = lazy(() => import("./components/global-components/navbar"));
+const PropertyDetails = lazy(() => import("./components/property-details"));
+const BuyProduct = lazy(() =>
+  import("./components/section-components/BuyProduct")
+);
+const About = lazy(() => import("./components/about"));
+// const Profile = lazy(() => import("./components/user-list"));
+const Registraion = lazy(() => import("./components/registration"));
+const Error = lazy(() => import("./components/error"));
+const Faq = lazy(() => import("./components/faq"));
+const Contact = lazy(() => import("./components/contact"));
+// const SuccessMessage = lazy(() => import"./components/SuccessMessage"));
+// const Welcome = lazy(() => import("./components/reg/Welcome"));
+const Settings = lazy(() => import("./components/settings"));
+const ForgotPassword = lazy(() => import("./components/forgotPassword"));
+const Footer = lazy(() => import("./components/global-components/footer"));
+const TermNCondition = lazy(() => import("./components/TermNCondition"));
+const Transaction = lazy(() => import("./components/admin"));
+const HelpDesk = lazy(() => import("./components/Help"));
+const Receipt = lazy(() =>
+  import("./components/Pay/PaymentProcess/printReceipt")
+);
+const AcceptLoan = lazy(() => import("./components/AcceptLoan"));
+const Loan = lazy(() => import("./components/Loan"));
+// import Layout = lazy(() => "./Layout";
 
 import { showLoader, hideLoader } from "./_action/loading";
 import { useSelector, connect } from "react-redux";
@@ -89,7 +95,7 @@ function Routes(props) {
               `/${process.env.REACT_APP_RELOADNG}/contact`,
               // `/successMessage`,
               // `/profile`,
-              `/${process.env.REACT_APP_RELOADNG}/transactions`,
+              `/${process.env.REACT_APP_RELOADNG}/admin`,
               `/${process.env.REACT_APP_RELOADNG}/helpdesk`,
               `/${process.env.REACT_APP_RELOADNG}/receipt`,
               `/${process.env.REACT_APP_RELOADNG}/loan`,
@@ -119,7 +125,7 @@ function Routes(props) {
               />
               <ProtectedRoutes
                 exact
-                path={`/${process.env.REACT_APP_RELOADNG}/transactions`}
+                path={`/${process.env.REACT_APP_RELOADNG}/admin`}
                 component={Transaction}
               />
               {/* <Route exact path="/error" component={Error} /> */}

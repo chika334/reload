@@ -10,7 +10,7 @@
 
 /* @media only screen and (max-width: 600px) { */
   .bannerAds {
-    padding: 10px 10px 10px 10px;
+    /* padding: 10px 10px 10px 10px; */
     background: #fff;
     -webkit-box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);

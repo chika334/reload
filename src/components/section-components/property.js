@@ -3,7 +3,7 @@ import React, { useState } from "react";
 // import parse from "html-react-parser";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
-import { Button, Modal } from "@material-ui/core";
+import { Button, Modal, Grid } from "@material-ui/core";
 import { showLoader, hideLoader } from "../../_action/loading";
 import { someData } from "../../_action/passingData";
 import { makeStyles } from "@material-ui/core/styles";
@@ -53,14 +53,14 @@ function Property(props) {
         // details.otherData.billerCode === "GOTV2" ||
         // details.otherData.billerCode === "KADUNA_PREPAID" ||
         // details.otherData.billerCode === "KANO_PREPAID" ||
-        details.otherData.billerCode === "PHCNEKO" ||
+        // details.otherData.billerCode === "PHCNEKO" ||
         // details.otherData.billerCode === "JOS_PREPAID"
         // details.otherData.billerCode === "9mobiledata1" ||
-        details.otherData.billerCode === "NTELBundle" ||
+        // details.otherData.billerCode === "NTELBundle" ||
         details.otherData.productId.productname ===
           "Ibadan Electricity Prepaid" ||
         // details.otherData.productId.billerCode === "PHEDDIR2" ||
-        details.otherData.billerCode === "SMILE" ||
+        // details.otherData.billerCode === "SMILE" ||
         details.otherData.productId.productname === "Jamb Exams" ||
         details.otherData.productId.productname === "Waec Exams Registration" ||
         details.otherData.productId.productname === "Benin Electricity Prepaid"
@@ -183,6 +183,7 @@ function Property(props) {
       >
         {body}
       </Modal>
+      {/* <div className=""> */}
       <div className="property-area pd-top-100">
         <div className="container">
           <div className="row custom-gutter">
@@ -195,7 +196,7 @@ function Property(props) {
                     onClick={handleBtn}
                     className="active"
                   >
-                    All Properties
+                    All Products
                   </button>
                   <button
                     style={{ backgroundColor: "#fda94f", color: "#000" }}
@@ -244,55 +245,119 @@ function Property(props) {
             </div>
           </div>
           {/*Products filter Start*/}
-          <div className="property-filter-area row custom-gutter">
-            {/* <div className="gallery-sizer col-1" /> */}
-            {productData !== "" &&
-              productData.map((item, i) => (
-                // console.log(item)
-                <div
-                  key={i}
-                  className={
-                    "rld-filter-item  col-lg-3 col-sm-6 " +
-                    item.productId.description
-                  }
-                >
-                  <div className="single-feature">
-                    <div className="details">
-                      <img
-                        src={item.productId.logourl}
-                        style={{ width: "30%" }}
-                        alt="img"
-                      />
-                      <h6 className="title readeal-top">
-                        <Button
-                          disabled
-                          style={{ color: "#fda94f" }}
-                          to={item.url}
-                        >
-                          {item.productId.productname}
-                        </Button>
-                      </h6>
-
-                      <ul className="info-list">
-                        <li></li>
-                      </ul>
-                      <ul className="contact-list">
-                        <li className="readeal-top">
+          <div className="desktop-products">
+            <div className="property-filter-area row custom-gutter">
+              {/* <div className="gallery-sizer col-1" /> */}
+              {productData !== "" &&
+                productData.map((item, i) => (
+                  // console.log(item)
+                  <div
+                    key={i}
+                    className={
+                      "rld-filter-item  col-lg-3 col-sm-6 " +
+                      item.productId.description
+                    }
+                  >
+                    <div className="single-feature">
+                      <div className="details">
+                        <img
+                          src={item.productId.logourl}
+                          style={{ width: "30%" }}
+                          alt="img"
+                        />
+                        <h6 className="title readeal-top">
                           <Button
-                            onClick={(e) => handlePay({ otherData: item })}
-                            style={{
-                              backgroundColor: "#fda94f",
-                              color: "#000",
-                            }}
+                            disabled
+                            style={{ color: "#fda94f" }}
+                            to={item.url}
                           >
-                            Buy
+                            {item.productId.productname}
                           </Button>
-                        </li>
-                      </ul>
+                        </h6>
+
+                        <ul className="info-list">
+                          <li></li>
+                        </ul>
+                        <ul className="contact-list">
+                          <li className="readeal-top">
+                            <Button
+                              onClick={(e) => handlePay({ otherData: item })}
+                              style={{
+                                backgroundColor: "#fda94f",
+                                color: "#000",
+                              }}
+                            >
+                              Buy
+                            </Button>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+            </div>
+          </div>
+          <div className="mobileProducts">
+            <div className="">
+              <div className="rows">
+                <Grid container item xs={12} spacing={3}>
+                  {productData !== "" &&
+                    productData.map((item, i) => (
+                      // console.log(item)
+                      <div
+                        key={i}
+                        // className={
+                        //   "rld-filter-item  col-lg-3 col-sm-6 " +
+                        //   item.productId.description
+                        // }
+                        className="columns p-3"
+                      >
+                        <div
+                          // style={{ backgroundColor: "red" }}
+                          className="single-feature"
+                        >
+                          <img
+                            src={item.productId.logourl}
+                            style={{ maxWidth: "70px" }}
+                            alt="img"
+                          />
+                        </div>
+                        {/* <div className="single-feature">
+                      <div className="details">
+                        <h6 className="title readeal-top">
+                          <Button
+                            disabled
+                            style={{ color: "#fda94f" }}
+                            to={item.url}
+                          >
+                            {item.productId.productname}
+                          </Button>
+                        </h6>
+
+                        <ul className="info-list">
+                          <li></li>
+                        </ul>
+                        <ul className="contact-list">
+                          <li className="readeal-top">
+                            <Button
+                              onClick={(e) => handlePay({ otherData: item })}
+                              style={{
+                                backgroundColor: "#fda94f",
+                                color: "#000",
+                              }}
+                            >
+                              Buy
+                            </Button>
+                          </li>
+                        </ul>
+                      </div> */}
+                        {/* </div> */}
+                      </div>
+                    ))}
+                </Grid>
+              </div>
+              {/* <div className="gallery-sizer col-1" /> */}
+            </div>
           </div>
         </div>
       </div>

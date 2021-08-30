@@ -162,14 +162,39 @@ div .new4:not(:last-child) {
   padding: 2px;
   width: 50%;
 }
-@media (min-width: 600px) {
+
+.allnewMobile {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.allnewMobile > div {
+  margin: 5px;
+  padding: 0px;
+  /* background-color: red; */
+  width: 50%;
+}
+
+@media (min-width: 480px) {
+  .allnewMobile {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  .allnewMobile > div {
+    padding: 0;
+    width: 50%;
+  }
+}
+
+@media (min-width: 480px) {
   .allnew {
     display: flex;
     flex-wrap: nowrap;
   }
 
   .allnew > div {
-    padding: 10px;
+    padding: 0px;
     width: 50%;
   }
 
@@ -193,12 +218,11 @@ div .new4:not(:last-child) {
   }
 }
 
-
 /* all */
 /* Button position */
 .ButtonSide {
   display: flex;
-  justify-content:start;
+  justify-content: start;
   /* background-color: red */
   /* flex-wrap: wrap; */
 }
@@ -229,5 +253,53 @@ div .new4:not(:last-child) {
 
   .ButtonSide > div {
     padding: 10px;
+  }
+}
+
+/* .productDisplay {
+  display: block;
+  background-color: red;
+} */
+
+@media only screen and (max-width: 480px) {
+  /* .productDisplay {
+    display: block;
+    background-color: green;
+    /* width: 100%;
+  } */
+
+  .desktop-products {
+    display: none;
+  }
+
+  .columns {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+  }
+
+  /* Remove extra left and right margins, due to padding in columns */
+  .rows {
+    margin: 0 -5px;
+  }
+
+  /* Clear floats after the columns */
+  .rows:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .navbarMobile {
+    width: 400px
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  /* .productDisplay {
+    background-color: red;
+  } */
+  .mobileProducts {
+    display: none;
   }
 }

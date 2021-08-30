@@ -113,6 +113,8 @@ export const usePaymentGateway = (props) => {
   }, [error.error === true]);
 
   useEffect(() => {
+    console.log(typeof pay.amount);
+    console.log(pay.amount);
     if (pay.amount < 50 || pay.amount > 100000) {
       setLoading(false);
       setOpen(true);

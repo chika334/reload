@@ -179,9 +179,9 @@ function Navbar(props) {
                 {user.isAuthenticated === true ? (
                   <li>
                     <Link
-                      to={`/${process.env.REACT_APP_RELOADNG}/transactions`}
+                      to={`/${process.env.REACT_APP_RELOADNG}/admin`}
                     >
-                      Transactions
+                      Admin
                     </Link>
                   </li>
                 ) : (
@@ -196,8 +196,23 @@ function Navbar(props) {
                   <Link to={`/${process.env.REACT_APP_RELOADNG}/faq`}>FAQ</Link>
                 </li>
               </ul>
+
+              {/* <Button
+                style={{
+                  backgroundColor: "#fda94f",
+                  color: "#000",
+                  fontSize: "11px",
+                  padding: "10px",
+                }}
+                onClick={handleReg}
+              >
+                Login/Register{" "}
+                <span className="right">
+                  <i className="la la-plus" />
+                </span>
+              </Button> */}
             </div>
-            {/* <div className="nav-right-part nav-right-part-desktop readeal-top">
+            <div className="nav-right-part nav-right-part-desktop readeal-top">
               {user.isAuthenticated === true ? (
                 <ul
                   style={{ listStyleType: "none" }}
@@ -267,52 +282,50 @@ function Navbar(props) {
                   </span>
                 </Button>
               )}
-            </div> */}
-            <div className="d-lg-none">
+            </div>
+            <div className="d-lg-none navbarMobile">
               <div className="navbar-collapse">
                 <Collapse in={collapse}>
                   {/* <div className="header-nav-menu"> */}
-                    <ul className="navbar-nav menu-open readeal-top">
-                      <li
-                        onClick={(e) => closeMobileMenu(e)}
-                        className="current-menu-item"
-                      >
-                        <Link to="/">Home</Link>
-                      </li>
-                      <li onClick={(e) => closeMobileMenu(e)}>
-                        <Link to={`/${process.env.REACT_APP_RELOADNG}/about`}>
-                          About
-                        </Link>
-                      </li>
+                  <ul className="navbar-nav menu-open readeal-top">
+                    <li
+                      onClick={(e) => closeMobileMenu(e)}
+                      className="current-menu-item"
+                    >
+                      <Link to="/">Home</Link>
+                    </li>
+                    <li onClick={(e) => closeMobileMenu(e)}>
+                      <Link to={`/${process.env.REACT_APP_RELOADNG}/about`}>
+                        About
+                      </Link>
+                    </li>
+                    <li onClick={(e) => closeMobileMenu(e)}>
+                      <Link to={`/${process.env.REACT_APP_RELOADNG}/products`}>
+                        Our Products
+                      </Link>
+                    </li>
+                    {user.isAuthenticated === true ? (
                       <li onClick={(e) => closeMobileMenu(e)}>
                         <Link
-                          to={`/${process.env.REACT_APP_RELOADNG}/products`}
+                          to={`/${process.env.REACT_APP_RELOADNG}/transactions`}
                         >
-                          Our Products
+                          Transactions
                         </Link>
                       </li>
-                      {user.isAuthenticated === true ? (
-                        <li onClick={(e) => closeMobileMenu(e)}>
-                          <Link
-                            to={`/${process.env.REACT_APP_RELOADNG}/transactions`}
-                          >
-                            Transactions
-                          </Link>
-                        </li>
-                      ) : (
-                        ""
-                      )}
-                      <li onClick={(e) => closeMobileMenu(e)}>
-                        <Link to={`/${process.env.REACT_APP_RELOADNG}/contact`}>
-                          Contact Us
-                        </Link>
-                      </li>
-                      <li onClick={(e) => closeMobileMenu(e)}>
-                        <Link to={`/${process.env.REACT_APP_RELOADNG}/faq`}>
-                          FAQ
-                        </Link>
-                      </li>
-                    </ul>
+                    ) : (
+                      ""
+                    )}
+                    <li onClick={(e) => closeMobileMenu(e)}>
+                      <Link to={`/${process.env.REACT_APP_RELOADNG}/contact`}>
+                        Contact Us
+                      </Link>
+                    </li>
+                    <li onClick={(e) => closeMobileMenu(e)}>
+                      <Link to={`/${process.env.REACT_APP_RELOADNG}/faq`}>
+                        FAQ
+                      </Link>
+                    </li>
+                  </ul>
                   {/* </div> */}
                 </Collapse>
               </div>

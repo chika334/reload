@@ -276,6 +276,8 @@ function Electricity(props) {
         ],
       };
 
+      console.log(newValuesObj);
+
       props.PaymentIntent(newValuesObj);
     } else if (productDetails.billerCode === "PHEDDIR2") {
       const newValuesObj = {
@@ -365,7 +367,7 @@ function Electricity(props) {
 
       console.log(newValuesObj);
       props.PaymentIntent(newValuesObj);
-    } else if (productDetails.billerCode === "KANO_PREPAID") {
+    } else if (productDetails.billerCode === "PHCNKAN") {
       const newValuesObj = {
         amount: `${amount}`,
         channelRef: "web",
@@ -392,7 +394,7 @@ function Electricity(props) {
         ],
       };
 
-      // console.log(newValuesObj);
+      console.log(newValuesObj);
       props.PaymentIntent(newValuesObj);
     }
     // } else {

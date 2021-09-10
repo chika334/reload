@@ -15,7 +15,7 @@ class GoogleAd extends Component {
       <div className={classNames}>
         {/* <!-- Responsive reload site --> */}
         <ins
-          class="adsbygoogle"
+          className="adsbygoogle"
           style={{ display: "block" }}
           data-ad-client="ca-pub-8278424082299965"
           data-ad-slot="6304551990"

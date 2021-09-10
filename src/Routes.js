@@ -1,5 +1,5 @@
 import React, { lazy, useEffect, Suspense } from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 import {
   BrowserRouter as Router,
   Redirect,

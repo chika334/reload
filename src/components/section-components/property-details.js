@@ -23,6 +23,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
+import Alert from '@material-ui/lab/Alert';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -66,6 +67,7 @@ function PropertyDetails(props) {
     errorMessage,
     open,
     setOpen,
+    message,
   } = usePaymentGateway();
 
   const onPay = (val, type) => {
@@ -91,7 +93,7 @@ function PropertyDetails(props) {
     }
   };
 
-  console.log(finalPaymentSuccess);
+  // console.log(finalPaymentSuccess);
 
   useEffect(() => {
     if (finalPaymentSuccess.finalPayment === true) {
@@ -130,7 +132,7 @@ function PropertyDetails(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Amount should not be less than 50 Naira or above 100,000 Naira
+            {message}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

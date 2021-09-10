@@ -52,11 +52,11 @@ function Property({ breakOn = "medium" }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const token = useSelector((state) => state.Token);
+  // const token = useSelector((state) => state.Token);
   const getOfferResult = useSelector((state) => state.getOffers);
   const [offerData, setOfferData] = useState(null);
   const Providers = useSelector((state) => state.Providers);
-  const [bankDetails, setBankDetails] = useState();
+  // const [bankDetails, setBankDetails] = useState();
   const [error, setError] = useState(null);
   const errors = useSelector((state) => state.error);
   const [getData, setGetData] = useState({
@@ -101,6 +101,11 @@ function Property({ breakOn = "medium" }) {
     dispatch(getLoanData(getData));
     dispatch(getOffer(getData));
   };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   alert("daniel");
+  // };
 
   useEffect(() => {
     if (getOfferResult.success) {
@@ -288,8 +293,9 @@ function Property({ breakOn = "medium" }) {
                             </InputLabel>
                             <Select
                               native
+                              onChange={(e) => handleChange(e, "providerCode")}
                               className={classes.textField}
-                              defaultValue=""
+                              // defaultValue=""
                               id="grouped-native-select"
                             >
                               <option aria-label="None" value="" />

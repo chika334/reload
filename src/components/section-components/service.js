@@ -207,21 +207,41 @@ function Service(props) {
                                 {listData.productId.productname}
                               </h5>
                               <hr />
-                              <Button
-                                className="readmore-btn"
-                                style={{
-                                  backgroundColor: "#fda94f",
-                                  color: "#000",
-                                  fontSize: "12px",
-                                  padding: "10px",
-                                }}
-                                onClick={(e) =>
-                                  handleMove({ otherData: listData })
-                                }
-                              >
-                                {/* {listData.btntxt} */}
-                                Explore
-                              </Button>
+                              {listData.billerCode === "9mobiledata1" ||
+                              listData.billerCode === "STARTIMES" ||
+                              listData.billerCode === null ? (
+                                <Button
+                                  className="readmore-btn"
+                                  style={{
+                                    backgroundColor: "grey",
+                                    color: "#fff",
+                                    fontSize: "12px",
+                                    padding: "10px",
+                                  }}
+                                  onClick={(e) =>
+                                    handleMove({ otherData: listData })
+                                  }
+                                  disabled
+                                >
+                                  Unavailable
+                                </Button>
+                              ) : (
+                                <Button
+                                  className="readmore-btn"
+                                  style={{
+                                    backgroundColor: "#fda94f",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    padding: "10px",
+                                  }}
+                                  onClick={(e) =>
+                                    handleMove({ otherData: listData })
+                                  }
+                                >
+                                  {/* {listData.btntxt} */}
+                                  Explore
+                                </Button>
+                              )}
                             </div>
                           </div>
                         </div>

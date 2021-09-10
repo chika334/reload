@@ -225,27 +225,55 @@ const SearchbarDropdown = (props) => {
                                 >
                                   {options.length !== 0 ? (
                                     options.map((option, index) => {
-                                      // console.log(option);
+                                      console.log(option);
                                       return (
-                                        // <div className="">
-                                        <button
-                                          type="button"
-                                          key={index}
-                                          onClick={(e) => {
-                                            handleMove({
-                                              otherData: option,
-                                            });
-                                          }}
-                                          className="list-group-item list-group-item-action"
-                                        >
-                                          <img
-                                            width="40"
-                                            src={option.productId.logourl}
-                                            alt="..."
-                                          />
-                                          {option.productId.productname}
-                                        </button>
-                                        // {/* </div> */}
+                                        <div className="">
+                                          {option.productId.billerCode ===
+                                            "9mobiledata1" ||
+                                          option.productId.billerCode ===
+                                            "STARTIMES" ||
+                                          option.productId.billerCode ===
+                                            null ? (
+                                            <button
+                                              type="button"
+                                              key={index}
+                                              onClick={(e) => {
+                                                handleMove({
+                                                  otherData: option,
+                                                });
+                                              }}
+                                              className="list-group-item list-group-item-action"
+                                              disabled
+                                            >
+                                              <img
+                                                width="60"
+                                                src={option.productId.logourl}
+                                                alt="..."
+                                              />
+                                              <span className="ml-5">
+                                                Unavailable
+                                              </span>
+                                            </button>
+                                          ) : (
+                                            <button
+                                              type="button"
+                                              key={index}
+                                              onClick={(e) => {
+                                                handleMove({
+                                                  otherData: option,
+                                                });
+                                              }}
+                                              className="list-group-item list-group-item-action"
+                                            >
+                                              <img
+                                                width="40"
+                                                src={option.productId.logourl}
+                                                alt="..."
+                                              />
+                                              {option.productId.productname}
+                                            </button>
+                                          )}
+                                        </div>
                                       );
                                     })
                                   ) : (

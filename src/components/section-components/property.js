@@ -173,6 +173,7 @@ function Property(props) {
     </div>
   );
 
+  console.log(productData);
   return (
     <div>
       <Modal
@@ -243,6 +244,7 @@ function Property(props) {
                 </div>
               </div>
             </div>
+            {/* diabledCard */}
           </div>
           {/*Products filter Start*/}
           <div className="desktop-products">
@@ -250,14 +252,17 @@ function Property(props) {
               {/* <div className="gallery-sizer col-1" /> */}
               {productData !== "" &&
                 productData.map((item, i) => (
-                  // console.log(item)
                   <div
                     key={i}
+                    // style={productData.billerCode= ""}
                     className={
-                      "rld-filter-item  col-lg-3 col-sm-6 " +
-                      item.productId.description
+                      item.billerCode === "9mobiledata1"
+                        ? "disabledCardProduct col-lg-3 col-sm-6"
+                        : "rld-filter-item  col-lg-3 col-sm-6 " +
+                          item.productId.description
                     }
                   >
+                    {/* {console.log(item.billerCode === "9mobiledata1")} */}
                     <div className="single-feature">
                       <div className="details">
                         <img
@@ -280,15 +285,30 @@ function Property(props) {
                         </ul>
                         <ul className="contact-list">
                           <li className="readeal-top">
-                            <Button
-                              onClick={(e) => handlePay({ otherData: item })}
-                              style={{
-                                backgroundColor: "#fda94f",
-                                color: "#000",
-                              }}
-                            >
-                              Buy
-                            </Button>
+                            {item.billerCode === "9mobiledata1" ||
+                            item.billerCode === "STARTIMES" ||
+                            item.billerCode === null ? (
+                              <button
+                                style={{
+                                  backgroundColor: "transparent",
+                                  border: "2px solid #fff",
+                                  color: "#000",
+                                }}
+                                disabled
+                              >
+                                Product not available
+                              </button>
+                            ) : (
+                              <Button
+                                onClick={(e) => handlePay({ otherData: item })}
+                                style={{
+                                  backgroundColor: "#fda94f",
+                                  color: "#000",
+                                }}
+                              >
+                                Buy
+                              </Button>
+                            )}
                           </li>
                         </ul>
                       </div>
@@ -313,14 +333,52 @@ function Property(props) {
                         className="columns p-3"
                       >
                         <div
-                          // style={{ backgroundColor: "red" }}
-                          className="single-feature"
+                        // style={{ backgroundColor: "red" }}
+                        // className="single-feature"
+                        // className={
+                        //   item.billerCode === "9mobiledata1" ||
+                        //   item.billerCode === "STARTIMES"
+                        //     ? "disabledProducts"
+                        //     : ""
+                        // }
                         >
-                          <img
-                            src={item.productId.logourl}
-                            style={{ maxWidth: "70px" }}
-                            alt="img"
-                          />
+                          {item.billerCode === "9mobiledata1" ||
+                          item.billerCode === "STARTIMES" ||
+                          item.billerCode === null ? (
+                            // <div className="container">
+                            <Button
+                              disabled
+                              onClick={(e) => handlePay({ otherData: item })}
+                              // style={{ padding: "10px" }}
+                              // className="container"
+                            >
+                              <div>
+                                <img
+                                  src={item.productId.logourl}
+                                  style={{
+                                    maxWidth: "70px",
+                                    backgroundAttachment: "fixed",
+                                    overflow: "hidden",
+                                    filter: "blur(2px)",
+                                  }}
+                                  alt="img"
+                                />
+                                <span>Unavailable</span>
+                              </div>
+                            </Button>
+                          ) : (
+                            // </div>
+                            <Button
+                              onClick={(e) => handlePay({ otherData: item })}
+                              // style={{ padding: "10px" }}
+                            >
+                              <img
+                                src={item.productId.logourl}
+                                style={{ maxWidth: "80px" }}
+                                alt="img"
+                              />
+                            </Button>
+                          )}
                         </div>
                         {/* <div className="single-feature">
                       <div className="details">

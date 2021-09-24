@@ -1,0 +1,258 @@
+/*--------------------
+SHARED VARIABLES
+--------------------*/
+/*--------------------
+GENERAL
+--------------------*/
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #ffffff;
+  font-family: "Roboto", verdana, sans-serif;
+  height: 100%;
+  margin: auto;
+}
+
+h1 {
+  font-size: 1.5em;
+  font-weight: 100;
+}
+
+#cardForm {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*--------------------
+PANEL FORM
+--------------------*/
+.panel {
+  position: relative;
+  background: #FFF;
+  width: 500px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 2px 0 rgba(0, 0, 0, 0.12);
+}
+
+.panel__header {
+  background: #FFF;
+  color: #3F51B5;
+  /* border-bottom: 2px solid #f0f0f0; */
+  padding: 15px;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: row;
+}
+
+.panel__header>img {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.panel__header,
+.panel__footer {
+  padding: 1em 2em;
+}
+
+.panel__footer {
+  background: #f3f3f3;
+  text-align: center;
+}
+
+.panel__content {
+  padding: 1em 2em;
+  overflow: hidden;
+}
+
+.textfield--float-label {
+  width: 50%;
+  float: left;
+  padding: 0.5em 0.625em;
+}
+
+.textfield--hide {
+  display: none;
+}
+
+.textfield--show {
+  display: block;
+}
+
+.hosted-field--label {
+  transform: translateY(0.4em);
+  font-size: 0.9em;
+  line-height: 32px;
+  transition: all 0.15s ease-out;
+  display: block;
+  width: 100%;
+  font-weight: 400;
+  overflow: hidden;
+  margin-bottom: 0.5em;
+}
+.hosted-field--label.label-float, .hosted-field--label.invalid, .hosted-field--label.filled {
+  text-overflow: ellipsis;
+  color: #2196F3;
+  transition: all 0.15s ease-out;
+}
+.hosted-field--label.filled {
+  color: rgba(0, 0, 0, 0.54);
+}
+.hosted-field--label.invalid {
+  color: #F44336;
+}
+
+span.icon {
+  position: relative;
+  top: 0.2em;
+  margin-right: 0.2em;
+}
+
+svg {
+  fill: #333;
+}
+
+.hosted-field {
+  height: 32px;
+  margin-bottom: 1em;
+  display: block;
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.87);
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.26);
+  outline: 0;
+  width: 100%;
+  font-size: 12px;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 0;
+  position: relative;
+}
+
+.pay-button {
+  background: #E91E63;
+  color: #fff;
+  margin: 0 auto;
+  border: 0;
+  border-radius: 3px;
+  padding: 1em 3em;
+  font-size: 1em;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.pay-button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.notification-box {
+  display: none;
+  width: 100%;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.notification-box.show {
+  display: block;
+}
+
+.notification-box .content {
+  min-height: 50px;
+  border-radius: 5px;
+  padding: 6px;
+  color: white;
+  font-size: 16px;
+  font-family: monospace;
+}
+
+.notification-box .content.error {
+  background-color: #e97a7a;
+}
+
+.notification-box .content.success {
+  background-color: #5cd796;
+}
+
+.back-control {
+  display: inline-block;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.back-control * {
+  vertical-align: middle;
+  cursor: pointer;
+  color: #5fabdc;
+  font-size: 0.825em;
+}
+
+span.back-icon {
+  position: relative;
+  bottom: 0.1em;
+}
+.blue {
+  background: #5fabdc;
+}
+
+/*--------------------
+BT HOSTED FIELDS SPECIFIC 
+--------------------*/
+.braintree-hosted-fields-focused {
+  border-bottom: 2px solid #3F51B5;
+  transition: all 200ms ease;
+}
+
+.braintree-hosted-fields-invalid {
+  border-bottom: 2px solid #E91E63;
+  transition: all 200ms ease;
+}
+
+/*---------------------
+Media Queries
+----------------------*/
+@media (max-width: 991px) {
+  html {
+    overflow: auto;
+  }
+
+  .panel {
+    width: 800px;
+  }
+
+  .textfield--float-label {
+    width: 100%;
+    float: none;
+    display: inline-block;
+  }
+
+  .pay-button {
+    width: 100%;
+  }
+
+  .textfield--hide {
+    display: none;
+  }
+  
+  .textfield--show {
+    display: block;
+  }
+  
+}

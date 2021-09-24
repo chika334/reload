@@ -18,13 +18,10 @@ const BuyProduct = lazy(() =>
   import("./components/section-components/BuyProduct")
 );
 const About = lazy(() => import("./components/about"));
-// const Profile = lazy(() => import("./components/user-list"));
 const Registraion = lazy(() => import("./components/registration"));
 const Error = lazy(() => import("./components/error"));
 const Faq = lazy(() => import("./components/faq"));
 const Contact = lazy(() => import("./components/contact"));
-// const SuccessMessage = lazy(() => import"./components/SuccessMessage"));
-// const Welcome = lazy(() => import("./components/reg/Welcome"));
 const Settings = lazy(() => import("./components/settings"));
 const ForgotPassword = lazy(() => import("./components/forgotPassword"));
 const Footer = lazy(() => import("./components/global-components/footer"));
@@ -36,13 +33,14 @@ const Receipt = lazy(() =>
 );
 const AcceptLoan = lazy(() => import("./components/AcceptLoan"));
 const Loan = lazy(() => import("./components/Loan"));
-// import Layout = lazy(() => "./Layout";
+const Requery = lazy(() => import("./components/Pay/Requery"))
 
 import { showLoader, hideLoader } from "./_action/loading";
 import { useSelector, connect } from "react-redux";
 import Loading from "./components/global-components/loading";
 import ProtectedRoutes from "./protectedRoutes";
 import PrivateRouteReceipt from "./preventReceipt";
+import RequeryReceipt from "./components/Pay/PaymentProcess/requeryReceipt";
 
 function Routes(props) {
   const location = useLocation();
@@ -61,7 +59,6 @@ function Routes(props) {
         <Loading />
       ) : (
         <Suspense fallback={<Loading />}>
-          {/* <Layout /> */}
           <Navbar />
           <Switch location={location} key={location.pathname}>
             <Redirect
@@ -86,20 +83,17 @@ function Routes(props) {
               `/${process.env.REACT_APP_RELOADNG}/settings`,
               `/${process.env.REACT_APP_RELOADNG}/faq`,
               `/${process.env.REACT_APP_RELOADNG}/products`,
-              // `/error`,
               `/${process.env.REACT_APP_RELOADNG}/product-details/buy`,
               `/${process.env.REACT_APP_RELOADNG}/forgotpassword`,
               `/${process.env.REACT_APP_RELOADNG}/terms`,
               `/${process.env.REACT_APP_RELOADNG}/product-details`,
-              // `/${process.env.REACT_APP_RELOADNG}/welcome`,
               `/${process.env.REACT_APP_RELOADNG}/contact`,
-              // `/successMessage`,
-              // `/profile`,
               `/${process.env.REACT_APP_RELOADNG}/admin`,
               `/${process.env.REACT_APP_RELOADNG}/helpdesk`,
               `/${process.env.REACT_APP_RELOADNG}/receipt`,
               `/${process.env.REACT_APP_RELOADNG}/loan`,
               `/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`,
+              `/${process.env.REACT_APP_RELOADNG}/requery`,
             ]}
           >
             <Switch location={location} key={location.pathname}>
@@ -113,11 +107,6 @@ function Routes(props) {
                 path={`/${process.env.REACT_APP_RELOADNG}/registration`}
                 component={Registraion}
               />
-              {/* <Route
-              exact
-              path="/profile"
-              component={Profile}
-            /> */}
               <ProtectedRoutes
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/settings`}
@@ -128,7 +117,6 @@ function Routes(props) {
                 path={`/${process.env.REACT_APP_RELOADNG}/admin`}
                 component={Transaction}
               />
-              {/* <Route exact path="/error" component={Error} /> */}
               <Route
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/faq`}
@@ -164,26 +152,16 @@ function Routes(props) {
                 path={`/${process.env.REACT_APP_RELOADNG}/product-details`}
                 component={PropertyDetails}
               />
-              {/* <ProtectedRoutes
+              <Route
                 exact
-                path="/welcome"
-                component={Welcome}
-              /> */}
-              {/* <ProtectedRoutes
-                exact
-                path="/profile"
-                component={Profile}
-              /> */}
+                path={`/${process.env.REACT_APP_RELOADNG}/requery`}
+                component={Requery}
+              />
               <Route
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/contact`}
                 component={Contact}
               />
-              {/* <Route
-                exact
-                path="/successMessage"
-                component={SuccessMessage}
-              /> */}
               <ProtectedRoutes
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/loan`}
@@ -199,11 +177,15 @@ function Routes(props) {
                 path={`/${process.env.REACT_APP_RELOADNG}/receipt`}
                 component={Receipt}
               />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/requery/receipt`}
+                component={RequeryReceipt}
+              />
               <Route exact component={Error} />
             </Switch>
           </Route>
           <Footer />
-          {/* </Layout> */}
         </Suspense>
       )}
     </div>

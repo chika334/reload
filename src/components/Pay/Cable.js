@@ -169,7 +169,7 @@ function Cable(props) {
   // };
 
   const handleSubmit = (value, data) => {
-    console.log(data);
+    console.log("submitData", data);
     setButtonValue(value);
     setValueData(data);
     if (value === "FLUTTERWAVE") {
@@ -185,8 +185,18 @@ function Cable(props) {
     if (paymentIntent.success === true) {
       // pro
       setLoading(false);
+      console.log("Data", valueData);
 
-      let amounts = valueData === null ? "" : valueData.amount;
+      let valueAmount =
+        valueData === null ? "" : valueData["Subscription Amount"];
+      let generalAmount = valueData === null ? "" : valueData.amount;
+
+      let amounts =
+        valueData === null
+          ? ""
+          : productDetails.billerCode === "DSTV1"
+          ? valueAmount
+          : generalAmount;
       let emails =
         valueData === null ? "" : valueData.referenceValues["Email Address"];
       const detail = {
@@ -200,7 +210,7 @@ function Cable(props) {
         buttonClick: buttonValue,
         transRef: paymentIntent.detail.transRef,
         customerName:
-          verifiedUser.result === null
+          productDetails.billerCode === "DSTV1" && verifiedUser.result === null
             ? ""
             : verifiedUser.result.account.accountName,
       };
@@ -217,27 +227,39 @@ function Cable(props) {
   };
 
   const handleSelect = (name, value) => {
-    const data = {
-      productName: name,
-      productAmount: value,
-    };
+    // const data = {
+    //   productName: name,
+    //   productAmount: value,
+    // };
 
-    setSelectDetails(data);
+    setSelectDetails(name);
   };
 
   const handleSmartCard = (e) => {
     setSmartCard(e.target.value);
   };
 
+  console.log(selectDetails);
+
   const verifyMeterNumber = async () => {
     const details = {
       product: productDetails.productId,
+      billerCode: productDetails.billerCode,
       accountNumber: smartCard,
+      extras: {
+        customerAccountType:
+          selectDetails === null ? "" : selectDetails.ItemType,
+        field1: "1",
+        field2: null,
+        field3: null,
+      },
     };
 
     const valueData = JSON.stringify(details);
 
-    props.verifySmartcardNumber(valueData);
+    // console.log(details, valueData);
+
+    props.verifySmartcardNumber(details);
   };
 
   const SmartNumber = async (e) => {
@@ -254,6 +276,17 @@ function Cable(props) {
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
+  }
+
+  const Options = JSON.parse(productDetails.detail.productvalue).field3.options;
+
+  const fieldsOption = [];
+  for (const key in Options) {
+    if (Options.hasOwnProperty(key)) {
+      var value = Options[key];
+      // console.log(value);
+      fieldsOption.push(value);
+    }
   }
 
   const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
@@ -304,6 +337,41 @@ function Cable(props) {
                             value={smartCard}
                           />
                         </div>
+                        {productDetails.billerCode === "DSTV1" ? (
+                          <div className="d-flex justify-content-center">
+                            <TextField
+                              className="inputSize pt-3"
+                              required
+                              label="Please Select your present bouquet plan"
+                              // name={allField.text}
+                              placeholder={`Please Select Bouquet`}
+                              select
+                              type="text"
+                              variant="outlined"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            >
+                              <MenuItem>Select Data Type</MenuItem>
+                              {fieldsOption
+                                ? fieldsOption.map((allData, index) => {
+                                    const data = JSON.parse(allData);
+                                    return (
+                                      <MenuItem
+                                        key={index}
+                                        value={data.ItemName}
+                                        onClick={(e) => handleSelect(data)}
+                                      >
+                                        {data.ItemName}
+                                      </MenuItem>
+                                    );
+                                  })
+                                : ""}
+                            </TextField>
+                          </div>
+                        ) : (
+                          ""
+                        )}
                         <div className="d-flex align-item-center justify-content-center">
                           <Button
                             onClick={SmartNumber}
@@ -357,11 +425,15 @@ function Cable(props) {
               <p className="text-center mb-5" style={{ color: "red" }}>
                 N.B. Please select your current bouquet plan
               </p>
-              {productDetails.billerCode === "DSTV" ? (
+              {productDetails.billerCode === "DSTV1" ? (
                 <Dstv
                   disabledCard={disabledCard}
                   disabledUssd={disabledUssd}
                   handleSubmit={handleSubmit}
+                  amount={selectDetails === null ? "" : selectDetails.Amount}
+                  packageType={
+                    selectDetails === null ? "" : selectDetails.ItemType
+                  }
                 />
               ) : (
                 ""

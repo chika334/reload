@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import sectiondata from "../../data/sections.json";
-import parse from "html-react-parser";
+// import sectiondata from "../../data/sections.json";
+// import parse from "html-react-parser";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { Button, Modal, TextField, MenuItem } from "@material-ui/core";
@@ -8,11 +8,11 @@ import { showLoader, hideLoader } from "../../_action/loading";
 import { someData } from "../../_action/passingData";
 import { makeStyles } from "@material-ui/core/styles";
 import { BankCodes } from "../jsonData/BankCodes";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+// import Dialog from "@material-ui/core/Dialog";
+// import DialogContent from "@material-ui/core/DialogContent";
+// import DialogActions from "@material-ui/core/DialogActions";
+// import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { acceptOffer } from "../../_action/Loan/acceptLoan";
 import Alert from "@material-ui/lab/Alert";
@@ -67,7 +67,6 @@ function Property(props, { breakOn = "medium" }) {
 
   useEffect(() => {
     if (errors.id === "INTERSWITCH_PTOVIDERS_FAILED") {
-      // console.log("nice");
       setLoading(false)
       setError(errors.message.data.responseMessage);
     }

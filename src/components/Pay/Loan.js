@@ -25,6 +25,7 @@ import Alert from "@material-ui/lab/Alert";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
+import InputAccount from "./InputAccount";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,16 +109,16 @@ function Property({ breakOn = "medium" }) {
   // };
 
   useEffect(() => {
-    if (getOfferResult.success) {
-      setLoading(false);
-      setTimeout(() => {
+    setTimeout(() => {
+      if (getOfferResult.success) {
+        setLoading(false);
+        // setTimeout(() => {
         setOpen(true);
         setOfferData(getOfferResult.data);
-      }, 1000);
-    }
+        // }, 1000);
+      }
+    }, 500);
   }, [getOfferResult.success]);
-
-  // console.log(open);
 
   const handleOffer = (e, data) => {
     console.log(data);
@@ -142,6 +143,21 @@ function Property({ breakOn = "medium" }) {
     <div>
       <div>
         {open === true ? (
+          <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            maxWidth="lg"
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <InputAccount getData={getData} />
+          </Dialog>
+        ) : (
+          ""
+        )}
+        {/* {open === true ? (
           <Dialog
             open={open}
             TransitionComponent={Transition}
@@ -222,7 +238,7 @@ function Property({ breakOn = "medium" }) {
           </Dialog>
         ) : (
           ""
-        )}
+        )} */}
       </div>
       <div className="property-details-area">
         {loading === true ? (

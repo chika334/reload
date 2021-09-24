@@ -6,23 +6,18 @@ import {
   verifySmartcardNumber,
   clearVerified,
 } from "../../../_action/verifyNumber";
-// import CoralUssd from "../../components/CorralUssd/App";
 import { MenuItem, TextField, Button } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../../_action/Payment/index";
 import Alert from "@material-ui/lab/Alert";
-import { pay, paymentButtons } from "../../../_action/Payment/paymentButtons";
+import { pay } from "../../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../../_action/errorAction";
 import { verify } from "../../../_action/verify";
 import "../../../css/input.css";
 import Slide from "@material-ui/core/Slide";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-function Cable(props) {
+function Dstv(props) {
   const dispatch = useDispatch();
   // const user = useSelector((state) => state.authUser);
   const user = useSelector((state) =>
@@ -31,7 +26,7 @@ function Cable(props) {
   const error = useSelector((state) => state.error);
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
-  const paymentButton = useSelector((state) => state.paymentButton);
+  // const paymentButton = useSelector((state) => state.paymentButton);
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [buttonValue, setButtonValue] = useState(null);
@@ -79,24 +74,34 @@ function Cable(props) {
     }
 
     const newValuesObj = {
-      amount: selectDetails.productAmount,
+      // amount: selectDetails.productAmount,
+      // "Subscription Amount": "100",
       channelRef: "web",
       description: "Cable",
       paymentMethod:
         value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
       productId: `${productDetails.productId}`,
       referenceValues: {
-        "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
+        "Subscription Amount": props.amount,
+        "Smart Card Number": `${verifiedUser.result.account.accountNumber}`,
         "Email Address": `${email}`,
-        "Select Package (Amount)":
-          selectDetails === null ? "" : selectDetails.productName,
+        "Select Package (Amount)": props.packageType,
+        "Number of Months": "1",
+        "Customer Details": `${verifiedUser.result.account.accountName}`,
+        "Customer Number": `${verifiedUser.result.account.accountNumber}`,
       },
       references: [
-        "SmartCard Number",
+        "Subscription Amount",
+        "Smart Card Number",
         "Email Address",
         "Select Package (Amount)",
+        "Number of Months",
+        "Customer Details",
+        "Customer Number",
       ],
     };
+
+    console.log("value", newValuesObj);
 
     props.handleSubmit(value, newValuesObj);
     // if()
@@ -231,12 +236,28 @@ function Cable(props) {
   };
 
   const verifyMeterNumber = async () => {
+    // const details = {
+    //   product: productDetails.productId,
+    //   accountNumber: smartCard,
+
+    // };
+
     const details = {
       product: productDetails.productId,
+      billerCode: productDetails.billerCode,
       accountNumber: smartCard,
+      extras: {
+        customerAccountType:
+          selectDetails === null ? "" : selectDetails.ItemType,
+        field1: "1",
+        field2: null,
+        field3: null,
+      },
     };
 
     const valueData = JSON.stringify(details);
+
+    // console.log("working", valueData);
 
     props.verifySmartcardNumber(valueData);
   };
@@ -245,10 +266,6 @@ function Cable(props) {
     e.preventDefault();
     setLoading(true);
     let result = verifyMeterNumber();
-    // if (localStorage.token) {
-    // } else {
-    //   props.history.push("/registration");
-    // }
   };
 
   const item = JSON.parse(productDetails.detail.productvalue);
@@ -257,20 +274,18 @@ function Cable(props) {
     fieldsArray.push(item[data]);
   }
 
-  // const deal = Object.values(fieldsArray);
-  // useEffect(() => {
-  //   deal.map((allData) => {
-  //     if (allData.text === "Product type") {
-  //       if (allData.select !== true) {
-  //         return setDisabled(false);
-  //       } else {
-  //         return setDisabled(true);
-  //       }
-  //     } else {
-  //       return setDisabled(false);
-  //     }
-  //   });
-  // }, []);
+  // console.log(fieldsArray);
+
+  const Options = JSON.parse(productDetails.detail.productvalue).field3.options;
+
+  const fieldsOption = [];
+  for (const key in Options) {
+    if (Options.hasOwnProperty(key)) {
+      var value = Options[key];
+      console.log(value);
+      fieldsOption.push(value);
+    }
+  }
 
   const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
 
@@ -300,7 +315,7 @@ function Cable(props) {
             <div className="d-flex align-item-center justify-content-center">
               {errors && <Alert severity="error">{errors}</Alert>}
             </div>
-            <div>
+            {/* <div>
               {verifyUserdetails.onclick === false &&
               verifyUserdetails.name === "" ? (
                 verifyNumber.text === "SmartCard Number" ? (
@@ -339,7 +354,7 @@ function Cable(props) {
               ) : (
                 ""
               )}
-            </div>
+            </div> */}
           </div>
           <div>
             {verifyUserdetails.onclick === true &&
@@ -379,43 +394,6 @@ function Cable(props) {
                       </p>
                     </div>
                   </div>
-                </div>
-
-                {/* dropdown */}
-                <div className="d-flex justify-content-center">
-                  <TextField
-                    className="inputSize pt-3"
-                    required
-                    label="Please Select your present bouquet plan"
-                    // name={allField.text}
-                    placeholder={`Please Select Bouquet`}
-                    select
-                    type="text"
-                    variant="outlined"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  >
-                    <MenuItem>Select Data Type</MenuItem>
-                    {verifiedProducts === null
-                      ? ""
-                      : verifiedProducts.map((allData, index) => {
-                          return (
-                            <MenuItem
-                              key={index}
-                              value={allData.productName}
-                              onClick={(e) =>
-                                handleSelect(
-                                  allData.productName,
-                                  allData.productAmount
-                                )
-                              }
-                            >
-                              {allData.productName}
-                            </MenuItem>
-                          );
-                        })}
-                  </TextField>
                 </div>
               </div>
             ) : (
@@ -471,11 +449,12 @@ function Cable(props) {
                         label={allFields.text}
                         name={allFields.text}
                         // onChange={handleFieldChange}
-                        value={
-                          selectDetails === null
-                            ? ""
-                            : selectDetails.productAmount
-                        }
+                        // value={
+                        //   selectDetails === null
+                        //     ? ""
+                        //     : selectDetails.productAmount
+                        // }
+                        value={props.amount}
                         placeholder={`Enter ${allFields.text}`}
                         type="number"
                         variant="outlined"
@@ -588,5 +567,5 @@ export default withRouter(
     clearVerified,
     pay,
     verify,
-  })(Cable)
+  })(Dstv)
 );

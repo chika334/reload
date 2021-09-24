@@ -12,7 +12,7 @@ class GoogleAd extends Component {
   render() {
     const { classNames, slot } = this.props;
     return (
-      <div className={classNames}>
+      <div>
         {/* <!-- Responsive reload site --> */}
         <ins
           className="adsbygoogle"

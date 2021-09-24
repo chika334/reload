@@ -150,6 +150,8 @@ function PhedPostpaid(props) {
       ],
     };
 
+    console.log(newValuesObj, value);
+
     props.handleSubmit(value, newValuesObj);
   };
 
@@ -201,29 +203,10 @@ function PhedPostpaid(props) {
 
   return (
     <div className="property-details-area">
-      {/* {loading ? (
-        <div className="preloader" id="preloader">
-          <div className="preloader-inner">
-            <div className="spinner">
-              <div className="dot1"></div>
-              <div className="dot2"></div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <div className="d-flex align-item-center justify-content-center">
-            {errors && <Alert severity="error">{errors}</Alert>}
-          </div>
-        </div>
-      )} */}
       <div>
         <div className="d-flex align-item-center justify-content-center">
           {failure && <Alert severity="error">{failure}</Alert>}
         </div>
-        {/* {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Electricity"
-          ?  */}
         {fieldsArray.slice(1).map((allData, i) =>
           allData.select === false &&
           allData.text !== "Amount" &&

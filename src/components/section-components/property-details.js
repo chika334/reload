@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import sectiondata from "../../data/sections.json";
-import parse from "html-react-parser";
+// import sectiondata from "../../data/sections.json";
+// import parse from "html-react-parser";
 import { withRouter, Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
-import { hideLoader } from "../../_action/loading";
+import { hideLoader, showLoader } from "../../_action/loading";
 import { Button } from "@material-ui/core";
 // import ProductTable from "./productDetails/productTable";
 import { products } from "../../data/products";
@@ -23,7 +23,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import Alert from '@material-ui/lab/Alert';
+import Alert from "@material-ui/lab/Alert";
+import { requery } from "../../_action/requery";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -40,12 +41,24 @@ const formSchema = {
 
 function PropertyDetails(props) {
   const history = useHistory();
-  const exploreProducts = useSelector((state) => state.exploreProducts);
-  const productDetails = useSelector((state) => state.someData.detail);
   const dispatch = useDispatch();
+  const productDetails = useSelector((state) => state.someData.detail);
+  // const dispatch = useDispatch();
   const [pay, setPay] = useState(false);
+  const paymentIntent = useSelector((state) =>
+    state.paymentIntent.success === true
+      ? state.paymentIntent.detail.result
+      : ""
+  );
+  const intentTransRef = useSelector((state) =>
+    state.paymentIntent.success === true
+      ? state.paymentIntent.detail.transRef
+      : ""
+  );
+  const error = useSelector((state) => state.error);
+  const verifySuccess = useSelector((state) => state.verify);
   // const []
-  const paymentButton = useSelector((state) => state.paymentButton);
+  // const paymentButton = useSelector((state) => state.paymentButton);
   const [productData, setProductData] = useState();
   const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
   const [type, setType] = useState("");
@@ -53,6 +66,7 @@ function PropertyDetails(props) {
   // const [formData, setFormData] = useState({});
   // const [validationSchema, setValidationSchema] = useState({});
   // const [amount, setAmount] = useState("");
+  const requeryData = useSelector((state) => state.reloadReducer);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [disabledCard, setDisabledCard] = useState(false);
   const payment = useSelector((state) =>
@@ -63,10 +77,14 @@ function PropertyDetails(props) {
     ussdPayload,
     grabUssdResponse,
     startPayment,
+    setLoading,
     loading: secondaryLoading,
     errorMessage,
+    setErrorMessage,
     open,
     setOpen,
+    setErrorModal,
+    errorModal,
     message,
   } = usePaymentGateway();
 
@@ -80,6 +98,47 @@ function PropertyDetails(props) {
     window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
   };
 
+  const handleCloseModal = () => {
+    setErrorModal(false);
+  };
+
+  const handleQuery = (e) => {
+    e.preventDefault();
+    const value = {
+      transRef: intentTransRef,
+    };
+
+    // console.log(value);
+
+    // dispatch(showLoader());
+    setLoading(true);
+
+    dispatch(requery(value));
+  };
+
+  useEffect(() => {
+    if (requeryData.requerySuccess === true) {
+      setLoading(false);
+      history.push({
+        pathname: `/${process.env.REACT_APP_RELOADNG}/requery/receipt`,
+        // search: `?query=abc`,
+        state: { data: props.location, pay },
+      });
+    }
+  }, [requeryData.requerySuccess === true]);
+
+  useEffect(() => {
+    setOpen(false);
+    // setErrorModal(true);
+    if (error.id === "FINAL_PAYMENT_ERROR") {
+      setLoading(false);
+      setErrorModal(true);
+    } else if (error.id === "REQUERY_FAILED") {
+      setLoading(false);
+      setErrorMessage(error.message.result.productResult);
+    }
+  }, [error.error === true]);
+
   const makePayment = () => {
     if (payment.detail.buttonClick !== null) {
       // console.log("daniel", payment);
@@ -92,8 +151,6 @@ function PropertyDetails(props) {
       }
     }
   };
-
-  // console.log(finalPaymentSuccess);
 
   useEffect(() => {
     if (finalPaymentSuccess.finalPayment === true) {
@@ -116,6 +173,8 @@ function PropertyDetails(props) {
       makePayment();
     }
   }, [payment]);
+
+  let paymentAmount = Number(paymentIntent.totalAmount).toFixed(2);
 
   return (
     <>
@@ -141,6 +200,46 @@ function PropertyDetails(props) {
           </Button>
         </DialogActions>
       </Dialog>
+      {verifySuccess.result === null ? (
+        ""
+      ) : (
+        <Dialog
+          open={errorModal}
+          TransitionComponent={Transition}
+          keepMounted
+          // onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            Transaction Error
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              <b>Sorry please an error occurred please requery transaction</b>
+              <table class="center">
+                <tr>
+                  <td>Name: </td>
+                  <td>{verifySuccess.result.account.accountName}</td>
+                </tr>
+                <tr>
+                  <td>Product: </td>
+                  <td>{productDetails.detail.productId.productname}</td>
+                </tr>
+                <tr>
+                  <td>Amount</td>
+                  <td>{paymentAmount}</td>
+                </tr>
+              </table>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleQuery} color="primary">
+              Requery
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
       {secondaryLoading === true ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">

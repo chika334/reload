@@ -5,10 +5,10 @@ import { finalPayment } from "../../../_action/Payment/finalPayment";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { paymentButtons } from "../../../_action/Payment/paymentButtons";
 
-const flutterConfig = (pay, paymentIntent) => ({
+const flutterConfig = (pay, paymentAmount) => ({
   public_key: `${process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY}`,
   tx_ref: Date.now(),
-  amount: paymentIntent.totalAmount,
+  amount: paymentAmount,
   currency: "NGN",
   payment_options: "card",
   trackingNo: pay.transRef,
@@ -28,15 +28,12 @@ export const FLUTTERWAVE_KEY = "FLUTTERWAVE";
 export const USSD_KEY = "USSD";
 
 export const usePaymentGateway = (props) => {
+  const history = useHistory();
   const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const paymentGatewayRef = React.useRef();
   const error = useSelector((state) => state.error);
-  // const paymentIntent = useSelector((state) =>
-  //   state.paymentIntent.detail === null ? "" : state.paymentIntent.detail
-  // );
   const productDetails = useSelector((state) => state.someData.detail);
-  // const paymentButtons = useSelector(state => state.paymentButton)
   const [paymentType, setPaymentType] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [message, setMessage] = React.useState("");
@@ -44,8 +41,8 @@ export const usePaymentGateway = (props) => {
   const [ussdResponse, setUssdResponse] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
-
-  console.log(errorMessage);
+  const [queryMessage, setQueryMessage] = React.useState(false);
+  const [errorModal, setErrorModal] = React.useState(false);
 
   React.useEffect(() => {
     paymentGatewayRef.current = true;
@@ -59,6 +56,8 @@ export const usePaymentGateway = (props) => {
       ? state.paymentIntent.detail.result
       : ""
   );
+
+  let paymentAmount = Number(paymentIntent.totalAmount).toFixed(2);
 
   console.log(paymentIntent);
 
@@ -94,7 +93,8 @@ export const usePaymentGateway = (props) => {
         ussdResponse.customer_mobile === ""
       ) {
         setLoading(false);
-        setOpen(true);
+        // setOpen(true);
+        setErrorMessage(true);
       }
 
       if (ussdResponse.responsemessage === "Success") {
@@ -111,33 +111,15 @@ export const usePaymentGateway = (props) => {
   }, [ussdResponse]);
 
   const handleFlutterPayment = useFlutterwave(
-    flutterConfig(pay, paymentIntent)
+    flutterConfig(pay, paymentAmount)
   );
-
-  useEffect(() => {
-    setOpen(false);
-    if (error.id === "FINAL_PAYMENT_ERROR") {
-      setLoading(false);
-      if (
-        error.message.data.paymentResponse ===
-        `Bill Payment Failed, Amount Would Be Reversed Bouquet not found for amount : ${paymentIntent.totalAmount}`
-      ) {
-        console.log(error.message.data.paymentResponse);
-        setErrorMessage(
-          `Transaction failed, ${paymentIntent.totalAmount} would be reversed. please select current bouquet plan`
-        );
-      } else {
-        setErrorMessage(error.message.data.message);
-      }
-    }
-  }, [error.error === true]);
 
   useEffect(() => {
     if (
       productDetails.detail.productId.productcategoryId.categoryname ===
       "Electricity"
     ) {
-      if (pay.amount < 1000) {
+      if (pay.amount < 50) {
         setOpen(true);
         setLoading(false);
         setMessage("Minimum payment for all electricity is 1000 Naira");
@@ -176,7 +158,7 @@ export const usePaymentGateway = (props) => {
             setUssdPayload({
               traceId: pay.transRef,
               transactionType: "0",
-              amount: `${paymentIntent.totalAmount}`,
+              amount: `${paymentAmount}`,
               merchantId: "4058RNG10000001",
               channel: "USSD",
               terminalId: "4058RNG1",
@@ -248,9 +230,15 @@ export const usePaymentGateway = (props) => {
   return {
     startPayment,
     grabUssdResponse,
+    setErrorModal,
+    errorModal,
     ussdPayload,
+    setLoading,
     loading,
     open,
+    setErrorMessage,
+    // setQueryMessage,
+    // queryMessage,
     errorMessage,
     message,
     setOpen,

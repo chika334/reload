@@ -832,41 +832,34 @@ const BootstrapInput = withStyles((theme) => ({
 function Electricity(props) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  let history = useHistory();
-  const [email, setEmail] = useState("");
-  const user = useSelector((state) =>
-    state.authUser.user === null ? "" : state.authUser.user
-  );
+  // let history = useHistory();
+  // const [email, setEmail] = useState("");
+  // const user = useSelector((state) =>
+  //   state.authUser.user === null ? "" : state.authUser.user
+  // );
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [buttonValue, setButtonValue] = useState(null);
   const [valueData, setValueData] = useState(null);
   const error = useSelector((state) => state.error);
   const [errors, setErrors] = useState("");
-  const [failure, setFailure] = useState("");
-  const [otherValues, setOtherValues] = useState("");
-  const [amount, setAmount] = useState("");
+  // const [failure, setFailure] = useState("");
+  // const [otherValues, setOtherValues] = useState("");
+  // const [amount, setAmount] = useState("");
   const [smartCard, setSmartCard] = useState("");
-  const [open, setOpen] = React.useState(false);
-  const [selectDetails, setSelectDetails] = useState(null);
+  // const [open, setOpen] = React.useState(false);
+  // const [selectDetails, setSelectDetails] = useState(null);
   const verifiedUser = useSelector((state) => state.verify);
-  const paymentButton = useSelector((state) => state.paymentButton);
+  // const paymentButton = useSelector((state) => state.paymentButton);
   const productDetails = useSelector((state) => state.someData.detail);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const [meterType, setMeterType] = useState("");
-  const pays = useSelector((state) =>
-    state.paymentDone.payment === true ? state.paymentDone.detail : ""
-  );
-  const [verifiedAccount, setVerifiedAccount] = useState(null);
-  const [verifiedProducts, setVerifiedProducts] = useState(null);
-  // const [age, setAge] = React.useState("");
-
+  const [failure, setFailure] = useState("");
+ 
   const handleSelectMeterType = (event) => {
     setMeterType(event.target.value);
   };
-
-  console.log(otherValues);
 
   const handleSmartCard = (e) => {
     setSmartCard(e.target.value);
@@ -961,7 +954,6 @@ function Electricity(props) {
         },
       };
 
-      // console.log(details);
       dispatch(verifySmartcardNumber(details));
     }
   };
@@ -973,7 +965,6 @@ function Electricity(props) {
   };
 
   const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
-  // console.log(verifyNumber);
 
   useEffect(() => {
     if (paymentIntent.success === true) {
@@ -1018,7 +1009,6 @@ function Electricity(props) {
 
       dispatch(pay(detail));
       props.dataPay(true, "Cable");
-      // props.onpaymentProcess(buttonValue);
     }
   }, [paymentIntent.success]);
 
@@ -1032,8 +1022,6 @@ function Electricity(props) {
   const getData = (data) => {
     setIntentData(data);
   };
-
-  console.log(productDetails.billerCode);
 
   return (
     <div className="property-details-area">
@@ -1062,7 +1050,6 @@ function Electricity(props) {
                   <div className="d-flex align-item-center justify-content-center">
                     <TextField
                       required
-                      // style={{ width: "50%" }}
                       className="inputSize"
                       label={verifyNumber.text}
                       name="smartCard"

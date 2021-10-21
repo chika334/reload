@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
+import AdSense from "react-adsense";
 // const googleAdId = "ca-pub-yourGoogleAdId";
 
 class GoogleAd extends Component {
-
   componentDidMount() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }

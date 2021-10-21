@@ -30,15 +30,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const formSchema = {
-  meter: {
-    type: "number",
-    label: "Meter Number",
-    placeholder: "Enter Meter Number",
-    required: true,
-  },
-};
-
 function PropertyDetails(props) {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -57,15 +48,9 @@ function PropertyDetails(props) {
   );
   const error = useSelector((state) => state.error);
   const verifySuccess = useSelector((state) => state.verify);
-  // const []
-  // const paymentButton = useSelector((state) => state.paymentButton);
   const [productData, setProductData] = useState();
   const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
   const [type, setType] = useState("");
-  // const [buttonPayment, setButtonPayment] = useState(false);
-  // const [formData, setFormData] = useState({});
-  // const [validationSchema, setValidationSchema] = useState({});
-  // const [amount, setAmount] = useState("");
   const requeryData = useSelector((state) => state.reloadReducer);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [disabledCard, setDisabledCard] = useState(false);
@@ -98,19 +83,12 @@ function PropertyDetails(props) {
     window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
   };
 
-  const handleCloseModal = () => {
-    setErrorModal(false);
-  };
-
   const handleQuery = (e) => {
     e.preventDefault();
     const value = {
       transRef: intentTransRef,
     };
 
-    // console.log(value);
-
-    // dispatch(showLoader());
     setLoading(true);
 
     dispatch(requery(value));
@@ -121,7 +99,6 @@ function PropertyDetails(props) {
       setLoading(false);
       history.push({
         pathname: `/${process.env.REACT_APP_RELOADNG}/requery/receipt`,
-        // search: `?query=abc`,
         state: { data: props.location, pay },
       });
     }
@@ -129,7 +106,6 @@ function PropertyDetails(props) {
 
   useEffect(() => {
     setOpen(false);
-    // setErrorModal(true);
     if (error.id === "FINAL_PAYMENT_ERROR") {
       setLoading(false);
       setErrorModal(true);
@@ -141,7 +117,6 @@ function PropertyDetails(props) {
 
   const makePayment = () => {
     if (payment.detail.buttonClick !== null) {
-      // console.log("daniel", payment);
       startPayment(payment.detail.buttonClick);
       if (payment.detail.buttonClick === "USSD") {
         toggleIt();
@@ -156,7 +131,6 @@ function PropertyDetails(props) {
     if (finalPaymentSuccess.finalPayment === true) {
       history.push({
         pathname: `/${process.env.REACT_APP_RELOADNG}/receipt`,
-        // search: `?query=abc`,
         state: { data: props.location, pay },
       });
     }
@@ -285,6 +259,14 @@ function PropertyDetails(props) {
                                 />
                               )}
                               {productDetails.detail.productId.description ===
+                                "Electricity (IBEDC)" && (
+                                <Electricity
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
+                              )}
+                              {productDetails.detail.productId.description ===
                                 "Electricity Prepaid (EKEDC)" && (
                                 <Electricity
                                   disabledUssd={disabledUssd}
@@ -342,7 +324,7 @@ function PropertyDetails(props) {
                                 onSuccess={grabUssdResponse}
                               />
                             }
-                            {productDetails.detail.productId.desctiption === ""}
+                            {/* {productDetails.detail.productId.desctiption === ""} */}
                             <div>
                               {productDetails.detail.productId.description ===
                                 "Cable" && (

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, MenuItem } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { PaymentIntent } from "../../_action/Payment";
-import { DataOptionSelect } from "../../components/jsonData/DataSelectOption";
+// import { DataOptionSelect } from "../../components/jsonData/DataSelectOption";
 import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../_action/Payment/paymentButtons";
 import "../../css/input.css";
 import { useUSSD } from "../CoralUssd";
-import CoralUssd from "../CoralUssd/App";
+// import CoralUssd from "../CoralUssd/App";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
 import { loginRediectSuccess } from "../../_action/LoginRedirect";
-import Slide from "@material-ui/core/Slide";
+// import Slide from "@material-ui/core/Slide";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//   return <Slide direction="up" ref={ref} {...props} />;
+// });
 
 function NewForm(props) {
   const dispatch = useDispatch();
@@ -24,8 +24,8 @@ function NewForm(props) {
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [buttonValue, setButtonValue] = useState(null);
-  const verifyDetails = useSelector((state) => state.verify);
-  const [verifyEnabled, setVerifiedEnabled] = useState(false);
+  // const verifyDetails = useSelector((state) => state.verify);
+  // const [verifyEnabled, setVerifiedEnabled] = useState(false);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const productDetails = useSelector((state) => state.someData.detail);
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -63,10 +63,6 @@ function NewForm(props) {
     setSmartCard(newValues);
   };
 
-  // const handleSelect = (name, value) => {
-  //   setSelectDetails(value);
-  // };
-
   const handleSubmit = (value) => {
     setButtonValue(value);
     if (value === "FLUTTERWAVE") {
@@ -75,9 +71,6 @@ function NewForm(props) {
       setDisabledUssd(true);
     }
 
-    // console.log(value);
-
-    // setLoading(true);
     if (productDetails.productname === "Airtime") {
       if (productDetails.billerCode === "airtel") {
         setPaymentMethod(value);
@@ -189,14 +182,12 @@ function NewForm(props) {
       const detail = {
         amount: Amount,
         email: `${smartCard["Email"]}`,
-        // email: user.user.email,
         product: productDetails.productname,
         buttonClick: buttonValue,
         transRef: paymentIntent.detail.transRef,
         customerName: `${smartCard["Phone Number"]}`,
       };
 
-      // console.log(detail);
       dispatch(pay(detail));
       props.dataPay(true, "Airtime");
     }
@@ -207,19 +198,6 @@ function NewForm(props) {
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
-
-  // const packages = JSON.parse(productDetails.detail.productvalue).field3
-  //   .options;
-
-  const fieldsOptions = [];
-  // for (const key in packages) {
-  //   if (packages.hasOwnProperty(key)) {
-  //     var value = packages[key];
-  //     fieldsOptions.push(value);
-  //   }
-  // }
-
-  console.log(item);
 
   return (
     <div>
@@ -269,45 +247,6 @@ function NewForm(props) {
                   ""
                 )
               )}
-              {/* {fieldsArray.map((allFields, i) =>
-
-                allFields.select === true ? (
-                  <div
-                    key={i}
-                    className="d-flex align-item-center justify-content-center pt-3"
-                  >
-                    <TextField
-                      className="inputSize"
-                      required
-                      label={allFields.text}
-                      name={allFields.text}
-                      select
-                      onChange={(e) => handleOthers(e, allFields.text)}
-                      placeholder={`Enter ${allFields.text}`}
-                      value={smartCard[allFields.text]}
-                      variant="outlined"
-                    >
-                      <MenuItem>Select Data Type</MenuItem>
-                      {fieldsOptions.map((option, index) => {
-                        const detail = JSON.parse(option);
-                        return (
-                          <MenuItem
-                            key={index}
-                            value={detail.ItemName}
-                            onClick={(e) =>
-                              handleSelect(allFields.text, detail)
-                            }
-                          >
-                            {detail.ItemName}
-                          </MenuItem>
-                        );
-                      })}
-                    </TextField>
-                  </div>
-                ) : (
-                  ""
-                )
-              )} */}
             </div>
             <div className="ButtonSide">
               <div>

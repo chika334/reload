@@ -260,6 +260,7 @@ div .new4:not(:last-child) {
 
   .navbarMobile {
     width: 400px;
+    /* width: 100% */
   }
 }
 

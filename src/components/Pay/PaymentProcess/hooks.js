@@ -7,7 +7,7 @@ import { paymentButtons } from "../../../_action/Payment/paymentButtons";
 
 const flutterConfig = (pay, paymentAmount) => ({
   public_key: `${process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY}`,
-  tx_ref: Date.now(),
+  tx_ref: pay.transRef,
   amount: paymentAmount,
   currency: "NGN",
   payment_options: "card",
@@ -28,11 +28,8 @@ export const FLUTTERWAVE_KEY = "FLUTTERWAVE";
 export const USSD_KEY = "USSD";
 
 export const usePaymentGateway = (props) => {
-  const history = useHistory();
-  const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const paymentGatewayRef = React.useRef();
-  const error = useSelector((state) => state.error);
   const productDetails = useSelector((state) => state.someData.detail);
   const [paymentType, setPaymentType] = React.useState();
   const [loading, setLoading] = React.useState(false);
@@ -41,7 +38,6 @@ export const usePaymentGateway = (props) => {
   const [ussdResponse, setUssdResponse] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
-  const [queryMessage, setQueryMessage] = React.useState(false);
   const [errorModal, setErrorModal] = React.useState(false);
 
   React.useEffect(() => {
@@ -59,23 +55,20 @@ export const usePaymentGateway = (props) => {
 
   let paymentAmount = Number(paymentIntent.totalAmount).toFixed(2);
 
-  console.log(paymentIntent);
-
   const startPayment = (payType) => {
-    // console.log("something", payType);
     setPaymentType(payType);
     setLoading(true);
   };
 
   const grabUssdResponse = (responseData) => {
-    // setUssdPayload(responseData);
-    // console.log(responseData);
     setUssdResponse(responseData);
   };
 
   const pay = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone.detail : ""
   );
+
+  console.log("hooks", pay);
 
   const dispatch = useDispatch();
 
@@ -93,7 +86,6 @@ export const usePaymentGateway = (props) => {
         ussdResponse.customer_mobile === ""
       ) {
         setLoading(false);
-        // setOpen(true);
         setErrorMessage(true);
       }
 
@@ -154,7 +146,6 @@ export const usePaymentGateway = (props) => {
 
           case USSD_KEY:
             dispatch(paymentButtons("Ussd", true));
-            // history.push("#open-modal");
             setUssdPayload({
               traceId: pay.transRef,
               transactionType: "0",
@@ -171,7 +162,13 @@ export const usePaymentGateway = (props) => {
         }
       }
     } else {
-      if (pay.amount < 50 || pay.amount > 100000) {
+      if (pay.amount < 50) {
+        setLoading(false);
+        setOpen(true);
+        setMessage(
+          "All amount should not be below 50 Naira or above 1000 Naira"
+        );
+      } else if (pay.amount > 100000) {
         setLoading(false);
         setOpen(true);
         setMessage(
@@ -208,7 +205,6 @@ export const usePaymentGateway = (props) => {
 
           case USSD_KEY:
             dispatch(paymentButtons("Ussd", true));
-            // history.push("#open-modal");
             setUssdPayload({
               traceId: pay.transRef,
               transactionType: "0",

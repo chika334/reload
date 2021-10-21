@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from "react";
 import backgroundImage from "../../images/background.jpeg";
-import { Button, Modal } from "@material-ui/core";
-import searchLoading from "../../images/searchLoading.gif";
-import { connect, useSelector, useDispatch } from "react-redux";
-import { withRouter, useHistory } from "react-router-dom";
+import { Modal } from "@material-ui/core";
+// import searchLoading from "../../images/searchLoading.gif";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { hideLoader, showLoader } from "../../_action/loading";
 import { SearchProducts } from "../../_action/searchAction";
 import "../../css/banner.css";
+import Carousel from "react-material-ui-carousel";
+import { someData } from "../../_action/passingData";
+import { makeStyles } from "@material-ui/core/styles";
+// import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+// import GoogleAd from "../../Layout";
 import first from "../../images/1.jpeg";
 import second from "../../images/2.jpeg";
 import third from "../../images/3.jpeg";
 import fourth from "../../images/4.jpeg";
 import fifth from "../../images/5.jpeg";
 import sixth from "../../images/6.jpeg";
-import Carousel from "react-material-ui-carousel";
-import { someData } from "../../_action/passingData";
-import { makeStyles } from "@material-ui/core/styles";
-import GoogleAd from "../../Layout";
+import Index from "../Search";
 
 function getModalStyle() {
   const top = 50;
@@ -42,14 +45,23 @@ const useStyles = makeStyles((theme) => ({
 
 const SearchbarDropdown = (props) => {
   const classes = useStyles();
-  const { options, onInputChange, searchStart } = props;
-  const getProducts = useSelector((state) => state.products);
+  const [bgImgArray] = useState([
+    "1.jpeg",
+    "2.jpeg",
+    "3.jpeg",
+    "4.jpeg",
+    "5.jpeg",
+    "6.jpeg",
+  ]);
+  // const { options, onInputChange, searchStart } = props;
   const [saveData, setSaveData] = useState([]);
   const [modalStyle] = React.useState(getModalStyle);
-  const [imgsLoaded, setImgsLoaded] = useState(false);
+  // const [imgsLoaded, setImgsLoaded] = useState(false);
   const [modal, setModal] = useState(false);
-  const history = useHistory();
-  const dispatch = useDispatch();
+  // const history = useHistory();
+  // const dispatch = useDispatch();
+
+  console.log(saveData);
 
   const inlineStyle = {
     backgroundImage: `url(${backgroundImage})`,
@@ -76,68 +88,6 @@ const SearchbarDropdown = (props) => {
       .catch((err) => console.log(err));
   };
 
-  const handleMove = (details) => {
-    console.log(details);
-    if (
-      // details.otherData.productId.productname === "Smile Data" ||
-      // details.otherData.productId.billerCode === "NTELBundle" ||
-      // details.otherData.productId.billerCode === "9mobiledata1" ||
-      // details.otherData.productId.productname === "Dstv Cable" ||
-      // details.otherData.productId.productname === "Gotv Cable" ||
-      // details.otherData.productId.productname === "Startime Cable" ||
-      details.otherData.productId.productname ===
-        "Ibadan Electricity Prepaid" ||
-      // details.otherData.productId.billerCode === "PHEDDIR2" ||
-      // details.otherData.productId.productname === "Eko Electricity Prepaid" ||
-      details.otherData.productId.productname === "Benin Electricity Prepaid" ||
-      // details.otherData.productId.productname ===
-      //   "Kaduna Electricity Prepaid" ||
-      // details.otherData.productId.productname === "Jos Electricity Prepaid" ||
-      // details.otherData.productId.productname === "Kano Electricity Prepaid" ||
-      details.otherData.productId.productname === "Jamb Exams" ||
-      details.otherData.productId.productname === "Waec Exams Registration"
-    ) {
-      setModal(true);
-    } else {
-      dispatch(showLoader());
-      getProducts.listProducts === null
-        ? ""
-        : getProducts.listProducts.forEach((detail) => {
-            if (
-              details.otherData.productId.productname ===
-              detail.productId.productname
-            ) {
-              setTimeout(() => {
-                dispatch(hideLoader());
-              }, 2000);
-              // let path = `/product-details`;
-              // history.push({
-              //   pathname: path,
-              //   search: `?product=${detail.productId.description}`,
-              //   state: {
-              //     data: detail,
-              //     productName: detail.productId.description,
-              //     productId: details.otherData.productId.id,
-              //     billerCode: detail.billerCode,
-              //   },
-              // });
-              const data = {
-                detail,
-                productname: detail.productId.description,
-                productId: details.otherData.productId.id,
-                billerCode: detail.billerCode,
-              };
-              dispatch(someData(data));
-              let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-              history.push({
-                pathname: path,
-                // search: `product=${detail.productId.description}`,
-              });
-            }
-          });
-    }
-  };
-
   const handleClose = () => {
     setModal(false);
   };
@@ -161,10 +111,7 @@ const SearchbarDropdown = (props) => {
         {body}
       </Modal>
       <div className="banner-area" style={inlineStyle}>
-        <div className="container">
-          {/* <div className="mt-5">
-            <h2>Reload, swift payment. Buy airtime, cable, electricity...</h2>
-          </div> */}
+        <div className="mr-5 container">
           <div className="banner-inner-wrap">
             <div className="row">
               <div className="col-12 mt-3" style={{ color: "#fff" }}>
@@ -177,7 +124,6 @@ const SearchbarDropdown = (props) => {
                   </h5>
                 </div>
               </div>
-              {/* <div className="col-lg-12 col-sm-0"> */}
               <div className="allnewMobile">
                 <div className="banner-search-wrap">
                   <div className="tab-content">
@@ -188,10 +134,39 @@ const SearchbarDropdown = (props) => {
                             <div className="search-bar-dropdown">
                               <Carousel style={{ position: "fixed" }}>
                                 {!saveData || !saveData.length ? (
-                                  <img width="1000" src={first} />
+                                  // <LazyLoadImage
+                                  //   alt="..."
+                                  //   effect="blur"
+                                  //   src={first}
+                                  // />
+                                  <img
+                                      src={first}
+                                      alt="..."
+                                      style={{
+                                        webkitTransition:
+                                          "background-image 5s ease-in-out",
+                                        transition:
+                                          "background-image 5s ease-in-out",
+                                      }}
+                                    />
                                 ) : (
                                   saveData.map((item, i) => (
-                                    <img width="1000" key={i} src={item} />
+                                    <img
+                                      src={item}
+                                      alt="..."
+                                      style={{
+                                        webkitTransition:
+                                          "background-image 5s ease-in-out",
+                                        transition:
+                                          "background-image 5s ease-in-out",
+                                      }}
+                                    />
+                                    // <LazyLoadImage
+                                    //   alt="..."
+                                    //   effect="blur"
+                                    //   key={i}
+                                    //   src={item}
+                                    // />
                                   ))
                                 )}
                               </Carousel>
@@ -202,121 +177,7 @@ const SearchbarDropdown = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="banner-search-wrap">
-                  <div className="tab-content">
-                    <div className="tab-pane fade show active" id="tabs_1">
-                      <div className="rld-main-search mobileBanner">
-                        <div className="row">
-                          <div className="col-xl-12 col-lg-8 col-md-12">
-                            <div className="search-bar-dropdown">
-                              <input
-                                id="search-bar"
-                                type="text"
-                                className="form-control p-2"
-                                placeholder="Search for biller eg Mtn, Dstv…"
-                                onChange={onInputChange}
-                              />
-                              {searchStart === true ? (
-                                <ul
-                                  id="results"
-                                  className="list-group"
-                                  // ref={ulRef}
-                                  style={{ zIndex: 2 }}
-                                >
-                                  {options.length !== 0 ? (
-                                    options.map((option, index) => {
-                                      console.log(option);
-                                      return (
-                                        <div className="">
-                                          {option.productId.billerCode ===
-                                            "9mobiledata1" ||
-                                          option.productId.billerCode ===
-                                            "STARTIMES" ||
-                                          option.productId.billerCode ===
-                                            null ? (
-                                            <button
-                                              type="button"
-                                              key={index}
-                                              onClick={(e) => {
-                                                handleMove({
-                                                  otherData: option,
-                                                });
-                                              }}
-                                              className="list-group-item list-group-item-action"
-                                              disabled
-                                            >
-                                              <img
-                                                width="60"
-                                                src={option.productId.logourl}
-                                                alt="..."
-                                              />
-                                              <span className="ml-5">
-                                                Unavailable
-                                              </span>
-                                            </button>
-                                          ) : (
-                                            <button
-                                              type="button"
-                                              key={index}
-                                              onClick={(e) => {
-                                                handleMove({
-                                                  otherData: option,
-                                                });
-                                              }}
-                                              className="list-group-item list-group-item-action"
-                                            >
-                                              <img
-                                                width="40"
-                                                src={option.productId.logourl}
-                                                alt="..."
-                                              />
-                                              {option.productId.productname}
-                                            </button>
-                                          )}
-                                        </div>
-                                      );
-                                    })
-                                  ) : (
-                                    <div className="list-group-item list-group-item-action text-center">
-                                      No items found.
-                                    </div>
-                                  )}
-                                </ul>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          </div>
-                          {/* <div className="col-xl-3 col-lg-4 col-md-4 readeal-top">
-                              <Button
-                                style={{
-                                  backgroundColor: "#fda94f",
-                                  color: "#000",
-                                  fontSize: "12px",
-                                  padding: "10px",
-                                }}
-                                className="buttonSearch"
-                                // className="btn btn-yellow buttonSearch"
-                                fullWidth
-                                disabled={searchStart}
-                              >
-                                {searchStart === true ? (
-                                  <img
-                                    src={searchLoading}
-                                    width="30"
-                                    alt="search..."
-                                  />
-                                ) : (
-                                  "View"
-                                )}
-                              </Button>
-                            </div> */}
-                        </div>
-                      </div>
-                    </div>
-                    {/* </div> */}
-                  </div>
-                </div>
+                <Index /> {/*  the search banner */}
               </div>
               {/* </div> */}
             </div>
@@ -327,46 +188,8 @@ const SearchbarDropdown = (props) => {
   );
 };
 
-function App() {
-  const seachDetails = useSelector((state) =>
-    state.search.listProducts === null ? "" : state.search.listProducts.product
-  );
-  // const [options, setOptions] = useState(seachDetails);
-  const dispatch = useDispatch();
-  const [searchStart, setSearchStart] = useState(false);
-  const onInputChange = (event) => {
-    if (event.target.value.length === 0) {
-      setSearchStart(false);
-      // setOptions([]);
-    } else if (event.target.value.length >= 3) {
-      setSearchStart(true);
-      const values = {
-        searchValue: event.target.value,
-      };
-      dispatch(SearchProducts(values));
-      // setOptions(
-      //   defaultOptions.filter((option) =>
-      //     option
-      //       .toLocaleLowerCase()
-      //       .includes(event.target.value.toLocaleLowerCase())
-      //   )
-      // );
-    }
-  };
-
-  return (
-    <div>
-      <SearchbarDropdown
-        searchStart={searchStart}
-        options={seachDetails}
-        onInputChange={onInputChange}
-      />
-      {/* <br /> */}
-      {/* <button className="btn btn-primary">Search</button> */}
-    </div>
-  );
-}
-
 export default withRouter(
-  connect(null, { hideLoader, showLoader, SearchProducts, someData })(App)
+  connect(null, { hideLoader, showLoader, SearchProducts, someData })(
+    SearchbarDropdown
+  )
 );

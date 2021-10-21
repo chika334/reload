@@ -36,6 +36,7 @@ function Property(props) {
   const dispatch = useDispatch();
   const [modalStyle] = React.useState(getModalStyle);
   const [modal, setModal] = useState(false);
+  const user = useSelector((state) => state.authUser.token);
   const getProducts = useSelector((state) => state.products);
   // const someData
   const [productData, setProductData] = useState(
@@ -161,7 +162,12 @@ function Property(props) {
     } else if (word === "Loan") {
       // alert("Work in process")
       // history.push("/loan");
-      window.location.href = `/${process.env.REACT_APP_RELOADNG}/loan`;
+      // window.location.href = `/${process.env.REACT_APP_RELOADNG}/loan`;
+      if (user === null) {
+        history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
+      } else {
+        window.location.href = `https://loan-xi.vercel.app/`;
+      }
     }
   };
 
@@ -285,8 +291,9 @@ function Property(props) {
                         </ul>
                         <ul className="contact-list">
                           <li className="readeal-top">
-                            {item.billerCode === "9mobiledata1" ||
-                            item.billerCode === "STARTIMES" ||
+                            {/* {item.billerCode === "9mobiledata1" || */}
+                            {item.billerCode === "STARTIMES" ||
+                            item.billerCode === "IBEDC_F" ||
                             item.billerCode === null ? (
                               <button
                                 style={{
@@ -323,34 +330,14 @@ function Property(props) {
                 <Grid container item xs={12} spacing={3}>
                   {productData !== "" &&
                     productData.map((item, i) => (
-                      // console.log(item)
-                      <div
-                        key={i}
-                        // className={
-                        //   "rld-filter-item  col-lg-3 col-sm-6 " +
-                        //   item.productId.description
-                        // }
-                        className="columns p-3"
-                      >
-                        <div
-                        // style={{ backgroundColor: "red" }}
-                        // className="single-feature"
-                        // className={
-                        //   item.billerCode === "9mobiledata1" ||
-                        //   item.billerCode === "STARTIMES"
-                        //     ? "disabledProducts"
-                        //     : ""
-                        // }
-                        >
-                          {item.billerCode === "9mobiledata1" ||
-                          item.billerCode === "STARTIMES" ||
+                      <div key={i} className="columns p-3">
+                        <div>
+                          {/* {item.billerCode === "9mobiledata1" || */}
+                          {item.billerCode === "STARTIMES" ||
                           item.billerCode === null ? (
-                            // <div className="container">
                             <Button
                               disabled
                               onClick={(e) => handlePay({ otherData: item })}
-                              // style={{ padding: "10px" }}
-                              // className="container"
                             >
                               <div>
                                 <img
@@ -367,10 +354,8 @@ function Property(props) {
                               </div>
                             </Button>
                           ) : (
-                            // </div>
                             <Button
                               onClick={(e) => handlePay({ otherData: item })}
-                              // style={{ padding: "10px" }}
                             >
                               <img
                                 src={item.productId.logourl}
@@ -380,41 +365,10 @@ function Property(props) {
                             </Button>
                           )}
                         </div>
-                        {/* <div className="single-feature">
-                      <div className="details">
-                        <h6 className="title readeal-top">
-                          <Button
-                            disabled
-                            style={{ color: "#fda94f" }}
-                            to={item.url}
-                          >
-                            {item.productId.productname}
-                          </Button>
-                        </h6>
-
-                        <ul className="info-list">
-                          <li></li>
-                        </ul>
-                        <ul className="contact-list">
-                          <li className="readeal-top">
-                            <Button
-                              onClick={(e) => handlePay({ otherData: item })}
-                              style={{
-                                backgroundColor: "#fda94f",
-                                color: "#000",
-                              }}
-                            >
-                              Buy
-                            </Button>
-                          </li>
-                        </ul>
-                      </div> */}
-                        {/* </div> */}
                       </div>
                     ))}
                 </Grid>
               </div>
-              {/* <div className="gallery-sizer col-1" /> */}
             </div>
           </div>
         </div>

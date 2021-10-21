@@ -11,6 +11,8 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { showLoader, hideLoader } from "../../_action/loading";
 import { makeStyles } from "@material-ui/core/styles";
 import { someData } from "../../_action/passingData";
+// import AdSense from "react-adsense";
+import Layout from "../../Layout";
 
 function getModalStyle() {
   const top = 50;
@@ -97,10 +99,10 @@ function Service(props) {
         // details.otherData.billerCode === "JOS_PREPAID"
         // ||
         // details.otherData.billerCode === "9mobiledata1" ||
-        details.otherData.productId.productname ===
-          "Ibadan Electricity Prepaid" ||
+        // details.otherData.productId.productname ===
+        //   "Ibadan Electricity Prepaid" ||
         // details.otherData.productId.billerCode === "PHEDDIR2" ||
-        // details.otherData.billerCode === "SMILE" ||
+        details.otherData.billerCode === "SMILE" ||
         details.otherData.productId.productname === "Jamb Exams" ||
         details.otherData.productId.productname === "Waec Exams Registration" ||
         details.otherData.productId.productname === "Benin Electricity Prepaid"
@@ -170,6 +172,7 @@ function Service(props) {
       >
         {body}
       </Modal>
+      {/* <Layout /> */}
       <div className="container">
         <Slider
           {...marketingTestimonials1}
@@ -207,8 +210,9 @@ function Service(props) {
                                 {listData.productId.productname}
                               </h5>
                               <hr />
-                              {listData.billerCode === "9mobiledata1" ||
-                              listData.billerCode === "STARTIMES" ||
+                              {/* {listData.billerCode === "9mobiledata1" || */}
+                              {listData.billerCode === "STARTIMES" ||
+                              listData.billerCode === "IBEDC_F" ||
                               listData.billerCode === null ? (
                                 <Button
                                   className="readmore-btn"

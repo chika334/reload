@@ -28,14 +28,6 @@ function Receipt(props) {
     state.paymentIntent.success === true ? state.paymentIntent.detail : ""
   );
 
-  // console.log(paymentIntentStatus);
-  // const Conveniencefee =
-  //   productDetails.detail.productId.productcategoryId.categoryname ===
-  //   "Electricity"
-  //     ? paymentIntent.fee
-  //     : paymentIntent.fee;
-  // const total = JSON.parse(pay.amount) + Conveniencefee;
-
   useEffect(() => {
     block();
   }, [!paymentIntentStatus.status]);
@@ -53,14 +45,6 @@ function Receipt(props) {
         ? splitString.extra.split(" |")[0]
         : `Customer Name: ${verify.result.account.accountName}`
       : "";
-
-  const tokenSplit =
-    productDetails.detail.productId.productcategoryId.categoryname ===
-    "Electricity"
-      ? finalPaymentSuccess.result.productResult.split(" | ")
-      : "";
-
-  // console.log(tokenSplit[1]);
 
   const block = () => {
     window.onbeforeunload = function () {
@@ -81,8 +65,6 @@ function Receipt(props) {
   const handleBack = () => {
     window.location.href = `/${process.env.REACT_APP_RELOADNG}/products`;
   };
-
-  console.log(paymentIntent);
 
   return (
     <div className="property-area pd-top-100">

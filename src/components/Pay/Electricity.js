@@ -793,6 +793,7 @@ import JosPrepaid from "./Electric/JosPrepaid";
 import KadunaPrepaid from "./Electric/KadunaPrepaid";
 import KanoPrepaid from "./Electric/KanoPrepaid";
 import AbujaPrepaid from "./Electric/AbujaPrepaid";
+import Ibadan from "./Electric/Ibadan";
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -832,31 +833,20 @@ const BootstrapInput = withStyles((theme) => ({
 function Electricity(props) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  // let history = useHistory();
-  // const [email, setEmail] = useState("");
-  // const user = useSelector((state) =>
-  //   state.authUser.user === null ? "" : state.authUser.user
-  // );
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [buttonValue, setButtonValue] = useState(null);
   const [valueData, setValueData] = useState(null);
   const error = useSelector((state) => state.error);
   const [errors, setErrors] = useState("");
-  // const [failure, setFailure] = useState("");
-  // const [otherValues, setOtherValues] = useState("");
-  // const [amount, setAmount] = useState("");
   const [smartCard, setSmartCard] = useState("");
-  // const [open, setOpen] = React.useState(false);
-  // const [selectDetails, setSelectDetails] = useState(null);
   const verifiedUser = useSelector((state) => state.verify);
-  // const paymentButton = useSelector((state) => state.paymentButton);
   const productDetails = useSelector((state) => state.someData.detail);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const [meterType, setMeterType] = useState("");
   const [failure, setFailure] = useState("");
- 
+
   const handleSelectMeterType = (event) => {
     setMeterType(event.target.value);
   };
@@ -1023,6 +1013,8 @@ function Electricity(props) {
     setIntentData(data);
   };
 
+  console.log(productDetails.billerCode);
+
   return (
     <div className="property-details-area">
       {loading ? (
@@ -1077,7 +1069,8 @@ function Electricity(props) {
                           <em>Select Meter Type</em>
                         </MenuItem>
                         <MenuItem value="PREPAID">PREPAID</MenuItem>
-                        {productDetails.billerCode === "PHEDDIR2" ? (
+                        {productDetails.billerCode === "PHEDDIR2" ||
+                        productDetails.billerCode === "IBEDC_F" ? (
                           <MenuItem value="POSTPAID">POSTPAID</MenuItem>
                         ) : (
                           ""
@@ -1189,7 +1182,7 @@ function Electricity(props) {
             {verifiedUser.verifySuccess === true && meterType === "POSTPAID" ? (
               <>
                 {productDetails.billerCode === "PHEDDIR2" ? (
-                  <PhedprePaid
+                  <PhedpostPaid
                     meterType={meterType}
                     getData={getData}
                     handleSubmit={handleSubmit}
@@ -1203,6 +1196,24 @@ function Electricity(props) {
             ) : (
               ""
             )}
+            {verifiedUser.verifySuccess === true ? (
+              <>
+                {productDetails.billerCode === "IBEDC_F" ? (
+                  <Ibadan
+                    meterType={meterType}
+                    getData={getData}
+                    handleSubmit={handleSubmit}
+                    disabledCard={props.disabledCard}
+                    disabledUssd={props.disabledUssd}
+                  />
+                ) : (
+                  ""
+                )}
+              </>
+            ) : (
+              ""
+            )}
+
             {/* {verifiedUser.verifySuccess === true && meterType === "POSTPAID" && (
               <>
                 {productDetails.billerCode === "iedc" ? (

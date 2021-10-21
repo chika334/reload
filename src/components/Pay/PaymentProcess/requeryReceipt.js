@@ -162,7 +162,7 @@ function Receipt(props) {
                 <tr className="total">
                   <td></td>
                   {/* <td>{customerSplit}</td> */}
-                  <td>good</td>
+                  <td></td>
                 </tr>
                 <tr className="total">
                   <td></td>
@@ -202,7 +202,7 @@ function Receipt(props) {
             </tr> */}
 
             <tr className="item">
-              <td>Response value</td>
+              <td>Requery Success value</td>
 
               <td>
                 {requeryData.details.result ? requeryData.details.result.productResult : ""}

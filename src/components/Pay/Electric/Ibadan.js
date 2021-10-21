@@ -61,7 +61,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function PhedPrepaid(props) {
+function IkejaPrepaid(props) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   let history = useHistory();
@@ -121,6 +121,71 @@ function PhedPrepaid(props) {
     }
   }, [error.error === true]);
 
+  // console.log(buttonValue);
+
+  const verifyMeterNumber = async () => {
+    if (productDetails.billerCode === "KANO_PREPAID") {
+      const details = {
+        product: productDetails.productId,
+        billerCode: productDetails.billerCode,
+        accountNumber: smartCard,
+        extras: {
+          customerAccountType: meterType === "PREPAID" ? "KANO_PREPAID" : "",
+          field1: null,
+          field2: meterType === "PREPAID" ? "KANO_PREPAID" : "",
+          field3: null,
+        },
+      };
+
+      props.verifySmartcardNumber(details);
+    }
+    if (productDetails.billerCode === "JOS_PREPAID") {
+      const details = {
+        product: productDetails.productId,
+        billerCode: productDetails.billerCode,
+        accountNumber: smartCard,
+        extras: {
+          customerAccountType: meterType === "PREPAID" ? "Jos_Disco" : "",
+          field1: "1111111111",
+          field2: "v.law149@gmail.com",
+          field3: "2000",
+        },
+      };
+
+      props.verifySmartcardNumber(details);
+    } else if (productDetails.billerCode === "KADUNA_PREPAID") {
+      const details = {
+        product: productDetails.productId,
+        billerCode: productDetails.billerCode,
+        accountNumber: smartCard,
+        extras: {
+          customerAccountType:
+            meterType === "PREPAID" ? "Kaduna_Electricity_Disco" : "",
+          field1: "1111111111",
+          field2: "v.law149@gmail.com",
+          field3: "2000",
+        },
+      };
+
+      props.verifySmartcardNumber(details);
+    } else {
+      const details = {
+        product: productDetails.productId,
+        accountNumber: smartCard,
+        extras: {
+          field1: null,
+          billerCode: productDetails.billerCode,
+          field2: meterType,
+          field3: "",
+          field4: "",
+          customerAccountType: null,
+        },
+      };
+
+      props.verifySmartcardNumber(details);
+    }
+  };
+
   const handleSubmit = (value) => {
     const newValuesObj = {
       amount: `${amount}`,
@@ -132,18 +197,15 @@ function PhedPrepaid(props) {
       productId: `${productDetails.productId}`,
       referenceValues: {
         "Email Address": otherValues["Email Address"],
-        "Meter or Account Number": `${verifiedUser.result.account.accountNumber}`,
-        "Ref ID": `${verifiedUser.result.account.accountName}`,
-        "Meter Type": props.meterType,
+        "Account Name": `${amount}`,
+        "METER NUMBER": `${verifiedUser.result.account.accountNumber}`,
         "Phone Number": otherValues["Phone Number"],
-        "Customer Details": JSON.parse(verifiedUser.result.account.extras)
-          .extra,
+        "Customer Details": `${verifiedUser.result.account.accountName}`,
       },
       references: [
         "Email Address",
-        "Meter or Account Number",
-        "Ref ID",
-        "Meter Type",
+        "Account Name",
+        "METER NUMBER",
         "Phone Number",
         "Customer Details",
       ],
@@ -171,17 +233,13 @@ function PhedPrepaid(props) {
     setAmount(e.target.value);
   };
 
-  const handleSelect = (name, value) => {
-    setSelectDetails(value);
-  };
-
   const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
 
-  // const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
+  const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
 
   const Options =
     JSON.parse(productDetails.detail.productvalue).field6 === undefined
@@ -198,7 +256,7 @@ function PhedPrepaid(props) {
 
   return (
     <div className="property-details-area">
-      {/* {loading ? (
+      {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
             <div className="spinner">
@@ -213,104 +271,99 @@ function PhedPrepaid(props) {
             {errors && <Alert severity="error">{errors}</Alert>}
           </div>
         </div>
-      )} */}
+      )}
       <div>
         <div className="d-flex align-item-center justify-content-center">
           {failure && <Alert severity="error">{failure}</Alert>}
         </div>
-        {/* {verifyUserdetails.onclick === true &&
+        {verifyUserdetails.onclick === true &&
         verifyUserdetails.name === "Electricity"
-          ? */}
-        {fieldsArray.slice(1).map((allData, i) =>
-          allData.select === false &&
-          allData.text !== "Amount" &&
-          allData.text !== "Meter Type" ? (
-            // allData.text === "Email Address" ? (
-            //   ""
-            // ) : (
-            <div key={i}>
-              <div className="d-flex align-item-center justify-content-center pt-3">
-                <TextField
-                  required
-                  // style={{ width: "50%" }}
-                  className="inputSize"
-                  label={allData.text}
-                  name={allData.text}
-                  onChange={(e) => handleFieldChange(e, allData.text)}
-                  placeholder={`Enter ${allData.text}`}
-                  type={
-                    allData.text === "Email Address"
-                      ? "email"
-                      : allData.text === "Customer Name"
-                      ? "text"
-                      : allData.text === "Customer Number"
-                      ? "number"
-                      : allData.text === "Account description"
-                      ? "number"
-                      : allData.text === "Account Name"
-                      ? "text"
-                      : allData.text === "Phone number"
-                      ? "number"
-                      : allData.text === "Invoice Number"
-                      ? "number"
-                      : ""
-                  }
-                  variant="outlined"
-                  value={
-                    allData.text === "Customer Name"
-                      ? verifiedUser.result.account.accountName
-                      : allData.text === "Customer Number"
-                      ? verifiedUser.result.account.accountNumber
-                      : allData.text === "Email Address"
-                      ? otherValues["Email Address"]
-                      : allData.text === "Account description"
-                      ? verifiedUser.result.account.accountNumber
-                      : allData.text === "Account Name"
-                      ? verifiedUser.result.account.accountName
-                      : allData.text === "Customer Details"
-                      ? verifiedUser.result.account.accountNumber
-                      : allData.text === "Ref ID"
-                      ? verifiedUser.result.account.accountNumber
-                      : allData.text === "Phone Number"
-                      ? otherValues["Phone Number"]
-                      : allData.text === "Invoice Number"
-                      ? verifiedUser.result.account.accountNumber
-                      : ""
-                  }
-                />
-              </div>
-            </div>
-          ) : (
-            ""
-          )
-        )}
-        {/* {verifyUserdetails.onclick === true &&
+          ? fieldsArray.slice(1).map((allData, i) =>
+              allData.select === false &&
+              allData.text !== "Amount" &&
+              allData.text !== "Meter Type" ? (
+                <div key={i}>
+                  <div className="d-flex align-item-center justify-content-center pt-3">
+                    <TextField
+                      required
+                      // style={{ width: "50%" }}
+                      className="inputSize"
+                      label={allData.text}
+                      name={allData.text}
+                      onChange={(e) => handleFieldChange(e, allData.text)}
+                      placeholder={`Enter ${allData.text}`}
+                      type={
+                        allData.text === "Email Address"
+                          ? "email"
+                          : allData.text === "Customer Name"
+                          ? "text"
+                          : allData.text === "Customer Number"
+                          ? "number"
+                          : allData.text === "Account description"
+                          ? "number"
+                          : allData.text === "Account Name"
+                          ? "text"
+                          : allData.text === "Phone number"
+                          ? "number"
+                          : allData.text === "Invoice Number"
+                          ? "number"
+                          : ""
+                      }
+                      variant="outlined"
+                      value={
+                        allData.text === "Customer Name"
+                          ? verifiedUser.result.account.accountName
+                          : allData.text === "Customer Number"
+                          ? verifiedUser.result.account.accountNumber
+                          : allData.text === "Email Address"
+                          ? otherValues["Email Address"]
+                          : allData.text === "Account description"
+                          ? verifiedUser.result.account.accountNumber
+                          : allData.text === "Account Name"
+                          ? verifiedUser.result.account.accountName
+                          : allData.text === "Customer Details"
+                          ? verifiedUser.result.account.accountNumber
+                          : allData.text === "Ref ID"
+                          ? verifiedUser.result.account.accountName
+                          : allData.text === "Phone Number"
+                          ? otherValues["Phone Number"]
+                          : allData.text === "Invoice Number"
+                          ? verifiedUser.result.account.accountNumber
+                          : ""
+                      }
+                    />
+                  </div>
+                </div>
+              ) : (
+                ""
+              )
+            )
+          : ""}
+        {verifyUserdetails.onclick === true &&
         verifyUserdetails.name === "Electricity"
-          ?  */}
-        {fieldsArray.slice(1).map((allData, i) =>
-          allData.select === false && allData.text === "Amount" ? (
-            <div key={i}>
-              <div className="d-flex align-item-center justify-content-center pt-3">
-                <TextField
-                  required
-                  // style={{ width: "50%" }}
-                  className="inputSize"
-                  label={allData.text}
-                  name={allData.text}
-                  onChange={handleAmount}
-                  placeholder={`Enter ${allData.text}`}
-                  type="number"
-                  helperText="Amount should be 1000 and above"
-                  variant="outlined"
-                  value={amount}
-                />
-              </div>
-            </div>
-          ) : (
-            ""
-          )
-        )}
-        {/* // : ""} */}
+          ? fieldsArray.slice(1).map((allData, i) =>
+              allData.select === false && allData.text === "Amount" ? (
+                <div key={i}>
+                  <div className="d-flex align-item-center justify-content-center pt-3">
+                    <TextField
+                      required
+                      className="inputSize"
+                      label={allData.text}
+                      name={allData.text}
+                      onChange={handleAmount}
+                      helperText="Amount should be 1000 and above"
+                      placeholder={`Enter ${allData.text}`}
+                      type="number"
+                      variant="outlined"
+                      value={amount}
+                    />
+                  </div>
+                </div>
+              ) : (
+                ""
+              )
+            )
+          : ""}
         <div>
           {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Electricity" ? (
@@ -321,8 +374,6 @@ function PhedPrepaid(props) {
                     onClick={(e) => {
                       e.preventDefault();
                       window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                      // state: productDetails.productname,
-                      // });
                     }}
                   >
                     Go Back
@@ -331,7 +382,6 @@ function PhedPrepaid(props) {
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      // console.log(payment);
                       handleSubmit(FLUTTERWAVE_KEY);
                     }}
                     value={FLUTTERWAVE_KEY}
@@ -356,8 +406,6 @@ function PhedPrepaid(props) {
                     onClick={(e) => {
                       e.preventDefault();
                       window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                      // state: productDetails.productname,
-                      // });
                     }}
                   >
                     Go Back
@@ -366,12 +414,9 @@ function PhedPrepaid(props) {
                   <div>
                     <Button
                       onClick={(e) => {
-                        // e.preventDefault();
                         handleSubmit(USSD_KEY);
                       }}
-                      // className="btn"
                       value={USSD_KEY}
-                      // href="#open-modal"
                       style={{
                         backgroundColor: "#fda94f",
                         cursor:
@@ -409,5 +454,5 @@ export default withRouter(
     clearErrors,
     hideLoader,
     finalPayment,
-  })(PhedPrepaid)
+  })(IkejaPrepaid)
 );

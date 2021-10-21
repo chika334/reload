@@ -13,9 +13,10 @@ import { interswitchToken } from "./_action/Loan/token";
 import { interswitchProvider } from "./_action/Loan/providers";
 import { Offline, Online } from "react-detect-offline";
 import NoInternet from "./components/section-components/NoInternet";
+import Layout from "./Layout";
 // import Layout from "./components/CoralUssd/layout/layoout";
 
-import GoogleAd from './Layout'
+// import GoogleAd from "./Layout";
 
 class App extends Component {
   componentDidMount() {
@@ -33,7 +34,6 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        {/* <Layout /> */}
         <Router>
           {/* // checks if user has internet connection */}
           {/* {navigator.onLine ? <Routes /> : <NoInternet />} */}
@@ -45,6 +45,7 @@ class App extends Component {
             <NoInternet />
           </Offline> */}
         </Router>
+        <Layout />
         {/* <GoogleAd /> */}
       </Provider>
     );

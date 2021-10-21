@@ -6,7 +6,7 @@ import {
   verifySmartcardNumber,
   clearVerified,
 } from "../../../_action/verifyNumber";
-import { MenuItem, TextField, Button } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../../_action/Payment/index";
 import Alert from "@material-ui/lab/Alert";
@@ -14,19 +14,16 @@ import { pay } from "../../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../../_action/errorAction";
 import { verify } from "../../../_action/verify";
 import "../../../css/input.css";
-import Slide from "@material-ui/core/Slide";
-import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
+import Button from "../../../components/Button";
 
 function Dstv(props) {
   const dispatch = useDispatch();
-  // const user = useSelector((state) => state.authUser);
   const user = useSelector((state) =>
     state.authUser.user === null ? "" : state.authUser.user
   );
   const error = useSelector((state) => state.error);
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
-  // const paymentButton = useSelector((state) => state.paymentButton);
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [buttonValue, setButtonValue] = useState(null);
@@ -37,9 +34,9 @@ function Dstv(props) {
   const [selectDetails, setSelectDetails] = useState(null);
   const [email, setEmail] = useState("");
   const productDetails = useSelector((state) => state.someData.detail);
-  const paymentIntent = useSelector((state) => state.paymentIntent);
+  // const paymentIntent = useSelector((state) => state.paymentIntent);
   const [verifiedAccount, setVerifiedAccount] = useState(null);
-  const [verifiedProducts, setVerifiedProducts] = useState(null);
+  const [setVerifiedProducts] = useState(null);
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -65,13 +62,8 @@ function Dstv(props) {
     }
   }, [error.error === true]);
 
-  const handleSubmit = (value) => {
-    setButtonValue(value);
-    if (value === "FLUTTERWAVE") {
-      setDisabledCard(true);
-    } else if (value === "USSD") {
-      setDisabledUssd(true);
-    }
+  const handleSubmit = () => {
+    // setButtonValue(value);
 
     const newValuesObj = {
       // amount: selectDetails.productAmount,
@@ -104,119 +96,7 @@ function Dstv(props) {
     console.log("value", newValuesObj);
 
     props.handleSubmit(value, newValuesObj);
-    // if()
-    // if (selectDetails !== null) {
-    // setLoading(true);
-    // if (productDetails.billerCode === "STARTIMES") {
-    //   const newValuesObj = {
-    //     amount: `${selectDetails.Amount}`,
-    //     channelRef: "web",
-    //     description: "Cable",
-    //     // paymentMethod: "billpayflutter",
-    //     paymentMethod:
-    //       value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-    //     productId: `${productDetails.productId}`,
-    //     referenceValues: {
-    //       "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-    //       "Email Address": `${email}`,
-    //       "Select Package":
-    //         selectDetails === null ? "" : selectDetails.productName,
-    //     },
-    //     references: ["Email Address", "Select Package ", "SmartCard Number"],
-    //   };
-
-    //   props.PaymentIntent(newValuesObj);
-    //   // props.pay(true, "Cable");
-    //   // props.verify("Cable", true);
-    // } else if (productDetails.billerCode === "DSTV") {
-    //   const newValuesObj = {
-    //     amount: selectDetails.productAmount,
-    //     channelRef: "web",
-    //     description: "Cable",
-    //     // paymentMethod: "billpayflutter",
-    //     paymentMethod:
-    //       value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-    //     productId: `${productDetails.productId}`,
-    //     referenceValues: {
-    //       "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-    //       "Email Address": `${email}`,
-    //       "Select Package (Amount)":
-    //         selectDetails === null ? "" : selectDetails.productName,
-    //     },
-    //     references: [
-    //       "SmartCard Number",
-    //       "Email Address",
-    //       "Select Package (Amount)",
-    //     ],
-    //   };
-
-    //   props.PaymentIntent(newValuesObj);
-    // } else if (productDetails.billerCode === "GOTV") {
-    //   const newValuesObj = {
-    //     amount: `${selectDetails.productAmount}`,
-    //     // amount: "100",
-    //     channelRef: "web",
-    //     description: "Cable",
-    //     // paymentMethod: "billpayflutter",
-    //     paymentMethod:
-    //       value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-    //     productId: `${productDetails.productId}`,
-    //     referenceValues: {
-    //       "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-    //       "Email Address": `${email}`,
-    //       "Select Package (Amount)":
-    //         selectDetails === null ? "" : selectDetails.productName,
-    //     },
-    //     references: [
-    //       "Email",
-    //       "Select Package (Amount)",
-    //       "Number of Months",
-    //       "SmartCard Number",
-    //     ],
-    //   };
-    //   // props.pay(true, "Cable");
-    //   props.PaymentIntent(newValuesObj);
-    //   // props.verify("Cable", true);
-    // }
-    // // handlePaymentProcess();
-    // // } else {
-    // //   if (!localStorage.token) {
-    // //     // setLoading(false);
-    // //     // // const path = `${props.location.pathname}${props.location.search}`;
-    // //     // // props.loginRediectSuccess(path, props.location.state.data);
-    // //     // // props.history.push("/registration");
-    // //     // setOpen(true);
-    // //   }
-    // // }
   };
-
-  // useEffect(() => {
-  //   if (paymentIntent.success === true) {
-  //     // pro
-  //     setLoading(false);
-  //     let amount = selectDetails === null ? "" : selectDetails.productAmount;
-  //     const detail = {
-  //       amount: amount,
-  //       email: email,
-  //       product: productDetails.productname,
-  //       accountNumber:
-  //         verifiedUser.result === null
-  //           ? ""
-  //           : verifiedUser.result.account.accountNumber,
-  //       buttonClick: buttonValue,
-  //       transRef: paymentIntent.detail.transRef,
-  //       customerName:
-  //         verifiedUser.result === null
-  //           ? ""
-  //           : verifiedUser.result.account.accountName,
-  //     };
-
-  //     // console.log(detail);
-  //     dispatch(pay(detail));
-  //     props.dataPay(true, "Cable");
-  //     // props.onpaymentProcess(buttonValue);
-  //   }
-  // }, [paymentIntent.success]);
 
   const handleFieldChange = (e) => {
     setEmail(e.target.value);
@@ -231,50 +111,40 @@ function Dstv(props) {
     setSelectDetails(data);
   };
 
-  const handleSmartCard = (e) => {
-    setSmartCard(e.target.value);
-  };
+  // const handleSmartCard = (e) => {
+  //   setSmartCard(e.target.value);
+  // };
 
-  const verifyMeterNumber = async () => {
-    // const details = {
-    //   product: productDetails.productId,
-    //   accountNumber: smartCard,
+  // const verifyMeterNumber = async () => {
+  //   const details = {
+  //     product: productDetails.productId,
+  //     billerCode: productDetails.billerCode,
+  //     accountNumber: smartCard,
+  //     extras: {
+  //       customerAccountType:
+  //         selectDetails === null ? "" : selectDetails.ItemType,
+  //       field1: "1",
+  //       field2: null,
+  //       field3: null,
+  //     },
+  //   };
 
-    // };
+  //   const valueData = JSON.stringify(details);
 
-    const details = {
-      product: productDetails.productId,
-      billerCode: productDetails.billerCode,
-      accountNumber: smartCard,
-      extras: {
-        customerAccountType:
-          selectDetails === null ? "" : selectDetails.ItemType,
-        field1: "1",
-        field2: null,
-        field3: null,
-      },
-    };
+  //   props.verifySmartcardNumber(valueData);
+  // };
 
-    const valueData = JSON.stringify(details);
-
-    // console.log("working", valueData);
-
-    props.verifySmartcardNumber(valueData);
-  };
-
-  const SmartNumber = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    let result = verifyMeterNumber();
-  };
+  // const SmartNumber = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   let result = verifyMeterNumber();
+  // };
 
   const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
-
-  // console.log(fieldsArray);
 
   const Options = JSON.parse(productDetails.detail.productvalue).field3.options;
 
@@ -315,46 +185,6 @@ function Dstv(props) {
             <div className="d-flex align-item-center justify-content-center">
               {errors && <Alert severity="error">{errors}</Alert>}
             </div>
-            {/* <div>
-              {verifyUserdetails.onclick === false &&
-              verifyUserdetails.name === "" ? (
-                verifyNumber.text === "SmartCard Number" ? (
-                  <>
-                    <div className="d-flex align-item-center justify-content-center">
-                      <TextField
-                        required
-                        className="inputSize"
-                        label={verifyNumber.text}
-                        name="smartCard"
-                        onChange={handleSmartCard}
-                        placeholder={`Enter ${verifyNumber.text}`}
-                        type="number"
-                        variant="outlined"
-                        value={smartCard}
-                      />
-                    </div>
-                    <div className="d-flex align-item-center justify-content-center">
-                      <Button
-                        onClick={SmartNumber}
-                        type="button"
-                        style={{
-                          backgroundColor: "#fda94f",
-                          color: "#000",
-                          fontSize: "12px",
-                          padding: "11px",
-                        }}
-                      >
-                        Verify
-                      </Button>
-                    </div>
-                  </>
-                ) : (
-                  ""
-                )
-              ) : (
-                ""
-              )}
-            </div> */}
           </div>
           <div>
             {verifyUserdetails.onclick === true &&
@@ -413,7 +243,6 @@ function Dstv(props) {
                       >
                         <TextField
                           required
-                          // style={{ width: "50%" }}
                           className="inputSize"
                           label={allFields.text}
                           name={allFields.text}
@@ -448,12 +277,6 @@ function Dstv(props) {
                         className="inputSize"
                         label={allFields.text}
                         name={allFields.text}
-                        // onChange={handleFieldChange}
-                        // value={
-                        //   selectDetails === null
-                        //     ? ""
-                        //     : selectDetails.productAmount
-                        // }
                         value={props.amount}
                         placeholder={`Enter ${allFields.text}`}
                         type="number"
@@ -471,7 +294,7 @@ function Dstv(props) {
                   )
                 )
               : ""}
-            {verifyUserdetails.onclick === true &&
+            {/* {verifyUserdetails.onclick === true &&
             verifyUserdetails.name === "Cable" ? (
               <div className="ButtonSide">
                 <div>
@@ -480,8 +303,6 @@ function Dstv(props) {
                       onClick={(e) => {
                         e.preventDefault();
                         window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                        // state: productDetails.productname,
-                        // });
                       }}
                     >
                       Go Back
@@ -490,7 +311,6 @@ function Dstv(props) {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        // console.log(payment);
                         handleSubmit(FLUTTERWAVE_KEY);
                       }}
                       type="submit"
@@ -548,7 +368,12 @@ function Dstv(props) {
               </div>
             ) : (
               ""
-            )}
+            )} */}
+            <Button
+              handleSubmit={handleSubmit()}
+              disabledUssd={props.disabledUssd}
+              disabledCard={props.disabledCard}
+            />
           </div>
         </>
       )}

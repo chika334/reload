@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from "../../images/logo.png";
 import { useSelector } from "react-redux";
 import { Button, Popover, Collapse } from "@material-ui/core";
@@ -7,7 +7,7 @@ import { Button, Popover, Collapse } from "@material-ui/core";
 import { withRouter, useHistory, Redirect } from "react-router-dom";
 import { RiAccountPinCircleLine } from "react-icons/ri";
 import { makeStyles } from "@material-ui/core/styles";
-import NativeSelect from "@material-ui/core/NativeSelect";
+// import NativeSelect from "@material-ui/core/NativeSelect";
 import { logout } from "../../_action/userAction";
 import { connect } from "react-redux";
 import { showLoader, hideLoader } from "../../_action/loading";
@@ -69,8 +69,6 @@ function Navbar(props) {
     }
   };
 
-  console.log(collapse);
-
   return (
     <div>
       <div className="navbar-area">
@@ -90,9 +88,9 @@ function Navbar(props) {
               </button>
             </div>
             <div className="logo readeal-top">
-              <Link to={`/${process.env.REACT_APP_RELOADNG}`}>
+              <NavLink to={`/${process.env.REACT_APP_RELOADNG}`}>
                 <img src={logo} width="120px" alt="logo" />
-              </Link>
+              </NavLink>
             </div>
             <div className="nav-right-part nav-right-part-mobile">
               {user.isAuthenticated === true ? (
@@ -164,36 +162,38 @@ function Navbar(props) {
               {/* <div className="header-nav-menu d-none navbar-collapse"> */}
               <ul className="navbar-nav menu-open readeal-top">
                 <li className="current-menu-item">
-                  <Link to={`/${process.env.REACT_APP_RELOADNG}`}>Home</Link>
+                  <NavLink to={`/${process.env.REACT_APP_RELOADNG}`}>
+                    Home
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to={`/${process.env.REACT_APP_RELOADNG}/about`}>
+                  <NavLink to={`/${process.env.REACT_APP_RELOADNG}/about`}>
                     About
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to={`/${process.env.REACT_APP_RELOADNG}/products`}>
+                  <NavLink to={`/${process.env.REACT_APP_RELOADNG}/products`}>
                     Our Products
-                  </Link>
+                  </NavLink>
                 </li>
                 {user.isAuthenticated === true ? (
                   <li>
-                    <Link
-                      to={`/${process.env.REACT_APP_RELOADNG}/admin`}
-                    >
+                    <NavLink to={`/${process.env.REACT_APP_RELOADNG}/admin`}>
                       Admin
-                    </Link>
+                    </NavLink>
                   </li>
                 ) : (
                   ""
                 )}
                 <li>
-                  <Link to={`/${process.env.REACT_APP_RELOADNG}/contact`}>
+                  <NavLink to={`/${process.env.REACT_APP_RELOADNG}/contact`}>
                     Contact Us
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to={`/${process.env.REACT_APP_RELOADNG}/faq`}>FAQ</Link>
+                  <NavLink to={`/${process.env.REACT_APP_RELOADNG}/faq`}>
+                    FAQ
+                  </NavLink>
                 </li>
               </ul>
 
@@ -283,7 +283,7 @@ function Navbar(props) {
                 </Button>
               )}
             </div>
-            <div className="d-lg-none navbarMobile">
+            <div className="d-lg-none navbarMobile" style={{ width: "100%" }}>
               <div className="navbar-collapse">
                 <Collapse in={collapse}>
                   {/* <div className="header-nav-menu"> */}
@@ -292,38 +292,42 @@ function Navbar(props) {
                       onClick={(e) => closeMobileMenu(e)}
                       className="current-menu-item"
                     >
-                      <Link to="/">Home</Link>
+                      <NavLink to="/">Home</NavLink>
                     </li>
                     <li onClick={(e) => closeMobileMenu(e)}>
-                      <Link to={`/${process.env.REACT_APP_RELOADNG}/about`}>
+                      <NavLink to={`/${process.env.REACT_APP_RELOADNG}/about`}>
                         About
-                      </Link>
+                      </NavLink>
                     </li>
                     <li onClick={(e) => closeMobileMenu(e)}>
-                      <Link to={`/${process.env.REACT_APP_RELOADNG}/products`}>
+                      <NavLink
+                        to={`/${process.env.REACT_APP_RELOADNG}/products`}
+                      >
                         Our Products
-                      </Link>
+                      </NavLink>
                     </li>
                     {user.isAuthenticated === true ? (
                       <li onClick={(e) => closeMobileMenu(e)}>
-                        <Link
+                        <NavLink
                           to={`/${process.env.REACT_APP_RELOADNG}/transactions`}
                         >
                           Transactions
-                        </Link>
+                        </NavLink>
                       </li>
                     ) : (
                       ""
                     )}
                     <li onClick={(e) => closeMobileMenu(e)}>
-                      <Link to={`/${process.env.REACT_APP_RELOADNG}/contact`}>
+                      <NavLink
+                        to={`/${process.env.REACT_APP_RELOADNG}/contact`}
+                      >
                         Contact Us
-                      </Link>
+                      </NavLink>
                     </li>
                     <li onClick={(e) => closeMobileMenu(e)}>
-                      <Link to={`/${process.env.REACT_APP_RELOADNG}/faq`}>
+                      <NavLink to={`/${process.env.REACT_APP_RELOADNG}/faq`}>
                         FAQ
-                      </Link>
+                      </NavLink>
                     </li>
                   </ul>
                   {/* </div> */}

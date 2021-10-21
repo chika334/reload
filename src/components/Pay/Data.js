@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { MenuItem, TextField, Button, ButtonBase } from "@material-ui/core";
+import { MenuItem, TextField } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { PaymentIntent } from "../../_action/Payment";
-import { DataOptionSelect } from "../../components/jsonData/DataSelectOption";
+// import { DataOptionSelect } from "../../components/jsonData/DataSelectOption";
 import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../_action/Payment/paymentButtons";
-import { fieldSelect } from "../../_action/Payment/paymentButtons";
+// import { fieldSelect } from "../../_action/Payment/paymentButtons";
 import "../../css/input.css";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+// import Dialog from "@material-ui/core/Dialog";
+// import DialogActions from "@material-ui/core/DialogActions";
+// import DialogContent from "@material-ui/core/DialogContent";
+// import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import {
   verifySmartcardNumber,
-  clearVerified,
+  // clearVerified,
 } from "../../_action/verifyNumber";
 import { verify } from "../../_action/verify";
-import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
+// import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
 import Smile from "./Smile";
 import Ntel from "./Ntel";
 import Spectranet from "./Spectranet";
+import Button from "../../components/Button";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,20 +35,20 @@ function NewForm(props) {
   const user = useSelector((state) =>
     state.authUser.user === null ? "" : state.authUser.user
   );
-  const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
+  // const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const [disabled, setDisabled] = useState(false);
-  const [disabledCard, setDisabledCard] = useState(false);
-  const [disabledUssd, setDisabledUssd] = useState(false);
-  const verifyDetails = useSelector((state) => state.verify);
-  const [verifyEnabled, setVerifiedEnabled] = useState(false);
+  // const [disabledCard, setDisabledCard] = useState(false);
+  // const [disabledUssd, setDisabledUssd] = useState(false);
+  // const verifyDetails = useSelector((state) => state.verify);
+  // const [verifyEnabled, setVerifiedEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [open, setOpen] = React.useState(false);
-  const [valuesDetails, setValuesDetails] = useState([]);
+  // const [open, setOpen] = React.useState(false);
+  // const [valuesDetails, setValuesDetails] = useState([]);
   const productDetails = useSelector((state) => state.someData.detail);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const [buttonValue, setButtonValue] = useState(null);
-  const [smileNumber, setSmileNumber] = useState("");
+  // const [smileNumber, setSmileNumber] = useState("");
   const [smartCard, setSmartCard] = useState({
     "E-mail": "",
     "Phone Number": "",
@@ -86,6 +87,8 @@ function NewForm(props) {
     newValues[name] = e.target.value;
     setSmartCard(newValues);
   };
+
+  // console.log(selectDetails);
 
   const handleSubmit = (value, data) => {
     setButtonValue(value);
@@ -178,13 +181,13 @@ function NewForm(props) {
           referenceValues: {
             Email: `${smartCard["Email"]}`,
             "9Mobile Data Plan": `${selectDetails.id}`,
-            Product: "Data",
+            Product: "DATA",
             "Phone Number": `${smartCard["Phone Number"]}`,
           },
           references: ["Product", "Email", "9Mobile Data Plan", "Phone Number"],
         };
 
-        console.log(newValuesObj);
+        // console.log(newValuesObj);
         props.PaymentIntent(newValuesObj);
       }
     } else if (productDetails.billerCode === "SMILE") {
@@ -409,7 +412,8 @@ function NewForm(props) {
                             return (
                               <MenuItem
                                 key={index}
-                                value={detail.ItemName}
+                                // value={detail.ItemName}
+                                value={selectDetails["name"]}
                                 onClick={(event) =>
                                   handleSelect(allFields.text, detail)
                                 }
@@ -483,84 +487,10 @@ function NewForm(props) {
                 ""
               )}
             </div>
-            {productDetails.billerCode !== "SMILE" &&
-            productDetails.billerCode !== "NTELBundle" &&
-            productDetails.billerCode !== "SPECTRANET" ? (
-              <div className="ButtonSide">
-                <div>
-                  {props.disabledCard === true ? (
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                      }}
-                    >
-                      Go Back
-                    </button>
-                  ) : (
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        // console.log(payment);
-                        handleSubmit(FLUTTERWAVE_KEY);
-                      }}
-                      type="submit"
-                      style={{
-                        backgroundColor: "#fda94f",
-                        cursor:
-                          props.disabledUssd === true
-                            ? "not-allowed"
-                            : "pointer",
-                        color: "#000",
-                        fontSize: "12px",
-                        padding: "11px",
-                      }}
-                      disabled={props.disabledUssd}
-                    >
-                      Proceed to Card
-                    </button>
-                  )}
-                </div>
-                <div>
-                  {props.disabledUssd === true ? (
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                      }}
-                    >
-                      Go Back
-                    </button>
-                  ) : (
-                    <div>
-                      <button
-                        // className="btn"
-                        value={USSD_KEY}
-                        onClick={(e) => {
-                          // e.preventDefault();
-                          handleSubmit(USSD_KEY);
-                        }}
-                        style={{
-                          backgroundColor: "#fda94f",
-                          cursor:
-                            props.disabledCard === true
-                              ? "not-allowed"
-                              : "pointer",
-                          color: "#000",
-                          fontSize: "12px",
-                          padding: "11px",
-                        }}
-                        disabled={props.disabledCard}
-                      >
-                        Pay with Ussd
-                      </button>{" "}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
+            <Button
+              disabledUssd={props.disabledUssd}
+              disabledCard={props.disabledCard}
+            />
           </div>
         </>
       )}

@@ -17,23 +17,21 @@ const PropertyDetails = lazy(() => import("./components/property-details"));
 const BuyProduct = lazy(() =>
   import("./components/section-components/BuyProduct")
 );
-const About = lazy(() => import("./components/about"));
-const Registraion = lazy(() => import("./components/registration"));
-const Error = lazy(() => import("./components/error"));
-const Faq = lazy(() => import("./components/faq"));
-const Contact = lazy(() => import("./components/contact"));
+import About from "./components/about";
+import Registraion from "./components/registration";
+import Faq from "./components/faq";
+import Contact from "./components/contact";
+import Error from "./components/error";
+import Receipt from "./components/Pay/PaymentProcess/printReceipt";
 const Settings = lazy(() => import("./components/settings"));
 const ForgotPassword = lazy(() => import("./components/forgotPassword"));
 const Footer = lazy(() => import("./components/global-components/footer"));
 const TermNCondition = lazy(() => import("./components/TermNCondition"));
 const Transaction = lazy(() => import("./components/admin"));
 const HelpDesk = lazy(() => import("./components/Help"));
-const Receipt = lazy(() =>
-  import("./components/Pay/PaymentProcess/printReceipt")
-);
 const AcceptLoan = lazy(() => import("./components/AcceptLoan"));
-const Loan = lazy(() => import("./components/Loan"));
-const Requery = lazy(() => import("./components/Pay/Requery"))
+// const Loan = lazy(() => import("./components/Loan"));
+const Requery = lazy(() => import("./components/Pay/Requery"));
 
 import { showLoader, hideLoader } from "./_action/loading";
 import { useSelector, connect } from "react-redux";
@@ -91,7 +89,7 @@ function Routes(props) {
               `/${process.env.REACT_APP_RELOADNG}/admin`,
               `/${process.env.REACT_APP_RELOADNG}/helpdesk`,
               `/${process.env.REACT_APP_RELOADNG}/receipt`,
-              `/${process.env.REACT_APP_RELOADNG}/loan`,
+              // `/${process.env.REACT_APP_RELOADNG}/loan`,
               `/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`,
               `/${process.env.REACT_APP_RELOADNG}/requery`,
             ]}
@@ -162,11 +160,11 @@ function Routes(props) {
                 path={`/${process.env.REACT_APP_RELOADNG}/contact`}
                 component={Contact}
               />
-              <ProtectedRoutes
+              {/* <ProtectedRoutes
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/loan`}
                 component={Loan}
-              />
+              /> */}
               <ProtectedRoutes
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`}

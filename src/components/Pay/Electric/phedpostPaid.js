@@ -121,6 +121,8 @@ function PhedPostpaid(props) {
     }
   }, [error.error === true]);
 
+  // console.log(verifiedUser);
+
   const handleSubmit = (value) => {
     const newValuesObj = {
       amount: `${amount}`,
@@ -132,9 +134,8 @@ function PhedPostpaid(props) {
       productId: `${productDetails.productId}`,
       referenceValues: {
         "Email Address": otherValues["Email Address"],
-        // "Email Address": user.user.email,
         "Meter or Account Number": `${verifiedUser.result.account.accountNumber}`,
-        "Ref ID": `${verifiedUser.result.account.accountName}`,
+        "Ref ID": "null",
         "Meter Type": props.meterType,
         "Phone Number": otherValues["Phone Number"],
         "Customer Details": JSON.parse(verifiedUser.result.account.extras)
@@ -150,7 +151,7 @@ function PhedPostpaid(props) {
       ],
     };
 
-    console.log(newValuesObj, value);
+    // console.log(newValuesObj, value);
 
     props.handleSubmit(value, newValuesObj);
   };
@@ -213,7 +214,7 @@ function PhedPostpaid(props) {
           allData.text !== "Meter Type" ? (
             <div key={i}>
               <div>
-                <p>Customer Name:</p>
+                {/* <p>Customer Name:</p> */}
                 <p></p>
               </div>
               <div className="d-flex align-item-center justify-content-center pt-3">
@@ -257,7 +258,7 @@ function PhedPostpaid(props) {
                       : allData.text === "Customer Details"
                       ? verifiedUser.result.account.accountNumber
                       : allData.text === "Ref ID"
-                      ? verifiedUser.result.account.accountName
+                      ? verifiedUser.result.account.accountNumber
                       : allData.text === "Phone Number"
                       ? otherValues["Phone Number"]
                       : allData.text === "Invoice Number"
@@ -271,9 +272,6 @@ function PhedPostpaid(props) {
             ""
           )
         )}
-        {/* {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Electricity"
-          ?  */}
         {fieldsArray.slice(1).map((allData, i) =>
           allData.select === false && allData.text === "Amount" ? (
             <div key={i}>

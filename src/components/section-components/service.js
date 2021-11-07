@@ -89,19 +89,6 @@ function Service(props) {
       setModal(true);
     } else {
       if (
-        // details.otherData.billerCode === "NTELBundle" ||
-        // details.otherData.billerCode === "DSTV2" ||
-        // details.otherData.billerCode === "startimes" ||
-        // details.otherData.billerCode === "GOTV2" ||
-        // details.otherData.billerCode === "KADUNA_PREPAID" ||
-        // details.otherData.billerCode === "KANO_PREPAID" ||
-        // details.otherData.billerCode === "PHCNEKO" ||
-        // details.otherData.billerCode === "JOS_PREPAID"
-        // ||
-        // details.otherData.billerCode === "9mobiledata1" ||
-        // details.otherData.productId.productname ===
-        //   "Ibadan Electricity Prepaid" ||
-        // details.otherData.productId.billerCode === "PHEDDIR2" ||
         details.otherData.billerCode === "SMILE" ||
         details.otherData.productId.productname === "Jamb Exams" ||
         details.otherData.productId.productname === "Waec Exams Registration" ||
@@ -120,17 +107,6 @@ function Service(props) {
                 setTimeout(() => {
                   dispatch(hideLoader());
                 }, 2000);
-                // let path = `/product-details`;
-                // history.push({
-                //   pathname: path,
-                //   search: `?product=${detail.productId.description}`,
-                //   state: {
-                //     data: detail,
-                //     productName: detail.productId.description,
-                //     productId: details.otherData.productId.id,
-                //     billerCode: detail.billerCode,
-                //   },
-                // });
 
                 const data = {
                   detail,
@@ -142,7 +118,6 @@ function Service(props) {
                 let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                 history.push({
                   pathname: path,
-                  // search: `product=${detail.productId.description}`,
                 });
               }
             });
@@ -172,7 +147,6 @@ function Service(props) {
       >
         {body}
       </Modal>
-      {/* <Layout /> */}
       <div className="container">
         <Slider
           {...marketingTestimonials1}
@@ -210,7 +184,16 @@ function Service(props) {
                                 {listData.productId.productname}
                               </h5>
                               <hr />
-                              {/* {listData.billerCode === "9mobiledata1" || */}
+                              {/* {listData.billerCode === "Smile-Data_BLACKSILICON" ||
+                              listData.billerCode === "Glo-Data_BLACKSILICON" ||
+                              listData.billerCode === "9mobile-Data_BLACKSILICON" ||
+                              listData.billerCode === "Airtel-Data_BLACKSILICON" ||
+                              listData.billerCode === "Mtn-Data_BLACKSILICON" ||
+                              listData.billerCode === "GOTV" ||
+                              listData.productId.description === "Airtime" ? (
+                                <>Product Under Test</>
+                              ) : (
+                                <> */}
                               {listData.billerCode === "STARTIMES" ||
                               listData.billerCode === "IBEDC_F" ||
                               listData.billerCode === null ? (
@@ -242,10 +225,11 @@ function Service(props) {
                                     handleMove({ otherData: listData })
                                   }
                                 >
-                                  {/* {listData.btntxt} */}
                                   Explore
                                 </Button>
                               )}
+                              {/* </>
+                              )} */}
                             </div>
                           </div>
                         </div>

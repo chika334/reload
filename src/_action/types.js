@@ -122,3 +122,5 @@ export const REQUERY_FAILED = "REQUERY_FAILED";
 
 // hosted field
 export const HOSTED_FIELD = "HOSTED_FIELD";
+
+export const DATA_VALUE = "DATA_VALUE";

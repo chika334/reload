@@ -2,6 +2,8 @@ import axios from "axios";
 import { FINAL_PAYMENT, FINAL_PAYMENT_ERROR } from "../types";
 import { secondTokenConfig } from "../userAction";
 import { returnErrors } from "../errorAction";
+import { hideLoader } from "../loading";
+import { dataValue } from "./data";
 
 export const finalPayment = (ref) => async (dispatch, getState) => {
   const body = JSON.stringify(ref);
@@ -18,38 +20,10 @@ export const finalPayment = (ref) => async (dispatch, getState) => {
       })
     )
     .catch((err) => {
-      // console.log(err);
-      dispatch(
-        returnErrors(err.response, err.response.status, "FINAL_PAYMENT_ERROR")
-      );
+      dispatch(dataValue("finalPayment", true))
       dispatch({
         type: FINAL_PAYMENT_ERROR,
+        payload: { requestFailed: true, requery: false },
       });
     });
 };
-
-// export const paystackToken = (ref) => (dispatch, getState) => {
-//   const body = JSON.stringify(ref)
-//   console.log(body);
-//   axios
-//     .post(
-//       `${process.env.REACT_APP_API_SINGLE_PAYMENT_PAYSTACK}`,
-//       body,
-//       tokenConfig(getState)
-//     )
-//     .then((res) =>
-//       dispatch({
-//         type: PAYSTACK_BUY_TOKEN,
-//         payload: res.data,
-//       })
-//     )
-//     .catch((err) => {
-//       dispatch(
-//         returnErrors(err.response.data, err.response.status, "BUYTOKEN_FAIL")
-//       );
-//       dispatch({
-//         type: PAYSTACK_BUYTOKEN_FAIL,
-//         payload: err.response,
-//       });
-//     });
-// };

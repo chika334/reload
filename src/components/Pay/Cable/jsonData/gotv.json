@@ -1,0 +1,58 @@
+[
+  {
+    "id": 2336,
+    "name": "GOtv Smallie Monthly",
+    "slug": "GOTV_SMALLIE_MONTHLY",
+    "amount": 800.0,
+    "billerId": 2319
+  },
+  {
+    "id": 2337,
+    "name": "GOtv Smallie Quarterly",
+    "slug": "GOTV_SMALLIE_QUARTERLY",
+    "amount": 2100.0,
+    "billerId": 2319
+  },
+  {
+    "id": 2338,
+    "name": "GOtv Smallie Yearly",
+    "slug": "GOTV_SMALLIE_YEARLY",
+    "amount": 6200.0,
+    "billerId": 2319
+  },
+  {
+    "id": 2339,
+    "name": "Gotv Max",
+    "slug": "GOTV_MAX",
+    "amount": 3600.0,
+    "billerId": 2319
+  },
+  {
+    "id": 2427,
+    "name": "Jinja",
+    "slug": "JINJA",
+    "amount": 1640.0,
+    "billerId": 2319
+  },
+  {
+    "id": 2428,
+    "name": "Jolli",
+    "slug": "JOLLI",
+    "amount": 2460.0,
+    "billerId": 2319
+  },
+  {
+    "id": 4075,
+    "name": "GOTV Top Up",
+    "slug": "GOTV_TOP_UP",
+    "amount": null,
+    "billerId": 2319
+  },
+  {
+    "id": 4081,
+    "name": "GOTV Renew",
+    "slug": "GOTV_RENEW",
+    "amount": null,
+    "billerId": 2319
+  }
+]

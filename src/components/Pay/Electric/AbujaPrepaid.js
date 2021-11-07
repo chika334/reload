@@ -140,8 +140,6 @@ function AbujaPrepaid(props) {
     fieldsArray.push(item[data]);
   }
 
-  // const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
-
   const Options =
     JSON.parse(productDetails.detail.productvalue).field6 === undefined
       ? ""
@@ -257,7 +255,8 @@ function AbujaPrepaid(props) {
         <div>
           {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Electricity" ? (
-            <div className="ButtonSide pt-3">
+            // <div className="ButtonSide pt-3">
+            <div>
               <div>
                 {props.disabledCard === true ? (
                   <button

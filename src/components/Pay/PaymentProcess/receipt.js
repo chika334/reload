@@ -11,7 +11,6 @@ import ReactToPrint from "react-to-print";
 function Receipt(props) {
   const componentRef = React.useRef();
   const [blocking, setBlocking] = useState(false);
-  // const [name, setName] = useState("");
   const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
   const paymentButton = useSelector((state) => state.paymentButton);
   const verify = useSelector((state) => state.verify);
@@ -144,12 +143,20 @@ function Receipt(props) {
                 </tr>
                 <tr className="total">
                   <td></td>
-                  <td>{finalPaymentSuccess.result.productResult}</td>
+                  <td>
+                    {finalPaymentSuccess.result.productResult
+                      ? finalPaymentSuccess.result.productResult
+                      : ""}
+                  </td>
                 </tr>
                 <hr />
                 <tr>
                   <td>Meter Number: </td>
-                  <td>{verify.result.account.accountNumber}</td>
+                  <td>
+                    {verify.result.account.accountNumber
+                      ? verify.result.account.accountNumber
+                      : ""}
+                  </td>
                 </tr>
               </>
             ) : (

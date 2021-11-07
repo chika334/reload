@@ -6,45 +6,40 @@ import {
   verifySmartcardNumber,
   clearVerified,
 } from "../../../_action/verifyNumber";
-import { MenuItem, TextField, Button } from "@material-ui/core";
+import {
+  MenuItem,
+  TextField,
+  Select,
+  FormControl,
+  InputLabel,
+  Button,
+} from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../../_action/Payment/index";
-import Alert from "@material-ui/lab/Alert";
-import { pay, paymentButtons } from "../../../_action/Payment/paymentButtons";
+import { pay } from "../../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../../_action/errorAction";
 import { verify } from "../../../_action/verify";
 import "../../../css/input.css";
 import Slide from "@material-ui/core/Slide";
-import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
+import axios from "axios";
 
 function Cable(props) {
-  const dispatch = useDispatch();
-  // const user = useSelector((state) => state.authUser);
-  const user = useSelector((state) =>
-    state.authUser.user === null ? "" : state.authUser.user
-  );
   const error = useSelector((state) => state.error);
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
-  const paymentButton = useSelector((state) => state.paymentButton);
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [buttonValue, setButtonValue] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState("");
-  const [open, setOpen] = React.useState(false);
   const [smartCard, setSmartCard] = useState("");
-  const [selectDetails, setSelectDetails] = useState("");
-  const [email, setEmail] = useState("");
+  const [selectDetails, setSelectDetails] = useState(null);
   const productDetails = useSelector((state) => state.someData.detail);
-  const paymentIntent = useSelector((state) => state.paymentIntent);
   const [verifiedAccount, setVerifiedAccount] = useState(null);
-  const [amount, setAmount] = useState("");
   const [verifiedProducts, setVerifiedProducts] = useState(null);
+  const [bouquet, setBouquet] = useState(null);
+  const [selectName, setSelectName] = useState(null);
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -70,6 +65,41 @@ function Cable(props) {
     }
   }, [error.error === true]);
 
+  useEffect(() => {
+    const username = "reloadng";
+    const password = "R3l0@dnG@2021";
+    const config = {
+      headers: {
+        Authorization: "Basic " + btoa(`${username}:${password}`),
+      },
+    };
+    axios
+      .get(
+        "http://204.8.207.124:8080/packages/biller/slug/GOTV",
+        config
+      )
+      .then((res) => setBouquet(res.data.responseData))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleSelect = (e) => {
+    setSelectDetails(e.target.value);
+    
+    bouquet === null
+      ? ""
+      : bouquet.map((allData) => {
+          if (allData.amount === parseInt(e.target.value)) {
+            setSelectName(allData.slug);
+          }
+        });
+  };
+
+  const handleOthers = (e, name) => {
+    const newValues = { ...smartCard };
+    newValues[name] = e.target.value;
+    setSmartCard(newValues);
+  };
+
   const handleSubmit = (value) => {
     setButtonValue(value);
     if (value === "FLUTTERWAVE") {
@@ -79,182 +109,50 @@ function Cable(props) {
     }
 
     const newValuesObj = {
-      amount: amount,
+      amount: selectDetails === null ? "" : selectDetails,
       channelRef: "web",
       description: "Cable",
       paymentMethod:
         value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
       productId: `${productDetails.productId}`,
       referenceValues: {
-        "SmartCard Number": `${smartCard}`,
-        "Email Address": `${email}`,
-        // "Select Package (Amount)":
-        //   selectDetails === null ? "" : selectDetails.productName,
+        customerId: `${smartCard["phoneNumber"]}`,
+        customerName: `${smartCard["email"]}`,
+        phoneNumber: `${smartCard["phoneNumber"]}`,
+        packageSlug: selectName === null ? "" : selectName,
+        email: `${smartCard["email"]}`,
       },
       references: [
-        "SmartCard Number",
-        "Email Address",
-        // "Select Package (Amount)",
+        "email",
+        "packageSlug",
+        "phoneNumber",
+        "customerName",
+        "customerId",
       ],
     };
 
-    console.log(newValuesObj);
-
     props.handleSubmit(value, newValuesObj);
-    // if()
-    // if (selectDetails !== null) {
-    // setLoading(true);
-    // if (productDetails.billerCode === "STARTIMES") {
-    //   const newValuesObj = {
-    //     amount: `${selectDetails.Amount}`,
-    //     channelRef: "web",
-    //     description: "Cable",
-    //     // paymentMethod: "billpayflutter",
-    //     paymentMethod:
-    //       value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-    //     productId: `${productDetails.productId}`,
-    //     referenceValues: {
-    //       "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-    //       "Email Address": `${email}`,
-    //       "Select Package":
-    //         selectDetails === null ? "" : selectDetails.productName,
-    //     },
-    //     references: ["Email Address", "Select Package ", "SmartCard Number"],
-    //   };
-
-    //   props.PaymentIntent(newValuesObj);
-    //   // props.pay(true, "Cable");
-    //   // props.verify("Cable", true);
-    // } else if (productDetails.billerCode === "DSTV") {
-    //   const newValuesObj = {
-    //     amount: selectDetails.productAmount,
-    //     channelRef: "web",
-    //     description: "Cable",
-    //     // paymentMethod: "billpayflutter",
-    //     paymentMethod:
-    //       value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-    //     productId: `${productDetails.productId}`,
-    //     referenceValues: {
-    //       "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-    //       "Email Address": `${email}`,
-    //       "Select Package (Amount)":
-    //         selectDetails === null ? "" : selectDetails.productName,
-    //     },
-    //     references: [
-    //       "SmartCard Number",
-    //       "Email Address",
-    //       "Select Package (Amount)",
-    //     ],
-    //   };
-
-    //   props.PaymentIntent(newValuesObj);
-    // } else if (productDetails.billerCode === "GOTV") {
-    //   const newValuesObj = {
-    //     amount: `${selectDetails.productAmount}`,
-    //     // amount: "100",
-    //     channelRef: "web",
-    //     description: "Cable",
-    //     // paymentMethod: "billpayflutter",
-    //     paymentMethod:
-    //       value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-    //     productId: `${productDetails.productId}`,
-    //     referenceValues: {
-    //       "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-    //       "Email Address": `${email}`,
-    //       "Select Package (Amount)":
-    //         selectDetails === null ? "" : selectDetails.productName,
-    //     },
-    //     references: [
-    //       "Email",
-    //       "Select Package (Amount)",
-    //       "Number of Months",
-    //       "SmartCard Number",
-    //     ],
-    //   };
-    //   // props.pay(true, "Cable");
-    //   props.PaymentIntent(newValuesObj);
-    //   // props.verify("Cable", true);
-    // }
-    // // handlePaymentProcess();
-    // // } else {
-    // //   if (!localStorage.token) {
-    // //     // setLoading(false);
-    // //     // // const path = `${props.location.pathname}${props.location.search}`;
-    // //     // // props.loginRediectSuccess(path, props.location.state.data);
-    // //     // // props.history.push("/registration");
-    // //     // setOpen(true);
-    // //   }
-    // // }
-  };
-
-  // useEffect(() => {
-  //   if (paymentIntent.success === true) {
-  //     // pro
-  //     setLoading(false);
-  //     let amount = selectDetails === null ? "" : selectDetails.productAmount;
-  //     const detail = {
-  //       amount: amount,
-  //       email: email,
-  //       product: productDetails.productname,
-  //       accountNumber:
-  //         verifiedUser.result === null
-  //           ? ""
-  //           : verifiedUser.result.account.accountNumber,
-  //       buttonClick: buttonValue,
-  //       transRef: paymentIntent.detail.transRef,
-  //       customerName:
-  //         verifiedUser.result === null
-  //           ? ""
-  //           : verifiedUser.result.account.accountName,
-  //     };
-
-  //     // console.log(detail);
-  //     dispatch(pay(detail));
-  //     props.dataPay(true, "Cable");
-  //     // props.onpaymentProcess(buttonValue);
-  //   }
-  // }, [paymentIntent.success]);
-
-  const handleFieldChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleAmount = (e) => {
-    setAmount(e.target.value);
-  };
-
-  const handleSelect = (name, value) => {
-    const data = {
-      productName: name,
-      productAmount: value,
-    };
-
-    setSelectDetails(data);
-  };
-
-  const handleSmartCard = (e) => {
-    setSmartCard(e.target.value);
   };
 
   const verifyMeterNumber = async () => {
     const details = {
       product: productDetails.productId,
-      accountNumber: smartCard,
+      billerCode: "STARTIMES",
+      accountNumber: smartCard.customerId,
+      extras: {
+        billerSlug: "STARTIMES",
+        customerId: smartCard.customerId,
+        productName: "STARTIMES_BASIC",
+      },
     };
 
-    const valueData = JSON.stringify(details);
-
-    props.verifySmartcardNumber(valueData);
+    props.verifySmartcardNumber(details);
   };
 
   const SmartNumber = async (e) => {
     e.preventDefault();
     setLoading(true);
     let result = verifyMeterNumber();
-    // if (localStorage.token) {
-    // } else {
-    //   props.history.push("/registration");
-    // }
   };
 
   const item = JSON.parse(productDetails.detail.productvalue);
@@ -262,23 +160,6 @@ function Cable(props) {
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
-
-  // const deal = Object.values(fieldsArray);
-  // useEffect(() => {
-  //   deal.map((allData) => {
-  //     if (allData.text === "Product type") {
-  //       if (allData.select !== true) {
-  //         return setDisabled(false);
-  //       } else {
-  //         return setDisabled(true);
-  //       }
-  //     } else {
-  //       return setDisabled(false);
-  //     }
-  //   });
-  // }, []);
-
-  const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
 
   useEffect(() => {
     if (verifiedUser.verifySuccess === true) {
@@ -292,216 +173,254 @@ function Cable(props) {
   return (
     <div className="property-details-area">
       <div>
-        {/* {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Cable" ? ( */}
-        <div>
+        {verifyUserdetails.onclick === false &&
+        verifyUserdetails.name === "" ? (
           <div>
+            <div>
+              <div>
+                {fieldsArray.map((allFields, i) =>
+                  allFields.text === "customerId" &&
+                  allFields.lookup === true ? (
+                    <div
+                      key={i}
+                      className="d-flex align-item-center justify-content-center pt-3"
+                    >
+                      <TextField
+                        className="inputSize"
+                        required
+                        label={
+                          allFields.text === "customerId"
+                            ? "SmartCard Number"
+                            : ""
+                        }
+                        onChange={(e) => handleOthers(e, allFields.text)}
+                        type={allFields.text === "email" ? "email" : "number"}
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment:
+                            allFields.text === "Amount" ? (
+                              <InputAdornment position="start">
+                                ₦
+                              </InputAdornment>
+                            ) : (
+                              ""
+                            ),
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )
+                )}
+              </div>
+            </div>
+
             <div className="d-flex align-item-center justify-content-center">
-              <TextField
-                required
-                className="inputSize"
-                label={verifyNumber.text}
-                name="smartCard"
-                onChange={handleSmartCard}
-                placeholder={`Enter ${verifyNumber.text}`}
-                type="number"
-                variant="outlined"
-                value={smartCard}
-              />
+              <Button
+                onClick={SmartNumber}
+                variant="contained"
+                color="primary"
+                className="p-3"
+              >
+                Verify
+              </Button>
             </div>
           </div>
-
-          {/* <div>
-              <div className="d-flex align-item-center justify-content-center">
-                <div className="inputSize text-right allnew">
-                  <p>Account Name</p>
-                  <p
-                    style={{
-                      display: "flex",
-                      right: 0,
-                      marginLeft: "20px",
-                    }}
-          
-
-          {/* dropdown */}
-          {/* <div className="d-flex justify-content-center">
-              <TextField
-                className="inputSize pt-3"
-                required
-                label="Please Select your present bouquet plan"
-                // name={allField.text}
-                placeholder={`Please Select Bouquet`}
-                select
-                type="text"
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              >
-                <MenuItem>Select Data Type</MenuItem>
-                {verifiedProducts === null
-                  ? ""
-                  : verifiedProducts.map((allData, index) => {
-                      return (
-                        <MenuItem
-                          key={index}
-                          value={allData.productName}
-                          onClick={(e) =>
-                            handleSelect(
-                              allData.productName,
-                              allData.productAmount
-                            )
-                          }
-                        >
-                          {allData.productName}
-                        </MenuItem>
-                      );
-                    })}
-              </TextField>
-            </div> */}
-        </div>
-        {/* ) : (
+        ) : (
           ""
-        )} */}
+        )}
 
-        {/* Email address */}
-        {/* {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Cable"
-          ? fieldsArray.slice(1).map((allFields, i) =>
-              allFields.select === false &&
-              allFields.text === "Email Address" ? ( */}
-        <>
-          <div
-            // key={i}
-            className="d-flex align-item-center justify-content-center pt-3"
-          >
-            <TextField
-              required
-              // style={{ width: "50%" }}
-              className="inputSize"
-              label="Email Address"
-              name="Email Address"
-              onChange={handleFieldChange}
-              placeholder={`Enter Email Address`}
-              type="email"
-              variant="outlined"
-              value={email}
-            />
-          </div>
-        </>
-        {/* ) : (
-                ""
-              )
-            )
-          : ""} */}
-
-        {/* amount */}
-        {/* {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Cable"
-          ? fieldsArray.slice(1).map((allFields, i) =>
-              allFields.select === false &&
-              allFields.text !== "Email Address" ? ( */}
-        {/* // <> */}
-        <div
-          // key={i}
-          className="d-flex align-item-center justify-content-center pt-3"
-        >
-          <TextField
-            required
-            // style={{ width: "50%" }}
-            className="inputSize"
-            label="Amount"
-            name="Amount"
-            onChange={handleAmount}
-            value={selectDetails["productAmount"]}
-            placeholder={`Enter Amount`}
-            type="number"
-            variant="outlined"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">₦</InputAdornment>
-              ),
-            }}
-            // disabled
-          />
-        </div>
-        {/* ) : (
-                ""
-              )
-            )
-          : ""} */}
-        {/* {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Cable" ? ( */}
-        <div className="ButtonSide">
+        {verifyUserdetails.onclick === true &&
+        verifyUserdetails.name === "Cable" ? (
           <div>
-            {props.disabledCard === true ? (
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                }}
-              >
-                Go Back
-              </button>
-            ) : (
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  // console.log(payment);
-                  handleSubmit(FLUTTERWAVE_KEY);
-                }}
-                type="submit"
-                style={{
-                  backgroundColor: "#fda94f",
-                  cursor:
-                    props.disabledUssd === true ? "not-allowed" : "pointer",
-                  color: "#000",
-                  fontSize: "12px",
-                  padding: "11px",
-                }}
-                disabled={props.disabledUssd}
-              >
-                Proceed to Card
-              </button>
+            <div className="d-flex align-item-center justify-content-center pt-3">
+              <p className="mr-5">Customer Name:</p>
+              <p>
+                {verifiedUser.result === null
+                  ? ""
+                  : verifiedUser.result.account.accountName}
+              </p>
+            </div>
+            <div className="d-flex align-item-center justify-content-center pt-3">
+              <p className="mr-5">SmartCard Number:</p>
+              <p>
+                {verifiedUser.result === null
+                  ? ""
+                  : verifiedUser.result.account.accountNumber}
+              </p>
+            </div>
+            {/* <div className="d-flex align-item-center justify-content-center pt-3">
+              <p className="mr-5">Amount: </p>
+              <p>
+                {verifiedUser.result === null ? "" : verifiedUser.result.amount}
+              </p>
+            </div> */}
+
+            {/* bouquet */}
+            <div className="">
+              <div className="pt-3">
+                <div className="d-flex align-item-center justify-content-center">
+                  <select
+                    value={
+                      selectDetails === null ? "" : selectDetails["amount"]
+                    }
+                    onChange={handleSelect}
+                    className="p-3"
+                    id="inputSize"
+                    style={{ borderRadius: "3px" }}
+                  >
+                    <option>Select bouquet</option>
+                    {bouquet === null
+                      ? ""
+                      : bouquet.map((allData, i) => (
+                          <option value={allData.amount} key={i}>
+                            {allData.name}
+                          </option>
+                        ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              {fieldsArray.map((allFields, i) =>
+                allFields.text === "customerId" ||
+                allFields.text === "amount" ? (
+                  ""
+                ) : allFields.select !== true ? (
+                  <div
+                    key={i}
+                    className="d-flex align-item-center justify-content-center pt-3"
+                  >
+                    <TextField
+                      className="inputSize"
+                      required
+                      label={
+                        allFields.text === "phoneNumber"
+                          ? "Phone Number"
+                          : allFields.text === "email"
+                          ? "Email"
+                          : ""
+                      }
+                      onChange={(e) => handleOthers(e, allFields.text)}
+                      type={allFields.text === "email" ? "email" : "number"}
+                      variant="outlined"
+                    />
+                  </div>
+                ) : (
+                  ""
+                )
+              )}
+            </div>
+            {fieldsArray.map((allFields, i) =>
+              allFields.text === "customerId" ||
+              allFields.text === "email" ||
+              allFields.text === "phoneNumber" ? (
+                ""
+              ) : allFields.select !== true ? (
+                <div
+                  key={i}
+                  className="d-flex align-item-center justify-content-center pt-3"
+                >
+                  <TextField
+                    className="inputSize"
+                    required
+                    label={allFields.text === "amount" ? "Amount" : ""}
+                    onChange={(e) => handleOthers(e, allFields.text)}
+                    value={selectDetails === null ? "" : selectDetails}
+                    disabled
+                    type={allFields.text === "email" ? "email" : "number"}
+                    variant="outlined"
+                    InputProps={{
+                      startAdornment:
+                        allFields.text === "amount" ? (
+                          <InputAdornment position="start">₦</InputAdornment>
+                        ) : (
+                          ""
+                        ),
+                    }}
+                  />
+                </div>
+              ) : (
+                ""
+              )
             )}
           </div>
+        ) : (
+          ""
+        )}
+
+        {verifyUserdetails.onclick === true &&
+        verifyUserdetails.name === "Cable" ? (
+          // <div className="ButtonSide">
           <div>
-            {props.disabledUssd === true ? (
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                }}
-              >
-                Go Back
-              </button>
-            ) : (
-              <div>
+            <div className="d-flex justify-content-center">
+              {props.disabledCard === true ? (
                 <button
-                  // className="btn"
-                  value={USSD_KEY}
                   onClick={(e) => {
-                    handleSubmit(USSD_KEY);
+                    e.preventDefault();
+                    window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                   }}
+                >
+                  Go Back
+                </button>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmit(FLUTTERWAVE_KEY);
+                  }}
+                  type="submit"
                   style={{
                     backgroundColor: "#fda94f",
                     cursor:
-                      props.disabledCard === true ? "not-allowed" : "pointer",
+                      props.disabledUssd === true ? "not-allowed" : "pointer",
                     color: "#000",
                     fontSize: "12px",
                     padding: "11px",
                   }}
-                  disabled={props.disabledCard}
+                  disabled={props.disabledUssd}
                 >
-                  Pay with Ussd
-                </button>{" "}
-              </div>
-            )}
+                  Proceed to Card
+                </button>
+              )}
+            </div>
+            {/* <div>
+              {props.disabledUssd === true ? (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+                  }}
+                >
+                  Go Back
+                </button>
+              ) : (
+                <div>
+                  <button
+                    value={USSD_KEY}
+                    onClick={(e) => {
+                      handleSubmit(USSD_KEY);
+                    }}
+                    style={{
+                      backgroundColor: "#fda94f",
+                      cursor:
+                        props.disabledCard === true ? "not-allowed" : "pointer",
+                      color: "#000",
+                      fontSize: "12px",
+                      padding: "11px",
+                    }}
+                    disabled={props.disabledCard}
+                  >
+                    Pay with Ussd
+                  </button>{" "}
+                </div>
+              )}
+            </div> */}
           </div>
-        </div>
-        {/* ) : (
+        ) : (
           ""
-        )} */}
+        )}
       </div>
       {/* </>
       )} */}

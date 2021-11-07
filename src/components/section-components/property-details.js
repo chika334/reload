@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-// import sectiondata from "../../data/sections.json";
-// import parse from "html-react-parser";
 import { withRouter, Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { hideLoader, showLoader } from "../../_action/loading";
 import { Button } from "@material-ui/core";
-// import ProductTable from "./productDetails/productTable";
 import { products } from "../../data/products";
-import Ntel from "../Pay/Ntel";
 import Electricity from "../Pay/Electricity";
 import Cable from "../Pay/Cable";
 import Airtime from "../Pay/Airtime";
@@ -25,6 +21,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import Alert from "@material-ui/lab/Alert";
 import { requery } from "../../_action/requery";
+// import Gotv from "../Pay/Cable/Gotv";
+import { PaymentIntent } from "../../_action/Payment/index";
+import { verify } from "../../_action/verify";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,7 +33,6 @@ function PropertyDetails(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.someData.detail);
-  // const dispatch = useDispatch();
   const [pay, setPay] = useState(false);
   const paymentIntent = useSelector((state) =>
     state.paymentIntent.success === true
@@ -46,7 +44,6 @@ function PropertyDetails(props) {
       ? state.paymentIntent.detail.transRef
       : ""
   );
-  const error = useSelector((state) => state.error);
   const verifySuccess = useSelector((state) => state.verify);
   const [productData, setProductData] = useState();
   const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
@@ -54,6 +51,8 @@ function PropertyDetails(props) {
   const requeryData = useSelector((state) => state.reloadReducer);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [disabledCard, setDisabledCard] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const dataValue = useSelector((state) => state.dataValue);
   const payment = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone : state.paymentDone
   );
@@ -83,6 +82,10 @@ function PropertyDetails(props) {
     window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
   };
 
+  const handleErrorClose = () => {
+    setErrorModal(false);
+  };
+
   const handleQuery = (e) => {
     e.preventDefault();
     const value = {
@@ -105,15 +108,21 @@ function PropertyDetails(props) {
   }, [requeryData.requerySuccess === true]);
 
   useEffect(() => {
-    setOpen(false);
-    if (error.id === "FINAL_PAYMENT_ERROR") {
+    if (dataValue.name === "finalPayment" && dataValue.booleanValue === true) {
       setLoading(false);
       setErrorModal(true);
-    } else if (error.id === "REQUERY_FAILED") {
+    } else if (
+      dataValue.name === "requery" &&
+      dataValue.booleanValue === true
+    ) {
       setLoading(false);
-      setErrorMessage(error.message.result.productResult);
+      setErrorModal(false);
+      setOpenModal(true);
+      setErrorMessage(
+        "We appologies for this, issues from our service providers, Please contact our customer care or chat us via our live chat system, Thank you."
+      );
     }
-  }, [error.error === true]);
+  }, [finalPaymentSuccess]);
 
   const makePayment = () => {
     if (payment.detail.buttonClick !== null) {
@@ -150,8 +159,33 @@ function PropertyDetails(props) {
 
   let paymentAmount = Number(paymentIntent.totalAmount).toFixed(2);
 
+  const handleModalClose = () => {
+    setOpenModal(false);
+    window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+  };
+
   return (
     <>
+      <Dialog
+        open={openModal}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleModalClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">Service Error</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {errorMessage}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleModalClose} color="primary">
+            Back
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -180,8 +214,8 @@ function PropertyDetails(props) {
         <Dialog
           open={errorModal}
           TransitionComponent={Transition}
+          onClose={handleErrorClose}
           keepMounted
-          // onClose={handleClose}
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
         >
@@ -190,8 +224,11 @@ function PropertyDetails(props) {
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              <b>Sorry please an error occurred please requery transaction</b>
-              <table class="center">
+              <b style={{ color: "red" }}>
+                Sorry an error occurred while completing this transaction, please
+                requery transaction
+              </b>
+              <table className="center">
                 <tr>
                   <td>Name: </td>
                   <td>{verifySuccess.result.account.accountName}</td>
@@ -228,7 +265,7 @@ function PropertyDetails(props) {
           <div className="property-details-area">
             <div className="bg-gray pd-top-100 pd-bottom-90">
               <div className="container">
-                <div className="row">
+                <div className="row d-flex align-item-center justify-content-center">
                   <div className="col-lg-8 pb-4">
                     <div className="contact-form-wrap">
                       <div className="item">
@@ -315,7 +352,7 @@ function PropertyDetails(props) {
                                 />
                               )}
                             </div>
-                            {
+                            {/* {
                               <CoralUssd
                                 data={ussdPayload}
                                 isModalOpen={isModalOpen}
@@ -323,8 +360,7 @@ function PropertyDetails(props) {
                                 // useUSSD={App}
                                 onSuccess={grabUssdResponse}
                               />
-                            }
-                            {/* {productDetails.detail.productId.desctiption === ""} */}
+                            } */}
                             <div>
                               {productDetails.detail.productId.description ===
                                 "Cable" && (
@@ -386,5 +422,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, { hideLoader })(PropertyDetails)
+  connect(mapStateToProps, { hideLoader, PaymentIntent, verify })(
+    PropertyDetails
+  )
 );

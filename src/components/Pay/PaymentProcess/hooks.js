@@ -28,6 +28,7 @@ export const FLUTTERWAVE_KEY = "FLUTTERWAVE";
 export const USSD_KEY = "USSD";
 
 export const usePaymentGateway = (props) => {
+  const finalPaymentSuccess = useSelector((state) => state.FinalPayment);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const paymentGatewayRef = React.useRef();
   const productDetails = useSelector((state) => state.someData.detail);
@@ -68,8 +69,6 @@ export const usePaymentGateway = (props) => {
     state.paymentDone.payment === true ? state.paymentDone.detail : ""
   );
 
-  console.log("hooks", pay);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -106,119 +105,179 @@ export const usePaymentGateway = (props) => {
     flutterConfig(pay, paymentAmount)
   );
 
+  // useEffect(() => {
+  //   if (
+  //     productDetails.detail.productId.productcategoryId.categoryname ===
+  //     "Electricity"
+  //   ) {
+  //     if (pay.amount < 50) {
+  //       setOpen(true);
+  //       setLoading(false);
+  //       setMessage("Minimum payment for all electricity is 1000 Naira");
+  //     } else {
+  //       switch (paymentType) {
+  //         case FLUTTERWAVE_KEY:
+  //           dispatch(paymentButtons("flutterwave", true));
+  //           handleFlutterPayment({
+  //             callback: (response) => {
+  //               const ref = {
+  //                 transRef: pay.transRef,
+  //                 paymentRef: response.transaction_id,
+  //                 accountNumber:
+  //                   pay.product === "Cable" ||
+  //                   verifyUserdetails.name === "SPECTRANET" ||
+  //                   verifyUserdetails.name === "SMILE" ||
+  //                   verifyUserdetails.name === "Electricity"
+  //                     ? pay.accountNumber
+  //                     : null,
+  //               };
+
+  //               dispatch(finalPayment(ref));
+  //               setTimeout(() => {
+  //                 closePaymentModal();
+  //               }, 2000);
+  //             },
+  //             onClose: () => {
+  //               setLoading(false);
+  //             },
+  //           });
+  //           break;
+
+  //         case USSD_KEY:
+  //           dispatch(paymentButtons("Ussd", true));
+  //           setUssdPayload({
+  //             traceId: pay.transRef,
+  //             transactionType: "0",
+  //             amount: `${paymentAmount}`,
+  //             merchantId: "4058RNG10000001",
+  //             channel: "USSD",
+  //             terminalId: "4058RNG1",
+  //             subMerchantName: "Reload.ng",
+  //           });
+  //           setLoading(false);
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //     }
+  //   } else {
+  //     if (pay.amount < 50) {
+  //       setLoading(false);
+  //       setOpen(true);
+  //       setMessage(
+  //         "All amount should not be below 50 Naira or above 1000 Naira"
+  //       );
+  //     } else if (pay.amount > 100000) {
+  //       setLoading(false);
+  //       setOpen(true);
+  //       setMessage(
+  //         "All amount should not be below 50 Naira or above 1000 Naira"
+  //       );
+  //     } else {
+  //       switch (paymentType) {
+  //         case FLUTTERWAVE_KEY:
+  //           dispatch(paymentButtons("flutterwave", true));
+  //           handleFlutterPayment({
+  //             callback: (response) => {
+  //               const ref = {
+  //                 transRef: pay.transRef,
+  //                 paymentRef: response.transaction_id,
+  //                 accountNumber:
+  //                   pay.product === "Cable" ||
+  //                   verifyUserdetails.name === "SPECTRANET" ||
+  //                   verifyUserdetails.name === "SMILE" ||
+  //                   verifyUserdetails.name === "Electricity"
+  //                     ? pay.accountNumber
+  //                     : null,
+  //               };
+
+  //               dispatch(finalPayment(ref));
+  //               setTimeout(() => {
+  //                 closePaymentModal();
+  //               }, 2000);
+  //             },
+  //             onClose: () => {
+  //               setLoading(false);
+  //             },
+  //           });
+  //           break;
+
+  //         case USSD_KEY:
+  //           dispatch(paymentButtons("Ussd", true));
+  //           setUssdPayload({
+  //             traceId: pay.transRef,
+  //             transactionType: "0",
+  //             amount: `${paymentIntent.totalAmount}`,
+  //             merchantId: "4058RNG10000001",
+  //             channel: "USSD",
+  //             terminalId: "4058RNG1",
+  //             subMerchantName: "Reload.ng",
+  //           });
+  //           setLoading(false);
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //     }
+  //   }
+  // }, [paymentType]);
+
   useEffect(() => {
-    if (
-      productDetails.detail.productId.productcategoryId.categoryname ===
-      "Electricity"
-    ) {
-      if (pay.amount < 50) {
-        setOpen(true);
+    if (pay.amount < 50) {
+      if (
+        finalPaymentSuccess.requestFailed === true &&
+        finalPaymentSuccess.requery === false
+      ) {
+        setOpen(false);
         setLoading(false);
-        setMessage("Minimum payment for all electricity is 1000 Naira");
-      } else {
-        switch (paymentType) {
-          case FLUTTERWAVE_KEY:
-            dispatch(paymentButtons("flutterwave", true));
-            handleFlutterPayment({
-              callback: (response) => {
-                const ref = {
-                  transRef: pay.transRef,
-                  paymentRef: response.transaction_id,
-                  accountNumber:
-                    pay.product === "Cable" ||
-                    verifyUserdetails.name === "SPECTRANET" ||
-                    verifyUserdetails.name === "SMILE" ||
-                    verifyUserdetails.name === "Electricity"
-                      ? pay.accountNumber
-                      : null,
-                };
-
-                dispatch(finalPayment(ref));
-                setTimeout(() => {
-                  closePaymentModal();
-                }, 2000);
-              },
-              onClose: () => {
-                setLoading(false);
-              },
-            });
-            break;
-
-          case USSD_KEY:
-            dispatch(paymentButtons("Ussd", true));
-            setUssdPayload({
-              traceId: pay.transRef,
-              transactionType: "0",
-              amount: `${paymentAmount}`,
-              merchantId: "4058RNG10000001",
-              channel: "USSD",
-              terminalId: "4058RNG1",
-              subMerchantName: "Reload.ng",
-            });
-            setLoading(false);
-            break;
-          default:
-            break;
-        }
+      } else if (
+        finalPaymentSuccess.requestFailed === true &&
+        finalPaymentSuccess.requery === true
+      ) {
+        setOpen(false);
+        setLoading(false);
       }
+      setOpen(true);
+      setLoading(false);
+      setMessage("Minimum payment for all electricity is 1000 Naira");
     } else {
-      if (pay.amount < 50) {
-        setLoading(false);
-        setOpen(true);
-        setMessage(
-          "All amount should not be below 50 Naira or above 1000 Naira"
-        );
-      } else if (pay.amount > 100000) {
-        setLoading(false);
-        setOpen(true);
-        setMessage(
-          "All amount should not be below 50 Naira or above 1000 Naira"
-        );
-      } else {
-        switch (paymentType) {
-          case FLUTTERWAVE_KEY:
-            dispatch(paymentButtons("flutterwave", true));
-            handleFlutterPayment({
-              callback: (response) => {
-                const ref = {
-                  transRef: pay.transRef,
-                  paymentRef: response.transaction_id,
-                  accountNumber:
-                    pay.product === "Cable" ||
-                    verifyUserdetails.name === "SPECTRANET" ||
-                    verifyUserdetails.name === "SMILE" ||
-                    verifyUserdetails.name === "Electricity"
-                      ? pay.accountNumber
-                      : null,
-                };
+      switch (paymentType) {
+        case FLUTTERWAVE_KEY:
+          dispatch(paymentButtons("flutterwave", true));
+          handleFlutterPayment({
+            callback: (response) => {
+              const ref = {
+                transRef: pay.transRef,
+                paymentRef: response.transaction_id,
+                accountNumber: pay.customerId,
+              };
 
-                dispatch(finalPayment(ref));
-                setTimeout(() => {
-                  closePaymentModal();
-                }, 2000);
-              },
-              onClose: () => {
-                setLoading(false);
-              },
-            });
-            break;
+              dispatch(finalPayment(ref));
+              setTimeout(() => {
+                closePaymentModal();
+              }, 2000);
+            },
+            onClose: () => {
+              setLoading(false);
+            },
+          });
+          break;
 
-          case USSD_KEY:
-            dispatch(paymentButtons("Ussd", true));
-            setUssdPayload({
-              traceId: pay.transRef,
-              transactionType: "0",
-              amount: `${paymentIntent.totalAmount}`,
-              merchantId: "4058RNG10000001",
-              channel: "USSD",
-              terminalId: "4058RNG1",
-              subMerchantName: "Reload.ng",
-            });
-            setLoading(false);
-            break;
-          default:
-            break;
-        }
+        case USSD_KEY:
+          dispatch(paymentButtons("Ussd", true));
+          setUssdPayload({
+            traceId: pay.transRef,
+            transactionType: "0",
+            amount: `${paymentAmount}`,
+            merchantId: "4058RNG10000001",
+            channel: "USSD",
+            terminalId: "4058RNG1",
+            subMerchantName: "Reload.ng",
+          });
+          setLoading(false);
+          break;
+        default:
+          break;
       }
     }
   }, [paymentType]);

@@ -1,0 +1,135 @@
+[
+  {
+    "id": 2370,
+    "name": "MTN 100 MB DATA BUNDLE",
+    "slug": "MTN_100_MB_DATA_BUNDLE",
+    "amount": 100.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2371,
+    "name": "MTN 200 MB DATA BUNDLE",
+    "slug": "MTN_200_MB_DATA_BUNDLE",
+    "amount": 200.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2372,
+    "name": "MTN 750 MB DATA BUNDLE",
+    "slug": "MTN_750_MB_DATA_BUNDLE",
+    "amount": 500.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2373,
+    "name": "MTN 1_5 GB DATA BUNDLE",
+    "slug": "MTN_1_5_GB_DATA_BUNDLE",
+    "amount": 1000.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2374,
+    "name": "MTN 4.5 GB DATA BUNDLE",
+    "slug": "MTN_45_GB_DATA_BUNDLE",
+    "amount": 2000.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2375,
+    "name": "MTN 12 GB DATA BUNDLE",
+    "slug": "MTN_12_GB_DATA_BUNDLE",
+    "amount": 3500.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2376,
+    "name": "MTN 20 GB DATA BUNDLE",
+    "slug": "MTN_20_GB_DATA_BUNDLE",
+    "amount": 5000.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2377,
+    "name": "MTN 40 GB DATA BUNDLE",
+    "slug": "MTN_40_GB_DATA_BUNDLE",
+    "amount": 10000.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2378,
+    "name": "MTN 75 GB DATA BUNDLE",
+    "slug": "MTN_75_GB_DATA_BUNDLE",
+    "amount": 20000.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2379,
+    "name": "MTN 120 GB DATA BUNDLE",
+    "slug": "MTN_120_GB_DATA_BUNDLE",
+    "amount": 50000.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2415,
+    "name": "MTN 350 MB DATA BUNDLE (7 days)",
+    "slug": "MTN_350_MB_DATA_BUNDLE_(7_DAYS)",
+    "amount": 300.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2416,
+    "name": "MTN 1 GB DATA BUNDLE (1 day)",
+    "slug": "MTN_1_GB_DATA_BUNDLE_(1_DAY)",
+    "amount": 350.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2417,
+    "name": "MTN 750 MB DATA BUNDLE (7Days)",
+    "slug": "MTN_750_MB_DATA_BUNDLE_(7DAYS)",
+    "amount": 500.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2418,
+    "name": "MTN 3 GB DATA BUNDLE",
+    "slug": "MTN_3_GB_DATA_BUNDLE",
+    "amount": 1500.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2419,
+    "name": "MTN 2 GB DATA BUNDLE",
+    "slug": "MTN_2_GB_DATA_BUNDLE",
+    "amount": 1200.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2420,
+    "name": "MTN 6 GB DATA BUNDLE (7 days)",
+    "slug": "MTN_6_GB_DATA_BUNDLE_(7_DAYS)",
+    "amount": 1500.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2421,
+    "name": "MTN 1 GB DATA BUNDLE (7 days)",
+    "slug": "MTN_1_GB_DATA_BUNDLE_(7_DAYS)",
+    "amount": 500.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2422,
+    "name": "MTN 6 GB DATA BUNDLE",
+    "slug": "MTN_6_GB_DATA_BUNDLE",
+    "amount": 2500.0,
+    "billerId": 2331
+  },
+  {
+    "id": 2423,
+    "name": "MTN 2.5 GB DATA BUNDLE (2 Days)",
+    "slug": "MTN_25_GB_DATA_BUNDLE_(2_DAYS)",
+    "amount": 500.0,
+    "billerId": 2331
+  }
+]

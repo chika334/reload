@@ -11,32 +11,26 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../../_action/Payment/index";
 import Alert from "@material-ui/lab/Alert";
 import { pay } from "../../../_action/Payment/paymentButtons";
+import { FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
 import { clearErrors } from "../../../_action/errorAction";
 import { verify } from "../../../_action/verify";
 import "../../../css/input.css";
-import Button from "../../../components/Button";
+// import Button from "../../../components/Button";
 
 function Dstv(props) {
   const dispatch = useDispatch();
-  const user = useSelector((state) =>
-    state.authUser.user === null ? "" : state.authUser.user
-  );
   const error = useSelector((state) => state.error);
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
-  const [disabledCard, setDisabledCard] = useState(false);
-  const [disabledUssd, setDisabledUssd] = useState(false);
-  const [buttonValue, setButtonValue] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState("");
-  const [open, setOpen] = React.useState(false);
-  const [smartCard, setSmartCard] = useState("");
-  const [selectDetails, setSelectDetails] = useState(null);
   const [email, setEmail] = useState("");
   const productDetails = useSelector((state) => state.someData.detail);
-  // const paymentIntent = useSelector((state) => state.paymentIntent);
+  const paymentIntent = useSelector((state) => state.paymentIntent);
   const [verifiedAccount, setVerifiedAccount] = useState(null);
-  const [setVerifiedProducts] = useState(null);
+  const [verifyProducts, setVerifiedProducts] = useState(null);
+  const [valueData, setValueData] = useState(null);
+  const [buttonValue, setButtonValue] = useState(null);
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -62,12 +56,20 @@ function Dstv(props) {
     }
   }, [error.error === true]);
 
-  const handleSubmit = () => {
-    // setButtonValue(value);
+  console.log(valueData);
+  console.log(buttonValue);
+
+  const handleSubmit = (data) => {
+    props.setLoading(true)
+
+    setButtonValue(data);
+    if (value === "FLUTTERWAVE") {
+      setDisabledCard(true);
+    } else if (value === "USSD") {
+      setDisabledUssd(true);
+    }
 
     const newValuesObj = {
-      // amount: selectDetails.productAmount,
-      // "Subscription Amount": "100",
       channelRef: "web",
       description: "Cable",
       paymentMethod:
@@ -95,50 +97,14 @@ function Dstv(props) {
 
     console.log("value", newValuesObj);
 
-    props.handleSubmit(value, newValuesObj);
+    setValueData(newValuesObj);
+    props.PaymentIntent(newValuesObj);
+    // props.handleSubmit(value, newValuesObj);
   };
 
   const handleFieldChange = (e) => {
     setEmail(e.target.value);
   };
-
-  const handleSelect = (name, value) => {
-    const data = {
-      productName: name,
-      productAmount: value,
-    };
-
-    setSelectDetails(data);
-  };
-
-  // const handleSmartCard = (e) => {
-  //   setSmartCard(e.target.value);
-  // };
-
-  // const verifyMeterNumber = async () => {
-  //   const details = {
-  //     product: productDetails.productId,
-  //     billerCode: productDetails.billerCode,
-  //     accountNumber: smartCard,
-  //     extras: {
-  //       customerAccountType:
-  //         selectDetails === null ? "" : selectDetails.ItemType,
-  //       field1: "1",
-  //       field2: null,
-  //       field3: null,
-  //     },
-  //   };
-
-  //   const valueData = JSON.stringify(details);
-
-  //   props.verifySmartcardNumber(valueData);
-  // };
-
-  // const SmartNumber = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   let result = verifyMeterNumber();
-  // };
 
   const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
@@ -152,12 +118,42 @@ function Dstv(props) {
   for (const key in Options) {
     if (Options.hasOwnProperty(key)) {
       var value = Options[key];
-      console.log(value);
       fieldsOption.push(value);
     }
   }
 
-  const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
+  // console.log(valueData);
+
+  useEffect(() => {
+    if (paymentIntent.success === true) {
+      setLoading(false);
+      let emails = valueData === null ? "" : valueData.referenceValues["Email Address"];
+
+      // pro
+      let amounts = parseInt(valueData === null ? "" : valueData.referenceValues["Subscription Amount"]);
+
+      const detail = {
+        amount: amounts,
+        email: emails,
+        product: productDetails.productname,
+        customerId:
+          verifiedUser.result === null
+            ? ""
+            : verifiedUser.result.account.accountNumber,
+        buttonClick: buttonValue,
+        transRef: paymentIntent.detail.transRef,
+        customerName:
+          verifiedUser.result === null
+            ? ""
+            : verifiedUser.result.account.accountName,
+      };
+
+      // console.log(detail, valueData);
+
+      dispatch(pay(detail));
+      props.dataPay(true, "Cable");
+    }
+  }, [paymentIntent.success]);
 
   useEffect(() => {
     if (verifiedUser.verifySuccess === true) {
@@ -294,10 +290,11 @@ function Dstv(props) {
                   )
                 )
               : ""}
-            {/* {verifyUserdetails.onclick === true &&
+            {verifyUserdetails.onclick === true &&
             verifyUserdetails.name === "Cable" ? (
-              <div className="ButtonSide">
-                <div>
+              // <div className="ButtonSide">
+              <div>
+                <div className="d-flex justify-content-center">
                   {props.disabledCard === true ? (
                     <button
                       onClick={(e) => {
@@ -330,7 +327,7 @@ function Dstv(props) {
                     </button>
                   )}
                 </div>
-                <div>
+                {/* <div>
                   {props.disabledUssd === true ? (
                     <button
                       onClick={(e) => {
@@ -364,16 +361,11 @@ function Dstv(props) {
                       </button>{" "}
                     </div>
                   )}
-                </div>
+                </div> */}
               </div>
             ) : (
               ""
-            )} */}
-            <Button
-              handleSubmit={handleSubmit()}
-              disabledUssd={props.disabledUssd}
-              disabledCard={props.disabledCard}
-            />
+            )}
           </div>
         </>
       )}

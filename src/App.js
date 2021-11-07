@@ -45,7 +45,7 @@ class App extends Component {
             <NoInternet />
           </Offline> */}
         </Router>
-        <Layout />
+        {/* <Layout /> */}
         {/* <GoogleAd /> */}
       </Provider>
     );

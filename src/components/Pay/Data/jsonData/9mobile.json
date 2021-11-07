@@ -1,0 +1,72 @@
+[
+  {
+    "id": 2406,
+    "name": "9MOBILE 150 MB DATA BUNDLE",
+    "slug": "9MOBILE_150_MB_DATA_BUNDLE",
+    "amount": 200.0,
+    "billerId": 2334
+  },
+  {
+    "id": 2407,
+    "name": "9MOBILE 1 GB DATA BUNDLE",
+    "slug": "9MOBILE_1_GB_DATA_BUNDLE",
+    "amount": 1000.0,
+    "billerId": 2334
+  },
+  {
+    "id": 2408,
+    "name": "9MOBILE 1_5 GB DATA BUNDLE",
+    "slug": "9MOBILE_1_5_GB_DATA_BUNDLE",
+    "amount": 1200.0,
+    "billerId": 2334
+  },
+  {
+    "id": 2409,
+    "name": "9MOBILE 2.5 GB DATA BUNDLE",
+    "slug": "9MOBILE_25_GB_DATA_BUNDLE",
+    "amount": 2000.0,
+    "billerId": 2334
+  },
+  {
+    "id": 2410,
+    "name": "9MOBILE 4 GB DATA BUNDLE",
+    "slug": "9MOBILE_4_GB_DATA_BUNDLE",
+    "amount": 3000.0,
+    "billerId": 2334
+  },
+  {
+    "id": 2411,
+    "name": "9MOBILE 11.5 GB DATA BUNDLE",
+    "slug": "9MOBILE_115_GB_DATA_BUNDLE",
+    "amount": 8000.0,
+    "billerId": 2334
+  },
+  {
+    "id": 2412,
+    "name": "9MOBILE 15 GB DATA BUNDLE",
+    "slug": "9MOBILE_15_GB_DATA_BUNDLE",
+    "amount": 10000.0,
+    "billerId": 2334
+  },
+  {
+    "id": 2413,
+    "name": "9MOBILE 27.5 GB DATA BUNDLE",
+    "slug": "9MOBILE_275_GB_DATA_BUNDLE",
+    "amount": 18000.0,
+    "billerId": 2334
+  },
+  {
+    "id": 2414,
+    "name": "9MOBILE 30 GB DATA BUNDLE",
+    "slug": "9MOBILE_30_GB_DATA_BUNDLE",
+    "amount": 27500.0,
+    "billerId": 2334
+  },
+  {
+    "id": 2424,
+    "name": "9MOBILE 60 GB DATA BUNDLE",
+    "slug": "9MOBILE_60_GB_DATA_BUNDLE",
+    "amount": 55000.0,
+    "billerId": 2334
+  }
+]

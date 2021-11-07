@@ -6,7 +6,14 @@ import {
   verifySmartcardNumber,
   clearVerified,
 } from "../../../_action/verifyNumber";
-import { MenuItem, TextField, Button } from "@material-ui/core";
+import {
+  MenuItem,
+  TextField,
+  Select,
+  FormControl,
+  InputLabel,
+  Button,
+} from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../../_action/Payment/index";
 import Alert from "@material-ui/lab/Alert";
@@ -16,21 +23,17 @@ import { verify } from "../../../_action/verify";
 import "../../../css/input.css";
 import Slide from "@material-ui/core/Slide";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
+import axios from "axios";
+import gotv from "./jsonData/gotv.json";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function Cable(props) {
-  const dispatch = useDispatch();
-  // const user = useSelector((state) => state.authUser);
-  const user = useSelector((state) =>
-    state.authUser.user === null ? "" : state.authUser.user
-  );
   const error = useSelector((state) => state.error);
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
-  const paymentButton = useSelector((state) => state.paymentButton);
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [buttonValue, setButtonValue] = useState(null);
@@ -39,13 +42,11 @@ function Cable(props) {
   const [open, setOpen] = React.useState(false);
   const [smartCard, setSmartCard] = useState("");
   const [selectDetails, setSelectDetails] = useState(null);
-  const [email, setEmail] = useState("");
   const productDetails = useSelector((state) => state.someData.detail);
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const [verifiedAccount, setVerifiedAccount] = useState(null);
   const [verifiedProducts, setVerifiedProducts] = useState(null);
-
-  console.log(verifiedProducts);
+  const [selectName, setSelectName] = useState(null);
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -71,6 +72,24 @@ function Cable(props) {
     }
   }, [error.error === true]);
 
+  const handleSelect = (e) => {
+    setSelectDetails(e.target.value);
+
+    gotv.map((allData) => {
+      if (allData.amount === parseInt(e.target.value)) {
+        setSelectName(allData.slug);
+      }
+    });
+  };
+
+  const handleOthers = (e, name) => {
+    const newValues = { ...smartCard };
+    newValues[name] = e.target.value;
+    setSmartCard(newValues);
+  };
+
+  console.log(smartCard);
+
   const handleSubmit = (value) => {
     setButtonValue(value);
     if (value === "FLUTTERWAVE") {
@@ -79,35 +98,68 @@ function Cable(props) {
       setDisabledUssd(true);
     }
 
-    const newValuesObj = {
-      amount: props.amount,
-      channelRef: "web",
-      description: "Cable",
-      paymentMethod:
-        value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-      productId: `${productDetails.productId}`,
-      referenceValues: {
-        "SmartCard Number": `${verifiedUser.result.account.accountNumber}`,
-        "Email Address": `${email}`,
-        Package: selectDetails === null ? "" : selectDetails.productName,
-        "Customer Name":
-          verifiedAccount === null ? "" : verifiedAccount.accountName,
-      },
-      references: [
-        "SmartCard Number",
-        "Email Address",
-        "Package",
-        "Customer Name",
-      ],
-    };
+    if (selectDetails === null || smartCard === null || selectName === null) {
+      setTimeout(() => {
+        setErrors("Please input all Fields");
+      }, 500);
+    } else {
+      if (smartCard["phoneNumber"] && smartCard["email"]) {
+        setErrors("");
+        const newValuesObj = {
+          amount: selectDetails === null ? "" : selectDetails,
+          channelRef: "web",
+          description: "Airtime",
+          paymentMethod:
+            value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+          productId: `${productDetails.productId}`,
+          referenceValues: {
+            customerId: `${
+              verifiedUser.result === null
+                ? ""
+                : verifiedUser.result.account.accountNumber
+            }`,
+            customerName: `${smartCard["email"]}`,
+            phoneNumber: `${smartCard["phoneNumber"]}`,
+            packageSlug: selectName === null ? "" : selectName,
+            email: `${smartCard["email"]}`,
+          },
+          references: [
+            "email",
+            "packageSlug",
+            "phoneNumber",
+            "customerName",
+            "customerId",
+          ],
+        };
 
-    // console.log(newValuesObj);
-
-    props.handleSubmit(value, newValuesObj);
+        props.handleSubmit(value, newValuesObj);
+      } else {
+        setTimeout(() => {
+          setErrors("Please input all Fields");
+        }, 500);
+      }
+    }
   };
 
-  const handleFieldChange = (e) => {
-    setEmail(e.target.value);
+  const verifyMeterNumber = async () => {
+    const details = {
+      product: productDetails.productId,
+      billerCode: "GOTV",
+      accountNumber: smartCard.customerId,
+      extras: {
+        billerSlug: "GOTV",
+        customerId: smartCard.customerId,
+        productName: "GOTV",
+      },
+    };
+
+    props.verifySmartcardNumber(details);
+  };
+
+  const SmartNumber = async (e) => {
+    e.preventDefault();
+    props.setLoading(true);
+    let result = verifyMeterNumber();
   };
 
   const item = JSON.parse(productDetails.detail.productvalue);
@@ -118,6 +170,7 @@ function Cable(props) {
 
   useEffect(() => {
     if (verifiedUser.verifySuccess === true) {
+      // alert("intent")
       setLoading(false);
       setVerifiedProducts(verifiedUser.result.product);
       setVerifiedAccount(verifiedUser.result.account);
@@ -128,136 +181,188 @@ function Cable(props) {
   return (
     <div className="property-details-area">
       <div>
-        {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Cable" ? (
+        {verifyUserdetails.onclick === false &&
+        verifyUserdetails.name === "" ? (
           <div>
             <div>
-              <div className="d-flex align-item-center justify-content-center">
-                <div className="inputSize text-right allnew">
-                  <p>Account Name</p>
-                  <p
-                    style={{
-                      display: "flex",
-                      right: 0,
-                      marginLeft: "20px",
-                    }}
-                  >
-                    {verifiedAccount === null
-                      ? ""
-                      : verifiedAccount.accountName}
-                  </p>
-                </div>
-              </div>
-              <div className="d-flex align-item-center justify-content-center">
-                <div className="inputSize text-right pt-3 allnew">
-                  <p>Account Number</p>
-                  <p
-                    className=""
-                    style={{
-                      display: "flex",
-                      right: 0,
-                      marginLeft: "20px",
-                    }}
-                  >
-                    {verifiedAccount === null
-                      ? ""
-                      : verifiedAccount.accountNumber}
-                  </p>
-                </div>
+              <div>
+                {fieldsArray.map((allFields, i) =>
+                  allFields.text === "customerId" &&
+                  allFields.lookup === true ? (
+                    <div
+                      key={i}
+                      className="d-flex align-item-center justify-content-center pt-3"
+                    >
+                      <TextField
+                        className="inputSize"
+                        required
+                        label={
+                          allFields.text === "customerId"
+                            ? "SmartCard Number"
+                            : ""
+                        }
+                        onChange={(e) => handleOthers(e, allFields.text)}
+                        type={allFields.text === "email" ? "email" : "number"}
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment:
+                            allFields.text === "Amount" ? (
+                              <InputAdornment position="start">
+                                ₦
+                              </InputAdornment>
+                            ) : (
+                              ""
+                            ),
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )
+                )}
               </div>
             </div>
 
-            {/* bouquet */}
-            <div className="d-flex justify-content-center">
-              <div className="text-right pt-3">
-                <p style={{ float: "left", marginRight: "15px" }}>
-                  Bouquet Type:{" "}
-                </p>
-                <p
-                  className=""
-                  style={{
-                    display: "flex",
-                    right: 0,
-                    marginLeft: "20px",
-                  }}
-                >
-                  {props.packageName}
-                </p>
-              </div>
+            <div className="d-flex align-item-center justify-content-center">
+              <Button
+                onClick={SmartNumber}
+                variant="contained"
+                className="p-3"
+                style={{
+                  backgroundColor: "#fda94f",
+                  cursor:
+                    props.disabledUssd === true ? "not-allowed" : "pointer",
+                  color: "#000",
+                  fontSize: "12px",
+                  padding: "11px",
+                }}
+              >
+                Verify
+              </Button>
             </div>
           </div>
         ) : (
           ""
         )}
 
-        {/* Email address */}
         {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Cable"
-          ? fieldsArray.slice(1).map((allFields, i) =>
-              allFields.select === false && allFields.text === "Email" ? (
-                <>
+        verifyUserdetails.name === "Cable" ? (
+          <div>
+            <div className="d-flex align-item-center justify-content-center pt-3">
+              <p className="mr-5">Customer Name:</p>
+              <p>
+                {verifiedUser.result === null
+                  ? ""
+                  : verifiedUser.result.account.accountName}
+              </p>
+            </div>
+            <div className="d-flex align-item-center justify-content-center pt-3">
+              <p className="mr-5">SmartCard Number:</p>
+              <p>
+                {verifiedUser.result === null
+                  ? ""
+                  : verifiedUser.result.account.accountNumber}
+              </p>
+            </div>
+            <div className="">
+              <div className="pt-3">
+                <div className="d-flex align-item-center justify-content-center">
+                  <select
+                    value={selectDetails === null ? "" : selectDetails["name"]}
+                    onChange={(e) => handleSelect(e)}
+                    className="p-3"
+                    id="inputSize"
+                    style={{ borderRadius: "3px" }}
+                  >
+                    <option>Select bouquet</option>
+                    {gotv.map((allData, i) => (
+                      // console.log(allData)
+                      <option
+                        onClick={(e) => handleSelectClick(e, allData.name)}
+                        value={allData.amount}
+                        key={i}
+                      >
+                        {allData.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              {fieldsArray.map((allFields, i) =>
+                allFields.text === "customerId" ||
+                allFields.text === "amount" ? (
+                  ""
+                ) : allFields.select !== true ? (
                   <div
                     key={i}
                     className="d-flex align-item-center justify-content-center pt-3"
                   >
                     <TextField
-                      required
-                      // style={{ width: "50%" }}
                       className="inputSize"
-                      label={allFields.text}
-                      name={allFields.text}
-                      onChange={handleFieldChange}
-                      placeholder={`Enter ${allFields.text}`}
-                      type="email"
+                      required
+                      label={
+                        allFields.text === "phoneNumber"
+                          ? "Phone Number"
+                          : allFields.text === "email"
+                          ? "Email"
+                          : ""
+                      }
+                      onChange={(e) => handleOthers(e, allFields.text)}
+                      type={allFields.text === "email" ? "email" : "number"}
                       variant="outlined"
-                      value={email}
                     />
                   </div>
-                </>
-              ) : (
+                ) : (
+                  ""
+                )
+              )}
+            </div>
+            {fieldsArray.map((allFields, i) =>
+              allFields.text === "customerId" ||
+              allFields.text === "email" ||
+              allFields.text === "phoneNumber" ? (
                 ""
-              )
-            )
-          : ""}
-
-        {/* amount */}
-        {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Cable"
-          ? fieldsArray.slice(1).map((allFields, i) =>
-              allFields.select === false &&
-              allFields.text !== "Email" &&
-              allFields.text !== "Customer Name" ? (
-                // <>
+              ) : allFields.select !== true ? (
                 <div
                   key={i}
                   className="d-flex align-item-center justify-content-center pt-3"
                 >
                   <TextField
-                    required
                     className="inputSize"
-                    label={allFields.text}
-                    name={allFields.text}
-                    value={props.amount}
-                    placeholder={`Enter ${allFields.text}`}
-                    type="number"
+                    required
+                    label={allFields.text === "amount" ? "Amount" : ""}
+                    onChange={(e) => handleOthers(e, allFields.text)}
+                    value={selectDetails === null ? "" : selectDetails}
+                    disabled
+                    type={allFields.text === "email" ? "email" : "number"}
                     variant="outlined"
                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">₦</InputAdornment>
-                      ),
+                      startAdornment:
+                        allFields.text === "amount" ? (
+                          <InputAdornment position="start">₦</InputAdornment>
+                        ) : (
+                          ""
+                        ),
                     }}
-                    disabled
                   />
                 </div>
               ) : (
                 ""
               )
-            )
-          : ""}
+            )}
+          </div>
+        ) : (
+          ""
+        )}
+
         {verifyUserdetails.onclick === true &&
         verifyUserdetails.name === "Cable" ? (
-          <div className="ButtonSide">
-            <div>
+          // <div className="ButtonSide">
+          <div>
+            <div className="d-flex justify-content-center">
               {props.disabledCard === true ? (
                 <button
                   onClick={(e) => {
@@ -288,7 +393,7 @@ function Cable(props) {
                 </button>
               )}
             </div>
-            <div>
+            {/* <div>
               {props.disabledUssd === true ? (
                 <button
                   onClick={(e) => {
@@ -301,7 +406,6 @@ function Cable(props) {
               ) : (
                 <div>
                   <button
-                    // className="btn"
                     value={USSD_KEY}
                     onClick={(e) => {
                       handleSubmit(USSD_KEY);
@@ -320,14 +424,12 @@ function Cable(props) {
                   </button>{" "}
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         ) : (
           ""
         )}
       </div>
-      {/* </>
-      )} */}
     </div>
   );
 }

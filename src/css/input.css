@@ -1,9 +1,20 @@
 .inputSize {
-  width: 50%
+  width: 50%;
+}
+
+#inputSize {
+  width: 50%;
+  text-align-last: center;
+  padding-right: 29px;
+  /* direction: rtl; */
 }
 
 @media (max-width: 480px) {
   .inputSize {
+    width: 100%;
+  }
+
+  #inputSize {
     width: 100%;
   }
 }

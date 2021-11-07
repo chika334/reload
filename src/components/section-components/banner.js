@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import backgroundImage from "../../images/background.jpeg";
 import { Modal } from "@material-ui/core";
-// import searchLoading from "../../images/searchLoading.gif";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { hideLoader, showLoader } from "../../_action/loading";
@@ -10,9 +9,7 @@ import "../../css/banner.css";
 import Carousel from "react-material-ui-carousel";
 import { someData } from "../../_action/passingData";
 import { makeStyles } from "@material-ui/core/styles";
-// import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-// import GoogleAd from "../../Layout";
 import first from "../../images/1.jpeg";
 import second from "../../images/2.jpeg";
 import third from "../../images/3.jpeg";
@@ -53,16 +50,9 @@ const SearchbarDropdown = (props) => {
     "5.jpeg",
     "6.jpeg",
   ]);
-  // const { options, onInputChange, searchStart } = props;
   const [saveData, setSaveData] = useState([]);
   const [modalStyle] = React.useState(getModalStyle);
-  // const [imgsLoaded, setImgsLoaded] = useState(false);
   const [modal, setModal] = useState(false);
-  // const history = useHistory();
-  // const dispatch = useDispatch();
-
-  console.log(saveData);
-
   const inlineStyle = {
     backgroundImage: `url(${backgroundImage})`,
     height: "95vh",
@@ -71,8 +61,6 @@ const SearchbarDropdown = (props) => {
     backgroundSize: "cover",
     position: "relative",
   };
-
-  console.log(props);
 
   useEffect(() => {
     fetchData();
@@ -134,39 +122,24 @@ const SearchbarDropdown = (props) => {
                             <div className="search-bar-dropdown">
                               <Carousel style={{ position: "fixed" }}>
                                 {!saveData || !saveData.length ? (
-                                  // <LazyLoadImage
-                                  //   alt="..."
-                                  //   effect="blur"
-                                  //   src={first}
-                                  // />
                                   <img
-                                      src={first}
-                                      alt="..."
-                                      style={{
-                                        webkitTransition:
-                                          "background-image 5s ease-in-out",
-                                        transition:
-                                          "background-image 5s ease-in-out",
-                                      }}
-                                    />
+                                    src={first}
+                                    alt="..."
+                                    style={{
+                                      webkitTransition: "5s ease-in-out",
+                                      transition: "5s ease-in-out",
+                                    }}
+                                  />
                                 ) : (
                                   saveData.map((item, i) => (
                                     <img
                                       src={item}
                                       alt="..."
                                       style={{
-                                        webkitTransition:
-                                          "background-image 5s ease-in-out",
-                                        transition:
-                                          "background-image 5s ease-in-out",
+                                        webkitTransition: "5s ease-in-out",
+                                        transition: "5s ease-in-out",
                                       }}
                                     />
-                                    // <LazyLoadImage
-                                    //   alt="..."
-                                    //   effect="blur"
-                                    //   key={i}
-                                    //   src={item}
-                                    // />
                                   ))
                                 )}
                               </Carousel>
@@ -179,7 +152,6 @@ const SearchbarDropdown = (props) => {
                 </div>
                 <Index /> {/*  the search banner */}
               </div>
-              {/* </div> */}
             </div>
           </div>
         </div>

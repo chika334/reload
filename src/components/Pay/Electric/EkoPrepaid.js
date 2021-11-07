@@ -15,51 +15,12 @@ import "../../../css/input.css";
 import { useHistory } from "react-router-dom";
 import Slide from "@material-ui/core/Slide";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+// import FormControl from "@material-ui/core/FormControl";
+// import Select from "@material-ui/core/Select";
 // import NativeSelect from "@material-ui/core/NativeSelect";
 import InputBase from "@material-ui/core/InputBase";
 import { withStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    "label + &": {
-      marginTop: theme.spacing(3),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: "relative",
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #ced4da",
-    fontSize: 16,
-    padding: "10px 26px 10px 12px",
-    transition: theme.transitions.create(["border-color", "box-shadow"]),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:focus": {
-      borderRadius: 4,
-      borderColor: "#80bdff",
-      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-    },
-  },
-}))(InputBase);
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+// import InputLabel from "@material-ui/core/InputLabel";
 
 function Eko(props) {
   const [loading, setLoading] = useState(false);
@@ -69,9 +30,9 @@ function Eko(props) {
   const user = useSelector((state) =>
     state.authUser.user === null ? "" : state.authUser.user
   );
-  const [disabledCard, setDisabledCard] = useState(false);
-  const [disabledUssd, setDisabledUssd] = useState(false);
-  const [buttonValue, setButtonValue] = useState(null);
+  // const [disabledCard, setDisabledCard] = useState(false);
+  // const [disabledUssd, setDisabledUssd] = useState(false);
+  // const [buttonValue, setButtonValue] = useState(null);
   const error = useSelector((state) => state.error);
   const [errors, setErrors] = useState("");
   const [failure, setFailure] = useState("");
@@ -81,27 +42,11 @@ function Eko(props) {
   const [open, setOpen] = React.useState(false);
   const [selectDetails, setSelectDetails] = useState(null);
   const verifiedUser = useSelector((state) => state.verify);
-  const paymentButton = useSelector((state) => state.paymentButton);
+  // const paymentButton = useSelector((state) => state.paymentButton);
   const productDetails = useSelector((state) => state.someData.detail);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
-  const paymentIntent = useSelector((state) => state.paymentIntent);
-  const [meterType, setMeterType] = useState("");
-  const pays = useSelector((state) =>
-    state.paymentDone.payment === true ? state.paymentDone.detail : ""
-  );
   const [verifiedAccount, setVerifiedAccount] = useState(null);
   const [verifiedProducts, setVerifiedProducts] = useState(null);
-  // const [age, setAge] = React.useState("");
-
-  const handleSelectMeterType = (event) => {
-    setMeterType(event.target.value);
-  };
-
-  console.log(otherValues);
-
-  const handleSmartCard = (e) => {
-    setSmartCard(e.target.value);
-  };
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -168,8 +113,6 @@ function Eko(props) {
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
-
-  const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
 
   const Options =
     JSON.parse(productDetails.detail.productvalue).field6 === undefined

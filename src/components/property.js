@@ -1,19 +1,14 @@
-import React from 'react';
-import Navbar from './global-components/navbar';
-import PageHeader from './global-components/page-header';
-import PropertySection from './section-components/property';
-import TopAuthor from './section-components/top-author';
-import Footer from './global-components/footer';
+import React from "react";
+import PageHeader from "./global-components/page-header";
+import PropertySection from "./section-components/property";
 
 const Property = () => {
-    return <div>
-        {/* <Navbar /> */}
-        <PageHeader headertitle="Products" />
-        <PropertySection />
-        {/* <TopAuthor /> */}
-        {/* <Footer /> */}
+  return (
+    <div>
+      <PageHeader headertitle="Products" />
+      <PropertySection />
     </div>
-}
+  );
+};
 
-export default Property
-
+export default Property;

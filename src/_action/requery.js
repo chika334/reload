@@ -1,8 +1,9 @@
 import axios from "axios";
 import { tokenConfig } from "./userAction";
-import { REQUERY, REQUERY_FAILED } from "./types";
+import { REQUERY, FINAL_PAYMENT_ERROR } from "./types";
 import { returnErrors } from "./errorAction";
 import { secondTokenConfig } from "./userAction";
+import { dataValue } from "./Payment/data";
 
 export const requery = (value) => (dispatch, getState) => {
   const config = {
@@ -25,13 +26,10 @@ export const requery = (value) => (dispatch, getState) => {
       })
     )
     .catch((err) => {
-      if (err.response) {
-        dispatch(
-          returnErrors(err.response.data, err.response.status, "REQUERY_FAILED")
-        );
-      }
+      dispatch(dataValue("requery", true));
       dispatch({
-        type: REQUERY_FAILED,
+        type: FINAL_PAYMENT_ERROR,
+        payload: { requestFailed: true, requery: true },
       });
     });
 };

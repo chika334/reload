@@ -6,7 +6,6 @@ import {
   verifySmartcardNumber,
   clearVerified,
 } from "../../_action/verifyNumber";
-// import CoralUssd from "../../components/CorralUssd/App";
 import {
   MenuItem,
   TextField,
@@ -16,46 +15,30 @@ import {
   InputLabel,
   Box,
 } from "@material-ui/core";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../_action/Payment/index";
 import Alert from "@material-ui/lab/Alert";
-import { pay, paymentButtons } from "../../_action/Payment/paymentButtons";
+import { pay } from "../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../_action/errorAction";
 import { verify } from "../../_action/verify";
 import "../../css/input.css";
-import Slide from "@material-ui/core/Slide";
-import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
 import Dstv from "./Cable/Dstv";
 import Gotv from "./Cable/Gotv";
 import Startimes from "./Cable/Startimes";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 function Cable(props) {
   const dispatch = useDispatch();
-  // const user = useSelector((state) => state.authUser);
-  const user = useSelector((state) =>
-    state.authUser.user === null ? "" : state.authUser.user
-  );
   const error = useSelector((state) => state.error);
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
-  const paymentButton = useSelector((state) => state.paymentButton);
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
-  const [buttonValue, setButtonValue] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState("");
-  const [open, setOpen] = React.useState(false);
   const [smartCard, setSmartCard] = useState("");
   const [selectDetails, setSelectDetails] = useState(null);
-  const [email, setEmail] = useState("");
   const productDetails = useSelector((state) => state.someData.detail);
   const paymentIntent = useSelector((state) => state.paymentIntent);
-  const [verifiedAccount, setVerifiedAccount] = useState(null);
-  const [verifiedProducts, setVerifiedProducts] = useState(null);
+  const [buttonValue, setButtonValue] = useState(null);
   const [valueData, setValueData] = useState(null);
 
   useEffect(() => {
@@ -83,7 +66,7 @@ function Cable(props) {
   }, [error.error === true]);
 
   const handleSubmit = (value, data) => {
-    console.log("submitData", data);
+    setLoading(true);
     setButtonValue(value);
     setValueData(data);
     if (value === "FLUTTERWAVE") {
@@ -95,38 +78,91 @@ function Cable(props) {
     props.PaymentIntent(data);
   };
 
+  // useEffect(() => {
+  //   if (paymentIntent.success === true) {
+  //     setLoading(false);
+
+  //     let generalAmount = valueData === null ? "" : valueData.amount;
+
+  //     let amounts =
+  //       valueData === null
+  //         ? ""
+  //         : productDetails.billerCode === "DSTV1"
+  //         ? parseInt(valueData.referenceValues["Subscription Amount"])
+  //         : generalAmount;
+  //     let emails =
+  //       productDetails.billerCode === "GOTV"
+  //         ? valueData === null
+  //           ? ""
+  //           : valueData.referenceValues["email"]
+  //         : valueData === null
+  //         ? ""
+  //         : valueData.referenceValues["Email Address"];
+
+  //     console.log(emails);
+
+  //     const detail = {
+  //       amount: amounts,
+  //       email: emails,
+  //       product: productDetails.productname,
+  //       customerId:
+  //         verifiedUser.result === null
+  //           ? ""
+  //           : verifiedUser.result.account.accountNumber,
+  //       buttonClick: buttonValue,
+  //       transRef: paymentIntent.detail.transRef,
+  //       customerName:
+  //         productDetails.billerCode === "DSTV1" && verifiedUser.result === null
+  //           ? ""
+  //           : verifiedUser.result.account.accountName,
+  //     };
+
+  //     console.log(detail);
+
+  //     dispatch(pay(detail));
+  //     props.dataPay(true, "Cable");
+  //   }
+  // }, [paymentIntent.success]);
+
   useEffect(() => {
     if (paymentIntent.success === true) {
+
+      let generalAmount = valueData === null ? "" : parseInt(valueData.amount);
+      let emails =
+        productDetails.billerCode === "GOTV"
+          ? valueData === null
+            ? ""
+            : valueData.referenceValues["email"]
+          : valueData === null
+          ? ""
+          : valueData.referenceValues["Email Address"];
+
+      // pro
       setLoading(false);
-      // console.log("Data", valueData);
-
-      let valueAmount =
-        valueData === null ? "" : valueData["Subscription Amount"];
-      let generalAmount = valueData === null ? "" : valueData.amount;
-
       let amounts =
         valueData === null
           ? ""
           : productDetails.billerCode === "DSTV1"
-          ? valueAmount
+          ? parseInt(valueData.referenceValues["Subscription Amount"])
           : generalAmount;
-      let emails =
-        valueData === null ? "" : valueData.referenceValues["Email Address"];
+
       const detail = {
         amount: amounts,
         email: emails,
         product: productDetails.productname,
-        accountNumber:
+        customerId:
           verifiedUser.result === null
             ? ""
             : verifiedUser.result.account.accountNumber,
         buttonClick: buttonValue,
         transRef: paymentIntent.detail.transRef,
         customerName:
-          productDetails.billerCode === "DSTV1" && verifiedUser.result === null
+          verifiedUser.result === null
             ? ""
             : verifiedUser.result.account.accountName,
       };
+
+      console.log(detail, valueData);
 
       dispatch(pay(detail));
       props.dataPay(true, "Cable");
@@ -155,10 +191,6 @@ function Cable(props) {
       },
     };
 
-    console.log(details);
-
-    // const valueData = JSON.stringify(details);
-
     props.verifySmartcardNumber(details);
   };
 
@@ -174,14 +206,6 @@ function Cable(props) {
     fieldsArray.push(item[data]);
   }
 
-  console.log(JSON.parse(productDetails.detail.productvalue).field3.options);
-
-  // const Options =
-  //   productDetails.billerCode === "DSTV1"
-  //     ? JSON.parse(productDetails.detail.productvalue).field3.options
-  //     : productDetails.billerCode === "GOTV1"
-  //     ? JSON.parse(productDetails.detail.productvalue).field4.options
-  //     : "";
   const Options =
     productDetails.billerCode === "DSTV1"
       ? JSON.parse(productDetails.detail.productvalue).field3.options
@@ -189,15 +213,11 @@ function Cable(props) {
       ? JSON.parse(productDetails.detail.productvalue).field4.options
       : "";
 
-  // const Options = JSON.parse(productDetails.detail.productvalue).field3.options
-
-  // console.log(Options);
-
   const fieldsOption = [];
   for (const key in Options) {
     if (Options.hasOwnProperty(key)) {
       var value = Options[key];
-      console.log(value);
+      // console.log(value);
       fieldsOption.push(value);
     }
   }
@@ -207,8 +227,8 @@ function Cable(props) {
   useEffect(() => {
     if (verifiedUser.verifySuccess === true) {
       setLoading(false);
-      setVerifiedProducts(verifiedUser.result.product);
-      setVerifiedAccount(verifiedUser.result.account);
+      // setVerifiedProducts(verifiedUser.result.product);
+      // setVerifiedAccount(verifiedUser.result.account);
       props.verify("Cable", true);
     }
   }, [verifiedUser.verifySuccess]);
@@ -251,7 +271,6 @@ function Cable(props) {
                             value={smartCard}
                           />
                         </div>
-                        {/* {productDetails.billerCode === "DSTV1" ? ( */}
                         <div className="d-flex justify-content-center">
                           <FormControl
                             variant="filled"
@@ -271,11 +290,7 @@ function Cable(props) {
                                     return (
                                       <MenuItem
                                         key={index}
-                                        value={
-                                          selectDetails === null
-                                            ? ""
-                                            : selectDetails["ItemName"]
-                                        }
+                                        value={data.ItemName}
                                         onClick={(e) => handleSelect(data)}
                                       >
                                         {data.ItemName}
@@ -302,13 +317,7 @@ function Cable(props) {
                         </div>
                       </>
                     ) : (
-                      <>
-                        <Startimes
-                          disabledCard={disabledCard}
-                          disabledUssd={disabledUssd}
-                          handleSubmit={handleSubmit}
-                        />
-                      </>
+                      ""
                     )}
                   </>
                 ) : (
@@ -319,39 +328,53 @@ function Cable(props) {
               )}
             </div>
           </div>
+          {productDetails.billerCode === "STARTIMES" ? (
+            <Startimes
+              disabledCard={disabledCard}
+              disabledUssd={disabledUssd}
+              handleSubmit={handleSubmit}
+              setLoading={setLoading}
+            />
+          ) : (
+            ""
+          )}
+
+          {productDetails.billerCode === "GOTV" ? (
+            <>
+              <p className="text-center mb-5" style={{ color: "red" }}>
+                N.B. Please select your current bouquet plan
+              </p>
+              <Gotv
+                disabledCard={disabledCard}
+                disabledUssd={disabledUssd}
+                handleSubmit={handleSubmit}
+                setLoading={setLoading}
+              />
+            </>
+          ) : (
+            ""
+          )}
 
           {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Cable" ? (
             <div>
-              <p className="text-center mb-5" style={{ color: "red" }}>
-                N.B. Please select your current bouquet plan
-              </p>
               {productDetails.billerCode === "DSTV1" ? (
-                <Dstv
-                  disabledCard={disabledCard}
-                  disabledUssd={disabledUssd}
-                  handleSubmit={handleSubmit}
-                  amount={selectDetails === null ? "" : selectDetails.Amount}
-                  packageType={
-                    selectDetails === null ? "" : selectDetails.ItemType
-                  }
-                />
-              ) : (
-                ""
-              )}
-              {productDetails.billerCode === "GOTV1" ? (
-                <Gotv
-                  disabledCard={disabledCard}
-                  disabledUssd={disabledUssd}
-                  handleSubmit={handleSubmit}
-                  amount={selectDetails === null ? "" : selectDetails.Amount}
-                  packageType={
-                    selectDetails === null ? "" : selectDetails.ItemType
-                  }
-                  packageName={
-                    selectDetails === null ? "" : selectDetails.ItemName
-                  }
-                />
+                <>
+                  <p className="text-center mb-5" style={{ color: "red" }}>
+                    N.B. Please select your current bouquet plan
+                  </p>
+                  <Dstv
+                    disabledCard={disabledCard}
+                    disabledUssd={disabledUssd}
+                    dataPay={props.dataPay}
+                    setLoading={setLoading}
+                    handleSubmit={handleSubmit}
+                    amount={selectDetails === null ? "" : selectDetails.Amount}
+                    packageType={
+                      selectDetails === null ? "" : selectDetails.ItemType
+                    }
+                  />
+                </>
               ) : (
                 ""
               )}

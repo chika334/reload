@@ -36,32 +36,19 @@ function Property(props) {
   const dispatch = useDispatch();
   const [modalStyle] = React.useState(getModalStyle);
   const [modal, setModal] = useState(false);
-  const user = useSelector((state) => state.authUser.token);
   const getProducts = useSelector((state) => state.products);
-  // const someData
   const [productData, setProductData] = useState(
     getProducts.listProducts === null ? "" : getProducts.listProducts
   );
 
   const handlePay = (details) => {
-    console.log(details.otherData.billerCode);
+    console.log(details);
     if (details.otherData.billerCode === null) {
       setModal(true);
     } else {
       if (
-        // details.otherData.billerCode === "DSTV2" ||
-        // details.otherData.billerCode === "startimes" ||
-        // details.otherData.billerCode === "GOTV2" ||
-        // details.otherData.billerCode === "KADUNA_PREPAID" ||
-        // details.otherData.billerCode === "KANO_PREPAID" ||
-        // details.otherData.billerCode === "PHCNEKO" ||
-        // details.otherData.billerCode === "JOS_PREPAID"
-        // details.otherData.billerCode === "9mobiledata1" ||
-        // details.otherData.billerCode === "NTELBundle" ||
         details.otherData.productId.productname ===
           "Ibadan Electricity Prepaid" ||
-        // details.otherData.productId.billerCode === "PHEDDIR2" ||
-        // details.otherData.billerCode === "SMILE" ||
         details.otherData.productId.productname === "Jamb Exams" ||
         details.otherData.productId.productname === "Waec Exams Registration" ||
         details.otherData.productId.productname === "Benin Electricity Prepaid"
@@ -90,10 +77,8 @@ function Property(props) {
                 };
                 dispatch(someData(data));
                 let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                console.log(path);
                 history.push({
                   pathname: path,
-                  // search: `product=${detail.productId.description}`,
                 });
               }
             });
@@ -108,7 +93,7 @@ function Property(props) {
   const handleBtn = (e) => {
     let word = e.target.value;
 
-    if (word === "*") {
+    if (word === "") {
       setProductData(
         getProducts.listProducts === null ? "" : getProducts.listProducts
       );
@@ -160,14 +145,12 @@ function Property(props) {
             );
       setProductData(filtered);
     } else if (word === "Loan") {
-      // alert("Work in process")
-      // history.push("/loan");
-      // window.location.href = `/${process.env.REACT_APP_RELOADNG}/loan`;
-      if (user === null) {
-        history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
-      } else {
-        window.location.href = `https://loan-xi.vercel.app/`;
-      }
+      setModal(true);
+      // if (user === null) {
+      //   history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
+      // } else {
+      //   window.location.href = `https://loan-xi.vercel.app/`;
+      // }
     }
   };
 
@@ -199,7 +182,7 @@ function Property(props) {
                 <div className="property-filter-menu portfolio-filter text-center">
                   <button
                     style={{ backgroundColor: "#fda94f", color: "#000" }}
-                    value="*"
+                    value=""
                     onClick={handleBtn}
                     className="active"
                   >
@@ -250,17 +233,14 @@ function Property(props) {
                 </div>
               </div>
             </div>
-            {/* diabledCard */}
           </div>
           {/*Products filter Start*/}
           <div className="desktop-products">
             <div className="property-filter-area row custom-gutter">
-              {/* <div className="gallery-sizer col-1" /> */}
               {productData !== "" &&
                 productData.map((item, i) => (
                   <div
                     key={i}
-                    // style={productData.billerCode= ""}
                     className={
                       item.billerCode === "9mobiledata1"
                         ? "disabledCardProduct col-lg-3 col-sm-6"
@@ -268,7 +248,6 @@ function Property(props) {
                           item.productId.description
                     }
                   >
-                    {/* {console.log(item.billerCode === "9mobiledata1")} */}
                     <div className="single-feature">
                       <div className="details">
                         <img
@@ -291,7 +270,16 @@ function Property(props) {
                         </ul>
                         <ul className="contact-list">
                           <li className="readeal-top">
-                            {/* {item.billerCode === "9mobiledata1" || */}
+                            {/* {item.billerCode === "Smile-Data_BLACKSILICON" ||
+                            item.billerCode === "Glo-Data_BLACKSILICON" ||
+                            item.billerCode === "9mobile-Data_BLACKSILICON" ||
+                            item.billerCode === "Airtel-Data_BLACKSILICON" ||
+                            item.billerCode === "Mtn-Data_BLACKSILICON" ||
+                            item.billerCode === "GOTV" ||
+                            item.productId.description === "Airtime" ? (
+                              <>Product Under Test</>
+                            ) : (
+                              <> */}
                             {item.billerCode === "STARTIMES" ||
                             item.billerCode === "IBEDC_F" ||
                             item.billerCode === null ? (
@@ -332,37 +320,64 @@ function Property(props) {
                     productData.map((item, i) => (
                       <div key={i} className="columns p-3">
                         <div>
-                          {/* {item.billerCode === "9mobiledata1" || */}
-                          {item.billerCode === "STARTIMES" ||
-                          item.billerCode === null ? (
-                            <Button
-                              disabled
-                              onClick={(e) => handlePay({ otherData: item })}
-                            >
-                              <div>
-                                <img
-                                  src={item.productId.logourl}
-                                  style={{
-                                    maxWidth: "70px",
-                                    backgroundAttachment: "fixed",
-                                    overflow: "hidden",
-                                    filter: "blur(2px)",
-                                  }}
-                                  alt="img"
-                                />
-                                <span>Unavailable</span>
-                              </div>
-                            </Button>
-                          ) : (
-                            <Button
-                              onClick={(e) => handlePay({ otherData: item })}
-                            >
+                          {item.billerCode === "Smile-Data_BLACKSILICON" ||
+                          item.billerCode === "Glo-Data_BLACKSILICON" ||
+                          item.billerCode === "9mobile-Data_BLACKSILICON" ||
+                          item.billerCode === "Airtel-Data_BLACKSILICON" ||
+                          item.billerCode === "Mtn-Data_BLACKSILICON" ||
+                          item.billerCode === "GOTV" ||
+                          item.productId.description === "Airtime" ? (
+                            <>
                               <img
                                 src={item.productId.logourl}
-                                style={{ maxWidth: "80px" }}
+                                style={{
+                                  maxWidth: "70px",
+                                  backgroundAttachment: "fixed",
+                                  overflow: "hidden",
+                                  filter: "blur(2px)",
+                                }}
                                 alt="img"
                               />
-                            </Button>
+                              <p style={{ fontSize: "15px" }}>Under Test</p>
+                            </>
+                          ) : (
+                            <>
+                              {item.billerCode === "STARTIMES" ||
+                              item.billerCode === null ? (
+                                <Button
+                                  disabled
+                                  onClick={(e) =>
+                                    handlePay({ otherData: item })
+                                  }
+                                >
+                                  <div>
+                                    <img
+                                      src={item.productId.logourl}
+                                      style={{
+                                        maxWidth: "70px",
+                                        backgroundAttachment: "fixed",
+                                        overflow: "hidden",
+                                        filter: "blur(2px)",
+                                      }}
+                                      alt="img"
+                                    />
+                                    <span>Unavailable</span>
+                                  </div>
+                                </Button>
+                              ) : (
+                                <Button
+                                  onClick={(e) =>
+                                    handlePay({ otherData: item })
+                                  }
+                                >
+                                  <img
+                                    src={item.productId.logourl}
+                                    style={{ maxWidth: "80px" }}
+                                    alt="img"
+                                  />
+                                </Button>
+                              )}
+                            </>
                           )}
                         </div>
                       </div>

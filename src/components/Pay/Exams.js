@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, TextField, SubmitButton } from "../Form/FormElements";
 import * as Yup from "yup";
-import FormPay from "../reg/Pay/FormPay";
 import { withRouter } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
 import WaecReg from "./waecReg";

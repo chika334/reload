@@ -16,7 +16,6 @@ export const verifySmartcardNumber = (valueData) => async (
       valueData,
       secondTokenConfig(getState)
     )
-    // .then((res) => res.data);
     .then((res) =>
       dispatch({
         type: VERIFY_SUCCESS,

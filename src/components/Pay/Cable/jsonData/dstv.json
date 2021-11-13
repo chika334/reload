@@ -1,0 +1,240 @@
+[
+  {
+    "id": 2321,
+    "name": "Asia Standalone",
+    "slug": "ASIA_STANDALONE",
+    "amount": 6200.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2323,
+    "name": "Compact",
+    "slug": "COMPACT",
+    "amount": 7900.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2324,
+    "name": "Compact Plus",
+    "slug": "COMPACT_PLUS",
+    "amount": 12400.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2325,
+    "name": "Premium",
+    "slug": "PREMIUM",
+    "amount": 18400.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2326,
+    "name": "Premium Asia",
+    "slug": "PREMIUM_ASIA",
+    "amount": 20500.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2327,
+    "name": "Premium French",
+    "slug": "PREMIUM_FRENCH",
+    "amount": 25550.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2328,
+    "name": "Asia Add-on",
+    "slug": "ASIA_ADD_ON",
+    "amount": 6200.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2329,
+    "name": "French Plus",
+    "slug": "FRENCH_PLUS",
+    "amount": 8100.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2330,
+    "name": "French Touch",
+    "slug": "FRENCH_TOUCH",
+    "amount": 2300.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2331,
+    "name": "French 11",
+    "slug": "FRENCH_11",
+    "amount": 3260.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2332,
+    "name": "HDPVR Access_Extraview",
+    "slug": "HDPVR_ACCESS_EXTRAVIEW",
+    "amount": 2500.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2333,
+    "name": "Box Office",
+    "slug": "BOX_OFFICE",
+    "amount": 650.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2344,
+    "name": "Compact and HDPVR/Extraview",
+    "slug": "COMPACT_AND_HDPVR_EXTRAVIEW",
+    "amount": 10400.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2345,
+    "name": "Compact Plus and HDPVR/Extraview",
+    "slug": "COMPACT_PLUS_AND_HDPVR_EXTRAVIEW",
+    "amount": 14900.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2346,
+    "name": "Premium and HDPVR/Extraview",
+    "slug": "PREMIUM_AND_HDPVR_EXTRAVIEW",
+    "amount": 20900.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2425,
+    "name": "Yanga",
+    "slug": "YANGA",
+    "amount": 2565.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2426,
+    "name": "Confam",
+    "slug": "CONFAM",
+    "amount": 4615.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2429,
+    "name": "Yanga and HDPVR/Extraview",
+    "slug": "YANGA_AND_HDPVR_EXTRAVIEW",
+    "amount": 5065.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2430,
+    "name": "Confam and HDPVR/Extraview",
+    "slug": "CONFAM_AND_HDPVR_EXTRAVIEW",
+    "amount": 7115.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2431,
+    "name": "Padi",
+    "slug": "PADI",
+    "amount": 1850.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2445,
+    "name": "Padi and HDPVR/Extraview",
+    "slug": "PADI_AND_HDPVR_EXTRAVIEW",
+    "amount": 4350.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2446,
+    "name": "Premium Asia and HDPVR Access_Extraview",
+    "slug": "PREMIUM_ASIA_AND_HDPVR_ACCESS_EXTRAVIEW",
+    "amount": 23000.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2447,
+    "name": "Premium French and HDPVR Access_Extraview",
+    "slug": "PREMIUM_FRENCH_AND_HDPVR_ACCESS_EXTRAVIEW",
+    "amount": 28050.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2448,
+    "name": "Great Wall",
+    "slug": "GREAT_WALL",
+    "amount": 1285.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2449,
+    "name": "Compact and Asia and HDPVR/Extraview",
+    "slug": "COMPACT_AND_ASIA_AND_HDPVR_EXTRAVIEW",
+    "amount": 16600.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2450,
+    "name": "Compact and Asia",
+    "slug": "COMPACT_AND_ASIA",
+    "amount": 14100.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2451,
+    "name": "Compact and French Touch",
+    "slug": "COMPACT_AND_FRENCH_TOUCH",
+    "amount": 10200.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2452,
+    "name": "Compact and French Plus",
+    "slug": "COMPACT_AND_FRENCH_PLUS",
+    "amount": 16000.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2453,
+    "name": "Compact and French Touch and HDPVR/Extraview",
+    "slug": "COMPACT_AND_FRENCH_TOUCH_AND_HDPVR_EXTRAVIEW",
+    "amount": 12700.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2454,
+    "name": "Compact Plus and Asia and HDPVR/Extraview",
+    "slug": "COMPACT_PLUS_AND_ASIA_AND_HDPVR_EXTRAVIEW",
+    "amount": 21100.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2455,
+    "name": "Compact Plus and French Plus and HDPVR/Extraview",
+    "slug": "COMPACT_PLUS_AND_FRENCH_PLUS_AND_HDPVR_EXTRAVIEW",
+    "amount": 23000.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2456,
+    "name": "Compact Plus and Asia",
+    "slug": "COMPACT_PLUS_AND_ASIA",
+    "amount": 18600.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2457,
+    "name": "Compact Plus and French Touch",
+    "slug": "COMPACT_PLUS_AND_FRENCH_TOUCH",
+    "amount": 14700.0,
+    "billerId": 2311
+  },
+  {
+    "id": 2458,
+    "name": "Compact Plus and French Plus",
+    "slug": "COMPACT_PLUS_AND_FRENCH_PLUS",
+    "amount": 20500.0,
+    "billerId": 2311
+  }
+]

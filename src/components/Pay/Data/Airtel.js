@@ -18,6 +18,7 @@ import Slide from "@material-ui/core/Slide";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
 import axios from "axios";
 import airtel from "./jsonData/airtel.json";
+import NewFormData from "../../Form/NewFormData";
 
 function Airtel(props) {
   const error = useSelector((state) => state.error);
@@ -131,7 +132,15 @@ function Airtel(props) {
 
   return (
     <div className="property-details-area">
-      {loading ? (
+      <NewFormData
+        product="Data"
+        disabledCard={props.disabledCard}
+        setDisabledCard={setDisabledCard}
+        slug="GLO_VTU"
+        productData={airtel}
+        // dataPay={props.dataPay}
+      />
+      {/* {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
             <div className="spinner">
@@ -147,7 +156,7 @@ function Airtel(props) {
               {errors && <Alert severity="error">{errors}</Alert>}
             </div>
           </div>
-          {/* bouquet */}
+          {/* bouquet 
           <div className="">
             <div className="pt-3">
               <div className="d-flex align-item-center justify-content-center">
@@ -237,7 +246,6 @@ function Airtel(props) {
                 ""
               )
             )}
-            {/* <div className="ButtonSide"> */}
             <div>
               <div className="d-flex justify-content-center">
                 {props.disabledCard === true ? (
@@ -270,45 +278,10 @@ function Airtel(props) {
                   </button>
                 )}
               </div>
-              {/* <div>
-                {props.disabledUssd === true ? (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                    }}
-                  >
-                    Go Back
-                  </button>
-                ) : (
-                  <div>
-                    <button
-                      // className="btn"
-                      value={USSD_KEY}
-                      onClick={(e) => {
-                        handleSubmit(USSD_KEY);
-                      }}
-                      style={{
-                        backgroundColor: "#fda94f",
-                        cursor:
-                          props.disabledCard === true
-                            ? "not-allowed"
-                            : "pointer",
-                        color: "#000",
-                        fontSize: "12px",
-                        padding: "11px",
-                      }}
-                      disabled={props.disabledCard}
-                    >
-                      Pay with Ussd
-                    </button>{" "}
-                  </div>
-                )}
-              </div> */}
             </div>
           </div>
         </>
-      )}
+      )} */}
     </div>
   );
 }

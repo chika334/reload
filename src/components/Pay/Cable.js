@@ -78,97 +78,6 @@ function Cable(props) {
     props.PaymentIntent(data);
   };
 
-  // useEffect(() => {
-  //   if (paymentIntent.success === true) {
-  //     setLoading(false);
-
-  //     let generalAmount = valueData === null ? "" : valueData.amount;
-
-  //     let amounts =
-  //       valueData === null
-  //         ? ""
-  //         : productDetails.billerCode === "DSTV1"
-  //         ? parseInt(valueData.referenceValues["Subscription Amount"])
-  //         : generalAmount;
-  //     let emails =
-  //       productDetails.billerCode === "GOTV"
-  //         ? valueData === null
-  //           ? ""
-  //           : valueData.referenceValues["email"]
-  //         : valueData === null
-  //         ? ""
-  //         : valueData.referenceValues["Email Address"];
-
-  //     console.log(emails);
-
-  //     const detail = {
-  //       amount: amounts,
-  //       email: emails,
-  //       product: productDetails.productname,
-  //       customerId:
-  //         verifiedUser.result === null
-  //           ? ""
-  //           : verifiedUser.result.account.accountNumber,
-  //       buttonClick: buttonValue,
-  //       transRef: paymentIntent.detail.transRef,
-  //       customerName:
-  //         productDetails.billerCode === "DSTV1" && verifiedUser.result === null
-  //           ? ""
-  //           : verifiedUser.result.account.accountName,
-  //     };
-
-  //     console.log(detail);
-
-  //     dispatch(pay(detail));
-  //     props.dataPay(true, "Cable");
-  //   }
-  // }, [paymentIntent.success]);
-
-  useEffect(() => {
-    if (paymentIntent.success === true) {
-
-      let generalAmount = valueData === null ? "" : parseInt(valueData.amount);
-      let emails =
-        productDetails.billerCode === "GOTV"
-          ? valueData === null
-            ? ""
-            : valueData.referenceValues["email"]
-          : valueData === null
-          ? ""
-          : valueData.referenceValues["Email Address"];
-
-      // pro
-      setLoading(false);
-      let amounts =
-        valueData === null
-          ? ""
-          : productDetails.billerCode === "DSTV1"
-          ? parseInt(valueData.referenceValues["Subscription Amount"])
-          : generalAmount;
-
-      const detail = {
-        amount: amounts,
-        email: emails,
-        product: productDetails.productname,
-        customerId:
-          verifiedUser.result === null
-            ? ""
-            : verifiedUser.result.account.accountNumber,
-        buttonClick: buttonValue,
-        transRef: paymentIntent.detail.transRef,
-        customerName:
-          verifiedUser.result === null
-            ? ""
-            : verifiedUser.result.account.accountName,
-      };
-
-      console.log(detail, valueData);
-
-      dispatch(pay(detail));
-      props.dataPay(true, "Cable");
-    }
-  }, [paymentIntent.success]);
-
   const handleSelect = (name, value) => {
     setSelectDetails(name);
   };
@@ -341,7 +250,7 @@ function Cable(props) {
 
           {productDetails.billerCode === "GOTV" ? (
             <>
-              <p className="text-center mb-5" style={{ color: "red" }}>
+              <p className="text-center mb-2" style={{ color: "red" }}>
                 N.B. Please select your current bouquet plan
               </p>
               <Gotv
@@ -355,33 +264,33 @@ function Cable(props) {
             ""
           )}
 
-          {verifyUserdetails.onclick === true &&
+          {/* {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Cable" ? (
-            <div>
-              {productDetails.billerCode === "DSTV1" ? (
-                <>
-                  <p className="text-center mb-5" style={{ color: "red" }}>
-                    N.B. Please select your current bouquet plan
-                  </p>
-                  <Dstv
-                    disabledCard={disabledCard}
-                    disabledUssd={disabledUssd}
-                    dataPay={props.dataPay}
-                    setLoading={setLoading}
-                    handleSubmit={handleSubmit}
-                    amount={selectDetails === null ? "" : selectDetails.Amount}
-                    packageType={
-                      selectDetails === null ? "" : selectDetails.ItemType
-                    }
-                  />
-                </>
-              ) : (
-                ""
-              )}
-            </div>
+            <div> */}
+          {productDetails.billerCode === "DSTV" ? (
+            <>
+              <p className="text-center mb-2" style={{ color: "red" }}>
+                N.B. Please select your current bouquet plan
+              </p>
+              <Dstv
+                disabledCard={disabledCard}
+                disabledUssd={disabledUssd}
+                dataPay={props.dataPay}
+                setLoading={setLoading}
+                handleSubmit={handleSubmit}
+                amount={selectDetails === null ? "" : selectDetails.Amount}
+                packageType={
+                  selectDetails === null ? "" : selectDetails.ItemType
+                }
+              />
+            </>
           ) : (
             ""
           )}
+          {/* </div>
+          ) : (
+            ""
+          )} */}
         </>
       )}
     </div>

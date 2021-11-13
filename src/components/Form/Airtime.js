@@ -34,8 +34,6 @@ function NewForm(props) {
     setSmartCard(newValues);
   };
 
-  // console.log(smartCard);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (

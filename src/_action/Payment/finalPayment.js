@@ -1,8 +1,6 @@
 import axios from "axios";
 import { FINAL_PAYMENT, FINAL_PAYMENT_ERROR } from "../types";
 import { secondTokenConfig } from "../userAction";
-import { returnErrors } from "../errorAction";
-import { hideLoader } from "../loading";
 import { dataValue } from "./data";
 
 export const finalPayment = (ref) => async (dispatch, getState) => {

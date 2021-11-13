@@ -26,6 +26,7 @@ export const requery = (value) => (dispatch, getState) => {
       })
     )
     .catch((err) => {
+      // console.log(err);
       dispatch(dataValue("requery", true));
       dispatch({
         type: FINAL_PAYMENT_ERROR,

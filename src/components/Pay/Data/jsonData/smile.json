@@ -1,0 +1,303 @@
+[
+  {
+      "id": 2460,
+      "name": "Smile 1GB FlexiDaily Bundle",
+      "slug": "SMILE_1GB_FLEXIDAILY_BUNDLE",
+      "amount": 300.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2461,
+      "name": "Smile 2.5GB FlexiDaily Bundle",
+      "slug": "SMILE_25GB_FLEXIDAILY_BUNDLE",
+      "amount": 500.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2462,
+      "name": "Smile 1GB FlexiWeekly Bundle",
+      "slug": "SMILE_1GB_FLEXIWEEKLY_BUNDLE",
+      "amount": 500.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2463,
+      "name": "Smile 1_5GB Bigga Bundle",
+      "slug": "SMILE_1_5GB_BIGGA_BUNDLE",
+      "amount": 1000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2464,
+      "name": "Smile 2GB FlexiWeekly Bundle",
+      "slug": "SMILE_2GB_FLEXIWEEKLY_BUNDLE",
+      "amount": 1000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2465,
+      "name": "Smile 2GB MidNite Bundle",
+      "slug": "SMILE_2GB_MIDNITE_BUNDLE",
+      "amount": 1020.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2470,
+      "name": "Smile 2GB Bigga Bundle",
+      "slug": "SMILE_2GB_BIGGA_BUNDLE",
+      "amount": 1200.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2471,
+      "name": "Smile 3GB Bigga Bundle",
+      "slug": "SMILE_3GB_BIGGA_BUNDLE",
+      "amount": 1500.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2472,
+      "name": "Smile 6GB FlexiWeekly Bundle",
+      "slug": "SMILE_6GB_FLEXIWEEKLY_BUNDLE",
+      "amount": 1500.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2473,
+      "name": "Smile 3GB MidNite Bundle",
+      "slug": "SMILE_3GB_MIDNITE_BUNDLE",
+      "amount": 1530.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2474,
+      "name": "Smile 3GB Weekend ONLY Bundle",
+      "slug": "SMILE_3GB_WEEKEND_ONLY_BUNDLE",
+      "amount": 1530.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2475,
+      "name": "Smile 5GB Bigga Bundle",
+      "slug": "SMILE_5GB_BIGGA_BUNDLE",
+      "amount": 2000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2476,
+      "name": "6.5GB Bigga",
+      "slug": "65GB_BIGGA",
+      "amount": 2500.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2477,
+      "name": "Smile 8GB Bigga Bundle",
+      "slug": "SMILE_8GB_BIGGA_BUNDLE",
+      "amount": 3000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2478,
+      "name": "Smile 10GB Bigga Bundle",
+      "slug": "SMILE_10GB_BIGGA_BUNDLE",
+      "amount": 3500.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2479,
+      "name": "Smile 12GB Bigga Bundle",
+      "slug": "SMILE_12GB_BIGGA_BUNDLE",
+      "amount": 4000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2480,
+      "name": "Smile 15GB Bigga Bundle",
+      "slug": "SMILE_15GB_BIGGA_BUNDLE",
+      "amount": 5000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2481,
+      "name": "Smile 20GB Bigga Bundle",
+      "slug": "SMILE_20GB_BIGGA_BUNDLE",
+      "amount": 6000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2483,
+      "name": "Smile 30GB Bigga Bundle",
+      "slug": "SMILE_30GB_BIGGA_BUNDLE",
+      "amount": 8000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2484,
+      "name": "Smile 40GB Bigga Bundle",
+      "slug": "SMILE_40GB_BIGGA_BUNDLE",
+      "amount": 10000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2485,
+      "name": "Smile UnlimitedLite Bundle",
+      "slug": "SMILE_UNLIMITEDLITE_BUNDLE",
+      "amount": 10000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2486,
+      "name": "Smile 60GB Bigga Bundle",
+      "slug": "SMILE_60GB_BIGGA_BUNDLE",
+      "amount": 13500.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2487,
+      "name": "Smile 75GB Bigga Bundle",
+      "slug": "SMILE_75GB_BIGGA_BUNDLE",
+      "amount": 15000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2489,
+      "name": "Smile UnlimitedEssential Bundle",
+      "slug": "SMILE_UNLIMITEDESSENTIAL_BUNDLE",
+      "amount": 15000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 2491,
+      "name": "Smile 100GB Bigga Bundle",
+      "slug": "SMILE_100GB_BIGGA_BUNDLE",
+      "amount": 18000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4049,
+      "name": "Smile Voice ONLY 65",
+      "slug": "SMILE_VOICE_ONLY_65",
+      "amount": 510.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4050,
+      "name": "Smile Voice ONLY 135",
+      "slug": "SMILE_VOICE_ONLY_135",
+      "amount": 1020.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4051,
+      "name": "Smile Voice ONLY 430",
+      "slug": "SMILE_VOICE_ONLY_430",
+      "amount": 3070.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4052,
+      "name": "Smile 15GB 365",
+      "slug": "SMILE_15GB_365",
+      "amount": 9000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4053,
+      "name": "Smile 35GB 365",
+      "slug": "SMILE_35GB_365",
+      "amount": 19000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4054,
+      "name": "Smile 130GB Bigga",
+      "slug": "SMILE_130GB_BIGGA",
+      "amount": 19800.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4055,
+      "name": "Smile 90GB Jumbo",
+      "slug": "SMILE_90GB_JUMBO",
+      "amount": 20000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4056,
+      "name": "Smile Freedom 3Mbps",
+      "slug": "SMILE_FREEDOM_3MBPS",
+      "amount": 20000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4057,
+      "name": "Smile Freedom 3Mbps (No FUP)",
+      "slug": "SMILE_FREEDOM_3MBPS_(NO_FUP)",
+      "amount": 20000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4058,
+      "name": "Smile Freedom 6Mbps",
+      "slug": "SMILE_FREEDOM_6MBPS",
+      "amount": 24000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4059,
+      "name": "Smile 70GB 365",
+      "slug": "SMILE_70GB_365",
+      "amount": 32000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4060,
+      "name": "Smile 160GB Jumbo",
+      "slug": "SMILE_160GB_JUMBO",
+      "amount": 34000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4061,
+      "name": "Smile BestEffort Freedom",
+      "slug": "SMILE_BESTEFFORT_FREEDOM",
+      "amount": 36000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4062,
+      "name": "Smile 200GB Jumbo",
+      "slug": "SMILE_200GB_JUMBO",
+      "amount": 40000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4063,
+      "name": "Smile 125GB 365",
+      "slug": "SMILE_125GB_365",
+      "amount": 50000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4064,
+      "name": "Smile 200GB 365",
+      "slug": "SMILE_200GB_365",
+      "amount": 70000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4065,
+      "name": "Smile 500GB 365",
+      "slug": "SMILE_500GB_365",
+      "amount": 100000.0,
+      "billerId": 2337
+  },
+  {
+      "id": 4066,
+      "name": "Smile 1TB 365",
+      "slug": "SMILE_1TB_365",
+      "amount": 120000.0,
+      "billerId": 2337
+  }
+]

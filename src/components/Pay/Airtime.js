@@ -32,31 +32,6 @@ function NewForm(props) {
     props.PaymentIntent(data);
   };
 
-  useEffect(() => {
-    if (paymentIntent.success === true) {
-      setLoading(false);
-      const amount = valueData === null ? "" : valueData.amount;
-      const email = valueData === null ? "" : valueData.referenceValues.email;
-      const customerName =
-        valueData === null ? "" : valueData.referenceValues.customerName;
-      const customerId =
-        valueData === null ? "" : valueData.referenceValues.customerId;
-
-      const detail = {
-        amount: amount,
-        email: email,
-        product: productDetails.productname,
-        buttonClick: buttonValue,
-        transRef: paymentIntent.detail.transRef,
-        customerName: customerName,
-        customerId: customerId,
-      };
-
-      dispatch(pay(detail));
-      props.dataPay(true, "Airtime");
-    }
-  }, [paymentIntent.success]);
-
   const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
   for (const data in item) {
@@ -82,6 +57,7 @@ function NewForm(props) {
               setLoading={setLoading}
               disabledUssd={disabledUssd}
               handleSubmit={handleSubmit}
+              dataPay={props.dataPay}
             />
           ) : (
             ""
@@ -92,6 +68,7 @@ function NewForm(props) {
               setLoading={setLoading}
               disabledUssd={disabledUssd}
               handleSubmit={handleSubmit}
+              dataPay={props.dataPay}
             />
           ) : (
             ""
@@ -102,6 +79,7 @@ function NewForm(props) {
               setLoading={setLoading}
               disabledUssd={disabledUssd}
               handleSubmit={handleSubmit}
+              dataPay={props.dataPay}
             />
           ) : (
             ""
@@ -112,6 +90,7 @@ function NewForm(props) {
               setLoading={setLoading}
               disabledUssd={disabledUssd}
               handleSubmit={handleSubmit}
+              dataPay={props.dataPay}
             />
           ) : (
             ""

@@ -237,9 +237,9 @@ export const usePaymentGateway = (props) => {
         setOpen(false);
         setLoading(false);
       }
-      setOpen(true);
-      setLoading(false);
-      setMessage("Minimum payment for all electricity is 1000 Naira");
+      // setOpen(true);
+      // setLoading(false);
+      // setMessage("Minimum payment for all electricity is 1000 Naira");
     } else {
       switch (paymentType) {
         case FLUTTERWAVE_KEY:

@@ -21,7 +21,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import Alert from "@material-ui/lab/Alert";
 import { requery } from "../../_action/requery";
-// import Gotv from "../Pay/Cable/Gotv";
 import { PaymentIntent } from "../../_action/Payment/index";
 import { verify } from "../../_action/verify";
 
@@ -34,11 +33,6 @@ function PropertyDetails(props) {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.someData.detail);
   const [pay, setPay] = useState(false);
-  const paymentIntent = useSelector((state) =>
-    state.paymentIntent.success === true
-      ? state.paymentIntent.detail.result
-      : ""
-  );
   const intentTransRef = useSelector((state) =>
     state.paymentIntent.success === true
       ? state.paymentIntent.detail.transRef
@@ -58,8 +52,6 @@ function PropertyDetails(props) {
   );
   const { isModalOpen, toggleIt } = useUSSD();
   const {
-    ussdPayload,
-    grabUssdResponse,
     startPayment,
     setLoading,
     loading: secondaryLoading,
@@ -122,7 +114,7 @@ function PropertyDetails(props) {
         "We appologies for this, issues from our service providers, Please contact our customer care or chat us via our live chat system, Thank you."
       );
     }
-  }, [finalPaymentSuccess]);
+  }, [dataValue.booleanValue === true]);
 
   const makePayment = () => {
     if (payment.detail.buttonClick !== null) {
@@ -157,35 +149,8 @@ function PropertyDetails(props) {
     }
   }, [payment]);
 
-  let paymentAmount = Number(paymentIntent.totalAmount).toFixed(2);
-
-  const handleModalClose = () => {
-    setOpenModal(false);
-    window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-  };
-
   return (
     <>
-      <Dialog
-        open={openModal}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleModalClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">Service Error</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {errorMessage}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleModalClose} color="primary">
-            Back
-          </Button>
-        </DialogActions>
-      </Dialog>
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -208,49 +173,6 @@ function PropertyDetails(props) {
           </Button>
         </DialogActions>
       </Dialog>
-      {verifySuccess.result === null ? (
-        ""
-      ) : (
-        <Dialog
-          open={errorModal}
-          TransitionComponent={Transition}
-          onClose={handleErrorClose}
-          keepMounted
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle id="alert-dialog-slide-title">
-            Transaction Error
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              <b style={{ color: "red" }}>
-                Sorry an error occurred while completing this transaction, please
-                requery transaction
-              </b>
-              <table className="center">
-                <tr>
-                  <td>Name: </td>
-                  <td>{verifySuccess.result.account.accountName}</td>
-                </tr>
-                <tr>
-                  <td>Product: </td>
-                  <td>{productDetails.detail.productId.productname}</td>
-                </tr>
-                <tr>
-                  <td>Amount</td>
-                  <td>{paymentAmount}</td>
-                </tr>
-              </table>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleQuery} color="primary">
-              Requery
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
       {secondaryLoading === true ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">

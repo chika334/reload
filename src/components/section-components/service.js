@@ -196,6 +196,8 @@ function Service(props) {
                                 <> */}
                               {listData.billerCode === "STARTIMES" ||
                               listData.billerCode === "IBEDC_F" ||
+                              listData.billerCode ===
+                                "Smile-Data_BLACKSILICON" ||
                               listData.billerCode === null ? (
                                 <Button
                                   className="readmore-btn"

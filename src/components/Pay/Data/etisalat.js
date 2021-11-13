@@ -18,6 +18,7 @@ import Slide from "@material-ui/core/Slide";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
 import axios from "axios";
 import etisalat from "./jsonData/9mobile.json";
+import NewFormData from "../../Form/NewFormData";
 
 function Etisalat(props) {
   const dispatch = useDispatch();
@@ -136,7 +137,15 @@ function Etisalat(props) {
 
   return (
     <div className="property-details-area">
-      {loading ? (
+      <NewFormData
+        product="Data"
+        disabledCard={props.disabledCard}
+        setDisabledCard={setDisabledCard}
+        slug="GLO_VTU"
+        productData={etisalat}
+        // dataPay={props.dataPay}
+      />
+      {/* {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
             <div className="spinner">
@@ -152,7 +161,7 @@ function Etisalat(props) {
               {errors && <Alert severity="error">{errors}</Alert>}
             </div>
           </div>
-          {/* bouquet */}
+          {/* bouquet 
           <div className="">
             <div className="pt-3">
               <div className="d-flex align-item-center justify-content-center">
@@ -242,7 +251,7 @@ function Etisalat(props) {
                 ""
               )
             )}
-            {/* <div className="ButtonSide"> */}
+            {/* <div className="ButtonSide"> 
             <div>
               <div className="d-flex justify-content-center">
                 {props.disabledCard === true ? (
@@ -309,11 +318,11 @@ function Etisalat(props) {
                     </button>{" "}
                   </div>
                 )}
-              </div> */}
+              </div>
             </div>
           </div>
         </>
-      )}
+      )} */}
     </div>
   );
 }

@@ -223,13 +223,13 @@ function Property(props) {
                   >
                     Loan
                   </button>
-                  <button
+                  {/* <button
                     style={{ backgroundColor: "#fda94f", color: "#000" }}
                     value="Exams"
                     onClick={handleBtn}
                   >
                     Exams
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -282,6 +282,7 @@ function Property(props) {
                               <> */}
                             {item.billerCode === "STARTIMES" ||
                             item.billerCode === "IBEDC_F" ||
+                            item.billerCode === "Smile-Data_BLACKSILICON" ||
                             item.billerCode === null ? (
                               <button
                                 style={{

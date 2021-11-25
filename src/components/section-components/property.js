@@ -37,6 +37,7 @@ function Property(props) {
   const [modalStyle] = React.useState(getModalStyle);
   const [modal, setModal] = useState(false);
   const getProducts = useSelector((state) => state.products);
+  const user = useSelector((state) => state.authUser.user);
   const [productData, setProductData] = useState(
     getProducts.listProducts === null ? "" : getProducts.listProducts
   );
@@ -145,12 +146,13 @@ function Property(props) {
             );
       setProductData(filtered);
     } else if (word === "Loan") {
-      setModal(true);
-      // if (user === null) {
-      //   history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
-      // } else {
-      //   window.location.href = `https://loan-xi.vercel.app/`;
-      // }
+      // setModal(true);
+      if (user === null) {
+        history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
+      } else {
+        // window.location.href = `https://loan-gp56azxe2-chika334.vercel.app?customerId=`
+        window.location.href = `/${process.env.REACT_APP_RELOADNG}/loan`;
+      }
     }
   };
 
@@ -162,7 +164,7 @@ function Property(props) {
     </div>
   );
 
-  console.log(productData);
+  // console.log(productData);
   return (
     <div>
       <Modal

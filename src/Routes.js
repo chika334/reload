@@ -30,15 +30,17 @@ const TermNCondition = lazy(() => import("./components/TermNCondition"));
 const Transaction = lazy(() => import("./components/admin"));
 const HelpDesk = lazy(() => import("./components/Help"));
 const AcceptLoan = lazy(() => import("./components/AcceptLoan"));
-// const Loan = lazy(() => import("./components/Loan"));
+const Loan = lazy(() => import("./components/Loan"));
 const Requery = lazy(() => import("./components/Pay/Requery"));
 
 import { showLoader, hideLoader } from "./_action/loading";
 import { useSelector, connect } from "react-redux";
 import Loading from "./components/global-components/loading";
 import ProtectedRoutes from "./protectedRoutes";
-import PrivateRouteReceipt from "./preventReceipt";
+// import PrivateRouteReceipt from "./preventReceipt";
 import RequeryReceipt from "./components/Pay/PaymentProcess/requeryReceipt";
+
+import LoanStatus from "./components/section-components/LoanStatus"
 
 function Routes(props) {
   const location = useLocation();
@@ -89,8 +91,9 @@ function Routes(props) {
               `/${process.env.REACT_APP_RELOADNG}/admin`,
               `/${process.env.REACT_APP_RELOADNG}/helpdesk`,
               `/${process.env.REACT_APP_RELOADNG}/receipt`,
-              // `/${process.env.REACT_APP_RELOADNG}/loan`,
+              `/${process.env.REACT_APP_RELOADNG}/loan`,
               `/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`,
+              `/${process.env.REACT_APP_RELOADNG}/loan/loan-status`,
               `/${process.env.REACT_APP_RELOADNG}/requery`,
             ]}
           >
@@ -160,15 +163,20 @@ function Routes(props) {
                 path={`/${process.env.REACT_APP_RELOADNG}/contact`}
                 component={Contact}
               />
-              {/* <ProtectedRoutes
+              <ProtectedRoutes
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/loan`}
                 component={Loan}
-              /> */}
+              />
               <ProtectedRoutes
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`}
                 component={AcceptLoan}
+              />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/loan/loan-status`}
+                component={LoanStatus}
               />
               <Route
                 exact

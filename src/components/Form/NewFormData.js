@@ -112,7 +112,7 @@ function NewFormData(props) {
           ],
         };
 
-        console.log(newValuesObj);
+        // console.log(newValuesObj);
 
         dispatch(PaymentIntent(newValuesObj));
       } else {

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import sectiondata from "../../data/sections.json";
-import parse from "html-react-parser";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { Button, Modal, TextField, MenuItem } from "@material-ui/core";
@@ -25,7 +23,6 @@ import Alert from "@material-ui/lab/Alert";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import InputAccount from "./InputAccount";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,11 +50,9 @@ function Property({ breakOn = "medium" }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  // const token = useSelector((state) => state.Token);
   const getOfferResult = useSelector((state) => state.getOffers);
   const [offerData, setOfferData] = useState(null);
   const Providers = useSelector((state) => state.Providers);
-  // const [bankDetails, setBankDetails] = useState();
   const [error, setError] = useState(null);
   const errors = useSelector((state) => state.error);
   const [getData, setGetData] = useState({
@@ -99,23 +94,18 @@ function Property({ breakOn = "medium" }) {
     e.preventDefault();
 
     setLoading(true);
-    dispatch(getLoanData(getData));
+
+    dispatch(interswitchToken());
     dispatch(getOffer(getData));
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   alert("daniel");
-  // };
 
   useEffect(() => {
     setTimeout(() => {
       if (getOfferResult.success) {
         setLoading(false);
-        // setTimeout(() => {
         setOpen(true);
+        setLoading(false);
         setOfferData(getOfferResult.data);
-        // }, 1000);
       }
     }, 500);
   }, [getOfferResult.success]);
@@ -130,7 +120,6 @@ function Property({ breakOn = "medium" }) {
     };
 
     dispatch(someloanData(someData));
-    // setOfferId(data);
     setTimeout(() => {
       setLoading(false);
       history.push({
@@ -143,21 +132,6 @@ function Property({ breakOn = "medium" }) {
     <div>
       <div>
         {open === true ? (
-          <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            keepMounted
-            maxWidth="lg"
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-slide-title"
-            aria-describedby="alert-dialog-slide-description"
-          >
-            <InputAccount getData={getData} />
-          </Dialog>
-        ) : (
-          ""
-        )}
-        {/* {open === true ? (
           <Dialog
             open={open}
             TransitionComponent={Transition}
@@ -238,7 +212,7 @@ function Property({ breakOn = "medium" }) {
           </Dialog>
         ) : (
           ""
-        )} */}
+        )}
       </div>
       <div className="property-details-area">
         {loading === true ? (
@@ -283,26 +257,6 @@ function Property({ breakOn = "medium" }) {
                           />
                         </div>
                         <div className="d-flex justify-content-center mt-5">
-                          {/* <TextField
-                            id="standard-select-currency"
-                            select
-                            label="Select"
-                            value={getData["providerCode"] || ""}
-                            onChange={(e) => handleChange(e, "providerCode")}
-                            className={classes.textField}
-                            helperText="Please select your Bank"
-                          >
-                            {Providers.providers === null
-                              ? ""
-                              : Providers.providers.providers.map((option) => (
-                                  <MenuItem
-                                    key={option.code}
-                                    value={option.code}
-                                  >
-                                    {option.name}
-                                  </MenuItem>
-                                ))}
-                          </TextField> */}
                           <FormControl className={classes.formControl}>
                             <InputLabel htmlFor="grouped-native-select">
                               Grouping

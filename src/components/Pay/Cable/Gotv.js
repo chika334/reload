@@ -76,8 +76,8 @@ function Cable(props) {
     if (verifiedUser.verifySuccess === true) {
       // alert("intent")
       setLoading(false);
-      setVerifiedProducts(verifiedUser.result.product);
-      setVerifiedAccount(verifiedUser.result.account);
+      // setVerifiedProducts(verifiedUser.result.product);
+      // setVerifiedAccount(verifiedUser.result.account);
       props.verify("Cable", true);
     }
   }, [verifiedUser.verifySuccess]);

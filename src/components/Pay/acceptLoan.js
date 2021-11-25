@@ -67,7 +67,7 @@ function Property(props, { breakOn = "medium" }) {
 
   useEffect(() => {
     if (errors.id === "INTERSWITCH_PTOVIDERS_FAILED") {
-      setLoading(false)
+      setLoading(false);
       setError(errors.message.data.responseMessage);
     }
   }, [errors.id === "INTERSWITCH_PTOVIDERS_FAILED"]);
@@ -84,8 +84,10 @@ function Property(props, { breakOn = "medium" }) {
 
     let acceptLoan = {};
 
-    acceptLoan.customerId = getLoanDetails.data.phone;
-    acceptLoan.providerCode = getLoanDetails.data.providerCode;
+    acceptLoan.customerId =
+      someData.data !== null ? someData.data.initalData.phone : "";
+    acceptLoan.providerCode =
+      someData.data !== null ? someData.data.initalData.providerCode : "";
     acceptLoan.channelCode = process.env.REACT_APP_CHANNELCODE;
     acceptLoan.debitMethod = {
       useCreditMethod: true,
@@ -102,13 +104,29 @@ function Property(props, { breakOn = "medium" }) {
 
     setLoading(true);
     dispatch(acceptOffer(acceptLoan, secondValue));
-    // dispatch(getOffer(getData));
   };
+
+  // useEffect(() => {
+  //   if (acceptLoanOffer.success === true) {
+  //     setLoading(false);
+  //     setMessage(acceptLoanOffer.data.responseMessage);
+  //   }
+  // }, [acceptLoanOffer.success]);
 
   useEffect(() => {
     if (acceptLoanOffer.success === true) {
       setLoading(false);
-      setMessage(acceptLoanOffer.data.responseMessage);
+      window.location.href = `https://loan-okegj27er-chika334.vercel.app?customerId=${
+        someData.data === null ? "" : someData.data.initalData.phone
+      }&offerId=${
+        someData.data === null ? "" : someData.data.offerId
+      }&providerCode=${
+        someData.data === null ? "" : someData.data.initalData.providerCode
+      }&accountNumber=${getData.accountNumber}&bankDetails=${
+        getData.bankDetails
+      }&token=${localStorage.access_token}`;
+    } else {
+      console.log("issues");
     }
   }, [acceptLoanOffer.success]);
 
@@ -134,7 +152,6 @@ function Property(props, { breakOn = "medium" }) {
           <>
             <div className="bg-gray pd-top-70 pd-bottom-30">
               <div className="container d-flex justify-content-center">
-                {/* <div className="row custom-gutter"> */}
                 <div className="col-lg-6">
                   <div className="property-filter-area custom-gutter">
                     <div className="single-feature bg-light">
@@ -152,7 +169,9 @@ function Property(props, { breakOn = "medium" }) {
                                 marginTop: "50px",
                               }}
                             >
-                              <Link to={`/${process.env.REACT_APP_RELOADNG}/products`}>
+                              <Link
+                                to={`/${process.env.REACT_APP_RELOADNG}/products`}
+                              >
                                 Go Back
                               </Link>
                             </button>

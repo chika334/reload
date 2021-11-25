@@ -1,27 +1,27 @@
-/*--------------------
+/* /*--------------------
 SHARED VARIABLES
 --------------------*/
 /*--------------------
 GENERAL
 --------------------*/
-*,
+/* *,
 *:before,
 *:after {
   box-sizing: inherit;
-}
+} */
 
-html {
+/* html {
   box-sizing: border-box;
   height: 100%;
   overflow: hidden;
-}
+} */
 
-body {
+/* body {
   background: #ffffff;
   font-family: "Roboto", verdana, sans-serif;
   height: 100%;
   margin: auto;
-}
+} 
 
 h1 {
   font-size: 1.5em;
@@ -37,7 +37,7 @@ h1 {
 
 /*--------------------
 PANEL FORM
---------------------*/
+--------------------
 .panel {
   position: relative;
   background: #FFF;
@@ -48,7 +48,7 @@ PANEL FORM
 .panel__header {
   background: #FFF;
   color: #3F51B5;
-  /* border-bottom: 2px solid #f0f0f0; */
+  /* border-bottom: 2px solid #f0f0f0; 
   padding: 15px;
   background-color: #fafafa;
   display: flex;
@@ -214,7 +214,7 @@ span.back-icon {
 
 /*--------------------
 BT HOSTED FIELDS SPECIFIC 
---------------------*/
+--------------------
 .braintree-hosted-fields-focused {
   border-bottom: 2px solid #3F51B5;
   transition: all 200ms ease;
@@ -227,7 +227,7 @@ BT HOSTED FIELDS SPECIFIC
 
 /*---------------------
 Media Queries
-----------------------*/
+----------------------
 @media (max-width: 991px) {
   html {
     overflow: auto;
@@ -255,4 +255,4 @@ Media Queries
     display: block;
   }
   
-}
+} */

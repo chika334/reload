@@ -93,7 +93,8 @@ function Navbar(props) {
               </NavLink>
             </div>
             <div className="nav-right-part nav-right-part-mobile">
-              {user.isAuthenticated === true ? (
+              {/* {user.isAuthenticated === true ? ( */}
+              {localStorage ? (
                 <div>
                   <Button
                     aria-describedby={id}
@@ -196,24 +197,10 @@ function Navbar(props) {
                   </NavLink>
                 </li>
               </ul>
-
-              {/* <Button
-                style={{
-                  backgroundColor: "#fda94f",
-                  color: "#000",
-                  fontSize: "11px",
-                  padding: "10px",
-                }}
-                onClick={handleReg}
-              >
-                Login/Register{" "}
-                <span className="right">
-                  <i className="la la-plus" />
-                </span>
-              </Button> */}
             </div>
             <div className="nav-right-part nav-right-part-desktop readeal-top">
-              {user.isAuthenticated === true ? (
+              {/* {user.isAuthenticated === true ? ( */}
+              {localStorage ? (
                 <ul
                   style={{ listStyleType: "none" }}
                   className="navbar-nav menu-open readeal-top"

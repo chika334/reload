@@ -6,9 +6,6 @@ import { Button } from "@material-ui/core";
 export default function printReceipt() {
   const componentRef = useRef();
 
-  const handleBack = () => {
-    window.location.href = `/${process.env.REACT_APP_RELOADNG}/products`;
-  };
   return (
     <div>
       <Recipt  />

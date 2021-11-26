@@ -59,7 +59,7 @@ function Property({ breakOn = "medium" }) {
     amount: "",
     serviceType: "Money",
     phone: "",
-    providerCode: "",
+    // providerCode: "",
   });
 
   let tableClass = "table-container__table";
@@ -99,6 +99,8 @@ function Property({ breakOn = "medium" }) {
     dispatch(getOffer(getData));
   };
 
+  console.log(getOfferResult);
+
   useEffect(() => {
     setTimeout(() => {
       if (getOfferResult.success) {
@@ -110,11 +112,12 @@ function Property({ breakOn = "medium" }) {
     }, 500);
   }, [getOfferResult.success]);
 
-  const handleOffer = (e, data) => {
-    console.log(data);
+  const handleOffer = (e, data, code) => {
+    // console.log(data);
     setOpen(false);
     setLoading(true);
     const someData = {
+      providerCode: code,
       offerId: data,
       initalData: getData,
     };
@@ -127,6 +130,11 @@ function Property({ breakOn = "medium" }) {
       });
     }, 500);
   };
+
+  var formatter = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+  });
 
   return (
     <div>
@@ -150,6 +158,7 @@ function Property({ breakOn = "medium" }) {
                   <thead>
                     <tr>
                       <th>Id</th>
+                      <th>Loan Provider</th>
                       <th>Amount Offered</th>
                       <th>interest</th>
                       <th>Amount Payable</th>
@@ -165,12 +174,15 @@ function Property({ breakOn = "medium" }) {
                       return (
                         <tr key={index}>
                           <td data-heading="Id">{index + 1}</td>
-                          <td data-heading="Amount Offered">
-                            {allData.amountOffered}
+                          <td>
+                            {allData.provider.name}
                           </td>
-                          <td data-heading="interest">{allData.interest}</td>
+                          <td data-heading="Amount Offered">
+                            {formatter.format(allData.amountOffered)}
+                          </td>
+                          <td data-heading="interest">{formatter.format(allData.interest)}</td>
                           <td data-heading="Amount Payable">
-                            {allData.amountPayable}
+                            {formatter.format(allData.amountPayable)}
                           </td>
                           <td data-heading="Tenure">{allData.tenure}</td>
                           <td data-heading="Expiry Date">
@@ -181,7 +193,7 @@ function Property({ breakOn = "medium" }) {
                           <td data-heading="Tax">
                             {allData.fees === undefined
                               ? "no value"
-                              : allData.fees.map((details) => details.amount)}
+                              : allData.fees.map((details) => formatter.format(details.amount))}
                           </td>
                           <td className="terms" data-heading="Terms">
                             {allData.terms === undefined
@@ -190,7 +202,7 @@ function Property({ breakOn = "medium" }) {
                           </td>
                           <td data-heading="##">
                             <button
-                              onClick={(e) => handleOffer(e, allData.offerId)}
+                              onClick={(e) => handleOffer(e, allData.offerId, allData.provider.code)}
                               type="submit"
                               style={{
                                 backgroundColor: "#fda94f",
@@ -256,7 +268,7 @@ function Property({ breakOn = "medium" }) {
                             className={classes.textField}
                           />
                         </div>
-                        <div className="d-flex justify-content-center mt-5">
+                        {/* <div className="d-flex justify-content-center mt-5">
                           <FormControl className={classes.formControl}>
                             <InputLabel htmlFor="grouped-native-select">
                               Grouping
@@ -283,7 +295,7 @@ function Property({ breakOn = "medium" }) {
                                   )}
                             </Select>
                           </FormControl>
-                        </div>
+                        </div> */}
                         <div className="mt-5 d-flex justify-content-center">
                           <Button
                             type="submit"

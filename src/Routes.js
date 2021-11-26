@@ -40,11 +40,14 @@ import ProtectedRoutes from "./protectedRoutes";
 // import PrivateRouteReceipt from "./preventReceipt";
 import RequeryReceipt from "./components/Pay/PaymentProcess/requeryReceipt";
 
-import LoanStatus from "./components/section-components/LoanStatus"
+import LoanStatus from "./components/section-components/LoanStatus";
 
 function Routes(props) {
   const location = useLocation();
   const loading = useSelector((state) => state.loading.loading);
+  const products = useSelector((state) => state.products);
+
+  console.log(products.listProducts);
 
   useEffect(() => {
     props.showLoader();
@@ -52,6 +55,15 @@ function Routes(props) {
       props.hideLoader();
     }, 1000);
   }, []);
+
+  // useEffect(() => {
+  //   if (products.listProducts === null) {
+  //     props.showLoader();
+  //     // alert("loading")
+  //   } else if(products.listProducts !== null) {
+  //     props.hideLoader();
+  //   }
+  // }, [products.listProducts]);
 
   return (
     <div>

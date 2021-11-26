@@ -87,7 +87,7 @@ function Property(props, { breakOn = "medium" }) {
     acceptLoan.customerId =
       someData.data !== null ? someData.data.initalData.phone : "";
     acceptLoan.providerCode =
-      someData.data !== null ? someData.data.initalData.providerCode : "";
+      someData.data !== null ? someData.data.providerCode : "";
     acceptLoan.channelCode = process.env.REACT_APP_CHANNELCODE;
     acceptLoan.debitMethod = {
       useCreditMethod: true,
@@ -106,22 +106,15 @@ function Property(props, { breakOn = "medium" }) {
     dispatch(acceptOffer(acceptLoan, secondValue));
   };
 
-  // useEffect(() => {
-  //   if (acceptLoanOffer.success === true) {
-  //     setLoading(false);
-  //     setMessage(acceptLoanOffer.data.responseMessage);
-  //   }
-  // }, [acceptLoanOffer.success]);
-
   useEffect(() => {
     if (acceptLoanOffer.success === true) {
       setLoading(false);
-      window.location.href = `https://loan-okegj27er-chika334.vercel.app?customerId=${
+      window.location.href = `https://loan-o77u9acq2-chika334.vercel.app?customerId=${
         someData.data === null ? "" : someData.data.initalData.phone
       }&offerId=${
         someData.data === null ? "" : someData.data.offerId
       }&providerCode=${
-        someData.data === null ? "" : someData.data.initalData.providerCode
+        someData.data === null ? "" : someData.data.providerCode
       }&accountNumber=${getData.accountNumber}&bankDetails=${
         getData.bankDetails
       }&token=${localStorage.access_token}`;

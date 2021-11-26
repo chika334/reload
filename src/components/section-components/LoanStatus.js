@@ -36,9 +36,9 @@ export default function LoanStatus(props) {
               header === "Error Message" ? "text-danger" : "text-success"
             }`}
           >
-            {header === "Success Message" ? "Congratulation" : header}
+            {header === "Success Message" ? "Congratulations!" : header}
           </h3>
-          <p>{message}</p>
+          <p>{header === "Success Message" ? "Your loan request has been approved, you should be credited shortly" : message}</p>
         </div>
       </div>
     </div>

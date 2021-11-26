@@ -14,7 +14,7 @@ export const getOffer = (value) => (dispatch, getState) => {
 
   axios
     .get(
-      `${process.env.REACT_APP_API_INTERSWITCH}/lending-service/api/v1/offers?customerId=${value.phone}&channelCode=${channelCode}&amount=${value.amount}&serviceType=${value.serviceType}&providerCode=${value.providerCode}`,
+      `${process.env.REACT_APP_API_INTERSWITCH}/lending-service/api/v2/offers?customerId=${value.phone}&channelCode=${channelCode}&amount=${value.amount}&serviceType=${value.serviceType}`,
       interSwitchConfig(getState)
     )
     .then((res) =>

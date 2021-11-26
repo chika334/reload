@@ -27,7 +27,7 @@ function Dstv(props) {
       <NewFormData
         product="Airtime"
         disabledCard={props.disabledCard}
-        setDisabledCard={setDisabledCard}
+        // setDisabledCard={setDisabledCard}
         slug="MTN_VTU"
         // dataPay={props.dataPay}
       />

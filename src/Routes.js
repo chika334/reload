@@ -9,6 +9,22 @@ import {
 } from "react-router-dom";
 import "./App.css";
 
+import { showLoader, hideLoader } from "./_action/loading";
+import { useSelector, connect } from "react-redux";
+import Loading from "./components/global-components/loading";
+import ProtectedRoutes from "./protectedRoutes";
+// import PrivateRouteReceipt from "./preventReceipt";
+import RequeryReceipt from "./components/Pay/PaymentProcess/requeryReceipt";
+
+import LoanStatus from "./components/section-components/LoanStatus";
+
+import About from "./components/about";
+import Registraion from "./components/registration";
+import Faq from "./components/faq";
+import Contact from "./components/contact";
+import Error from "./components/error";
+import Receipt from "./components/Pay/PaymentProcess/printReceipt";
+
 // component
 const HomeV1 = lazy(() => import("./components/home-v1"));
 const Property = lazy(() => import("./components/property"));
@@ -17,12 +33,6 @@ const PropertyDetails = lazy(() => import("./components/property-details"));
 const BuyProduct = lazy(() =>
   import("./components/section-components/BuyProduct")
 );
-import About from "./components/about";
-import Registraion from "./components/registration";
-import Faq from "./components/faq";
-import Contact from "./components/contact";
-import Error from "./components/error";
-import Receipt from "./components/Pay/PaymentProcess/printReceipt";
 const Settings = lazy(() => import("./components/settings"));
 const ForgotPassword = lazy(() => import("./components/forgotPassword"));
 const Footer = lazy(() => import("./components/global-components/footer"));
@@ -33,14 +43,6 @@ const AcceptLoan = lazy(() => import("./components/AcceptLoan"));
 const Loan = lazy(() => import("./components/Loan"));
 const Requery = lazy(() => import("./components/Pay/Requery"));
 
-import { showLoader, hideLoader } from "./_action/loading";
-import { useSelector, connect } from "react-redux";
-import Loading from "./components/global-components/loading";
-import ProtectedRoutes from "./protectedRoutes";
-// import PrivateRouteReceipt from "./preventReceipt";
-import RequeryReceipt from "./components/Pay/PaymentProcess/requeryReceipt";
-
-import LoanStatus from "./components/section-components/LoanStatus";
 
 function Routes(props) {
   const location = useLocation();

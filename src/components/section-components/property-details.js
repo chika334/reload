@@ -8,9 +8,9 @@ import Electricity from "../Pay/Electricity";
 import Cable from "../Pay/Cable";
 import Airtime from "../Pay/Airtime";
 import Data from "../Pay/Data";
-import Exams from "../Pay/Exams";
+// import Exams from "../Pay/Exams";
 import { usePaymentGateway } from "../Pay/PaymentProcess/hooks";
-import { useUSSD } from "../CoralUssd";
+// import { useUSSD } from "../CoralUssd";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -321,7 +321,7 @@ function PropertyDetails(props) {
                                 />
                               )}
                             </div>
-                            <div>
+                            {/* <div>
                               {productDetails.detail.productId.description ===
                                 "Exams" && (
                                 <Exams
@@ -329,7 +329,7 @@ function PropertyDetails(props) {
                                   dataPay={onPay}
                                 />
                               )}
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>

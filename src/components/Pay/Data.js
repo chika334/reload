@@ -99,7 +99,7 @@ function NewForm(props) {
               )}
             </div>
 
-            <div>
+            {/* <div>
               {productDetails.billerCode === "NTELBundle" ? (
                 <div>
                   <Ntel
@@ -113,7 +113,7 @@ function NewForm(props) {
               ) : (
                 ""
               )}
-            </div>
+            </div> */}
 
             <div>
               {productDetails.billerCode === "SPECTRANET" ? (

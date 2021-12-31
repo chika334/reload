@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../src/containers/InfoBoard/index.tsx"],"names":[],"mappings":";;;;;;;;;;;;AAEA,IAAM,SAAS,GAAY,UAAC,EAAkB;QAAhB,OAAO,aAAA,EAAE,KAAK,WAAA;IAC1C,OAAO,CACL,0BACE,2BAAO,OAAO,iBAAS;YACvB,sBAAI,KAAK,EAAE,EAAE,SAAS,EAAE,MAAM,EAAE,YAAY,EAAE,KAAK,EAAE,gBAAG,KAAK,YAAM,YAC/D,CACP,CAAC;AACJ,CAAC,CAAC;AACF,eAAe,SAAS,CAAC"}

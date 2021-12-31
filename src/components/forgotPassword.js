@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./global-components/navbar";
 import PageHeader from "./global-components/page-header";
-import ForgotPassword from "./section-components/forgotPassword";
+import ForgotPassword from "./section-components/ForgotPassword";
 import Footer from "./global-components/footer";
 
 const Registration = () => {

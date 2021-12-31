@@ -20,7 +20,7 @@ import Electricity from "../Pay/Electricity";
 import Cable from "../Pay/Cable";
 import Airtime from "../Pay/Airtime";
 import Data from "../Pay/Data";
-import Exams from "../Pay/Exams";
+// import Exams from "../Pay/Exams";
 // import imageDstv from "";
 
 const formSchema = {
@@ -145,7 +145,7 @@ function BuyProduct(props) {
                         {props.location.state.data.productcategoryId.title ===
                           "Data" && <Data pay={onPay} />}
                       </div>
-                      <div>
+                      {/* <div>
                         {props.location.state.data.productcategoryId.title ===
                           "Exams" && (
                           <Exams
@@ -153,7 +153,7 @@ function BuyProduct(props) {
                             pay={onPay}
                           />
                         )}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -188,7 +188,7 @@ function BuyProduct(props) {
                 />
               </div>
             )}
-            {type === "JAMB" && pay === true ? (
+            {/* {type === "JAMB" && pay === true ? (
               <div className="col-lg-4">
                 <ExamPay
                   TypeOfProduct={type}
@@ -206,7 +206,7 @@ function BuyProduct(props) {
               </div>
             ) : (
               ""
-            )}
+            )} */}
           </div>
         </div>
         {/* )} */}

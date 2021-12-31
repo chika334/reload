@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import sectiondata from "../../data/sections.json";
 import parse from "html-react-parser";
-import ForgotPassword from "../reg/ForgotPassword";
+import ForgotPasswords from "../reg/ForgotPassword";
 import { useSelector, connect } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
 import { hideLoader } from "../../_action/loading";
 
-function forgotPassword(props) {
+function ForgotPassword(props) {
   let history = useHistory();
   const userRedirect = useSelector((state) => state.redirectUser);
   const [errMessage, setErrMessage] = useState("");
@@ -37,7 +37,7 @@ function forgotPassword(props) {
       <div className="container">
         <div className="row justify-content-center">
           {/* forgot password */}
-          <ForgotPassword
+          <ForgotPasswords
             data={error.id === "REGISTER_FAIL" ? error.message : ""}
           />
         </div>
@@ -46,4 +46,4 @@ function forgotPassword(props) {
   );
 }
 
-export default withRouter(connect(null, { hideLoader })(forgotPassword));
+export default withRouter(connect(null, { hideLoader })(ForgotPassword));

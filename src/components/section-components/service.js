@@ -97,7 +97,7 @@ function Service(props) {
         setModal(true);
       } else {
         props.showLoader();
-        getProducts.listProducts === null
+        const value = getProducts.listProducts === null
           ? ""
           : getProducts.listProducts.forEach((detail) => {
               if (

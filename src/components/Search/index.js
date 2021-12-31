@@ -27,7 +27,7 @@ function App(props) {
       setModal(true);
     } else {
       dispatch(showLoader());
-      getProducts.listProducts === null
+      const value = getProducts.listProducts === null
         ? ""
         : getProducts.listProducts.forEach((detail) => {
             if (

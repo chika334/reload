@@ -60,29 +60,30 @@ function Property(props) {
         setTimeout(() => {
           props.hideLoader();
         }, 3000);
-        getProducts.listProducts === null
-          ? ""
-          : getProducts.listProducts.forEach((detail) => {
-              if (
-                details.otherData.productId.productname ===
-                detail.productId.productname
-              ) {
-                setTimeout(() => {
-                  dispatch(hideLoader());
-                }, 2000);
-                const data = {
-                  detail,
-                  productname: detail.productId.description,
-                  productId: details.otherData.productId.id,
-                  billerCode: detail.billerCode,
-                };
-                dispatch(someData(data));
-                let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                history.push({
-                  pathname: path,
-                });
-              }
-            });
+        const value =
+          getProducts.listProducts === null
+            ? ""
+            : getProducts.listProducts.forEach((detail) => {
+                if (
+                  details.otherData.productId.productname ===
+                  detail.productId.productname
+                ) {
+                  setTimeout(() => {
+                    dispatch(hideLoader());
+                  }, 2000);
+                  const data = {
+                    detail,
+                    productname: detail.productId.description,
+                    productId: details.otherData.productId.id,
+                    billerCode: detail.billerCode,
+                  };
+                  dispatch(someData(data));
+                  let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+                  history.push({
+                    pathname: path,
+                  });
+                }
+              });
       }
     }
   };
@@ -95,9 +96,9 @@ function Property(props) {
     let word = e.target.value;
 
     if (word === "") {
-      setProductData(
-        getProducts.listProducts === null ? "" : getProducts.listProducts
-      );
+      const filtered =
+        getProducts.listProducts === null ? "" : getProducts.listProducts;
+      setProductData(filtered);
     } else if (word === "Airtime") {
       const filtered =
         getProducts.listProducts === null

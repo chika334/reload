@@ -8,12 +8,12 @@ import "./App.css";
 
 // _actions
 import { getUser } from "./_action/userAction";
-import { getProducts, getProductsById } from "./_action/products";
+import { getProducts } from "./_action/products";
 import { interswitchToken } from "./_action/Loan/token";
 import { interswitchProvider } from "./_action/Loan/providers";
-import { Offline, Online } from "react-detect-offline";
-import NoInternet from "./components/section-components/NoInternet";
-import Layout from "./Layout";
+// import { Offline, Online } from "react-detect-offline";
+// import NoInternet from "./components/section-components/NoInternet";
+// import Layout from "./Layout";
 // import Layout from "./components/CoralUssd/layout/layoout";
 
 // import GoogleAd from "./Layout";

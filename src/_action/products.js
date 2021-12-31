@@ -1,12 +1,12 @@
 import axios from "axios";
-import { tokenConfig } from "./userAction";
+// import { tokenConfig } from "./userAction";
 import {
   PRODUCT_LOADING,
   PRODUCT_LOADED,
   PRODUCT_FAIL,
-  GET_PRODUCTBYID_LOADING,
-  GET_PRODUCT_BYID,
-  GET_PRODUCT_FAIL,
+  // GET_PRODUCTBYID_LOADING,
+  // GET_PRODUCT_BYID,
+  // GET_PRODUCT_FAIL,
 } from "./types";
 import { returnErrors } from "./errorAction";
 

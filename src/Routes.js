@@ -1,7 +1,7 @@
 import React, { lazy, useEffect, Suspense } from "react";
 // import ReactDOM from "react-dom";
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
@@ -47,26 +47,17 @@ const Requery = lazy(() => import("./components/Pay/Requery"));
 function Routes(props) {
   const location = useLocation();
   const loading = useSelector((state) => state.loading.loading);
-  const products = useSelector((state) => state.products);
+  // const products = useSelector((state) => state.products);
 
   // console.log(products.listProducts);
 
-  useEffect(() => {
-    props.showLoader();
-    setTimeout(() => {
-      props.hideLoader();
-    }, 1000);
-  }, []);
-
   // useEffect(() => {
-  //   if (products.listProducts === null) {
-  //     props.showLoader();
-  //     // alert("loading")
-  //   } else if(products.listProducts !== null) {
+  //   props.showLoader();
+  //   setTimeout(() => {
   //     props.hideLoader();
-  //   }
-  // }, [products.listProducts]);
-
+  //   }, 1000);
+  // }, []);
+  
   return (
     <div>
       {loading === true ? (

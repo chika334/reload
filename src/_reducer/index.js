@@ -6,7 +6,7 @@ import authUser from "./userReducer";
 import paymentReducer from "./paymentReducer";
 import redirectUser from "./UserRedirect";
 import products from "./productsReducer";
-import switchReg from "./pageswitchReducer";
+// import switchReg from "./pageswitchReducer";
 import search from "./searchReducer";
 import changePassword from "./changePassword";
 import verify from "./verifyDetails";

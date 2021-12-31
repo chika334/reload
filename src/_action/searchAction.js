@@ -1,7 +1,7 @@
 import axios from "axios";
 import { returnErrors } from "./errorAction";
-import { SEARCH_LOADING, SEARCH_LOADED, SEARCH_ERROR } from "./types";
-import { tokenConfig } from "./userAction";
+import { SEARCH_LOADED, SEARCH_ERROR } from "./types";
+// import { tokenConfig } from "./userAction";
 
 export const SearchProducts = (values) => async (dispatch) => {
   // dispatch({ type: SEARCH_LOADING });

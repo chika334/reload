@@ -51,7 +51,7 @@ export const RegUser = (values) => (dispatch) => {
     },
   };
 
-  var body = JSON.stringify(values);
+  // var body = JSON.stringify(values);
 
   axios
     .post(

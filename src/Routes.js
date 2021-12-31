@@ -1,7 +1,5 @@
-import React, { lazy, useEffect, Suspense } from "react";
-// import ReactDOM from "react-dom";
+import React, { lazy, Suspense } from "react";
 import {
-  // BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
@@ -57,7 +55,7 @@ function Routes(props) {
   //     props.hideLoader();
   //   }, 1000);
   // }, []);
-  
+
   return (
     <div>
       {loading === true ? (

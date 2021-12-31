@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { PaymentIntent } from "../../_action/Payment";
-import { pay } from "../../_action/Payment/paymentButtons";
+// import { pay } from "../../_action/Payment/paymentButtons";
 import "../../css/input.css";
 import { loginRediectSuccess } from "../../_action/LoginRedirect";
 import Airtel from "./Airtime/Airtel";
@@ -11,14 +11,14 @@ import Etisalat from "./Airtime/etisalat";
 import Glo from "./Airtime/glo";
 
 function NewForm(props) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [disabledCard, setDisabledCard] = useState(false);
   const [disabledUssd, setDisabledUssd] = useState(false);
-  const [buttonValue, setButtonValue] = useState(null);
-  const paymentIntent = useSelector((state) => state.paymentIntent);
+  const [setButtonValue] = useState(null);
+  // const paymentIntent = useSelector((state) => state.paymentIntent);
   const productDetails = useSelector((state) => state.someData.detail);
   const [loading, setLoading] = useState(false);
-  const [valueData, setValueData] = useState(null);
+  const [setValueData] = useState(null);
 
   const handleSubmit = (value, data) => {
     setButtonValue(value);

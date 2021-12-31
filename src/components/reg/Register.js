@@ -53,9 +53,6 @@ function Register(props) {
   const [formData, setFormData] = useState({});
   const [validationSchema, setValidationSchema] = useState({});
 
-  let dispatch = useDispatch();
-  let history = useHistory();
-
   // console.log(props);
 
   useEffect(() => {
@@ -179,7 +176,7 @@ function Register(props) {
     }
   };
 
-  const onSubmit = (values, { setSubmitting, resetForm, setStatus }) => {
+  const onSubmit = (values, { setSubmitting }) => {
     props.showLoader();
     // console.log(values);
     setSubmitting(false);
@@ -206,7 +203,7 @@ function Register(props) {
               <Alert severity="error">{props.data.message}</Alert>
             )}
           </div>
-          {Object.keys(formSchema).map((key, ind) => (
+          {Object.keys(formSchema).map((key) => (
             <div className="rld-single-input" key={key}>
               {getFormElement(key, formSchema[key])}
             </div>

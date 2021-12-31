@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import sectiondata from "../../data/sections.json";
-import parse from "html-react-parser";
+// import parse from "html-react-parser";
 import Register from "../reg/Register";
 import Login from "../reg/Login";
 import { useSelector, connect } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
 import { hideLoader } from "../../_action/loading";
 import { makeStyles } from "@material-ui/core/styles";
-import { Modal } from "@material-ui/core";
+// import { Modal } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -21,18 +21,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Registration(props) {
-  const classes = useStyles();
+  // const classes = useStyles();
   let history = useHistory();
   const userRedirect = useSelector((state) => state.redirectUser);
   const [errMessage, setErrMessage] = useState("");
   const error = useSelector((state) => state.error);
-  let data = sectiondata.whychooseus;
+  // let data = sectiondata.whychooseus;
 
   useEffect(() => {
     if (userRedirect.login === true) {
-      // let path = `/`;
-      // history.push(path);
-      // window.location.reload(false);
       window.location.href = "/";
     } else if (userRedirect.register === true) {
       let path = `/registration`;

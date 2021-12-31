@@ -1,7 +1,6 @@
 {
   "name": "reloadng",
   "version": "0.1.0",
-  "homepage": "http://chika334.github.io/reload",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -63,10 +62,10 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "env-cmd -f .env react-scripts start",
-    "build": "env-cmd -f .env react-scripts build"
+    "build": "env-cmd -f .env react-scripts build",
+    "test": "env-cmd -f .env react-scripts test",
+    "eject": "env-cmd -f .env react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

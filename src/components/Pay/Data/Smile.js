@@ -20,6 +20,7 @@ import NewFormData from "../../Form/NewFormData";
 import smile from "../Data/jsonData/smile.json";
 
 function Smile(props) {
+  const [loading, setLoading] = useState(false)
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const [disabledCard, setDisabledCard] = useState(false);

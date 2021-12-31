@@ -8,6 +8,7 @@ import {
   // clearVerified,
 } from "../../../_action/verifyNumber";
 import { withRouter } from "react-router-dom";
+import VerifyDetails from "../PaymentProcess/verifyDetails";
 import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
 
 function Smile(props) {

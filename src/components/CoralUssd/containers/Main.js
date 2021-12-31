@@ -1,3 +1,11 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Modal, ModalTransition } from "react-simple-hook-modal";
+import Footer from "./Footer";
+import InfoBoard from "./InfoBoard";
+import MessageBoard from "./MessageBoard";
+import "react-typewriting-effect/dist/index.css";
+import Select from "./Select/Select";
+
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -9,13 +17,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Modal, ModalTransition } from "react-simple-hook-modal";
-import Footer from "./Footer";
-import InfoBoard from "./InfoBoard";
-import MessageBoard from "./MessageBoard";
-import "react-typewriting-effect/dist/index.css";
-import Select from "./Select/Select";
 var Main = function (_a) {
     var isModalOpen = _a.isModalOpen, openModal = _a.openModal, closeModal = _a.closeModal, value = _a.value, toggle = _a.toggle, message = _a.message, setStart = _a.setStart, queryData = _a.queryData, response = _a.response, start = _a.start, result = _a.result, toggleModal = _a.toggleModal;
     var style = { color: "orange", marginTop: "10px", border: " 0.2px dashed" };

@@ -26,9 +26,6 @@ function Registration(props) {
   const userRedirect = useSelector((state) => state.redirectUser);
   const [errMessage, setErrMessage] = useState("");
   const error = useSelector((state) => state.error);
-  // const [modal, setModal] = useState(false);
-  // let publicUrl = process.env.PUBLIC_URL + "/";
-  // let imagealt = "image";
   let data = sectiondata.whychooseus;
 
   useEffect(() => {
@@ -40,9 +37,6 @@ function Registration(props) {
     } else if (userRedirect.register === true) {
       let path = `/registration`;
       history.push(path);
-      // let path = `/welcome`;
-      // history.push(path);
-      // window.location.href = "/welcome";
     }
   }, [userRedirect]);
 
@@ -61,7 +55,10 @@ function Registration(props) {
       <div className="container">
         <div className="row justify-content-center">
           {/* Login */}
-          <Login data={error.id === "LOGIN_FAILED" ? error.message : ""} />
+          <Login
+            data={error.id === "LOGIN_FAILED" ? error.message : errMessage}
+            setErrMessage={setErrMessage}
+          />
           <Register
             // modal={showModal}
             data={error.id === "REGISTER_FAIL" ? error.message : ""}

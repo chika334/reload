@@ -11,7 +11,7 @@ export const interswitchProvider = () => (dispatch, getState) => {
   // console.log(interSwitchConfig(getState));
   axios
     .get(
-      `${process.env.REACT_APP_API_INTERSWITCH}/lending-service/api/v1/offers/providers?channelCode=QTUSSD`,
+      `${process.env.REACT_APP_API_INTERSWITCH}/lending-service/api/v1/offers/providers?channelCode=${process.env.REACT_APP_CHANNELCODE}`,
       interSwitchConfig(getState)
     )
     .then((res) =>
@@ -21,6 +21,7 @@ export const interswitchProvider = () => (dispatch, getState) => {
       })
     )
     .catch((err) => {
+      // console.log(err);
       dispatch(
         returnErrors(
           err.response,

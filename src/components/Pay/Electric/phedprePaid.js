@@ -181,8 +181,6 @@ function PhedPrepaid(props) {
     fieldsArray.push(item[data]);
   }
 
-  // const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
-
   const Options =
     JSON.parse(productDetails.detail.productvalue).field6 === undefined
       ? ""
@@ -196,38 +194,23 @@ function PhedPrepaid(props) {
     }
   }
 
+  console.log(
+    JSON.parse(verifiedUser.result.account.extras).extra.split("|")[0]
+  );
+
   return (
     <div className="property-details-area">
-      {/* {loading ? (
-        <div className="preloader" id="preloader">
-          <div className="preloader-inner">
-            <div className="spinner">
-              <div className="dot1"></div>
-              <div className="dot2"></div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <div className="d-flex align-item-center justify-content-center">
-            {errors && <Alert severity="error">{errors}</Alert>}
-          </div>
-        </div>
-      )} */}
       <div>
         <div className="d-flex align-item-center justify-content-center">
           {failure && <Alert severity="error">{failure}</Alert>}
         </div>
-        {/* {verifyUserdetails.onclick === true &&
-        verifyUserdetails.name === "Electricity"
-          ? */}
+        <p className="d-flex align-item-center justify-content-center">
+          {JSON.parse(verifiedUser.result.account.extras).extra.split("|")[0]}
+        </p>
         {fieldsArray.slice(1).map((allData, i) =>
           allData.select === false &&
           allData.text !== "Amount" &&
           allData.text !== "Meter Type" ? (
-            // allData.text === "Email Address" ? (
-            //   ""
-            // ) : (
             <div key={i}>
               <div className="d-flex align-item-center justify-content-center pt-3">
                 <TextField
@@ -315,7 +298,7 @@ function PhedPrepaid(props) {
           {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Electricity" ? (
             <div className="ButtonSide pt-3">
-              <div>
+              <div className="d-flex justify-content-center">
                 {props.disabledCard === true ? (
                   <button
                     onClick={(e) => {
@@ -348,45 +331,6 @@ function PhedPrepaid(props) {
                   >
                     Proceed to Card
                   </button>
-                )}
-              </div>
-              <div>
-                {props.disabledUssd === true ? (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                      // state: productDetails.productname,
-                      // });
-                    }}
-                  >
-                    Go Back
-                  </button>
-                ) : (
-                  <div>
-                    <Button
-                      onClick={(e) => {
-                        // e.preventDefault();
-                        handleSubmit(USSD_KEY);
-                      }}
-                      // className="btn"
-                      value={USSD_KEY}
-                      // href="#open-modal"
-                      style={{
-                        backgroundColor: "#fda94f",
-                        cursor:
-                          props.disabledCard === true
-                            ? "not-allowed"
-                            : "pointer",
-                        color: "#000",
-                        fontSize: "12px",
-                        padding: "11px",
-                      }}
-                      disabled={props.disabledCard}
-                    >
-                      Pay with Ussd
-                    </Button>{" "}
-                  </div>
                 )}
               </div>
             </div>

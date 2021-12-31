@@ -298,7 +298,7 @@ function PhedPostpaid(props) {
           {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Electricity" ? (
             <div className="ButtonSide pt-3">
-              <div>
+              <div className="d-flex justify-content-center">
                 {props.disabledCard === true ? (
                   <button
                     onClick={(e) => {
@@ -331,45 +331,6 @@ function PhedPostpaid(props) {
                   >
                     Proceed to Card
                   </button>
-                )}
-              </div>
-              <div>
-                {props.disabledUssd === true ? (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                      // state: productDetails.productname,
-                      // });
-                    }}
-                  >
-                    Go Back
-                  </button>
-                ) : (
-                  <div>
-                    <Button
-                      onClick={(e) => {
-                        // e.preventDefault();
-                        handleSubmit(USSD_KEY);
-                      }}
-                      // className="btn"
-                      value={USSD_KEY}
-                      // href="#open-modal"
-                      style={{
-                        backgroundColor: "#fda94f",
-                        cursor:
-                          props.disabledCard === true
-                            ? "not-allowed"
-                            : "pointer",
-                        color: "#000",
-                        fontSize: "12px",
-                        padding: "11px",
-                      }}
-                      disabled={props.disabledCard}
-                    >
-                      Pay with Ussd
-                    </Button>{" "}
-                  </div>
                 )}
               </div>
             </div>

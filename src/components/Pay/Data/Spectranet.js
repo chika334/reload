@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, connect } from "react-redux";
-import { MenuItem, TextField, Button, ButtonBase } from "@material-ui/core";
-import { verify } from "../../_action/verify";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import { TextField, Button } from "@material-ui/core";
+import { verify } from "../../../_action/verify";
+// import InputAdornment from "@material-ui/core/InputAdornment";
 import {
   verifySmartcardNumber,
-  clearVerified,
-} from "../../_action/verifyNumber";
+  // clearVerified,
+} from "../../../_action/verifyNumber";
 import { withRouter } from "react-router-dom";
-import { USSD_KEY, FLUTTERWAVE_KEY } from "./PaymentProcess/hooks";
+import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
 
 function Smile(props) {
   const verifiedUser = useSelector((state) => state.verify);
@@ -41,7 +41,7 @@ function Smile(props) {
     setSmileNumber(e.target.value);
   };
 
-  console.log(selectDetails);
+  // console.log(selectDetails);
 
   const handleSelect = (e) => {
     console.log(e.target.value);
@@ -156,7 +156,14 @@ function Smile(props) {
         ) : (
           <>
             <div>
-              {verifyUserdetails.onclick === false &&
+              <VerifyDetails
+                billerCode="SMILE"
+                productName="SMILE"
+                billerSlug="SMILE"
+                productType="Data"
+                setLoading={props.setLoading}
+              />
+              {/* {verifyUserdetails.onclick === false &&
               verifyUserdetails.name === "" ? (
                 <>
                   <div className="d-flex align-item-center justify-content-center">
@@ -189,7 +196,7 @@ function Smile(props) {
                 </>
               ) : (
                 ""
-              )}
+              )} */}
             </div>
             {verifyUserdetails.onclick === true &&
             verifyUserdetails.name === "SPECTRANET" ? (
@@ -216,48 +223,6 @@ function Smile(props) {
             ) : (
               ""
             )}
-            {/* {verifyUserdetails.onclick === true &&
-            verifyUserdetails.name === "SPECTRANET" ? (
-              <>
-                <div
-                  key={i}
-                  className="d-flex align-item-center justify-content-center pt-3"
-                >
-                  <TextField
-                    className="inputSize"
-                    required
-                    label={allFields.text}
-                    name={allFields.text}
-                    placeholder={`Enter ${allFields.text}`}
-                    select
-                    type="text"
-                    value={values[allFields.text]}
-                    variant="outlined"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  >
-                    <MenuItem>Select Data Type</MenuItem>
-                    {fieldsOptions.map((option, index) => {
-                      const detail = JSON.parse(option);
-                      return (
-                        <MenuItem
-                          key={index}
-                          value={detail.ItemName}
-                          onClick={(event) =>
-                            handleSelect(allFields.text, detail)
-                          }
-                        >
-                          {detail.ItemName}
-                        </MenuItem>
-                      );
-                    })}
-                  </TextField>
-                </div>
-              </>
-            ) : (
-              ""
-            )} */}
             {verifyUserdetails.onclick === true &&
             verifyUserdetails.name === "SPECTRANET" ? (
               <div>
@@ -291,7 +256,6 @@ function Smile(props) {
             ) : (
               ""
             )}
-
             {verifyUserdetails.onclick === true &&
             verifyUserdetails.name === "SPECTRANET" &&
             productDetails.billerCode === "SPECTRANET" ? (

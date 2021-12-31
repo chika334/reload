@@ -6,31 +6,15 @@ import {
   verifySmartcardNumber,
   clearVerified,
 } from "../../../_action/verifyNumber";
-import {
-  MenuItem,
-  TextField,
-  Select,
-  FormControl,
-  InputLabel,
-  Button,
-} from "@material-ui/core";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../../_action/Payment/index";
-import Alert from "@material-ui/lab/Alert";
-import { pay, paymentButtons } from "../../../_action/Payment/paymentButtons";
+import { pay } from "../../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../../_action/errorAction";
 import { verify } from "../../../_action/verify";
 import "../../../css/input.css";
 import Slide from "@material-ui/core/Slide";
-// import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
-// import axios from "axios";
-import gotv from "./jsonData/gotv.json";
+// import gotv from "./jsonData/gotv.json";
 import NewFormData from "../../Form/NewFormData";
 import VerifyDetails from "../PaymentProcess/verifyDetails";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 function Cable(props) {
   const verifiedUser = useSelector((state) => state.verify);
@@ -46,37 +30,18 @@ function Cable(props) {
     setSmartCard(newValues);
   };
 
-  // const verifyMeterNumber = async () => {
-  //   const details = {
-  //     product: productDetails.productId,
-  //     billerCode: "GOTV",
-  //     accountNumber: smartCard.customerId,
-  //     extras: {
-  //       billerSlug: "GOTV",
-  //       customerId: smartCard.customerId,
-  //       productName: "GOTV",
-  //     },
-  //   };
-
-  //   props.verifySmartcardNumber(details);
-  // };
-
-  // const SmartNumber = async (e) => {
-  //   e.preventDefault();
-  //   props.setLoading(true);
-  //   let result = verifyMeterNumber();
-  // };
-
-  const item = JSON.parse(productDetails.detail.productvalue);
+  const item = JSON.parse(productDetails.detail.productvalue).field4.options
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
 
+  // console.log(fieldsArray);
+
   useEffect(() => {
     if (verifiedUser.verifySuccess === true) {
       setLoading(false);
-      props.verify("Cable", true);
+      props.verify("Electricity", true);
     }
   }, [verifiedUser.verifySuccess]);
 
@@ -87,10 +52,10 @@ function Cable(props) {
         verifyUserdetails.name === "" ? (
           <div>
             <VerifyDetails
-              billerCode="GOTV"
-              productName="GOTV"
-              billerSlug="GOTV"
-              productType="Cable"
+              billerCode="ENUGU_DISCO"
+              productName={fieldsArray}
+              billerSlug="ENUGU_DISCO"
+              productType="Electricity"
               setLoading={props.setLoading}
             />
           </div>
@@ -117,13 +82,13 @@ function Cable(props) {
                   : verifiedUser.result.account.accountNumber}
               </p>
             </div>
-            <NewFormData
+            {/* <NewFormData
               product="Cable"
               disabledCard={props.disabledCard}
               setDisabledCard={setDisabledCard}
               slug="GOTV"
               productData={gotv}
-            />
+            /> */}
           </>
         ) : (
           ""

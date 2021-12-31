@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import { paymentButton } from "../../../_action/paymentAction";
 import md5 from "md5";
 import axios from "axios";
-import PaymentProcess from "../../Pay/PaymentProcess";
+// import PaymentProcess from "../../Pay/PaymentProcess";
 import { Button } from "@material-ui/core";
 
 const formSchema = {
@@ -204,7 +204,7 @@ export function ExamsPay(props) {
       <div className="p-3">
         <h4 className="text-center p-3">Select Payment Method</h4>
         <hr />
-        <PaymentProcess />
+        {/* <PaymentProcess /> */}
       </div>
     </div>
   );

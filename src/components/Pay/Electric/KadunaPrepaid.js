@@ -302,7 +302,7 @@ function KadunaPrepaid(props) {
           {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Electricity" ? (
             <div className="ButtonSide pt-3">
-              <div>
+              <div className="d-flex justify-content-center">
                 {props.disabledCard === true ? (
                   <button
                     onClick={(e) => {
@@ -334,7 +334,7 @@ function KadunaPrepaid(props) {
                   </button>
                 )}
               </div>
-              <div>
+              {/* <div>
                 {props.disabledUssd === true ? (
                   <button
                     onClick={(e) => {
@@ -367,7 +367,7 @@ function KadunaPrepaid(props) {
                     </Button>{" "}
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           ) : (
             ""

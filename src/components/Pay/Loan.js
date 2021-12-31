@@ -80,10 +80,18 @@ function Property({ breakOn = "medium" }) {
   }, [errors.error === true]);
 
   const handleChange = (e, data) => {
-    const newValues = { ...getData };
-    newValues[data] = e.target.value;
-
-    setGetData(newValues);
+    if (data === "phone") {
+      if (e.target.value.replace(/\D/g, "").length <= 10) {
+        const newValues = { ...getData };
+        newValues[data] = e.target.value;
+        // console.log("234"+e.target.value);
+        setGetData(newValues);
+      }
+    } else {
+      const newValues = { ...getData };
+      newValues[data] = e.target.value;
+      setGetData(newValues);
+    }
   };
 
   const handleClose = () => {
@@ -95,11 +103,15 @@ function Property({ breakOn = "medium" }) {
 
     setLoading(true);
 
-    dispatch(interswitchToken());
-    dispatch(getOffer(getData));
-  };
+    const finalData = {
+      amount: getData.amount,
+      serviceType: getData.serviceType,
+      phone: "234"+getData.phone
+    }
 
-  console.log(getOfferResult);
+    dispatch(interswitchToken());
+    dispatch(getOffer(finalData));
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -114,12 +126,18 @@ function Property({ breakOn = "medium" }) {
 
   const handleOffer = (e, data, code) => {
     // console.log(data);
+    const finalData = {
+      amount: getData.amount,
+      serviceType: getData.serviceType,
+      phone: getData.phone
+    }
+
     setOpen(false);
     setLoading(true);
     const someData = {
       providerCode: code,
       offerId: data,
-      initalData: getData,
+      initalData: finalData,
     };
 
     dispatch(someloanData(someData));
@@ -154,71 +172,85 @@ function Property({ breakOn = "medium" }) {
             </DialogTitle>
             <DialogContent>
               <div className="table-container">
-                <table className={tableClass}>
-                  <thead>
-                    <tr>
-                      <th>Id</th>
-                      <th>Loan Provider</th>
-                      <th>Amount Offered</th>
-                      <th>interest</th>
-                      <th>Amount Payable</th>
-                      <th>Tenure</th>
-                      <th>Expiry Date</th>
-                      <th>Tax</th>
-                      <th>Terms</th>
-                      <th>##</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {getOfferResult.data.offers.map((allData, index) => {
-                      return (
-                        <tr key={index}>
-                          <td data-heading="Id">{index + 1}</td>
-                          <td>
-                            {allData.provider.name}
-                          </td>
-                          <td data-heading="Amount Offered">
-                            {formatter.format(allData.amountOffered)}
-                          </td>
-                          <td data-heading="interest">{formatter.format(allData.interest)}</td>
-                          <td data-heading="Amount Payable">
-                            {formatter.format(allData.amountPayable)}
-                          </td>
-                          <td data-heading="Tenure">{allData.tenure}</td>
-                          <td data-heading="Expiry Date">
-                            {allData.expiryDate === undefined
-                              ? "no value"
-                              : allData.expiryDate}
-                          </td>
-                          <td data-heading="Tax">
-                            {allData.fees === undefined
-                              ? "no value"
-                              : allData.fees.map((details) => formatter.format(details.amount))}
-                          </td>
-                          <td className="terms" data-heading="Terms">
-                            {allData.terms === undefined
-                              ? "no value"
-                              : allData.terms}
-                          </td>
-                          <td data-heading="##">
-                            <button
-                              onClick={(e) => handleOffer(e, allData.offerId, allData.provider.code)}
-                              type="submit"
-                              style={{
-                                backgroundColor: "#fda94f",
-                                color: "#000",
-                                fontSize: "12px",
-                                padding: "9px",
-                              }}
-                            >
-                              Accept Offer
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                {getOfferResult.data.offers.length === 0 ? (
+                  <p className="d-flex justify-content-center">
+                    <b>No Offer for this Cusotmer</b>
+                  </p>
+                ) : (
+                  <table className={tableClass}>
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Loan Provider</th>
+                        <th>Amount Offered</th>
+                        <th>interest</th>
+                        <th>Amount Payable</th>
+                        <th>Tenure</th>
+                        <th>Expiry Date</th>
+                        <th>Tax</th>
+                        <th>Terms</th>
+                        <th>##</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {getOfferResult.data.offers.map((allData, index) => {
+                        return (
+                          <tr key={index}>
+                            <td data-heading="Id">{index + 1}</td>
+                            <td>{allData.provider.name}</td>
+                            <td data-heading="Amount Offered">
+                              {formatter.format(allData.amountOffered)}
+                            </td>
+                            <td data-heading="interest">
+                              {formatter.format(allData.interest)}
+                            </td>
+                            <td data-heading="Amount Payable">
+                              {formatter.format(allData.amountPayable)}
+                            </td>
+                            <td data-heading="Tenure">{allData.tenure}</td>
+                            <td data-heading="Expiry Date">
+                              {allData.expiryDate === undefined
+                                ? "no value"
+                                : allData.expiryDate}
+                            </td>
+                            <td data-heading="Tax">
+                              {allData.fees === undefined
+                                ? "no value"
+                                : allData.fees.map((details) =>
+                                    formatter.format(details.amount)
+                                  )}
+                            </td>
+                            <td className="terms" data-heading="Terms">
+                              {allData.terms === undefined
+                                ? "no value"
+                                : allData.terms}
+                            </td>
+                            <td data-heading="##">
+                              <button
+                                onClick={(e) =>
+                                  handleOffer(
+                                    e,
+                                    allData.offerId,
+                                    allData.provider.code
+                                  )
+                                }
+                                type="submit"
+                                style={{
+                                  backgroundColor: "#fda94f",
+                                  color: "#000",
+                                  fontSize: "12px",
+                                  padding: "9px",
+                                }}
+                              >
+                                Accept Offer
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </DialogContent>
           </Dialog>
@@ -266,36 +298,12 @@ function Property({ breakOn = "medium" }) {
                             onChange={(e) => handleChange(e, "phone")}
                             value={getData["phone"]}
                             className={classes.textField}
+                            InputProps={{
+                              startAdornment: "234",
+                            }}
                           />
                         </div>
-                        {/* <div className="d-flex justify-content-center mt-5">
-                          <FormControl className={classes.formControl}>
-                            <InputLabel htmlFor="grouped-native-select">
-                              Grouping
-                            </InputLabel>
-                            <Select
-                              native
-                              onChange={(e) => handleChange(e, "providerCode")}
-                              className={classes.textField}
-                              // defaultValue=""
-                              id="grouped-native-select"
-                            >
-                              <option aria-label="None" value="" />
-                              {Providers.providers === null
-                                ? ""
-                                : Providers.providers.providers.map(
-                                    (option) => (
-                                      <option
-                                        key={option.code}
-                                        value={option.code}
-                                      >
-                                        {option.name}
-                                      </option>
-                                    )
-                                  )}
-                            </Select>
-                          </FormControl>
-                        </div> */}
+
                         <div className="mt-5 d-flex justify-content-center">
                           <Button
                             type="submit"

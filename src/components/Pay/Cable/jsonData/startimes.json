@@ -1,0 +1,128 @@
+[
+  {
+      "id": 2516,
+      "name": "Startimes Nova Daily",
+      "slug": "STARTIMES_NOVA_DAILY",
+      "amount": 90.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2517,
+      "name": "Startimes Nova Weekly",
+      "slug": "STARTIMES_NOVA_WEEKLY",
+      "amount": 300.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2518,
+      "name": "Startimes Nova Monthly",
+      "slug": "STARTIMES_NOVA_MONTHLY",
+      "amount": 900.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2519,
+      "name": "Startimes Basic Daily",
+      "slug": "STARTIMES_BASIC_DAILY",
+      "amount": 160.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2520,
+      "name": "Startimes Basic Weekly",
+      "slug": "STARTIMES_BASIC_WEEKLY",
+      "amount": 600.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2521,
+      "name": "Startimes Basic Monthly",
+      "slug": "STARTIMES_BASIC_MONTHLY",
+      "amount": 1700.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2522,
+      "name": "Startimes Classic Daily",
+      "slug": "STARTIMES_CLASSIC_DAILY",
+      "amount": 320.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2523,
+      "name": "Startimes Classic Weekly",
+      "slug": "STARTIMES_CLASSIC_WEEKLY",
+      "amount": 1200.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2524,
+      "name": "Startimes Classic Monthly",
+      "slug": "STARTIMES_CLASSIC_MONTHLY",
+      "amount": 2500.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2525,
+      "name": "Startimes Smart Daily",
+      "slug": "STARTIMES_SMART_DAILY",
+      "amount": 200.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2526,
+      "name": "Startimes Smart Weekly",
+      "slug": "STARTIMES_SMART_WEEKLY",
+      "amount": 700.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2527,
+      "name": "Startimes Smart Monthly",
+      "slug": "STARTIMES_SMART_MONTHLY",
+      "amount": 2200.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2528,
+      "name": "Startimes Super Daily",
+      "slug": "STARTIMES_SUPER_DAILY",
+      "amount": 400.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2529,
+      "name": "Startimes Super Weekly",
+      "slug": "STARTIMES_SUPER_WEEKLY",
+      "amount": 1500.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2530,
+      "name": "Startimes Super Monthly",
+      "slug": "STARTIMES_SUPER_MONTHLY",
+      "amount": 4200.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2531,
+      "name": "Startimes French Monthly",
+      "slug": "STARTIMES_FRENCH_MONTHLY",
+      "amount": 4500.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2532,
+      "name": "Startimes Chinese Monthly",
+      "slug": "STARTIMES_CHINESE_MONTHLY",
+      "amount": 6600.0,
+      "billerId": 2341
+  },
+  {
+      "id": 2533,
+      "name": "Startimes All Inclusive Monthly",
+      "slug": "STARTIMES_ALL_INCLUSIVE_MONTHLY",
+      "amount": 12000.0,
+      "billerId": 2341
+  }
+]

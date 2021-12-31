@@ -237,7 +237,7 @@ function Cable(props) {
               )}
             </div>
           </div>
-          {productDetails.billerCode === "STARTIMES" ? (
+          {productDetails.billerCode === "STARTIMES_BASIC" ? (
             <Startimes
               disabledCard={disabledCard}
               disabledUssd={disabledUssd}

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { finalPayment } from "../../../_action/Payment/finalPayment";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { paymentButtons } from "../../../_action/Payment/paymentButtons";
@@ -223,7 +223,7 @@ export const usePaymentGateway = (props) => {
   // }, [paymentType]);
 
   useEffect(() => {
-    if (pay.amount < 50) {
+    if (pay.amount < 50 || pay.amount > 100000) {
       if (
         finalPaymentSuccess.requestFailed === true &&
         finalPaymentSuccess.requery === false

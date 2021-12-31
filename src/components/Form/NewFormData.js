@@ -27,6 +27,8 @@ function NewFormData(props) {
   const [errorMessage, setErrorMessage] = React.useState(null);
   const finalPayment = useSelector((state) => state.FinalPayment);
 
+  console.log(props);
+
   React.useEffect(() => {
     if (dataValue.name === "finalPayment" && dataValue.booleanValue === true) {
       setLoading(false);
@@ -259,36 +261,44 @@ function NewFormData(props) {
             </>
           ))}
           {/* bouquet */}
-          {product === "Cable" ||
-          product === "Electricity" ||
-          product === "Data" ||
-          slug === "SMILE" ? (
-            <div className="">
-              <div className="pt-3">
-                <div className="d-flex align-item-center justify-content-center">
-                  <select
-                    value={selectDetails === null ? "" : selectDetails["name"]}
-                    onChange={(e) => handleSelect(e)}
-                    className="p-3"
-                    id="inputSize"
-                    style={{ borderRadius: "3px" }}
-                  >
-                    <option>Select bouquet</option>
-                    {productData.map((allData, i) => (
-                      <option
-                        // onClick={(e) => handleSelectClick(e, allData.name)}
-                        value={allData.amount}
-                        key={i}
-                      >
-                        {allData.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-          ) : (
+          {productData === "null" ? (
             ""
+          ) : (
+            <>
+              {product === "Cable" ||
+              product === "Electricity" ||
+              product === "Data" ||
+              slug === "SMILE" ? (
+                <div className="">
+                  <div className="pt-3">
+                    <div className="d-flex align-item-center justify-content-center">
+                      <select
+                        value={
+                          selectDetails === null ? "" : selectDetails["name"]
+                        }
+                        onChange={(e) => handleSelect(e)}
+                        className="p-3"
+                        id="inputSize"
+                        style={{ borderRadius: "3px" }}
+                      >
+                        <option>Select bouquet</option>
+                        {productData.map((allData, i) => (
+                          <option
+                            // onClick={(e) => handleSelectClick(e, allData.name)}
+                            value={allData.amount}
+                            key={i}
+                          >
+                            {allData.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
+            </>
           )}
           {fieldsArray.map((allData, i) =>
             allData.text === "amount" ? (

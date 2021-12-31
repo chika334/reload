@@ -93,8 +93,7 @@ function Navbar(props) {
               </NavLink>
             </div>
             <div className="nav-right-part nav-right-part-mobile">
-              {/* {user.isAuthenticated === true ? ( */}
-              {localStorage ? (
+              {user.isAuthenticated ? (
                 <div>
                   <Button
                     aria-describedby={id}
@@ -199,8 +198,7 @@ function Navbar(props) {
               </ul>
             </div>
             <div className="nav-right-part nav-right-part-desktop readeal-top">
-              {/* {user.isAuthenticated === true ? ( */}
-              {localStorage ? (
+              {user.isAuthenticated === true ? (
                 <ul
                   style={{ listStyleType: "none" }}
                   className="navbar-nav menu-open readeal-top"

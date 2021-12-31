@@ -301,7 +301,7 @@ function JosPrepaid(props) {
           {verifyUserdetails.onclick === true &&
           verifyUserdetails.name === "Electricity" ? (
             <div className="ButtonSide pt-3">
-              <div>
+              <div className="d-flex justify-content-center">
                 {props.disabledCard === true ? (
                   <button
                     onClick={(e) => {
@@ -331,40 +331,6 @@ function JosPrepaid(props) {
                   >
                     Proceed to Card
                   </button>
-                )}
-              </div>
-              <div>
-                {props.disabledUssd === true ? (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                    }}
-                  >
-                    Go Back
-                  </button>
-                ) : (
-                  <div>
-                    <Button
-                      onClick={(e) => {
-                        handleSubmit(USSD_KEY);
-                      }}
-                      value={USSD_KEY}
-                      style={{
-                        backgroundColor: "#fda94f",
-                        cursor:
-                          props.disabledCard === true
-                            ? "not-allowed"
-                            : "pointer",
-                        color: "#000",
-                        fontSize: "12px",
-                        padding: "11px",
-                      }}
-                      disabled={props.disabledCard}
-                    >
-                      Pay with Ussd
-                    </Button>{" "}
-                  </div>
                 )}
               </div>
             </div>

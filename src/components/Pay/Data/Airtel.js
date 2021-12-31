@@ -136,9 +136,8 @@ function Airtel(props) {
         product="Data"
         disabledCard={props.disabledCard}
         setDisabledCard={setDisabledCard}
-        slug="GLO_VTU"
+        slug="AIRTEL_VTU"
         productData={airtel}
-        // dataPay={props.dataPay}
       />
       {/* {loading ? (
         <div className="preloader" id="preloader">

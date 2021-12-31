@@ -23,6 +23,7 @@ import KadunaPrepaid from "./Electric/KadunaPrepaid";
 import KanoPrepaid from "./Electric/KanoPrepaid";
 import AbujaPrepaid from "./Electric/AbujaPrepaid";
 import Ibadan from "./Electric/Ibadan";
+import Enugu from "./Electric/Enugu";
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -68,6 +69,7 @@ function Electricity(props) {
   const [valueData, setValueData] = useState(null);
   const error = useSelector((state) => state.error);
   const [errors, setErrors] = useState("");
+  // const [loading, setLoading] = useState(false);
   const [smartCard, setSmartCard] = useState("");
   const verifiedUser = useSelector((state) => state.verify);
   const verifySuccess = useSelector((state) => state.verify);
@@ -76,8 +78,6 @@ function Electricity(props) {
   const paymentIntent = useSelector((state) => state.paymentIntent);
   const [meterType, setMeterType] = useState("");
   const [failure, setFailure] = useState("");
-  const [open, setOpen] = useState(false);
-  const [errorModal, setErrorModal] = useState(false);
 
   const handleSelectMeterType = (event) => {
     setMeterType(event.target.value);
@@ -89,6 +89,7 @@ function Electricity(props) {
 
   const handleSubmit = (value, data) => {
     // console.log(data);
+    setLoading(true);
     setButtonValue(value);
     setValueData(data);
     if (value === "FLUTTERWAVE") {
@@ -117,76 +118,76 @@ function Electricity(props) {
     }
   }, [error.error === true]);
 
-  const verifyMeterNumber = async () => {
-    if (productDetails.billerCode === "KANO_PREPAID") {
-      const details = {
-        product: productDetails.productId,
-        billerCode: productDetails.billerCode,
-        accountNumber: smartCard,
-        extras: {
-          customerAccountType: meterType === "PREPAID" ? "KANO_PREPAID" : "",
-          field1: null,
-          field2: meterType === "PREPAID" ? "KANO_PREPAID" : "",
-          field3: null,
-        },
-      };
+  // const verifyMeterNumber = async () => {
+  //   if (productDetails.billerCode === "KANO_PREPAID") {
+  //     const details = {
+  //       product: productDetails.productId,
+  //       billerCode: productDetails.billerCode,
+  //       accountNumber: smartCard,
+  //       extras: {
+  //         customerAccountType: meterType === "PREPAID" ? "KANO_PREPAID" : "",
+  //         field1: null,
+  //         field2: meterType === "PREPAID" ? "KANO_PREPAID" : "",
+  //         field3: null,
+  //       },
+  //     };
 
-      dispatch(verifySmartcardNumber(details));
-    }
-    if (productDetails.billerCode === "JOS_PREPAID") {
-      const details = {
-        product: productDetails.productId,
-        billerCode: productDetails.billerCode,
-        accountNumber: smartCard,
-        extras: {
-          customerAccountType: meterType === "PREPAID" ? "Jos_Disco" : "",
-          field1: "1111111111",
-          field2: "v.law149@gmail.com",
-          field3: "2000",
-        },
-      };
+  //     dispatch(verifySmartcardNumber(details));
+  //   }
+  //   if (productDetails.billerCode === "JOS_PREPAID") {
+  //     const details = {
+  //       product: productDetails.productId,
+  //       billerCode: productDetails.billerCode,
+  //       accountNumber: smartCard,
+  //       extras: {
+  //         customerAccountType: meterType === "PREPAID" ? "Jos_Disco" : "",
+  //         field1: "1111111111",
+  //         field2: "v.law149@gmail.com",
+  //         field3: "2000",
+  //       },
+  //     };
 
-      dispatch(verifySmartcardNumber(details));
-    } else if (productDetails.billerCode === "KADUNA_PREPAID") {
-      const details = {
-        product: productDetails.productId,
-        billerCode: productDetails.billerCode,
-        accountNumber: smartCard,
-        extras: {
-          customerAccountType:
-            meterType === "PREPAID" ? "Kaduna_Electricity_Disco" : "",
-          field1: "1111111111",
-          field2: "v.law149@gmail.com",
-          field3: "2000",
-        },
-      };
+  //     dispatch(verifySmartcardNumber(details));
+  //   } else if (productDetails.billerCode === "KADUNA_PREPAID") {
+  //     const details = {
+  //       product: productDetails.productId,
+  //       billerCode: productDetails.billerCode,
+  //       accountNumber: smartCard,
+  //       extras: {
+  //         customerAccountType:
+  //           meterType === "PREPAID" ? "Kaduna_Electricity_Disco" : "",
+  //         field1: "1111111111",
+  //         field2: "v.law149@gmail.com",
+  //         field3: "2000",
+  //       },
+  //     };
 
-      dispatch(verifySmartcardNumber(details));
-    } else {
-      const details = {
-        product: productDetails.productId,
-        accountNumber: smartCard,
-        extras: {
-          field1: null,
-          billerCode: productDetails.billerCode,
-          field2: meterType,
-          field3: "",
-          field4: "",
-          customerAccountType: null,
-        },
-      };
+  //     dispatch(verifySmartcardNumber(details));
+  //   } else {
+  //     const details = {
+  //       product: productDetails.productId,
+  //       accountNumber: smartCard,
+  //       extras: {
+  //         field1: null,
+  //         billerCode: productDetails.billerCode,
+  //         field2: meterType,
+  //         field3: "",
+  //         field4: "",
+  //         customerAccountType: null,
+  //       },
+  //     };
 
-      dispatch(verifySmartcardNumber(details));
-    }
-  };
+  //     dispatch(verifySmartcardNumber(details));
+  //   }
+  // };
 
-  const SmartNumber = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    let result = verifyMeterNumber();
-  };
+  // const SmartNumber = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   let result = verifyMeterNumber();
+  // };
 
-  const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
+  // const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
 
   useEffect(() => {
     if (paymentIntent.success === true) {
@@ -382,6 +383,17 @@ function Electricity(props) {
             ) : (
               ""
             )}
+            {/* {productDetails.billerCode === "ENUGU_DISCO" ? (
+              <Enugu
+              // getData={getData}
+              setLoading={setLoading}
+              // handleSubmit={handleSubmit}
+              // disabledCard={props.disabledCard}
+              // disabledUssd={props.disabledUssd}
+              />
+            ) : (
+              ""
+            )} */}
             {verifiedUser.verifySuccess === true && meterType === "PREPAID" && (
               <>
                 {productDetails.billerCode === "iedc" ? (

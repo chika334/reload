@@ -47,7 +47,7 @@ function Routes(props) {
   const loading = useSelector((state) => state.loading.loading);
   const products = useSelector((state) => state.products);
 
-  console.log(products.listProducts);
+  // console.log(products.listProducts);
 
   useEffect(() => {
     props.showLoader();

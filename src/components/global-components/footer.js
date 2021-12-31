@@ -6,21 +6,7 @@ import logo from "../../images/logo.png";
 import { partner } from "../../data/partner";
 
 class Footer_v1 extends Component {
-  componentDidMount() {
-    // let publicUrl = process.env.PUBLIC_URL + "/";
-    // const minscript = document.createElement("script");
-    // minscript.async = true;
-    // minscript.src = publicUrl + "assets/js/main.js";
-    // document.body.appendChild(minscript);
-  }
-
   render() {
-    // let publicUrl = process.env.PUBLIC_URL + "/";
-    // let imgattr = "Footer logo";
-    // const inlineStyle = {
-    //   backgroundImage: "url(" + publicUrl + footerdata.footerbg + ")",
-    // };
-
     return (
       <footer className="footer-area">
         <div className="container">
@@ -80,18 +66,6 @@ class Footer_v1 extends Component {
                   </ul>
                 </div>
               </div>
-              {/* <div className="col-lg-2 col-sm-6">
-                <div className="widget widget_nav_menu">
-                  <h4 className="widget-title">{footerdata.support.title}</h4>
-                  <ul>
-                    {footerdata.support.links.map((item, i) => (
-                      <li className="readeal-top" key={i}>
-                        <Link to={item.url}>{item.title}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div> */}
               <div className="col-lg-3 col-sm-6">
                 <div className="widget widget_nav_menu">
                   <h4 className="widget-title">{footerdata.quicklink.title}</h4>
@@ -106,7 +80,6 @@ class Footer_v1 extends Component {
               <ul className="social-icon">
                 {footerdata.socialicon.map((item, i) => (
                   <li key={i}>
-                    {/* <a href={item.url} target="_blank"> */}
                     <a href="#" target="_blank">
                       <i className={item.icon} />
                     </a>

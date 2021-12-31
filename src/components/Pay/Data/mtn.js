@@ -30,7 +30,7 @@ function Mtn(props) {
         product="Data"
         disabledCard={props.disabledCard}
         setDisabledCard={setDisabledCard}
-        slug="GLO_VTU"
+        slug="MTN_VTU"
         productData={mtn}
       />
     </div>

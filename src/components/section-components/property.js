@@ -134,7 +134,8 @@ function Property(props) {
                 item.productId.description === "Electricity Prepaid (KAEDCO)" ||
                 item.productId.description === "Electricity Prepaid (KEDCO)" ||
                 item.productId.description === "Electricity Prepaid (phed)" ||
-                item.productId.description === "Electricity Prepaid (JED)"
+                item.productId.description === "Electricity Prepaid (JED)" ||
+                item.productId.description === "Electricity (eedc)"
             );
       setProductData(filtered);
     } else if (word === "Exams") {
@@ -164,7 +165,6 @@ function Property(props) {
     </div>
   );
 
-  // console.log(productData);
   return (
     <div>
       <Modal
@@ -282,9 +282,10 @@ function Property(props) {
                               <>Product Under Test</>
                             ) : (
                               <> */}
-                            {item.billerCode === "STARTIMES" ||
-                            item.billerCode === "IBEDC_F" ||
-                            item.billerCode === "Smile-Data_BLACKSILICON" ||
+                            {/* {item.billerCode === "STARTIMES_BASIC" || */}
+                            {item.billerCode === "IBEDC_F" ||
+                            item.billerCode === "ENUGU_DISCO" ||
+                            // item.billerCode === "Smile-Data_BLACKSILICON" ||
                             item.billerCode === null ? (
                               <button
                                 style={{
@@ -345,7 +346,8 @@ function Property(props) {
                             </>
                           ) : (
                             <>
-                              {item.billerCode === "STARTIMES" ||
+                              {item.billerCode === "STARTIMES_BASIC" ||
+                              item.billerCode === "ENUGU_DISCO" ||
                               item.billerCode === null ? (
                                 <Button
                                   disabled

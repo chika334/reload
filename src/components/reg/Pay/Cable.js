@@ -7,7 +7,7 @@ import { paymentButton } from "../../../_action/paymentAction";
 import md5 from "md5";
 import axios from "axios";
 import { Button } from "@material-ui/core";
-import PaymentProcess from "../../Pay/PaymentProcess";
+// import PaymentProcess from "../../Pay/PaymentProcess";
 
 const formSchema = {
   email: {
@@ -117,7 +117,7 @@ export function AirtimePay(props) {
       <div className="p-3">
         <h4 className="text-center p-3">Select Payment Method</h4>
         <hr />
-        <PaymentProcess />
+        {/* <PaymentProcess /> */}
       </div>
     </div>
   );

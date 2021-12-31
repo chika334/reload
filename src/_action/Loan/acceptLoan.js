@@ -4,7 +4,7 @@ import { returnErrors } from "../errorAction";
 // import { interSwitchConfig } from "./providers";
 
 export const acceptOffer = (value, secondValue) => (dispatch, getState) => {
-  console.log(value, secondValue);
+  // console.log(value, secondValue);
   axios
     .post(
       `${process.env.REACT_APP_API_INTERSWITCH}/lending-service/api/v2/offers/${secondValue.offerId}/accept`,

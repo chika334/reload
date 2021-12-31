@@ -9,7 +9,7 @@ export const requery = (value) => (dispatch, getState) => {
   const config = {
     headers: {
       merchantKey: "099035353",
-      // "Content-Type": "application/json",
+      "Content-Type": "application/json",
     },
   };
 

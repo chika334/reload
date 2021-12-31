@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
-import { hideLoader, showLoader } from "../../_action/loading";
 import { Button } from "@material-ui/core";
 import { products } from "../../data/products";
 import Electricity from "../Pay/Electricity";
@@ -12,7 +11,6 @@ import Data from "../Pay/Data";
 import Exams from "../Pay/Exams";
 import { usePaymentGateway } from "../Pay/PaymentProcess/hooks";
 import { useUSSD } from "../CoralUssd";
-import CoralUssd from "../CoralUssd/App";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -226,6 +224,14 @@ function PropertyDetails(props) {
                                 />
                               )}
                               {productDetails.detail.productId.description ===
+                                "Electricity (eedc)" && (
+                                <Electricity
+                                  disabledUssd={disabledUssd}
+                                  disabledCard={disabledCard}
+                                  dataPay={onPay}
+                                />
+                              )}
+                              {productDetails.detail.productId.description ===
                                 "Electricity Prepaid (EKEDC)" && (
                                 <Electricity
                                   disabledUssd={disabledUssd}
@@ -344,7 +350,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, { hideLoader, PaymentIntent, verify })(
+  connect(mapStateToProps, { PaymentIntent, verify })(
     PropertyDetails
   )
 );

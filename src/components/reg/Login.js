@@ -28,7 +28,7 @@ const formSchema = {
 function Login(props) {
   const user = useSelector((state) => state.authUser);
   const error = useSelector((state) => state.error);
-  const loginSuccRed = useSelector((state) => state.login_success_red);
+  // const loginSuccRed = useSelector((state) => state.login_success_red);
   const [formData, setFormData] = useState({});
   const [validationSchema, setValidationSchema] = useState({});
   const [errMessage, setErrMessage] = useState("");

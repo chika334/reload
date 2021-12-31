@@ -48,7 +48,7 @@ function PropertyDetails(props) {
   const payment = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone : state.paymentDone
   );
-  const { isModalOpen, toggleIt } = useUSSD();
+  // const { isModalOpen, toggleIt } = useUSSD();
   const {
     startPayment,
     setLoading,
@@ -118,7 +118,7 @@ function PropertyDetails(props) {
     if (payment.detail.buttonClick !== null) {
       startPayment(payment.detail.buttonClick);
       if (payment.detail.buttonClick === "USSD") {
-        toggleIt();
+        // toggleIt();
         setDisabledUssd(true);
       } else if (payment.detail.buttonClick === "FLUTTERWAVE") {
         setDisabledCard(true);

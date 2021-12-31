@@ -7,6 +7,7 @@ import { someData } from "../../_action/passingData";
 import OutsideAlerter from "./Outside";
 
 function App(props) {
+  const [modal, setModal] = React.useState(false)
   const dispatch = useDispatch();
   const history = useHistory();
   const getProducts = useSelector((state) => state.products);

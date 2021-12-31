@@ -4,7 +4,7 @@ import Recipt from "./receipt";
 import { Button } from "@material-ui/core";
 
 export default function printReceipt() {
-  const componentRef = useRef();
+  // const componentRef = useRef();
 
   return (
     <div>

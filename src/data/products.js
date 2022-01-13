@@ -103,26 +103,26 @@ export const products = {
     url: "#",
     btntxt: "Explore Now",
   },
-  Waec: {
-    key: "Waec",
-    id: "exams",
-    title: "West African Examinations Council",
-    icon:
-      "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/WAEC.jpeg",
-    url: "#",
-    cat: "cat5",
-    btntxt: "Explore Now",
-  },
-  Jamb: {
-    key: "Jamb",
-    id: "exams",
-    title: "Joint Admissions and Matriculations Board",
-    icon:
-      "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Jamb.jpeg",
-    url: "#",
-    cat: "cat5",
-    btntxt: "Explore Now",
-  },
+  // Waec: {
+  //   key: "Waec",
+  //   id: "exams",
+  //   title: "West African Examinations Council",
+  //   icon:
+  //     "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/WAEC.jpeg",
+  //   url: "#",
+  //   cat: "cat5",
+  //   btntxt: "Explore Now",
+  // },
+  // Jamb: {
+  //   key: "Jamb",
+  //   id: "exams",
+  //   title: "Joint Admissions and Matriculations Board",
+  //   icon:
+  //     "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Jamb.jpeg",
+  //   url: "#",
+  //   cat: "cat5",
+  //   btntxt: "Explore Now",
+  // },
 };
 
 export const searchProducts = {
@@ -288,29 +288,29 @@ export const searchProducts = {
       },
     ],
   },
-  Exams: {
-    key: "Exams",
-    value: [
-      {
-        key: "Waec",
-        id: "exams",
-        title: "West African Examinations Council",
-        icon:
-          "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/WAEC.jpeg",
-        url: "#",
-        cat: "cat5",
-        btntxt: "Explore Now",
-      },
-      {
-        key: "Jamb",
-        id: "exams",
-        title: "Joint Admissions and Matriculations Board",
-        icon:
-          "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Jamb.jpeg",
-        url: "#",
-        cat: "cat5",
-        btntxt: "Explore Now",
-      },
-    ],
-  },
+  // Exams: {
+  //   key: "Exams",
+  //   value: [
+  //     {
+  //       key: "Waec",
+  //       id: "exams",
+  //       title: "West African Examinations Council",
+  //       icon:
+  //         "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/WAEC.jpeg",
+  //       url: "#",
+  //       cat: "cat5",
+  //       btntxt: "Explore Now",
+  //     },
+  //     {
+  //       key: "Jamb",
+  //       id: "exams",
+  //       title: "Joint Admissions and Matriculations Board",
+  //       icon:
+  //         "https://blacksiliconimages.s3-us-west-2.amazonaws.com/Reload.ng/Jamb.jpeg",
+  //       url: "#",
+  //       cat: "cat5",
+  //       btntxt: "Explore Now",
+  //     },
+  //   ],
+  // },
 };

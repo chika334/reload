@@ -3,6 +3,7 @@ import { ACCEPT_LOAN_OFFERS, ACCEPT_LOAN_FAILED } from "../../_action/types";
 const initialState = {
   loading: false,
   success: false,
+  error: false,
   data: null,
 };
 
@@ -19,6 +20,7 @@ const acceptOffers = (state = initialState, action) => {
       return {
         ...state,
         success: false,
+        error: true,
         data: null,
       };
     default:

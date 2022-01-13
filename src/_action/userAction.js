@@ -13,6 +13,8 @@ import {
   UPDATE_PROFILE,
   FORGOT_PASSWORD_FAIL,
   FORGOT_PASSWORD,
+  RESET_PASSWORD,
+  RESET_PASSWORD_FAIL
 } from "./types";
 import axios from "axios";
 import { returnErrors } from "../_action/errorAction";
@@ -51,7 +53,7 @@ export const RegUser = (values) => (dispatch) => {
     },
   };
 
-  // var body = JSON.stringify(values);
+  var body = JSON.stringify(values);
 
   axios
     .post(
@@ -61,14 +63,11 @@ export const RegUser = (values) => (dispatch) => {
     )
     .then((res) => {
       dispatch(hideLoader());
-        return (
-          dispatch({
-            type: REGISTER_USER,
-            payload: res.data,
-          })
-        )
-      }
-    )
+      return dispatch({
+        type: REGISTER_USER,
+        payload: res.data,
+      });
+    })
     .catch((err) => {
       dispatch(hideLoader());
       if (err.response) {
@@ -90,8 +89,6 @@ export const LoginUser = (user) => (dispatch) => {
     },
   };
 
-  
-
   axios
     .post(
       `${process.env.REACT_APP_API}/billpay/api/auth/biller/customer/login`,
@@ -105,10 +102,6 @@ export const LoginUser = (user) => (dispatch) => {
           type: LOGIN_SUCCESS,
           payload: res.data,
         });
-        // setTimeout(() => {
-        //   if (localStorage.token) {
-        //   }
-        // }, 3000)
       }
     })
     .catch((err) => {
@@ -139,19 +132,13 @@ export const forgotPassword = (values) => (dispatch) => {
       config
     )
     .then((res) => {
-      if (res.status === 200) {
-        return (
-          dispatch({
-            type: FORGOT_PASSWORD,
-            payload: res.data,
-          }),
-          setTimeout(() => {
-            if (localStorage.token) {
-              dispatch(hideLoader());
-            }
-          }, 3000)
-        );
-      }
+      dispatch(hideLoader());
+      // if (res.status === 200) {
+      return dispatch({
+        type: FORGOT_PASSWORD,
+        payload: res.data,
+      });
+      // }
     })
     .catch((err) => {
       dispatch(hideLoader());
@@ -181,32 +168,26 @@ export const resetPassword = (user) => (dispatch) => {
 
   axios
     .post(
-      `${process.env.REACT_APP_API}/billpay/api/auth/biller/customer/login`,
+      `${process.env.REACT_APP_API}/billpay/api/billercustomer/resetpassword`,
       user,
       config
     )
     .then((res) => {
+      dispatch(hideLoader());
       if (res.status === 200) {
-        return (
-          dispatch({
-            type: LOGIN_SUCCESS,
-            payload: res.data,
-          }),
-          setTimeout(() => {
-            if (localStorage.token) {
-              dispatch(hideLoader());
-            }
-          }, 3000)
-        );
+        return dispatch({
+          type: RESET_PASSWORD,
+          payload: res.data,
+        });
       }
     })
     .catch((err) => {
       dispatch(hideLoader());
       dispatch(
-        returnErrors(err.response.data, err.response.status, "LOGIN_FAILED")
+        returnErrors(err.response.data, err.response.status, "RESET_PASSWORD_FAIL")
       );
       dispatch({
-        type: LOGIN_FAILED,
+        type: RESET_PASSWORD_FAIL,
       });
     });
 };

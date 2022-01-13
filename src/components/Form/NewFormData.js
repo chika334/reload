@@ -69,6 +69,7 @@ function NewFormData(props) {
         setErrors("");
         setLoading(true);
         const newValuesObj = {
+          email: `${values["email"]}`,
           amount:
             slug === "SMILE" ||
             product === "Cable" ||
@@ -174,8 +175,6 @@ function NewFormData(props) {
             ? ""
             : values["email"],
       };
-
-      console.log(detail);
 
       dispatch(pay(detail));
       // props.dataPay(true, product);

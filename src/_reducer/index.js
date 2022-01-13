@@ -27,9 +27,11 @@ import someLoanData from "./Loan/sendSomeLoanDataRed";
 import reloadReducer from "./Requery"
 import hostedField from './Loan/hostedField'
 import dataValue from "./data";
+import forgotReducer from "./forgotPassword";
 
 export default combineReducers({
   authUser,
+  forgotReducer,
   dataValue,
   verify,
   verifyUserdetails,

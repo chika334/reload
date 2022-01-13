@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import sectiondata from "../../data/sections.json";
-import parse from "html-react-parser";
 import Alert from "@material-ui/lab/Alert";
-import ForgotPasswords from "../reg/ForgotPassword";
+import { Button } from "@material-ui/core";
+import ResetPassword from "../reg/ResetPassword";
 import { useSelector, connect } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
 import { hideLoader } from "../../_action/loading";
@@ -15,36 +15,53 @@ function ForgotPassword(props) {
   const [message, setMessage] = useState(null);
   const [forgotP, setForgotP] = useState(false);
   const error = useSelector((state) => state.error);
-  let data = sectiondata.whychooseus;
+  // let data = sectiondata.whychooseus;
 
   useEffect(() => {
-    if (error.id === "FORGOT_PASSWORD_FAIL") {
+    if (error.id === "RESET_PASSWORD_FAIL") {
       props.hideLoader();
       setErrMessage(error.message);
     }
   }, [error]);
 
   useEffect(() => {
-    if (forgotPassword.forgotPassword === true) {
+    if (forgotPassword.resetPassword === true) {
       setMessage(forgotPassword.msg.message);
+      localStorage.setItem("reset", true);
       setForgotP(true);
     } else {
-      setMessage("Something went wrong...")
+      setMessage("Something went wrong...");
     }
-  }, [forgotPassword.forgotPassword === true]);
+  }, [forgotPassword.resetPassword === true]);
+
+  const handleClick = () => {
+    window.location.href = `/${process.env.REACT_APP_RELOADNG}/registration`;
+  };
 
   return (
     <div className="register-page-area pd-bottom-100">
       <div className="container">
-        <div className="row justify-content-center">
-          {/* forgot password */}
+        <div className="row pd-top-100 justify-content-center">
+          {/* reset password */}
           {forgotP === false ? (
-            <ForgotPasswords
-              data={error.id === "FORGOT_PASSWORD_FAIL" ? errMessage : ""}
+            <ResetPassword
+              data={error.id === "RESET_PASSWORD_FAIL" ? errMessage : ""}
             />
           ) : (
             <div className="register-page-area pd-top-100 mt-2">
-              <Alert severity="success">{message+" Thank you."}</Alert>
+              <Alert severity="success">{message + " Please Login."}</Alert>
+              <div className="d-flex mt-3 justify-content-center">
+                <Button
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    padding: "15px",
+                  }}
+                  onClick={handleClick}
+                >
+                  Login
+                </Button>
+              </div>
             </div>
           )}
         </div>

@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import { Component } from "react";
 // import sectiondata from "../../data/sections.json";
 import { partner } from "../../data/partner";
-import parse from "html-react-parser";
 
 class OurPartner extends Component {
   render() {

@@ -5,24 +5,16 @@ import { Button, Modal, TextField, MenuItem } from "@material-ui/core";
 import { showLoader, hideLoader } from "../../_action/loading";
 import { someData } from "../../_action/passingData";
 import { interswitchToken } from "../../_action/Loan/token";
-import { interswitchProvider } from "../../_action/Loan/providers";
 import { makeStyles } from "@material-ui/core/styles";
-import { BankCodes } from "../jsonData/BankCodes";
 import { getOffer } from "../../_action/Loan/getOffers";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import Table from "../Table/index";
 import { getLoanData } from "../../_action/Loan/getLoanData";
 import { someloanData } from "../../_action/Loan/sendSomeLoanData";
 import "../Table/table.scss";
 import Alert from "@material-ui/lab/Alert";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -104,7 +96,7 @@ function Property({ breakOn = "medium" }) {
     setLoading(true);
 
     const finalData = {
-      amount: getData.amount,
+      amount: getData.amount*100,
       serviceType: getData.serviceType,
       phone: "234"+getData.phone
     }
@@ -199,13 +191,13 @@ function Property({ breakOn = "medium" }) {
                             <td data-heading="Id">{index + 1}</td>
                             <td>{allData.provider.name}</td>
                             <td data-heading="Amount Offered">
-                              {formatter.format(allData.amountOffered)}
+                              {formatter.format(allData.amountOffered/100)}
                             </td>
                             <td data-heading="interest">
-                              {formatter.format(allData.interest)}
+                              {allData.interest+"%"}
                             </td>
                             <td data-heading="Amount Payable">
-                              {formatter.format(allData.amountPayable)}
+                              {formatter.format(allData.amountPayable/100)}
                             </td>
                             <td data-heading="Tenure">{allData.tenure}</td>
                             <td data-heading="Expiry Date">

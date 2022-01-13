@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { connect, useSelector } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { showLoader, hideLoader } from "../../../_action/loading";
 import {
   verifySmartcardNumber,
@@ -11,11 +11,11 @@ import { pay } from "../../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../../_action/errorAction";
 import { verify } from "../../../_action/verify";
 import "../../../css/input.css";
-// import { FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
+import { FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
 import NewFormData from "../../Form/NewFormData";
 
 function Dstv(props) {
-  const [setDisabledCard] = useState(false);
+  const [disabledCard, setDisabledCard] = useState(false);
   const productDetails = useSelector((state) => state.someData.detail);
 
   const item = JSON.parse(productDetails.detail.productvalue);

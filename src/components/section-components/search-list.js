@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import sectiondata from "../../data/sections.json";
-import parse from "html-react-parser";
 import { Link, withRouter } from "react-router-dom";
-import { TextField, Button } from "@material-ui/core";
-import { products, searchProducts } from "../../data/products";
-import { connect, useSelector } from "react-redux";
+import { searchProducts } from "../../data/products";
+import { useSelector } from "react-redux";
 import AirtimeSearchList from "../searchList/AirtimeSearchList";
 import DataSearchList from "../searchList/DataSearchList";
 import CableSearchList from "../searchList/CableSearchList";
 import ElectricSearchList from '../searchList/ElectricSearchList'
-import ExamsSearchList from '../searchList/ExamsSearchList'
 
 function SearchList(props) {
   const getProducts = useSelector((state) => state.products);
@@ -63,9 +60,9 @@ function SearchList(props) {
               {props.location.search === "?product=Electric" && (
                 <ElectricSearchList />
               )}
-              {props.location.search === "?product=Exams" && (
+              {/* {props.location.search === "?product=Exams" && (
                 <ExamsSearchList />
-              )}
+              )} */}
             </div>
           </div>
         </div>

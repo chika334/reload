@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import sectiondata from "../../data/sections.json";
-import parse from "html-react-parser";
 
 class Team extends Component {
   render() {

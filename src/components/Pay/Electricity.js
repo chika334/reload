@@ -192,7 +192,6 @@ function Electricity(props) {
 
   useEffect(() => {
     if (paymentIntent.success === true) {
-      // pro
       setLoading(false);
       const amounts = valueData === null ? "" : valueData.amount;
       const iedc =
@@ -243,22 +242,11 @@ function Electricity(props) {
     }
   }, [verifiedUser.verifySuccess]);
 
-  // useEffect(() => {
-  //   setOpen(false);
-  //   if (error.id === "FINAL_PAYMENT_ERROR") {
-  //     setLoading(false);
-  //     setErrorModal(true);
-  //   } else if (error.id === "REQUERY_FAILED") {
-  //     setLoading(false);
-  //     setErrorMessage(error.message.result.productResult);
-  //   }
-  // }, [error.error]);
-
   const getData = (data) => {
     setIntentData(data);
   };
 
-  console.log(productDetails.billerCode);
+  // console.log(productDetails.billerCode);
 
   return (
     <div className="property-details-area">
@@ -384,17 +372,7 @@ function Electricity(props) {
             ) : (
               ""
             )}
-            {/* {productDetails.billerCode === "ENUGU_DISCO" ? (
-              <Enugu
-              // getData={getData}
-              setLoading={setLoading}
-              // handleSubmit={handleSubmit}
-              // disabledCard={props.disabledCard}
-              // disabledUssd={props.disabledUssd}
-              />
-            ) : (
-              ""
-            )} */}
+            
             {verifiedUser.verifySuccess === true && meterType === "PREPAID" && (
               <>
                 {productDetails.billerCode === "iedc" ? (
@@ -509,32 +487,6 @@ function Electricity(props) {
             ) : (
               ""
             )}
-
-            {/* {verifiedUser.verifySuccess === true && meterType === "POSTPAID" && (
-              <>
-                {productDetails.billerCode === "iedc" ? (
-                  <IkejaPostpaid
-                    meterType={meterType}
-                    getData={getData}
-                    handleSubmit={handleSubmit}
-                    disabledCard={props.disabledCard}
-                    disabledUssd={props.disabledUssd}
-                  />
-                ) : (
-                  ""
-                )}
-                {productDetails.billerCode === "PHEDDIR2"
-                  ? 
-                  <PhedpostPaid
-                      meterType={meterType}
-                      getData={getData}
-                      handleSubmit={handleSubmit}
-                      disabledCard={props.disabledCard}
-                      disabledUssd={props.disabledUssd}
-                    />
-                  : ""}
-              </>
-            )} */}
           </div>
         </div>
       )}
@@ -548,9 +500,7 @@ export default withRouter(
     verify,
     PaymentIntent,
     pay,
-    // showLoader,
     clearErrors,
-    // hideLoader,
     finalPayment,
   })(Electricity)
 );

@@ -180,8 +180,6 @@ function KanoPrepaid(props) {
     fieldsArray.push(item[data]);
   }
 
-  // const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
-
   const Options =
     JSON.parse(productDetails.detail.productvalue).field6 === undefined
       ? ""
@@ -207,9 +205,6 @@ function KanoPrepaid(props) {
               allData.select === false &&
               allData.text !== "Amount" &&
               allData.text !== "Meter Type" ? (
-                // allData.text === "Email Address" ? (
-                //   ""
-                // ) : (
                 <div key={i}>
                   <div className="d-flex align-item-center justify-content-center pt-3">
                     <TextField

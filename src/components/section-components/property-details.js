@@ -8,9 +8,7 @@ import Electricity from "../Pay/Electricity";
 import Cable from "../Pay/Cable";
 import Airtime from "../Pay/Airtime";
 import Data from "../Pay/Data";
-// import Exams from "../Pay/Exams";
 import { usePaymentGateway } from "../Pay/PaymentProcess/hooks";
-// import { useUSSD } from "../CoralUssd";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -21,6 +19,7 @@ import Alert from "@material-ui/lab/Alert";
 import { requery } from "../../_action/requery";
 import { PaymentIntent } from "../../_action/Payment/index";
 import { verify } from "../../_action/verify";
+import OtherElectricity from "../Pay/OtherElectricity";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -48,7 +47,6 @@ function PropertyDetails(props) {
   const payment = useSelector((state) =>
     state.paymentDone.payment === true ? state.paymentDone : state.paymentDone
   );
-  // const { isModalOpen, toggleIt } = useUSSD();
   const {
     startPayment,
     setLoading,
@@ -198,7 +196,6 @@ function PropertyDetails(props) {
                         </div>
                       </div>
                       <div className="d-flex align-item-center justify-content-center">
-                        {/* <h4>{props.location.state.data.title}</h4> */}
                       </div>
                       <div className="property-details-slider-info">
                         <div className="">
@@ -224,8 +221,8 @@ function PropertyDetails(props) {
                                 />
                               )}
                               {productDetails.detail.productId.description ===
-                                "Electricity (eedc)" && (
-                                <Electricity
+                                "Electricity (EEDC)" && (
+                                <OtherElectricity
                                   disabledUssd={disabledUssd}
                                   disabledCard={disabledCard}
                                   dataPay={onPay}
@@ -321,15 +318,6 @@ function PropertyDetails(props) {
                                 />
                               )}
                             </div>
-                            {/* <div>
-                              {productDetails.detail.productId.description ===
-                                "Exams" && (
-                                <Exams
-                                  productData={props.location.state}
-                                  dataPay={onPay}
-                                />
-                              )}
-                            </div> */}
                           </div>
                         </div>
                       </div>

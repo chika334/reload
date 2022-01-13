@@ -14,8 +14,6 @@ const SearchList = (props) => {
     setSearchProductData(searchProducts[productKey]);
   }, [props.location]);
 
-  // console.log(props);
-  // console.log(searchproductData);
   return (
     <div>
       {/* <Navbar /> */}

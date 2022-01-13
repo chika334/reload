@@ -52,9 +52,9 @@ function Cable(props) {
         verifyUserdetails.name === "" ? (
           <div>
             <VerifyDetails
-              billerCode="ENUGU_DISCO"
+              billerCode="EEDC"
               productName={fieldsArray}
-              billerSlug="ENUGU_DISCO"
+              billerSlug="EEDC"
               productType="Electricity"
               setLoading={props.setLoading}
             />

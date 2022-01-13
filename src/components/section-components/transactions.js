@@ -1,6 +1,4 @@
-import React, { Component } from "react";
-import sectiondata from "../../data/sections.json";
-import parse from "html-react-parser";
+import { Component } from "react";
 
 class Transactions extends Component {
   render() {

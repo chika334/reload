@@ -60,30 +60,29 @@ function Property(props) {
         setTimeout(() => {
           props.hideLoader();
         }, 3000);
-        const value =
-          getProducts.listProducts === null
-            ? ""
-            : getProducts.listProducts.forEach((detail) => {
-                if (
-                  details.otherData.productId.productname ===
-                  detail.productId.productname
-                ) {
-                  setTimeout(() => {
-                    dispatch(hideLoader());
-                  }, 2000);
-                  const data = {
-                    detail,
-                    productname: detail.productId.description,
-                    productId: details.otherData.productId.id,
-                    billerCode: detail.billerCode,
-                  };
-                  dispatch(someData(data));
-                  let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                  history.push({
-                    pathname: path,
-                  });
-                }
-              });
+        getProducts.listProducts === null
+          ? ""
+          : getProducts.listProducts.forEach((detail) => {
+              if (
+                details.otherData.productId.productname ===
+                detail.productId.productname
+              ) {
+                setTimeout(() => {
+                  dispatch(hideLoader());
+                }, 2000);
+                const data = {
+                  detail,
+                  productname: detail.productId.description,
+                  productId: details.otherData.productId.id,
+                  billerCode: detail.billerCode,
+                };
+                dispatch(someData(data));
+                let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+                history.push({
+                  pathname: path,
+                });
+              }
+            });
       }
     }
   };
@@ -96,9 +95,9 @@ function Property(props) {
     let word = e.target.value;
 
     if (word === "") {
-      const filtered =
-        getProducts.listProducts === null ? "" : getProducts.listProducts;
-      setProductData(filtered);
+      setProductData(
+        getProducts.listProducts === null ? "" : getProducts.listProducts
+      );
     } else if (word === "Airtime") {
       const filtered =
         getProducts.listProducts === null
@@ -136,23 +135,15 @@ function Property(props) {
                 item.productId.description === "Electricity Prepaid (KEDCO)" ||
                 item.productId.description === "Electricity Prepaid (phed)" ||
                 item.productId.description === "Electricity Prepaid (JED)" ||
-                item.productId.description === "Electricity (eedc)"
+                item.productId.description === "Electricity (EEDC)"
             );
       setProductData(filtered);
-    } else if (word === "Exams") {
-      const filtered =
-        getProducts.listProducts === null
-          ? []
-          : getProducts.listProducts.filter(
-              (item) => item.productId.description === "Exams"
-            );
-      setProductData(filtered);
-    } else if (word === "Loan") {
+    } 
+    else if (word === "Loan") {
       // setModal(true);
       if (user === null) {
         history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
       } else {
-        // window.location.href = `https://loan-gp56azxe2-chika334.vercel.app?customerId=`
         window.location.href = `/${process.env.REACT_APP_RELOADNG}/loan`;
       }
     }
@@ -226,13 +217,6 @@ function Property(props) {
                   >
                     Loan
                   </button>
-                  {/* <button
-                    style={{ backgroundColor: "#fda94f", color: "#000" }}
-                    value="Exams"
-                    onClick={handleBtn}
-                  >
-                    Exams
-                  </button> */}
                 </div>
               </div>
             </div>
@@ -273,19 +257,9 @@ function Property(props) {
                         </ul>
                         <ul className="contact-list">
                           <li className="readeal-top">
-                            {/* {item.billerCode === "Smile-Data_BLACKSILICON" ||
-                            item.billerCode === "Glo-Data_BLACKSILICON" ||
-                            item.billerCode === "9mobile-Data_BLACKSILICON" ||
-                            item.billerCode === "Airtel-Data_BLACKSILICON" ||
-                            item.billerCode === "Mtn-Data_BLACKSILICON" ||
-                            item.billerCode === "GOTV" ||
-                            item.productId.description === "Airtime" ? (
-                              <>Product Under Test</>
-                            ) : (
-                              <> */}
-                            {/* {item.billerCode === "STARTIMES_BASIC" || */}
-                            {item.billerCode === "IBEDC_F" ||
-                            item.billerCode === "ENUGU_DISCO" ||
+                            {item.billerCode === "STARTIMES_BASIC" ||
+                            item.billerCode === "IBEDC_F" ||
+                            // item.billerCode === "EEDC" ||
                             // item.billerCode === "Smile-Data_BLACKSILICON" ||
                             item.billerCode === null ? (
                               <button
@@ -325,13 +299,11 @@ function Property(props) {
                     productData.map((item, i) => (
                       <div key={i} className="columns p-3">
                         <div>
-                          {item.billerCode === "Smile-Data_BLACKSILICON" ||
-                          item.billerCode === "Glo-Data_BLACKSILICON" ||
-                          item.billerCode === "9mobile-Data_BLACKSILICON" ||
-                          item.billerCode === "Airtel-Data_BLACKSILICON" ||
-                          item.billerCode === "Mtn-Data_BLACKSILICON" ||
-                          item.billerCode === "GOTV" ||
-                          item.productId.description === "Airtime" ? (
+                          {item.billerCode === "STARTIMES_BASIC" ||
+                          item.billerCode === "IBEDC_F" ||
+                          // item.billerCode === "EEDC" ||
+                          // item.billerCode === "Smile-Data_BLACKSILICON" ||
+                          item.billerCode === null ? (
                             <>
                               <img
                                 src={item.productId.logourl}
@@ -348,7 +320,7 @@ function Property(props) {
                           ) : (
                             <>
                               {item.billerCode === "STARTIMES_BASIC" ||
-                              item.billerCode === "ENUGU_DISCO" ||
+                              // item.billerCode === "EEDC" ||
                               item.billerCode === null ? (
                                 <Button
                                   disabled

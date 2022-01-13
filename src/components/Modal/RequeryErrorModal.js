@@ -69,8 +69,9 @@ export default function RequeryErrorModal(props) {
               requery transaction */}
               {errorMessage}
             </b>
-            <table className="center">
-              {/* <tr>
+            <div>
+              <table className="center">
+                {/* <tr>
                 <td>Email: </td>
                 <td>{paymentDone.email}</td>
               </tr>
@@ -78,19 +79,20 @@ export default function RequeryErrorModal(props) {
                 <td>Phone Number: </td>
                 <td>{paymentDone.customerId}</td>
               </tr> */}
-              <tr>
-                <td className="pr-5">Transaction Reference: </td>
-                <td>{intentTransRef}</td>
-              </tr>
-              <tr>
-                <td>Amount: </td>
-                <td>{intent.totalAmount}</td>
-              </tr>
-              <tr>
-                <td>Product Name: </td>
-                <td>{someData.productId.productname}</td>
-              </tr>
-            </table>
+                <tr>
+                  <td className="pr-5">Transaction Reference: </td>
+                  <td>{intentTransRef}</td>
+                </tr>
+                <tr>
+                  <td>Amount: </td>
+                  <td>{intent.totalAmount}</td>
+                </tr>
+                <tr>
+                  <td>Product Name: </td>
+                  <td>{someData.productId.productname}</td>
+                </tr>
+              </table>
+            </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

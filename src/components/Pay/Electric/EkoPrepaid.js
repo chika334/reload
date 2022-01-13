@@ -68,6 +68,7 @@ function Eko(props) {
 
   const handleSubmit = (value) => {
     const newValuesObj = {
+      "Email Address": otherValues["Email Address"],
       amount: `${amount}`,
       channelRef: "web",
       description: "Electricity Prepaid",

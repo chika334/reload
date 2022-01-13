@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { showLoader, hideLoader } from "../../../_action/loading";
 import {
   verifySmartcardNumber,
@@ -16,19 +16,12 @@ import {
 } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../../_action/Payment/index";
-import Alert from "@material-ui/lab/Alert";
-import { pay, paymentButtons } from "../../../_action/Payment/paymentButtons";
+import { pay } from "../../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../../_action/errorAction";
 import { verify } from "../../../_action/verify";
 import "../../../css/input.css";
-import Slide from "@material-ui/core/Slide";
-import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
 import { withStyles } from "@material-ui/core/styles";
 import InputBase from "@material-ui/core/InputBase";
-import axios from "axios";
-// import startimes from "./jsonData/startimes.json";
-import NewFormData from "../../Form/NewFormData";
-import ProductTable from "../../section-components/productDetails/productTable";
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -65,10 +58,6 @@ const BootstrapInput = withStyles((theme) => ({
   },
 }))(InputBase);
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 function VerifyDetails(props) {
   const {
     billerCode,
@@ -92,6 +81,8 @@ function VerifyDetails(props) {
   const handleSelectMeterType = (event) => {
     if (event.target.value === "PREPAID") {
       setMeterType("ENUGU_PREPAID");
+    } else {
+      setMeterType("ENUGU_POSTPAID");
     }
   };
 
@@ -147,8 +138,10 @@ function VerifyDetails(props) {
                           className="inputSize"
                           required
                           label={
-                            allFields.text === "customerId"
+                            productType !== "Electricity" && allFields.text === "customerId"
                               ? "SmartCard Number"
+                              : productType === "Electricity"
+                              ? "Enter Meter Number"
                               : ""
                           }
                           onChange={(e) => handleOthers(e, allFields.text)}

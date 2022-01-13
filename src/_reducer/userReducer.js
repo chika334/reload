@@ -24,7 +24,6 @@ const initialState = {
   editSuccess: false,
   isLogin: false,
   isRegister: false,
-  forgotPassword: false,
 };
 
 function userReducer(state = initialState, action) {
@@ -41,20 +40,6 @@ function userReducer(state = initialState, action) {
         isAuthenticated: true,
         user: action.payload,
       };
-
-    case FORGOT_PASSWORD:
-      return {
-        ...state,
-        forgotPassword: true,
-        msg: action.payload,
-      };
-    // case EDITPROFILE:
-    // case RESET_PASSWORD:
-    //   return {
-    //     ...state,
-    //     user: action.payload,
-    //     editSuccess: true,
-    //   };
     case REGISTER_USER:
       localStorage.setItem("token", action.payload.token);
       return {
@@ -65,6 +50,7 @@ function userReducer(state = initialState, action) {
         isRegister: true,
         isAuthenticated: true,
         token: action.payload.token,
+        forgotPassword: false
       };
     case LOGIN_SUCCESS:
       localStorage.setItem("token", action.payload.token);
@@ -76,12 +62,12 @@ function userReducer(state = initialState, action) {
         isLoading: false,
         isAuthenticated: true,
         token: action.payload.token,
+        forgotPassword: false,
       };
     case LOGIN_FAILED:
     case REGISTER_FAIL:
     case LOGOUT_USER:
     case AUTH_ERROR:
-    case FORGOT_PASSWORD_FAIL:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -91,14 +77,6 @@ function userReducer(state = initialState, action) {
         user: null,
         forgotPassword: false,
       };
-    // case RESET_PASSWORD_FAIL:
-    // case EDITPROFILE_FAIL:
-    //   return {
-    //     ...state,
-    //     isAuthenticated: false,
-    //     isLoading: false,
-    //     user: null,
-    //   };
     default:
       return state;
   }

@@ -1,5 +1,7 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, useEffect, Suspense } from "react";
+// import ReactDOM from "react-dom";
 import {
+  BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
@@ -21,6 +23,7 @@ import Registraion from "./components/registration";
 import Faq from "./components/faq";
 import Contact from "./components/contact";
 import Error from "./components/error";
+import Reset from "./components/ResetPassword"
 import Receipt from "./components/Pay/PaymentProcess/printReceipt";
 
 // component
@@ -45,16 +48,22 @@ const Requery = lazy(() => import("./components/Pay/Requery"));
 function Routes(props) {
   const location = useLocation();
   const loading = useSelector((state) => state.loading.loading);
-  // const products = useSelector((state) => state.products);
+  const products = useSelector((state) => state.products);
+  const [uid, setUid] = React.useState();
 
-  // console.log(products.listProducts);
+  useEffect(() => {
+    props.showLoader();
+    setTimeout(() => {
+      props.hideLoader();
+    }, 1000);
+  }, []);
 
   // useEffect(() => {
-  //   props.showLoader();
-  //   setTimeout(() => {
-  //     props.hideLoader();
-  //   }, 1000);
-  // }, []);
+  //   const params = new URLSearchParams(props.location);
+  //   const productKey = params.get("token");
+  //   console.log(props);
+  //   setUid(productKey);
+  // }, [props.location]);
 
   return (
     <div>
@@ -98,6 +107,7 @@ function Routes(props) {
               `/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`,
               `/${process.env.REACT_APP_RELOADNG}/loan/loan-status`,
               `/${process.env.REACT_APP_RELOADNG}/requery`,
+              `/${process.env.REACT_APP_RELOADNG}/resetpassword`,
             ]}
           >
             <Switch location={location} key={location.pathname}>
@@ -105,6 +115,11 @@ function Routes(props) {
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/about`}
                 component={About}
+              />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/resetpassword`}
+                component={Reset}
               />
               <Route
                 exact

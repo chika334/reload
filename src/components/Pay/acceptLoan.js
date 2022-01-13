@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import sectiondata from "../../data/sections.json";
-// import parse from "html-react-parser";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { Button, Modal, TextField, MenuItem } from "@material-ui/core";
@@ -8,11 +6,6 @@ import { showLoader, hideLoader } from "../../_action/loading";
 import { someData } from "../../_action/passingData";
 import { makeStyles } from "@material-ui/core/styles";
 import { BankCodes } from "../jsonData/BankCodes";
-// import Dialog from "@material-ui/core/Dialog";
-// import DialogContent from "@material-ui/core/DialogContent";
-// import DialogActions from "@material-ui/core/DialogActions";
-// import DialogContentText from "@material-ui/core/DialogContentText";
-// import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { acceptOffer } from "../../_action/Loan/acceptLoan";
 import Alert from "@material-ui/lab/Alert";
@@ -36,20 +29,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function Property(props, { breakOn = "medium" }) {
   const classes = useStyles();
   const history = useHistory();
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const token = useSelector((state) => state.Token);
-  const getLoanDetails = useSelector((state) => state.getLoanData);
   const getOfferResult = useSelector((state) => state.getOffers);
-  const [offerData, setOfferData] = useState(null);
-  const Providers = useSelector((state) => state.Providers);
   const someData = useSelector((state) => state.someLoanData);
-  const acceptLoanOffer = useSelector((state) => state.acceptOffers);
-  const [providersDetails, setProvidersDetails] = useState(null);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const errors = useSelector((state) => state.error);
+  const [offerDetails, setOfferDetails] = useState(null);
   const [getData, setGetData] = useState({
     accountNumber: "",
     bankDetails: "",
@@ -82,46 +69,39 @@ function Property(props, { breakOn = "medium" }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let acceptLoan = {};
-
-    acceptLoan.customerId =
-      someData.data !== null ? someData.data.initalData.phone : "";
-    acceptLoan.providerCode =
-      someData.data !== null ? someData.data.providerCode : "";
-    acceptLoan.channelCode = process.env.REACT_APP_CHANNELCODE;
-    acceptLoan.debitMethod = {
-      useCreditMethod: true,
-    };
-
-    acceptLoan.creditMethod = {
-      accountNumber: getData["accountNumber"],
-      bankCode: getData["bankDetails"],
-    };
-
-    const secondValue = {
-      offerId: someData.data.offerId,
-    };
-
-    setLoading(true);
-    dispatch(acceptOffer(acceptLoan, secondValue));
+    window.location.href = `https://loan-81698gqua-chika334.vercel.app?customerId=${
+      someData.data === null ? "" : someData.data.initalData.phone
+    }&offerId=${
+      someData.data === null ? "" : someData.data.offerId
+    }&providerCode=${
+      someData.data === null ? "" : someData.data.providerCode
+    }&accountNumber=${getData.accountNumber}&bankDetails=${
+      getData.bankDetails
+      // }&token=${localStorage.access_token}`;
+    }&token=${token.tokenInterSwitch}`;
   };
 
   useEffect(() => {
-    if (acceptLoanOffer.success === true) {
-      setLoading(false);
-      window.location.href = `https://loan-o77u9acq2-chika334.vercel.app?customerId=${
-        someData.data === null ? "" : someData.data.initalData.phone
-      }&offerId=${
-        someData.data === null ? "" : someData.data.offerId
-      }&providerCode=${
-        someData.data === null ? "" : someData.data.providerCode
-      }&accountNumber=${getData.accountNumber}&bankDetails=${
-        getData.bankDetails
-      }&token=${localStorage.access_token}`;
+    if (getOfferResult.data != null && someData.data !== null) {
+      // let text = "";
+      for (let i = 0; i < getOfferResult.data.offers.length; i++) {
+        // text += getOfferResult.data.offers[i] + "<br>";
+        // console.log();
+        if (getOfferResult.data.offers[i].offerId === someData.data.offerId) {
+          // console.log("daniel");
+          setOfferDetails(getOfferResult.data.offers[i]);
+          // console.log("data", someData.data.offerId);
+        } else {
+          console.log("offerid doesn't exist");
+        }
+      }
+      // console.log(text);
     } else {
-      console.log("issues");
+      console.log("bad");
     }
-  }, [acceptLoanOffer.success]);
+  }, []);
+
+  console.log(offerDetails);
 
   useEffect(() => {
     if (getOfferResult.data === null) {
@@ -177,7 +157,31 @@ function Property(props, { breakOn = "medium" }) {
                           ) : (
                             ""
                           )}
-                          <div className="mt-5">
+                          <div className="mt-5 d-flex justify-content-center">
+                            <p className="pr-5">Lender's Name: </p>
+                            <p>
+                              {offerDetails === null
+                                ? ""
+                                : offerDetails.provider.name}
+                            </p>
+                          </div>
+                          <div className="mt-2 d-flex justify-content-center">
+                            <p className="pr-5">Amount Offered: </p>
+                            <p>
+                              {offerDetails === null
+                                ? ""
+                                : offerDetails.amountOffered}
+                            </p>
+                          </div>
+                          <div className="mt-2 d-flex justify-content-center">
+                            <p className="pr-5">Amount Payable: </p>
+                            <p>
+                              {offerDetails === null
+                                ? ""
+                                : offerDetails.amountPayable}
+                            </p>
+                          </div>
+                          <div className="mt-3 d-flex justify-content-center">
                             <TextField
                               label="Enter Account Number"
                               value={getData["accountNumber"] || ""}
@@ -185,7 +189,7 @@ function Property(props, { breakOn = "medium" }) {
                               className={classes.textField}
                             />
                           </div>
-                          <div className="mt-5">
+                          <div className="mt-5 d-flex justify-content-center">
                             <TextField
                               id="standard-select-currency"
                               select
@@ -205,7 +209,7 @@ function Property(props, { breakOn = "medium" }) {
                               ))}
                             </TextField>
                           </div>
-                          <div className="mt-5">
+                          <div className="mt-5 d-flex justify-content-center">
                             <Button
                               type="submit"
                               style={{

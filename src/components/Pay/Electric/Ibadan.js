@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { PaymentIntent } from "../../../_action/Payment";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
-import { Button, TextField, MenuItem } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import { verifySmartcardNumber } from "../../../_action/verifyNumber";
 import { verify } from "../../../_action/verify";
 import { showLoader, hideLoader } from "../../../_action/loading";
@@ -14,48 +14,9 @@ import { clearErrors } from "../../../_action/errorAction";
 import "../../../css/input.css";
 import { useHistory } from "react-router-dom";
 import Slide from "@material-ui/core/Slide";
-import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-// import NativeSelect from "@material-ui/core/NativeSelect";
+import { FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
 import InputBase from "@material-ui/core/InputBase";
 import { withStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    "label + &": {
-      marginTop: theme.spacing(3),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: "relative",
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #ced4da",
-    fontSize: 16,
-    padding: "10px 26px 10px 12px",
-    transition: theme.transitions.create(["border-color", "box-shadow"]),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:focus": {
-      borderRadius: 4,
-      borderColor: "#80bdff",
-      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-    },
-  },
-}))(InputBase);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

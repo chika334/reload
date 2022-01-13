@@ -1,5 +1,3 @@
-import React from "react";
-import { faq } from "../../data/faq";
 
 export default function TermNCondition() {
   return (

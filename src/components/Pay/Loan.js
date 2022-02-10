@@ -209,7 +209,7 @@ function Property({ breakOn = "medium" }) {
                               {allData.fees === undefined
                                 ? "no value"
                                 : allData.fees.map((details) =>
-                                    formatter.format(details.amount)
+                                    formatter.format(details.amount/100)
                                   )}
                             </td>
                             <td className="terms" data-heading="Terms">

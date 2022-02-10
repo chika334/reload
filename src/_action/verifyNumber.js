@@ -6,7 +6,7 @@ import { returnErrors } from "./errorAction";
 import { secondTokenConfig } from "./userAction";
 
 // export const verifySmartcardNumber = async (valueData, config) => {
-export const verifySmartcardNumber = (valueData) => async (
+export const verifySmartcardNumber = valueData => async (
   dispatch,
   getState
 ) => {
@@ -16,25 +16,29 @@ export const verifySmartcardNumber = (valueData) => async (
       valueData,
       secondTokenConfig(getState)
     )
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: VERIFY_SUCCESS,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
+    .catch(err => {
       dispatch(hideLoader());
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "VERIFY_FAILED")
-      );
-      dispatch({
-        type: VERIFY_FAILED,
-      });
+      if (err.response.status === 500) {
+        window.location.href = `/${process.env.REACT_APP_RELOADNG}/error/process`;
+      } else {
+        dispatch(
+          returnErrors(err.response.data, err.response.status, "VERIFY_FAILED")
+        );
+        dispatch({
+          type: VERIFY_FAILED
+        });
+      }
     });
 };
 
 export const clearVerified = () => {
   return {
-    type: CLEAR_VERIFIED,
+    type: CLEAR_VERIFIED
   };
 };

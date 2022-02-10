@@ -6,7 +6,7 @@ import {
   verifySmartcardNumber,
   clearVerified,
 } from "../../../_action/verifyNumber";
-import { clearPayment } from "../../../_action/Payment/index";
+import { PaymentIntent, clearPayment } from "../../../_action/Payment/index";
 import { pay } from "../../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../../_action/errorAction";
 import { verify } from "../../../_action/verify";
@@ -14,10 +14,10 @@ import "../../../css/input.css";
 import VerifyDetails from "../PaymentProcess/verifyDetails";
 import NewFormData from "../../Form/NewFormData";
 
-function Cable(props) {
+function Kano(props) {
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
-  const selectData = useSelector(state => state.someSelect.name === null ? "" : state.someSelect.name)
+  const selectData = useSelector(state => state.someSelect)
   const [loading, setLoading] = useState(false);
   const [disabledCard, setDisabledCard] = useState(false);
   const [smartCard, setSmartCard] = useState("");
@@ -43,9 +43,9 @@ function Cable(props) {
         verifyUserdetails.name === "" ? (
           <div>
             <VerifyDetails
-              billerCode="EEDC"
+              billerCode="KEDCO"
               productName={fieldsArray}
-              billerSlug="EEDC"
+              billerSlug="KEDCO"
               productType="Electricity"
               setLoading={props.setLoading}
             />
@@ -77,7 +77,7 @@ function Cable(props) {
               product="Electricity"
               disabledCard={props.disabledCard}
               setDisabledCard={setDisabledCard}
-              slug={selectData}
+              slug={selectData.name}
               productData="null"
             />
           </>
@@ -95,9 +95,10 @@ export default withRouter(
     showLoader,
     clearErrors,
     hideLoader,
+    PaymentIntent,
     clearPayment,
     clearVerified,
     pay,
     verify,
-  })(Cable)
+  })(Kano)
 );

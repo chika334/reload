@@ -19,10 +19,8 @@ function App(props) {
 
   const handleMove = (details) => {
     if (
-      details.otherData.productId.productname === "Smile Data" ||
-      details.otherData.productId.productname === "Benin Electricity Prepaid" ||
-      details.otherData.productId.productname === "Jamb Exams" ||
-      details.otherData.productId.productname === "Waec Exams Registration"
+      // details.otherData.productId.productname === "Smile Data" ||
+      details.otherData.productId.productname === "Benin Electricity Prepaid"
     ) {
       setModal(true);
     } else {
@@ -116,7 +114,7 @@ function App(props) {
                                 ) : (
                                   <> */}
                                 {option.productId.billerCode === "STARTIMES" ||
-                                option.productId.billerCode === "Smile-Data_BLACKSILICON" ||
+                                option.productId.billerCode === "KEDCO" ||
                                 option.productId.billerCode === "IBEDC_F" ||
                                 option.productId.billerCode === null ? (
                                   <button

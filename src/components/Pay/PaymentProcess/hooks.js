@@ -54,7 +54,7 @@ export const usePaymentGateway = (props) => {
       : ""
   );
 
-  let paymentAmount = Number(paymentIntent.totalAmount).toFixed(2);
+  let paymentAmount = parseFloat(paymentIntent.totalAmount);
 
   const startPayment = (payType) => {
     setPaymentType(payType);

@@ -3,7 +3,7 @@ import { returnErrors } from "../errorAction";
 import { BUY_DATA_SUCCESS, BUY_DATA_FAILURE, CLEAR_PAYMENT } from "../types";
 import { secondTokenConfig } from "../userAction";
 
-export const PaymentIntent = (newValuesObj) => async (dispatch, getState) => {
+export const PaymentIntent = newValuesObj => async (dispatch, getState) => {
   // console.log(newValuesObj);
   await axios
     .post(
@@ -11,23 +11,29 @@ export const PaymentIntent = (newValuesObj) => async (dispatch, getState) => {
       newValuesObj,
       secondTokenConfig(getState)
     )
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: BUY_DATA_SUCCESS,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
-      dispatch(returnErrors(err.response, err.response.status, "BUY_DATA_FAILURE"));
-      dispatch({
-        type: BUY_DATA_FAILURE,
-        payload: err.response,
-      });
+    .catch(err => {
+      if (err.response.status === 500) {
+        window.location.href = `/${process.env.REACT_APP_RELOADNG}/error/process`;
+      } else {
+        dispatch(
+          returnErrors(err.response, err.response.status, "BUY_DATA_FAILURE")
+        );
+        dispatch({
+          type: BUY_DATA_FAILURE,
+          payload: err.response
+        });
+      }
     });
 };
 
 export const clearPayment = () => {
-	return {
-		type: CLEAR_PAYMENT
-	}
-}
+  return {
+    type: CLEAR_PAYMENT
+  };
+};

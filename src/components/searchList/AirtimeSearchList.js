@@ -5,7 +5,7 @@ import { TextField, Button } from "@material-ui/core";
 export default function Airtime() {
   const getProducts = useSelector((state) => state.products);
 
-  console.log(getProducts);
+  // console.log(getProducts);
   return (
     <div>
       {getProducts.listProducts === null

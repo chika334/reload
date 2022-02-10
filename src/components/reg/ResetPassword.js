@@ -7,9 +7,11 @@ import { loginRedirect } from "../../_action/UserRedirect";
 import { clearErrors } from "../../_action/errorAction";
 import { resetPassword } from "../../_action/userAction";
 import { Prompt } from "react-router";
+import Alert from "@material-ui/lab/Alert";
 
 function ForgotPassword(props) {
   const forgotPassword = useSelector((state) => state.forgotReducer);
+  const [errMessage, setErrMessage] = React.useState("")
   const [getData, setGetData] = useState("");
   const [blocking, setBlocking] = useState(false);
   const error = useSelector((state) => state.error);
@@ -50,6 +52,11 @@ function ForgotPassword(props) {
         message={() => `On reload all transaction history will b lost`}
       />
       <div className="mt-5 contact-form-wrap contact-form-bg">
+        <p>
+          {errMessage && (
+            <Alert severity="error">{errMessage}</Alert>
+          )}
+        </p>
         <form>
           <div className="rld-single-input">
             <TextField

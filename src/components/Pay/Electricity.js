@@ -20,7 +20,7 @@ import PhedpostPaid from "./Electric/phedpostPaid";
 import EkoPrepaid from "./Electric/EkoPrepaid";
 import JosPrepaid from "./Electric/JosPrepaid";
 import KadunaPrepaid from "./Electric/KadunaPrepaid";
-import KanoPrepaid from "./Electric/KanoPrepaid";
+import KanoPrepaid from "./Electric/Kano";
 import AbujaPrepaid from "./Electric/AbujaPrepaid";
 import Ibadan from "./Electric/Ibadan";
 import Enugu from "./Electric/Enugu";
@@ -73,7 +73,6 @@ function Electricity(props) {
   // const [loading, setLoading] = useState(false);
   const [smartCard, setSmartCard] = useState("");
   const verifiedUser = useSelector((state) => state.verify);
-  const verifySuccess = useSelector((state) => state.verify);
   const productDetails = useSelector((state) => state.someData.detail);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const paymentIntent = useSelector((state) => state.paymentIntent);
@@ -185,7 +184,8 @@ function Electricity(props) {
   const SmartNumber = async (e) => {
     e.preventDefault();
     setLoading(true);
-    let result = verifyMeterNumber();
+
+    verifyMeterNumber()
   };
 
   const verifyNumber = JSON.parse(productDetails.detail.productvalue).field0;
@@ -250,46 +250,6 @@ function Electricity(props) {
 
   return (
     <div className="property-details-area">
-      {/* {verifySuccess.result === null ? (
-        ""
-      ) : (
-        <Dialog
-          open={errorModal}
-          TransitionComponent={Transition}
-          keepMounted
-          // onClose={handleClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle id="alert-dialog-slide-title">
-            Transaction Error
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              <b>Sorry please an error occurred please requery transaction</b>
-              <table class="center">
-                <tr>
-                  <td>Name: </td>
-                  <td>{verifySuccess.result.account.accountName}</td>
-                </tr>
-                <tr>
-                  <td>Product: </td>
-                  <td>{productDetails.detail.productId.productname}</td>
-                </tr>
-                <tr>
-                  <td>Amount</td>
-                  <td>{paymentAmount}</td>
-                </tr>
-              </table>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleQuery} color="primary">
-              Requery
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )} */}
       {loading ? (
         <div className="preloader" id="preloader">
           <div className="preloader-inner">
@@ -420,17 +380,6 @@ function Electricity(props) {
                 )}
                 {productDetails.billerCode === "KADUNA_PREPAID" ? (
                   <KadunaPrepaid
-                    meterType={meterType}
-                    getData={getData}
-                    handleSubmit={handleSubmit}
-                    disabledCard={props.disabledCard}
-                    disabledUssd={props.disabledUssd}
-                  />
-                ) : (
-                  ""
-                )}
-                {productDetails.billerCode === "PHCNKAN" ? (
-                  <KanoPrepaid
                     meterType={meterType}
                     getData={getData}
                     handleSubmit={handleSubmit}

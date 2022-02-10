@@ -5,7 +5,7 @@ import {
   Redirect,
   Route,
   Switch,
-  useLocation,
+  useLocation
 } from "react-router-dom";
 import "./App.css";
 
@@ -23,8 +23,9 @@ import Registraion from "./components/registration";
 import Faq from "./components/faq";
 import Contact from "./components/contact";
 import Error from "./components/error";
-import Reset from "./components/ResetPassword"
+import Reset from "./components/ResetPassword";
 import Receipt from "./components/Pay/PaymentProcess/printReceipt";
+import Errors from "./components/error_processing";
 
 // component
 const HomeV1 = lazy(() => import("./components/home-v1"));
@@ -44,11 +45,10 @@ const AcceptLoan = lazy(() => import("./components/AcceptLoan"));
 const Loan = lazy(() => import("./components/Loan"));
 const Requery = lazy(() => import("./components/Pay/Requery"));
 
-
 function Routes(props) {
   const location = useLocation();
-  const loading = useSelector((state) => state.loading.loading);
-  const products = useSelector((state) => state.products);
+  const loading = useSelector(state => state.loading.loading);
+  const products = useSelector(state => state.products);
   const [uid, setUid] = React.useState();
 
   useEffect(() => {
@@ -72,7 +72,7 @@ function Routes(props) {
       ) : (
         <Suspense fallback={<Loading />}>
           <Navbar />
-          <Switch location={location} key={location.pathname}>
+          {/* <Switch location={location} key={location.pathname}>
             <Redirect
               exact
               from="/"
@@ -87,30 +87,42 @@ function Routes(props) {
                 component={HomeV1}
               />
             </Switch>
-          </Route>
+          </Route> */}
           <Route
-            path={[
-              `/${process.env.REACT_APP_RELOADNG}/about`,
-              `/${process.env.REACT_APP_RELOADNG}/registration`,
-              `/${process.env.REACT_APP_RELOADNG}/settings`,
-              `/${process.env.REACT_APP_RELOADNG}/faq`,
-              `/${process.env.REACT_APP_RELOADNG}/products`,
-              `/${process.env.REACT_APP_RELOADNG}/product-details/buy`,
-              `/${process.env.REACT_APP_RELOADNG}/forgotpassword`,
-              `/${process.env.REACT_APP_RELOADNG}/terms`,
-              `/${process.env.REACT_APP_RELOADNG}/product-details`,
-              `/${process.env.REACT_APP_RELOADNG}/contact`,
-              `/${process.env.REACT_APP_RELOADNG}/admin`,
-              `/${process.env.REACT_APP_RELOADNG}/helpdesk`,
-              `/${process.env.REACT_APP_RELOADNG}/receipt`,
-              `/${process.env.REACT_APP_RELOADNG}/loan`,
-              `/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`,
-              `/${process.env.REACT_APP_RELOADNG}/loan/loan-status`,
-              `/${process.env.REACT_APP_RELOADNG}/requery`,
-              `/${process.env.REACT_APP_RELOADNG}/resetpassword`,
-            ]}
+          // path={[
+          //   `/${process.env.REACT_APP_RELOADNG}/about`,
+          //   `/${process.env.REACT_APP_RELOADNG}/registration`,
+          //   `/${process.env.REACT_APP_RELOADNG}/settings`,
+          //   `/${process.env.REACT_APP_RELOADNG}/faq`,
+          //   `/${process.env.REACT_APP_RELOADNG}/products`,
+          //   `/${process.env.REACT_APP_RELOADNG}/product-details/buy`,
+          //   `/${process.env.REACT_APP_RELOADNG}/forgotpassword`,
+          //   `/${process.env.REACT_APP_RELOADNG}/terms`,
+          //   `/${process.env.REACT_APP_RELOADNG}/product-details`,
+          //   `/${process.env.REACT_APP_RELOADNG}/contact`,
+          //   `/${process.env.REACT_APP_RELOADNG}/admin`,
+          //   `/${process.env.REACT_APP_RELOADNG}/helpdesk`,
+          //   `/${process.env.REACT_APP_RELOADNG}/receipt`,
+          //   `/${process.env.REACT_APP_RELOADNG}/loan`,
+          //   `/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`,
+          //   `/${process.env.REACT_APP_RELOADNG}/loan/loan-status`,
+          //   `/${process.env.REACT_APP_RELOADNG}/requery`,
+          //   `/${process.env.REACT_APP_RELOADNG}/resetpassword`,
+          //   `/${process.env.REACT_APP_RELOADNG}/error/process`
+          // ]}
           >
-            <Switch location={location} key={location.pathname}>
+            <Switch>
+              {/* <Switch location={location} key={location.pathname}> */}
+              <Redirect
+                exact
+                from="/"
+                to={`/${process.env.REACT_APP_RELOADNG}`}
+              />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}`}
+                component={HomeV1}
+              />
               <Route
                 exact
                 path={`/${process.env.REACT_APP_RELOADNG}/about`}
@@ -206,7 +218,12 @@ function Routes(props) {
                 path={`/${process.env.REACT_APP_RELOADNG}/requery/receipt`}
                 component={RequeryReceipt}
               />
-              <Route exact component={Error} />
+              <Route
+                exact
+                path={`/${process.env.REACT_APP_RELOADNG}/error/process`}
+                component={Errors}
+              />
+              <Route component={Error} />
             </Switch>
           </Route>
           <Footer />

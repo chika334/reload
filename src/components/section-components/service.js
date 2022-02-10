@@ -21,7 +21,7 @@ function getModalStyle() {
   return {
     top: `${top}%`,
     left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
+    transform: `translate(-${top}%, -${left}%)`
   };
 }
 
@@ -43,19 +43,19 @@ function SliderArrowNext(props) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     position: "absolute",
     width: 400,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
+    padding: theme.spacing(2, 4, 3)
+  }
 }));
 
 function Service(props) {
-  const getProducts = useSelector((state) => state.products);
+  const getProducts = useSelector(state => state.products);
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -79,11 +79,11 @@ function Service(props) {
     responsive: [
       {
         breakpoint: 599,
-        settings: { slidesToShow: 1, slidesToScroll: 1 },
-      },
-    ],
+        settings: { slidesToShow: 1, slidesToScroll: 1 }
+      }
+    ]
   };
-  const handleMove = (details) => {
+  const handleMove = details => {
     console.log(details);
     if (details.otherData.billerCode === null) {
       setModal(true);
@@ -97,30 +97,31 @@ function Service(props) {
         setModal(true);
       } else {
         props.showLoader();
-        const value = getProducts.listProducts === null
-          ? ""
-          : getProducts.listProducts.forEach((detail) => {
-              if (
-                details.otherData.productId.productname ===
-                detail.productId.productname
-              ) {
-                setTimeout(() => {
-                  dispatch(hideLoader());
-                }, 2000);
+        const value =
+          getProducts.listProducts === null
+            ? ""
+            : getProducts.listProducts.forEach(detail => {
+                if (
+                  details.otherData.productId.productname ===
+                  detail.productId.productname
+                ) {
+                  setTimeout(() => {
+                    dispatch(hideLoader());
+                  }, 2000);
 
-                const data = {
-                  detail,
-                  productname: detail.productId.description,
-                  productId: details.otherData.productId.id,
-                  billerCode: detail.billerCode,
-                };
-                dispatch(someData(data));
-                let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                history.push({
-                  pathname: path,
-                });
-              }
-            });
+                  const data = {
+                    detail,
+                    productname: detail.productId.description,
+                    productId: details.otherData.productId.id,
+                    billerCode: detail.billerCode
+                  };
+                  dispatch(someData(data));
+                  let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+                  history.push({
+                    pathname: path
+                  });
+                }
+              });
       }
     }
   };
@@ -155,7 +156,7 @@ function Service(props) {
           {getProducts.listProducts === null
             ? ""
             : getProducts.listProducts
-                .filter((item) => ![12, 15, 21, 23, 32].includes(item.id))
+                .filter(item => ![12, 15, 21, 23, 32].includes(item.id))
                 .map((listData, i) => (
                   <div key={i}>
                     <Card style={{ height: "300px" }} className="m-4">
@@ -164,16 +165,14 @@ function Service(props) {
                           <div style={{ height: "140px" }}>
                             <div
                               style={{ height: "100px" }}
-                              onClick={(e) =>
-                                handleMove({ otherData: listData })
-                              }
+                              onClick={e => handleMove({ otherData: listData })}
                               style={{ cursor: "pointer" }}
                               className="d-flex justify-content-center"
                             >
                               <img
                                 src={listData.productId.logourl}
                                 style={{
-                                  width: "100px",
+                                  width: "100px"
                                 }}
                                 alt="..."
                               />
@@ -184,20 +183,9 @@ function Service(props) {
                                 {listData.productId.productname}
                               </h5>
                               <hr />
-                              {/* {listData.billerCode === "Smile-Data_BLACKSILICON" ||
-                              listData.billerCode === "Glo-Data_BLACKSILICON" ||
-                              listData.billerCode === "9mobile-Data_BLACKSILICON" ||
-                              listData.billerCode === "Airtel-Data_BLACKSILICON" ||
-                              listData.billerCode === "Mtn-Data_BLACKSILICON" ||
-                              listData.billerCode === "GOTV" ||
-                              listData.productId.description === "Airtime" ? (
-                                <>Product Under Test</>
-                              ) : (
-                                <> */}
                               {listData.billerCode === "STARTIMES" ||
                               listData.billerCode === "IBEDC_F" ||
-                              listData.billerCode ===
-                                "Smile-Data_BLACKSILICON" ||
+                              listData.billerCode === "KEDCO" ||
                               listData.billerCode === null ? (
                                 <Button
                                   className="readmore-btn"
@@ -205,9 +193,9 @@ function Service(props) {
                                     backgroundColor: "grey",
                                     color: "#fff",
                                     fontSize: "12px",
-                                    padding: "10px",
+                                    padding: "10px"
                                   }}
-                                  onClick={(e) =>
+                                  onClick={e =>
                                     handleMove({ otherData: listData })
                                   }
                                   disabled
@@ -221,9 +209,9 @@ function Service(props) {
                                     backgroundColor: "#fda94f",
                                     color: "#000",
                                     fontSize: "12px",
-                                    padding: "10px",
+                                    padding: "10px"
                                   }}
-                                  onClick={(e) =>
+                                  onClick={e =>
                                     handleMove({ otherData: listData })
                                   }
                                 >
@@ -245,8 +233,8 @@ function Service(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  exploreProducts: state.exploreProducts,
+const mapStateToProps = state => ({
+  exploreProducts: state.exploreProducts
 });
 
 export default withRouter(

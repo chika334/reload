@@ -93,15 +93,15 @@ function PhedPrepaid(props) {
   const [verifiedProducts, setVerifiedProducts] = useState(null);
   // const [age, setAge] = React.useState("");
 
-  const handleSelectMeterType = (event) => {
-    setMeterType(event.target.value);
-  };
+  // const handleSelectMeterType = (event) => {
+  //   setMeterType(event.target.value);
+  // };
 
-  console.log(otherValues);
+  // console.log(otherValues);
 
-  const handleSmartCard = (e) => {
-    setSmartCard(e.target.value);
-  };
+  // const handleSmartCard = (e) => {
+  //   setSmartCard(e.target.value);
+  // };
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -193,10 +193,6 @@ function PhedPrepaid(props) {
       fieldsOption.push(value);
     }
   }
-
-  console.log(
-    JSON.parse(verifiedUser.result.account.extras).extra.split("|")[0]
-  );
 
   return (
     <div className="property-details-area">

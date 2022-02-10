@@ -8,44 +8,8 @@ import { finalPayment } from "../../_action/Payment/finalPayment";
 import { clearErrors } from "../../_action/errorAction";
 import { PaymentIntent } from "../../_action/Payment";
 import Alert from "@material-ui/lab/Alert";
-import InputBase from "@material-ui/core/InputBase";
-import { withStyles } from "@material-ui/core/styles";
 import Enugu from "./Electric/Enugu";
-
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    "label + &": {
-      marginTop: theme.spacing(3),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: "relative",
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #ced4da",
-    fontSize: 16,
-    padding: "10px 26px 10px 12px",
-    transition: theme.transitions.create(["border-color", "box-shadow"]),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:focus": {
-      borderRadius: 4,
-      borderColor: "#80bdff",
-      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-    },
-  },
-}))(InputBase);
+import Kano from "./Electric/Kano";
 
 function Electricity(props) {
   const [loading, setLoading] = useState(false);
@@ -54,25 +18,27 @@ function Electricity(props) {
   const [disabledUssd, setDisabledUssd] = useState(false);
   const [buttonValue, setButtonValue] = useState(null);
   const [valueData, setValueData] = useState(null);
-  const error = useSelector((state) => state.error);
+  const error = useSelector(state => state.error);
   const [errors, setErrors] = useState("");
   const [intentData, setIntentData] = useState("");
-  const verifiedUser = useSelector((state) => state.verify);
-  const productDetails = useSelector((state) => state.someData.detail);
-  const paymentIntent = useSelector((state) => state.paymentIntent);
+  const verifiedUser = useSelector(state => state.verify);
+  const productDetails = useSelector(state => state.someData.detail);
+  const paymentIntent = useSelector(state => state.paymentIntent);
   const [failure, setFailure] = useState("");
 
-  const handleSubmit = (value, data) => {
-    setLoading(true);
-    setButtonValue(value);
-    setValueData(data);
-    if (value === "FLUTTERWAVE") {
-      setDisabledCard(true);
-    } else if (value === "USSD") {
-      setDisabledUssd(true);
-    }
-    props.PaymentIntent(data);
-  };
+  // const handleSubmit = (value, data) => {
+  //   setLoading(true);
+  //   setButtonValue(value);
+  //   setValueData(data);
+  //   if (value === "FLUTTERWAVE") {
+  //     setDisabledCard(true);
+  //   } else if (value === "USSD") {
+  //     setDisabledUssd(true);
+  //   }
+
+  //   console.log(data);
+  //   // props.PaymentIntent(data);
+  // };
 
   useEffect(() => {
     if (error.id === "VERIFY_FAILED") {
@@ -93,62 +59,15 @@ function Electricity(props) {
   }, [error.error === true]);
 
   useEffect(() => {
-    if (paymentIntent.success === true) {
-      setLoading(false);
-      const amounts = valueData === null ? "" : valueData.amount;
-      const iedc =
-        valueData === null ? "" : valueData.referenceValues["Email Address"];
-      const detail = {
-        amount: amounts,
-        email: `${
-          productDetails.billerCode === "iedc"
-            ? iedc
-            : productDetails.billerCode === "PHEDDIR2"
-            ? iedc
-            : productDetails.billerCode === "PHCNEKO"
-            ? iedc
-            : productDetails.billerCode === "JOS_PREPAID"
-            ? iedc
-            : productDetails.billerCode === "KADUNA_PREPAID"
-            ? iedc
-            : productDetails.billerCode === "PHCNKAN"
-            ? iedc
-            : productDetails.billerCode === "ABJ_PREPAID"
-            ? iedc
-            : ""
-        }`,
-        product: productDetails.productname,
-        customerId:
-          verifiedUser.result === null
-            ? ""
-            : verifiedUser.result.account.accountNumber,
-        buttonClick: buttonValue,
-        transRef: paymentIntent.detail.transRef,
-        customerName:
-          verifiedUser.result === null
-            ? ""
-            : verifiedUser.result.account.accountName,
-      };
-
-      console.log(detail, valueData);
-
-      dispatch(pay(detail));
-      props.dataPay(true, "Electric");
-    }
-  }, [paymentIntent.success]);
-
-  useEffect(() => {
     if (verifiedUser.verifySuccess === true) {
       setLoading(false);
       dispatch(verify("Electricity", true));
     }
   }, [verifiedUser.verifySuccess]);
 
-  const getData = (data) => {
+  const getData = data => {
     setIntentData(data);
   };
-
-  // console.log(productDetails.billerCode);
 
   return (
     <div className="property-details-area">
@@ -171,7 +90,18 @@ function Electricity(props) {
               <Enugu
                 getData={getData}
                 setLoading={setLoading}
-                handleSubmit={handleSubmit}
+                // handleSubmit={handleSubmit}
+                disabledCard={props.disabledCard}
+                disabledUssd={props.disabledUssd}
+              />
+            ) : (
+              ""
+            )}
+            {productDetails.billerCode === "KEDCO" ? (
+              <Kano
+                getData={getData}
+                setLoading={setLoading}
+                // handleSubmit={handleSubmit}
                 disabledCard={props.disabledCard}
                 disabledUssd={props.disabledUssd}
               />
@@ -192,6 +122,6 @@ export default withRouter(
     PaymentIntent,
     pay,
     clearErrors,
-    finalPayment,
+    finalPayment
   })(Electricity)
 );

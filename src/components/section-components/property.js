@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-// import sectiondata from "../../data/sections.json";
-// import parse from "html-react-parser";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { Button, Modal, Grid } from "@material-ui/core";
@@ -60,7 +58,7 @@ function Property(props) {
         setTimeout(() => {
           props.hideLoader();
         }, 3000);
-        getProducts.listProducts === null
+        const data = getProducts.listProducts === null
           ? ""
           : getProducts.listProducts.forEach((detail) => {
               if (
@@ -132,9 +130,9 @@ function Property(props) {
                 item.productId.description === "Electricity Prepaid (EKEDC)" ||
                 item.productId.description === "Electricity Prepaid (AEDC)" ||
                 item.productId.description === "Electricity Prepaid (KAEDCO)" ||
-                item.productId.description === "Electricity Prepaid (KEDCO)" ||
                 item.productId.description === "Electricity Prepaid (phed)" ||
                 item.productId.description === "Electricity Prepaid (JED)" ||
+                item.productId.description === "Electricity (KEDCO)" ||
                 item.productId.description === "Electricity (EEDC)"
             );
       setProductData(filtered);
@@ -259,7 +257,7 @@ function Property(props) {
                           <li className="readeal-top">
                             {item.billerCode === "STARTIMES_BASIC" ||
                             item.billerCode === "IBEDC_F" ||
-                            // item.billerCode === "EEDC" ||
+                            item.billerCode === "KEDCO" ||
                             // item.billerCode === "Smile-Data_BLACKSILICON" ||
                             item.billerCode === null ? (
                               <button
@@ -301,7 +299,7 @@ function Property(props) {
                         <div>
                           {item.billerCode === "STARTIMES_BASIC" ||
                           item.billerCode === "IBEDC_F" ||
-                          // item.billerCode === "EEDC" ||
+                          item.billerCode === "KEDCO" ||
                           // item.billerCode === "Smile-Data_BLACKSILICON" ||
                           item.billerCode === null ? (
                             <>
@@ -320,7 +318,7 @@ function Property(props) {
                           ) : (
                             <>
                               {item.billerCode === "STARTIMES_BASIC" ||
-                              // item.billerCode === "EEDC" ||
+                              item.billerCode === "KEDCO" ||
                               item.billerCode === null ? (
                                 <Button
                                   disabled

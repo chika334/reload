@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, connect, useDispatch } from "react-redux";
 import { TextField } from "@material-ui/core";
 import { PaymentIntent } from "../../_action/Payment/index";
@@ -12,22 +12,23 @@ function NewFormData(props) {
   const { product, slug, productData } = props;
   const dispatch = useDispatch();
   const [values, setValues] = React.useState(null);
+  const verifyUserdetails = useSelector(state => state.verifyUserdetails);
   const [buttonValue, setButtonValue] = React.useState(null);
-  const paymentIntent = useSelector((state) => state.paymentIntent);
+  const paymentIntent = useSelector(state => state.paymentIntent);
   const [errors, setErrors] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [disabledCard, setDisabledCard] = React.useState(false);
-  const productDetails = useSelector((state) => state.someData.detail);
-  const verifiedUser = useSelector((state) => state.verify);
+  const productDetails = useSelector(state => state.someData.detail);
+  const verifiedUser = useSelector(state => state.verify);
   const [bouquet, setBouquet] = React.useState(null);
   const [selectDetails, setSelectDetails] = React.useState(null);
-  const dataValue = useSelector((state) => state.dataValue);
+  const dataValue = useSelector(state => state.dataValue);
   const [requeryErrorModal, setRequeryErrorModal] = React.useState(false);
   const [afterRequeryError, setAfterRequeryError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
-  const finalPayment = useSelector((state) => state.FinalPayment);
+  const finalPayment = useSelector(state => state.FinalPayment);
 
-  console.log(props);
+  // console.log(props);
 
   React.useEffect(() => {
     if (dataValue.name === "finalPayment" && dataValue.booleanValue === true) {
@@ -51,7 +52,7 @@ function NewFormData(props) {
     }
   }, [finalPayment.requery]);
 
-  const handleSubmit = (value) => {
+  const handleSubmit = value => {
     setButtonValue(value);
     if (value === "FLUTTERWAVE") {
       setDisabledCard(true);
@@ -66,58 +67,74 @@ function NewFormData(props) {
       }, 500);
     } else {
       if (values["phoneNumber"] && values["email"]) {
-        setErrors("");
-        setLoading(true);
-        const newValuesObj = {
-          email: `${values["email"]}`,
-          amount:
-            slug === "SMILE" ||
-            product === "Cable" ||
-            product === "Data" ||
-            product === "Electricity"
-              ? selectDetails === null
-                ? ""
-                : selectDetails
-              : values["amount"],
-          channelRef: "web",
-          description: "Airtime",
-          paymentMethod:
-            value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
-          productId: `${productDetails.productId}`,
-          referenceValues: {
-            customerId: `${
-              product === "Cable" || product === "Electricity"
-                ? verifiedUser.result === null
-                  ? ""
-                  : verifiedUser.result.account.accountNumber
-                : values === null
-                ? ""
-                : values["phoneNumber"]
-            }`,
-            customerName: `${values["email"]}`,
-            phoneNumber: `${values["phoneNumber"]}`,
-            packageSlug:
-              product === "Cable" ||
-              product === "Data" ||
-              product === "Electricity"
-                ? bouquet === null
-                  ? ""
-                  : bouquet
-                : slug,
+        if (
+          product === "Electricity" &&
+          values["amount"] < parseFloat(verifiedUser.result.amount)
+        ) {
+          setLoading(false);
+          setErrors("Please input a valid amount");
+        } else {
+          setErrors("");
+          setLoading(true);
+          const newValuesObj = {
             email: `${values["email"]}`,
-          },
-          references: [
-            "email",
-            "packageSlug",
-            "phoneNumber",
-            "customerName",
-            "customerId",
-          ],
-        };
+            amount:
+              slug === "SMILE" || product === "Cable" || product === "Data"
+                ? // ||
+                  // product === "Electricity"
+                  selectDetails === null
+                  ? ""
+                  : selectDetails
+                : parseFloat(values["amount"]),
+            channelRef: "web",
+            description:
+              slug === "SMILE"
+                ? "SMILE"
+                : product === "Cable"
+                ? "Cable"
+                : product === "Data"
+                ? "Data"
+                : product === "Electricity"
+                ? "Electricity"
+                : product === "Airtime"
+                ? "Airtime"
+                : "",
+            paymentMethod:
+              value === "FLUTTERWAVE" ? "billpayflutter" : "billpaycoralpay",
+            productId: `${productDetails.productId}`,
+            referenceValues: {
+              customerId: `${
+                product === "Cable" || product === "Electricity"
+                  ? verifiedUser.result === null
+                    ? ""
+                    : verifiedUser.result.account.accountNumber
+                  : values === null
+                  ? ""
+                  : values["phoneNumber"]
+              }`,
+              customerName: `${values["email"]}`,
+              phoneNumber: `${values["phoneNumber"]}`,
+              packageSlug:
+                product === "Cable" || product === "Data"
+                  ? // ||
+                    // product === "Electricity"
+                    bouquet === null
+                    ? ""
+                    : bouquet
+                  : slug,
+              email: `${values["email"]}`
+            },
+            references: [
+              "email",
+              "packageSlug",
+              "phoneNumber",
+              "customerName",
+              "customerId"
+            ]
+          };
 
-        // console.log(newValuesObj);
-
-        dispatch(PaymentIntent(newValuesObj));
+          dispatch(PaymentIntent(newValuesObj));
+        }
       } else {
         setLoading(false);
         setTimeout(() => {
@@ -127,15 +144,17 @@ function NewFormData(props) {
     }
   };
 
-  const handleSelect = (e) => {
+  const handleSelect = e => {
     setSelectDetails(e.target.value);
 
-    productData.map((allData) => {
+    productData.map(allData => {
       if (allData.amount === parseInt(e.target.value)) {
         setBouquet(allData.slug);
       }
     });
   };
+
+  console.log(product, slug);
 
   React.useEffect(() => {
     if (paymentIntent.success === true) {
@@ -143,40 +162,49 @@ function NewFormData(props) {
 
       setLoading(false);
 
-      const detail = {
-        amount:
-          product === "Cable" ||
-          product === "Data" ||
-          product === "Electricity" ||
-          slug === "SMILE"
-            ? selectDetails === null
+      if (product === null || slug === null) {
+        console.log("error data");
+      } else {
+        const detail = {
+          amount: `${
+            product === "Cable" ||
+            product === "Data" ||
+            // product === "Electricity" ||
+            slug === "SMILE"
+              ? selectDetails === null
+                ? ""
+                : parseInt(selectDetails)
+              : values["amount"] === null
               ? ""
-              : parseInt(selectDetails)
-            : parseInt(values["amount"]),
-        email: emails,
-        product: productDetails.productname,
-        customerId: `${
-          product === "Cable" || product === "Electricity"
-            ? verifiedUser.result === null
+              : parseInt(values["amount"])
+          }`,
+          email: emails,
+          product: productDetails.productname,
+          customerId: `${
+            product === "Cable" || product === "Electricity"
+              ? verifiedUser.result === null
+                ? ""
+                : verifiedUser.result.account.accountNumber
+              : values === null
               ? ""
-              : verifiedUser.result.account.accountNumber
-            : values === null
-            ? ""
-            : values["phoneNumber"]
-        }`,
-        buttonClick: buttonValue,
-        transRef: paymentIntent.detail.transRef,
-        customerName:
-          product === "Cable" || product === "Electricity"
-            ? verifiedUser.result === null
+              : values["phoneNumber"]
+          }`,
+          buttonClick: buttonValue,
+          transRef: paymentIntent.detail.transRef,
+          customerName:
+            product === "Cable" || product === "Electricity"
+              ? verifiedUser.result === null
+                ? ""
+                : verifiedUser.result.account.accountName
+              : values === null
               ? ""
-              : verifiedUser.result.account.accountName
-            : values === null
-            ? ""
-            : values["email"],
-      };
+              : values["email"]
+        };
 
-      dispatch(pay(detail));
+        // console.log(detail);
+        dispatch(pay(detail));
+      }
+
       // props.dataPay(true, product);
     }
   }, [paymentIntent.success]);
@@ -241,7 +269,7 @@ function NewFormData(props) {
                           : ""
                       }
                       // name={allData.text}
-                      onChange={(e) => handleChange(e, allData.text)}
+                      onChange={e => handleChange(e, allData.text)}
                       type={
                         allData.text === "email"
                           ? "email"
@@ -275,7 +303,7 @@ function NewFormData(props) {
                         value={
                           selectDetails === null ? "" : selectDetails["name"]
                         }
-                        onChange={(e) => handleSelect(e)}
+                        onChange={e => handleSelect(e)}
                         className="p-3"
                         id="inputSize"
                         style={{ borderRadius: "3px" }}
@@ -299,25 +327,35 @@ function NewFormData(props) {
               )}
             </>
           )}
+
           {fieldsArray.map((allData, i) =>
             allData.text === "amount" ? (
-              <div key={i}>
-                <div className="d-flex align-item-center justify-content-center pt-3">
+              <div className="pt-3" key={i}>
+                {product === "Electricity" ? (
+                  <p className="text-center text-danger">
+                    Minimum amount for electricity payment is: ₦
+                    {verifiedUser.result.amount}
+                  </p>
+                ) : (
+                  ""
+                )}
+                <div className="d-flex align-item-center justify-content-center">
                   <TextField
                     required
                     className="inputSize"
                     placeholder={
                       allData.text === "amount" ? "Enter Amount" : ""
                     }
-                    onChange={(e) => handleChange(e, allData.text)}
+                    onChange={e => handleChange(e, allData.text)}
                     type={allData.text === "amount" ? "number" : ""}
                     variant="outlined"
                     value={
                       product === "Data" ||
                       product === "Cable" ||
-                      slug === "SMILE" ||
-                      product === "Electricity"
-                        ? selectDetails === null
+                      slug === "SMILE"
+                        ? // ||
+                          // product === "Electricity"
+                          selectDetails === null
                           ? ""
                           : selectDetails
                         : values === null
@@ -334,7 +372,7 @@ function NewFormData(props) {
           <div className="d-flex justify-content-center">
             {disabledCard === true ? (
               <button
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault();
                   window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                 }}
@@ -343,7 +381,7 @@ function NewFormData(props) {
               </button>
             ) : (
               <button
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault();
                   handleSubmit(FLUTTERWAVE_KEY);
                 }}
@@ -354,7 +392,7 @@ function NewFormData(props) {
                     props.disabledUssd === true ? "not-allowed" : "pointer",
                   color: "#000",
                   fontSize: "12px",
-                  padding: "11px",
+                  padding: "11px"
                 }}
                 disabled={props.disabledUssd}
               >
@@ -367,5 +405,5 @@ function NewFormData(props) {
     </div>
   );
 }
-// export default withRouter(connect(null, { PaymentIntent }))(NewFormData);
+
 export default connect(null, { PaymentIntent })(NewFormData);

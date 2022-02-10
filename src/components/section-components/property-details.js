@@ -253,8 +253,8 @@ function PropertyDetails(props) {
                                 />
                               )}
                               {productDetails.detail.productId.description ===
-                                "Electricity Prepaid (KEDCO)" && (
-                                <Electricity
+                                "Electricity (KEDCO)" && (
+                                <OtherElectricity
                                   disabledUssd={disabledUssd}
                                   disabledCard={disabledCard}
                                   dataPay={onPay}

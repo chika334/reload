@@ -3,7 +3,7 @@ import { FINAL_PAYMENT, FINAL_PAYMENT_ERROR } from "../types";
 import { secondTokenConfig } from "../userAction";
 import { dataValue } from "./data";
 
-export const finalPayment = (ref) => async (dispatch, getState) => {
+export const finalPayment = ref => async (dispatch, getState) => {
   const body = JSON.stringify(ref);
   await axios
     .post(
@@ -11,17 +11,21 @@ export const finalPayment = (ref) => async (dispatch, getState) => {
       body,
       secondTokenConfig(getState)
     )
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: FINAL_PAYMENT,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
-      dispatch(dataValue("finalPayment", true))
-      dispatch({
-        type: FINAL_PAYMENT_ERROR,
-        payload: { requestFailed: true, requery: false },
-      });
+    .catch(err => {
+      if (err.response.status === 500) {
+        window.location.href = `/${process.env.REACT_APP_RELOADNG}/error/process`;
+      } else{
+        dispatch(dataValue("finalPayment", true));
+        dispatch({
+          type: FINAL_PAYMENT_ERROR,
+          payload: { requestFailed: true, requery: false }
+        });
+      }
     });
 };

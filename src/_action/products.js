@@ -3,7 +3,7 @@ import axios from "axios";
 import {
   PRODUCT_LOADING,
   PRODUCT_LOADED,
-  PRODUCT_FAIL,
+  PRODUCT_FAIL
   // GET_PRODUCTBYID_LOADING,
   // GET_PRODUCT_BYID,
   // GET_PRODUCT_FAIL,
@@ -14,26 +14,30 @@ export const getProducts = () => (dispatch, getState) => {
   const config = {
     headers: {
       merchantKey: "099035353",
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
 
   dispatch({ type: PRODUCT_LOADING });
   axios
     .get(`${process.env.REACT_APP_API}/billpay/api/product/merchant`, config)
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: PRODUCT_LOADED,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
-      if (err.response) {
-        dispatch(returnErrors(err.response.data, err.response.status));
+    .catch(err => {
+      if (err.response.status === 500) {
+        window.location.href = `/${process.env.REACT_APP_RELOADNG}/error/process`;
+      } else {
+        if (err.response) {
+          dispatch(returnErrors(err.response.data, err.response.status));
+        }
+        dispatch({
+          type: PRODUCT_FAIL
+        });
       }
-      dispatch({
-        type: PRODUCT_FAIL,
-      });
     });
 };
 

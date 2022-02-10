@@ -10,16 +10,16 @@ import Slide from "@material-ui/core/Slide";
 import { acceptOffer } from "../../_action/Loan/acceptLoan";
 import Alert from "@material-ui/lab/Alert";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: "40ch",
-  },
+    width: "40ch"
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -27,19 +27,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function Property(props, { breakOn = "medium" }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
-  const token = useSelector((state) => state.Token);
-  const getOfferResult = useSelector((state) => state.getOffers);
-  const someData = useSelector((state) => state.someLoanData);
+  const token = useSelector(state => state.Token);
+  const getOfferResult = useSelector(state => state.getOffers);
+  const someData = useSelector(state => state.someLoanData);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
-  const errors = useSelector((state) => state.error);
+  const errors = useSelector(state => state.error);
   const [offerDetails, setOfferDetails] = useState(null);
   const [getData, setGetData] = useState({
     accountNumber: "",
-    bankDetails: "",
+    bankDetails: ""
   });
 
   let tableClass = "table-container__table";
@@ -66,10 +67,11 @@ function Property(props, { breakOn = "medium" }) {
     setGetData(newValues);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    window.location.href = `https://loan-81698gqua-chika334.vercel.app?customerId=${
+    // window.location.href = `https://loan-81698gqua-chika334.vercel.app?customerId=${
+      window.location.href = `https://loan-6skp57r3s-chika334.vercel.app?customerId=${
       someData.data === null ? "" : someData.data.initalData.phone
     }&offerId=${
       someData.data === null ? "" : someData.data.offerId
@@ -86,22 +88,19 @@ function Property(props, { breakOn = "medium" }) {
       // let text = "";
       for (let i = 0; i < getOfferResult.data.offers.length; i++) {
         // text += getOfferResult.data.offers[i] + "<br>";
-        // console.log();
         if (getOfferResult.data.offers[i].offerId === someData.data.offerId) {
-          // console.log("daniel");
           setOfferDetails(getOfferResult.data.offers[i]);
-          // console.log("data", someData.data.offerId);
-        } else {
-          console.log("offerid doesn't exist");
         }
       }
-      // console.log(text);
     } else {
       console.log("bad");
     }
   }, []);
 
-  console.log(offerDetails);
+  var formatter = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN"
+  });
 
   useEffect(() => {
     if (getOfferResult.data === null) {
@@ -139,7 +138,7 @@ function Property(props, { breakOn = "medium" }) {
                                 color: "#000",
                                 fontSize: "12px",
                                 padding: "9px",
-                                marginTop: "50px",
+                                marginTop: "50px"
                               }}
                             >
                               <Link
@@ -170,7 +169,9 @@ function Property(props, { breakOn = "medium" }) {
                             <p>
                               {offerDetails === null
                                 ? ""
-                                : offerDetails.amountOffered}
+                                : formatter.format(
+                                    parseInt(offerDetails.amountOffered) / 100
+                                  )}
                             </p>
                           </div>
                           <div className="mt-2 d-flex justify-content-center">
@@ -178,14 +179,16 @@ function Property(props, { breakOn = "medium" }) {
                             <p>
                               {offerDetails === null
                                 ? ""
-                                : offerDetails.amountPayable}
+                                : formatter.format(
+                                    parseInt(offerDetails.amountPayable) / 100
+                                  )}
                             </p>
                           </div>
                           <div className="mt-3 d-flex justify-content-center">
                             <TextField
                               label="Enter Account Number"
                               value={getData["accountNumber"] || ""}
-                              onChange={(e) => handleChange(e, "accountNumber")}
+                              onChange={e => handleChange(e, "accountNumber")}
                               className={classes.textField}
                             />
                           </div>
@@ -195,11 +198,11 @@ function Property(props, { breakOn = "medium" }) {
                               select
                               label="Select"
                               value={getData["bankDetails"] || ""}
-                              onChange={(e) => handleChange(e, "bankDetails")}
+                              onChange={e => handleChange(e, "bankDetails")}
                               className={classes.textField}
                               helperText="Please select your Bank"
                             >
-                              {BankCodes.ListBanks.map((option) => (
+                              {BankCodes.ListBanks.map(option => (
                                 <MenuItem
                                   key={option.bankCode}
                                   value={option.bankCode}
@@ -214,7 +217,7 @@ function Property(props, { breakOn = "medium" }) {
                               type="submit"
                               style={{
                                 backgroundColor: "#fda94f",
-                                color: "#000",
+                                color: "#000"
                               }}
                               onSubmit={handleSubmit}
                             >

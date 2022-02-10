@@ -1,4 +1,4 @@
-import { GET_LOAN_DATA } from "../../_action/types";
+import { GET_LOAN_DATA, GET_Final_DATA } from "../../_action/types";
 
 const initialState = {
   success: false,

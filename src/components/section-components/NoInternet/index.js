@@ -3,11 +3,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class Error extends Component {
-  // componentDidMount() {
-  //   const $ = window.$;
-  //   var preLoder = $("#preloader");
-  //   preLoder.fadeOut(0);
-  // }
   render() {
     return (
       <div>

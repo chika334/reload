@@ -65,18 +65,18 @@ function Cable(props) {
     }
   }, [error.error === true]);
 
-  const handleSubmit = (value, data) => {
-    setLoading(true);
-    setButtonValue(value);
-    setValueData(data);
-    if (value === "FLUTTERWAVE") {
-      setDisabledCard(true);
-    } else if (value === "USSD") {
-      setDisabledUssd(true);
-    }
+  // const handleSubmit = (value, data) => {
+  //   setLoading(true);
+  //   setButtonValue(value);
+  //   setValueData(data);
+  //   if (value === "FLUTTERWAVE") {
+  //     setDisabledCard(true);
+  //   } else if (value === "USSD") {
+  //     setDisabledUssd(true);
+  //   }
 
-    props.PaymentIntent(data);
-  };
+  //   props.PaymentIntent(data);
+  // };
 
   const handleSelect = (name, value) => {
     setSelectDetails(name);
@@ -86,28 +86,28 @@ function Cable(props) {
     setSmartCard(e.target.value);
   };
 
-  const verifyMeterNumber = async () => {
-    const details = {
-      product: productDetails.productId,
-      billerCode: productDetails.billerCode,
-      accountNumber: smartCard,
-      extras: {
-        customerAccountType:
-          selectDetails === null ? "" : selectDetails.ItemType,
-        field1: "1",
-        field2: null,
-        field3: null,
-      },
-    };
+  // const verifyMeterNumber = async () => {
+  //   const details = {
+  //     product: productDetails.productId,
+  //     billerCode: productDetails.billerCode,
+  //     accountNumber: smartCard,
+  //     extras: {
+  //       customerAccountType:
+  //         selectDetails === null ? "" : selectDetails.ItemType,
+  //       field1: "1",
+  //       field2: null,
+  //       field3: null,
+  //     },
+  //   };
 
-    props.verifySmartcardNumber(details);
-  };
+  //   props.verifySmartcardNumber(details);
+  // };
 
-  const SmartNumber = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    let result = verifyMeterNumber();
-  };
+  // const SmartNumber = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   let result = verifyMeterNumber();
+  // };
 
   const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
@@ -159,7 +159,7 @@ function Cable(props) {
             <div className="d-flex align-item-center justify-content-center">
               {errors && <Alert severity="error">{errors}</Alert>}
             </div>
-            <div>
+            {/* <div>
               {verifyUserdetails.onclick === false &&
               verifyUserdetails.name === "" ? (
                 verifyNumber.text === "SmartCard Number" ||
@@ -235,13 +235,13 @@ function Cable(props) {
               ) : (
                 ""
               )}
-            </div>
+            </div> */}
           </div>
           {productDetails.billerCode === "STARTIMES_BASIC" ? (
             <Startimes
               disabledCard={disabledCard}
               disabledUssd={disabledUssd}
-              handleSubmit={handleSubmit}
+              // handleSubmit={handleSubmit}
               setLoading={setLoading}
             />
           ) : (
@@ -256,7 +256,7 @@ function Cable(props) {
               <Gotv
                 disabledCard={disabledCard}
                 disabledUssd={disabledUssd}
-                handleSubmit={handleSubmit}
+                // // handleSubmit={handleSubmit}
                 setLoading={setLoading}
               />
             </>
@@ -277,7 +277,7 @@ function Cable(props) {
                 disabledUssd={disabledUssd}
                 dataPay={props.dataPay}
                 setLoading={setLoading}
-                handleSubmit={handleSubmit}
+                // handleSubmit={handleSubmit}
                 amount={selectDetails === null ? "" : selectDetails.Amount}
                 packageType={
                   selectDetails === null ? "" : selectDetails.ItemType

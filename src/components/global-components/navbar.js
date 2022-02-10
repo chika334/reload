@@ -12,18 +12,18 @@ import { logout } from "../../_action/userAction";
 import { connect } from "react-redux";
 import { showLoader, hideLoader } from "../../_action/loading";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   formControl: {
     // margin: theme.spacing(1),
-    minWidth: 30,
+    minWidth: 30
   },
   selectEmpty: {
     // marginTop: theme.spacing(0),
-  },
+  }
 }));
 
 function Navbar(props) {
-  const user = useSelector((state) => state.authUser);
+  const user = useSelector(state => state.authUser);
   let anchor = "#";
   const history = useHistory();
   const classes = useStyles();
@@ -35,7 +35,7 @@ function Navbar(props) {
     history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
   };
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -50,7 +50,7 @@ function Navbar(props) {
     setCollapse(!collapse);
   };
 
-  const closeMobileMenu = (e) => {
+  const closeMobileMenu = e => {
     setCollapse(false);
   };
 
@@ -94,6 +94,37 @@ function Navbar(props) {
             </div>
             <div className="nav-right-part nav-right-part-mobile">
               {user.isAuthenticated ? (
+                <Button
+                  onClick={e => handleChange(e, "logout")}
+                  // className={classes.typography}
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "11px",
+                    padding: "10px"
+                  }}
+                >
+                  Logout
+                </Button>
+              ) : (
+                <Button
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "11px",
+                    padding: "10px"
+                  }}
+                  onClick={handleReg}
+                >
+                  Login/Register{" "}
+                  <span className="right">
+                    <i className="la la-plus" />
+                  </span>
+                </Button>
+              )}
+            </div>
+            {/* <div className="nav-right-part nav-right-part-mobile">
+              {user.isAuthenticated ? (
                 <div>
                   <Button
                     aria-describedby={id}
@@ -101,7 +132,7 @@ function Navbar(props) {
                     style={{
                       backgroundColor: "#fda94f",
                       color: "#000",
-                      padding: "15px",
+                      padding: "15px"
                     }}
                     onClick={handleClick}
                   >
@@ -118,23 +149,23 @@ function Navbar(props) {
                       display: "inline-block",
                       width: "120px",
                       // background: "#6af",
-                      verticalAlign: "top",
+                      verticalAlign: "top"
                     }}
                   >
                     <Button
-                      onClick={(e) => handleChange(e, "profile")}
+                      onClick={e => handleChange(e, "profile")}
                       className={classes.typography}
                     >
                       Profile
                     </Button>
                     <Button
-                      onClick={(e) => handleChange(e, "settings")}
+                      onClick={e => handleChange(e, "settings")}
                       className={classes.typography}
                     >
                       Settings
                     </Button>
                     <Button
-                      onClick={(e) => handleChange(e, "logout")}
+                      onClick={e => handleChange(e, "logout")}
                       className={classes.typography}
                     >
                       Logout
@@ -147,7 +178,7 @@ function Navbar(props) {
                     backgroundColor: "#fda94f",
                     color: "#000",
                     fontSize: "11px",
-                    padding: "10px",
+                    padding: "10px"
                   }}
                   onClick={handleReg}
                 >
@@ -157,7 +188,7 @@ function Navbar(props) {
                   </span>
                 </Button>
               )}
-            </div>
+            </div> */}
             <div className="collapse navbar-collapse" id="realdeal_main_menu">
               {/* <div className="header-nav-menu d-none navbar-collapse"> */}
               <ul className="navbar-nav menu-open readeal-top">
@@ -176,7 +207,7 @@ function Navbar(props) {
                     Our Products
                   </NavLink>
                 </li>
-                {user.isAuthenticated === true ? (
+                {/* {user.isAuthenticated === true ? (
                   <li>
                     <NavLink to={`/${process.env.REACT_APP_RELOADNG}/admin`}>
                       Admin
@@ -184,7 +215,7 @@ function Navbar(props) {
                   </li>
                 ) : (
                   ""
-                )}
+                )} */}
                 <li>
                   <NavLink to={`/${process.env.REACT_APP_RELOADNG}/contact`}>
                     Contact Us
@@ -198,6 +229,37 @@ function Navbar(props) {
               </ul>
             </div>
             <div className="nav-right-part nav-right-part-desktop readeal-top">
+              {user.isAuthenticated ? (
+                <Button
+                  onClick={e => handleChange(e, "logout")}
+                  // className={classes.typography}
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "11px",
+                    padding: "10px"
+                  }}
+                >
+                  Logout
+                </Button>
+              ) : (
+                <Button
+                  style={{
+                    backgroundColor: "#fda94f",
+                    color: "#000",
+                    fontSize: "11px",
+                    padding: "10px"
+                  }}
+                  onClick={handleReg}
+                >
+                  Login/Register{" "}
+                  <span className="right">
+                    <i className="la la-plus" />
+                  </span>
+                </Button>
+              )}
+            </div>
+            {/* <div className="nav-right-part nav-right-part-desktop readeal-top">
               {user.isAuthenticated === true ? (
                 <ul
                   style={{ listStyleType: "none" }}
@@ -211,7 +273,7 @@ function Navbar(props) {
                         backgroundColor: "#fda94f",
                         color: "#000",
                         fontSize: "11px",
-                        padding: "10px",
+                        padding: "10px"
                       }}
                       onClick={handleClick}
                     >
@@ -219,7 +281,7 @@ function Navbar(props) {
                         style={{ height: "20", width: "30" }}
                       />
                     </Button>
-                    <Popover
+                    {/* <Popover
                       id={id}
                       open={open}
                       anchorEl={anchorEl}
@@ -248,7 +310,13 @@ function Navbar(props) {
                       >
                         Logout
                       </Button>
-                    </Popover>
+                    </Popover> 
+                    <Button
+                      onClick={e => handleChange(e, "logout")}
+                      className={classes.typography}
+                    >
+                      Logout
+                    </Button>
                   </li>
                 </ul>
               ) : (
@@ -257,7 +325,7 @@ function Navbar(props) {
                     backgroundColor: "#fda94f",
                     color: "#000",
                     fontSize: "11px",
-                    padding: "10px",
+                    padding: "10px"
                   }}
                   onClick={handleReg}
                 >
@@ -267,49 +335,38 @@ function Navbar(props) {
                   </span>
                 </Button>
               )}
-            </div>
+            </div> */}
             <div className="d-lg-none navbarMobile" style={{ width: "100%" }}>
               <div className="navbar-collapse">
                 <Collapse in={collapse}>
                   {/* <div className="header-nav-menu"> */}
                   <ul className="navbar-nav menu-open readeal-top">
                     <li
-                      onClick={(e) => closeMobileMenu(e)}
+                      onClick={e => closeMobileMenu(e)}
                       className="current-menu-item"
                     >
                       <NavLink to="/">Home</NavLink>
                     </li>
-                    <li onClick={(e) => closeMobileMenu(e)}>
+                    <li onClick={e => closeMobileMenu(e)}>
                       <NavLink to={`/${process.env.REACT_APP_RELOADNG}/about`}>
                         About
                       </NavLink>
                     </li>
-                    <li onClick={(e) => closeMobileMenu(e)}>
+                    <li onClick={e => closeMobileMenu(e)}>
                       <NavLink
                         to={`/${process.env.REACT_APP_RELOADNG}/products`}
                       >
                         Our Products
                       </NavLink>
                     </li>
-                    {user.isAuthenticated === true ? (
-                      <li onClick={(e) => closeMobileMenu(e)}>
-                        <NavLink
-                          to={`/${process.env.REACT_APP_RELOADNG}/transactions`}
-                        >
-                          Transactions
-                        </NavLink>
-                      </li>
-                    ) : (
-                      ""
-                    )}
-                    <li onClick={(e) => closeMobileMenu(e)}>
+                    <li onClick={e => closeMobileMenu(e)}>
                       <NavLink
                         to={`/${process.env.REACT_APP_RELOADNG}/contact`}
                       >
                         Contact Us
                       </NavLink>
                     </li>
-                    <li onClick={(e) => closeMobileMenu(e)}>
+                    <li onClick={e => closeMobileMenu(e)}>
                       <NavLink to={`/${process.env.REACT_APP_RELOADNG}/faq`}>
                         FAQ
                       </NavLink>

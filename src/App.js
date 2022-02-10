@@ -11,8 +11,8 @@ import { getUser } from "./_action/userAction";
 import { getProducts } from "./_action/products";
 import { interswitchToken } from "./_action/Loan/token";
 import { interswitchProvider } from "./_action/Loan/providers";
-// import { Offline, Online } from "react-detect-offline";
-// import NoInternet from "./components/section-components/NoInternet";
+import { Offline, Online } from "react-detect-offline";
+import NoInternet from "./components/section-components/NoInternet";
 // import Layout from "./Layout";
 // import Layout from "./components/CoralUssd/layout/layoout";
 
@@ -34,7 +34,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router>
+        {/* <Router> */}
           {/* // checks if user has internet connection */}
           {/* {navigator.onLine ? <Routes /> : <NoInternet />} */}
           {/* <Online> */}
@@ -44,7 +44,7 @@ class App extends Component {
           {/* <Offline>
             <NoInternet />
           </Offline> */}
-        </Router>
+        {/* </Router> */}
         {/* <Layout /> */}
         {/* <GoogleAd /> */}
       </Provider>

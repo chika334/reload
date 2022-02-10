@@ -47,7 +47,7 @@ export default function RequeryErrorModal(props) {
     dispatch(requery(value));
   };
 
-  console.log(paymentDone);
+  // console.log(paymentDone);
 
   return (
     <div>

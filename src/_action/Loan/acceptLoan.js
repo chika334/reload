@@ -11,29 +11,33 @@ export const acceptOffer = (value, secondValue) => (dispatch, getState) => {
       value,
       interSwitchJsonConfig(getState)
     )
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: ACCEPT_LOAN_OFFERS,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
-      dispatch(
-        returnErrors(err.response, err.response.status, "ACCEPT_LOAN_FAILED")
-      );
-      dispatch({
-        type: ACCEPT_LOAN_FAILED,
-      });
+    .catch(err => {
+      if (err.response.status === 500) {
+        window.location.href = `/${process.env.REACT_APP_RELOADNG}/error/process`;
+      } else {
+        dispatch(
+          returnErrors(err.response, err.response.status, "ACCEPT_LOAN_FAILED")
+        );
+        dispatch({
+          type: ACCEPT_LOAN_FAILED
+        });
+      }
     });
 };
 
-export const interSwitchJsonConfig = (getState) => {
+export const interSwitchJsonConfig = getState => {
   const token = getState().Token.tokenInterSwitch;
 
   const config = {
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
 
   // if token, add to header

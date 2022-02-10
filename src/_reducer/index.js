@@ -28,12 +28,14 @@ import reloadReducer from "./Requery"
 import hostedField from './Loan/hostedField'
 import dataValue from "./data";
 import forgotReducer from "./forgotPassword";
+import someSelect from "./selectData/select"
 
 export default combineReducers({
   authUser,
   forgotReducer,
   dataValue,
   verify,
+  someSelect,
   verifyUserdetails,
   FinalPayment,
   Providers,

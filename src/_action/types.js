@@ -117,6 +117,7 @@ export const ACCEPT_LOAN_FAILED = "ACCEPT_LOAN_FAILED";
 
 // send some loan data
 export const SOME_LOAN_DATA = "SOME_LOAN_DATA";
+export const SELECT_DATA = "SELECT_DATA";
 
 // requery
 export const REQUERY = "REQUERY";
@@ -126,3 +127,5 @@ export const REQUERY_FAILED = "REQUERY_FAILED";
 export const HOSTED_FIELD = "HOSTED_FIELD";
 
 export const DATA_VALUE = "DATA_VALUE";
+
+export const GET_Final_DATA = "GET_Final_DATA"

@@ -4,7 +4,7 @@ import { INTERSWITCH_TOKEN, INTERSWITCH_TOKEN_FAILED } from "../types";
 // import { Base64 } from "js-base64";
 import { returnErrors } from "../errorAction";
 
-export const interswitchToken = () => (dispatch) => {
+export const interswitchToken = () => dispatch => {
   const client_id = process.env.REACT_APP_CLIENT_ID;
   const secretKey = process.env.REACT_APP_SECRET_KEY;
   const userDetails = `${client_id}:${secretKey}`;
@@ -12,14 +12,14 @@ export const interswitchToken = () => (dispatch) => {
 
   var details = {
     grant_type: "client_credentials",
-    scope: "profile",
+    scope: "profile"
   };
 
   const config = {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${b64}`,
-    },
+      Authorization: `Basic ${b64}`
+    }
   };
 
   axios
@@ -28,22 +28,26 @@ export const interswitchToken = () => (dispatch) => {
       qs.stringify(details),
       config
     )
-    .then((res) =>
+    .then(res =>
       dispatch({
         type: INTERSWITCH_TOKEN,
-        payload: res.data,
+        payload: res.data
       })
     )
-    .catch((err) => {
-      dispatch(
-        returnErrors(
-          err.response,
-          err.response.status,
-          "INTERSWITCH_TOKEN_FAILED"
-        )
-      );
-      dispatch({
-        type: INTERSWITCH_TOKEN_FAILED,
-      });
+    .catch(err => {
+      if (err.response.status === 500) {
+        window.location.href = `/${process.env.REACT_APP_RELOADNG}/error/process`;
+      } else {
+        dispatch(
+          returnErrors(
+            err.response,
+            err.response.status,
+            "INTERSWITCH_TOKEN_FAILED"
+          )
+        );
+        dispatch({
+          type: INTERSWITCH_TOKEN_FAILED
+        });
+      }
     });
 };

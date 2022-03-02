@@ -83,8 +83,6 @@ function Receipt(props) {
     window.location.href = `/${process.env.REACT_APP_RELOADNG}/products`;
   };
 
-  console.log(requeryData.details.result ? requeryData.details.result.productResult : "", "value");
-
   return (
     <div className="property-area pd-top-100">
       {/* <Prompt

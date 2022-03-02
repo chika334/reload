@@ -47,6 +47,11 @@ export default function RequeryErrorModal(props) {
     dispatch(requery(value));
   };
 
+  var formatter = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+  });
+
   // console.log(paymentDone);
 
   return (
@@ -85,7 +90,7 @@ export default function RequeryErrorModal(props) {
                 </tr>
                 <tr>
                   <td>Amount: </td>
-                  <td>{intent.totalAmount}</td>
+                  <td>{formatter.format(intent.totalAmount)}</td>
                 </tr>
                 <tr>
                   <td>Product Name: </td>

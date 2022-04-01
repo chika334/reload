@@ -1,11 +1,9 @@
 import React, { lazy, useEffect, Suspense } from "react";
-// import ReactDOM from "react-dom";
 import {
   BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
-  useLocation
 } from "react-router-dom";
 import "./App.css";
 
@@ -13,7 +11,6 @@ import { showLoader, hideLoader } from "./_action/loading";
 import { useSelector, connect } from "react-redux";
 import Loading from "./components/global-components/loading";
 import ProtectedRoutes from "./protectedRoutes";
-// import PrivateRouteReceipt from "./preventReceipt";
 import RequeryReceipt from "./components/Pay/PaymentProcess/requeryReceipt";
 
 import LoanStatus from "./components/section-components/LoanStatus";
@@ -46,24 +43,14 @@ const Loan = lazy(() => import("./components/Loan"));
 const Requery = lazy(() => import("./components/Pay/Requery"));
 
 function Routes(props) {
-  const location = useLocation();
-  const loading = useSelector(state => state.loading.loading);
-  const products = useSelector(state => state.products);
-  const [uid, setUid] = React.useState();
-
+  const loading = useSelector((state) => state.loading.loading);
+  
   useEffect(() => {
     props.showLoader();
     setTimeout(() => {
       props.hideLoader();
-    }, 1000);
+    }, 4000);
   }, []);
-
-  // useEffect(() => {
-  //   const params = new URLSearchParams(props.location);
-  //   const productKey = params.get("token");
-  //   console.log(props);
-  //   setUid(productKey);
-  // }, [props.location]);
 
   return (
     <div>
@@ -72,47 +59,8 @@ function Routes(props) {
       ) : (
         <Suspense fallback={<Loading />}>
           <Navbar />
-          {/* <Switch location={location} key={location.pathname}>
-            <Redirect
-              exact
-              from="/"
-              to={`/${process.env.REACT_APP_RELOADNG}`}
-            />
-          </Switch>
-          <Route path={[`/${process.env.REACT_APP_RELOADNG}`]}>
+          <Route>
             <Switch>
-              <Route
-                exact
-                path={`/${process.env.REACT_APP_RELOADNG}`}
-                component={HomeV1}
-              />
-            </Switch>
-          </Route> */}
-          <Route
-          // path={[
-          //   `/${process.env.REACT_APP_RELOADNG}/about`,
-          //   `/${process.env.REACT_APP_RELOADNG}/registration`,
-          //   `/${process.env.REACT_APP_RELOADNG}/settings`,
-          //   `/${process.env.REACT_APP_RELOADNG}/faq`,
-          //   `/${process.env.REACT_APP_RELOADNG}/products`,
-          //   `/${process.env.REACT_APP_RELOADNG}/product-details/buy`,
-          //   `/${process.env.REACT_APP_RELOADNG}/forgotpassword`,
-          //   `/${process.env.REACT_APP_RELOADNG}/terms`,
-          //   `/${process.env.REACT_APP_RELOADNG}/product-details`,
-          //   `/${process.env.REACT_APP_RELOADNG}/contact`,
-          //   `/${process.env.REACT_APP_RELOADNG}/admin`,
-          //   `/${process.env.REACT_APP_RELOADNG}/helpdesk`,
-          //   `/${process.env.REACT_APP_RELOADNG}/receipt`,
-          //   `/${process.env.REACT_APP_RELOADNG}/loan`,
-          //   `/${process.env.REACT_APP_RELOADNG}/loan/accept-loan-offer`,
-          //   `/${process.env.REACT_APP_RELOADNG}/loan/loan-status`,
-          //   `/${process.env.REACT_APP_RELOADNG}/requery`,
-          //   `/${process.env.REACT_APP_RELOADNG}/resetpassword`,
-          //   `/${process.env.REACT_APP_RELOADNG}/error/process`
-          // ]}
-          >
-            <Switch>
-              {/* <Switch location={location} key={location.pathname}> */}
               <Redirect
                 exact
                 from="/"

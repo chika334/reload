@@ -7,7 +7,7 @@ import { someData } from "../../_action/passingData";
 import OutsideAlerter from "./Outside";
 
 function App(props) {
-  const [modal, setModal] = React.useState(false)
+  const [modal, setModal] = React.useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const getProducts = useSelector((state) => state.products);
@@ -25,29 +25,30 @@ function App(props) {
       setModal(true);
     } else {
       dispatch(showLoader());
-      const value = getProducts.listProducts === null
-        ? ""
-        : getProducts.listProducts.forEach((detail) => {
-            if (
-              details.otherData.productId.productname ===
-              detail.productId.productname
-            ) {
-              setTimeout(() => {
-                dispatch(hideLoader());
-              }, 2000);
-              const data = {
-                detail,
-                productname: detail.productId.description,
-                productId: details.otherData.productId.id,
-                billerCode: detail.billerCode,
-              };
-              dispatch(someData(data));
-              let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-              history.push({
-                pathname: path,
-              });
-            }
-          });
+      const value =
+        getProducts.listProducts === null
+          ? ""
+          : getProducts.listProducts.forEach((detail) => {
+              if (
+                details.otherData.productId.productname ===
+                detail.productId.productname
+              ) {
+                setTimeout(() => {
+                  dispatch(hideLoader());
+                }, 2000);
+                const data = {
+                  detail,
+                  productname: detail.productId.description,
+                  productId: details.otherData.productId.id,
+                  billerCode: detail.billerCode,
+                };
+                dispatch(someData(data));
+                let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+                history.push({
+                  pathname: path,
+                });
+              }
+            });
     }
   };
 
@@ -116,6 +117,9 @@ function App(props) {
                                 {option.productId.billerCode === "STARTIMES" ||
                                 option.productId.billerCode === "KEDCO" ||
                                 option.productId.billerCode === "IBEDC_F" ||
+                                option.productId.billerCode === "NTELBundle" ||
+                                option.productId.billerCode === "JAMB" ||
+                                option.productId.billerCode === "SPECTRANET" ||
                                 option.productId.billerCode === null ? (
                                   <button
                                     type="button"

@@ -444,7 +444,7 @@ function VerifyDetails(props) {
                                 <em>Select Meter Type</em>
                               </MenuItem>
                               {productName.map((allData, i) => (
-                                <MenuItem value={allData}>{allData}</MenuItem>
+                                <MenuItem key={i} value={allData}>{allData}</MenuItem>
                               ))}
                             </Select>
                           </FormControl>

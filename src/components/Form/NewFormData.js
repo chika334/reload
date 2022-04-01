@@ -28,8 +28,6 @@ function NewFormData(props) {
   const [errorMessage, setErrorMessage] = React.useState(null);
   const finalPayment = useSelector(state => state.FinalPayment);
 
-  // console.log(props);
-
   React.useEffect(() => {
     if (dataValue.name === "finalPayment" && dataValue.booleanValue === true) {
       setLoading(false);
@@ -396,7 +394,7 @@ function NewFormData(props) {
                 }}
                 disabled={props.disabledUssd}
               >
-                Proceed to Card
+                Proceed
               </button>
             )}
           </div>

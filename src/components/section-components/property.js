@@ -58,29 +58,30 @@ function Property(props) {
         setTimeout(() => {
           props.hideLoader();
         }, 3000);
-        const data = getProducts.listProducts === null
-          ? ""
-          : getProducts.listProducts.forEach((detail) => {
-              if (
-                details.otherData.productId.productname ===
-                detail.productId.productname
-              ) {
-                setTimeout(() => {
-                  dispatch(hideLoader());
-                }, 2000);
-                const data = {
-                  detail,
-                  productname: detail.productId.description,
-                  productId: details.otherData.productId.id,
-                  billerCode: detail.billerCode,
-                };
-                dispatch(someData(data));
-                let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
-                history.push({
-                  pathname: path,
-                });
-              }
-            });
+        const data =
+          getProducts.listProducts === null
+            ? ""
+            : getProducts.listProducts.forEach((detail) => {
+                if (
+                  details.otherData.productId.productname ===
+                  detail.productId.productname
+                ) {
+                  setTimeout(() => {
+                    dispatch(hideLoader());
+                  }, 2000);
+                  const data = {
+                    detail,
+                    productname: detail.productId.description,
+                    productId: details.otherData.productId.id,
+                    billerCode: detail.billerCode,
+                  };
+                  dispatch(someData(data));
+                  let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
+                  history.push({
+                    pathname: path,
+                  });
+                }
+              });
       }
     }
   };
@@ -136,14 +137,21 @@ function Property(props) {
                 item.productId.description === "Electricity (EEDC)"
             );
       setProductData(filtered);
-    } 
-    else if (word === "Loan") {
+    } else if (word === "Loan") {
       // setModal(true);
       if (user === null) {
         history.push(`/${process.env.REACT_APP_RELOADNG}/registration`);
       } else {
         window.location.href = `/${process.env.REACT_APP_RELOADNG}/loan`;
       }
+    } else if (word === "Exams") {
+      const filtered =
+        getProducts.listProducts === null
+          ? []
+          : getProducts.listProducts.filter(
+              (item) => item.productId.description === "Exams"
+            );
+      setProductData(filtered);
     }
   };
 
@@ -215,6 +223,13 @@ function Property(props) {
                   >
                     Loan
                   </button>
+                  <button
+                    style={{ backgroundColor: "#fda94f", color: "#000" }}
+                    value="Exams"
+                    onClick={handleBtn}
+                  >
+                    Exams
+                  </button>
                 </div>
               </div>
             </div>
@@ -258,6 +273,9 @@ function Property(props) {
                             {item.billerCode === "STARTIMES_BASIC" ||
                             item.billerCode === "IBEDC_F" ||
                             item.billerCode === "KEDCO" ||
+                            item.billerCode === "JAMB" ||
+                            item.billerCode === "NTELBundle" ||
+                            item.billerCode === "SPECTRANET" ||
                             // item.billerCode === "Smile-Data_BLACKSILICON" ||
                             item.billerCode === null ? (
                               <button
@@ -301,6 +319,9 @@ function Property(props) {
                           item.billerCode === "IBEDC_F" ||
                           item.billerCode === "KEDCO" ||
                           // item.billerCode === "Smile-Data_BLACKSILICON" ||
+                          item.billerCode === "JAMB" ||
+                          item.billerCode === "NTELBundle" ||
+                          item.billerCode === "SPECTRANET" ||
                           item.billerCode === null ? (
                             <>
                               <img
@@ -319,6 +340,9 @@ function Property(props) {
                             <>
                               {item.billerCode === "STARTIMES_BASIC" ||
                               item.billerCode === "KEDCO" ||
+                              item.billerCode === "JAMB" ||
+                              item.billerCode === "SPECTRANET" ||
+                              item.billerCode === "NTELBundle" ||
                               item.billerCode === null ? (
                                 <Button
                                   disabled

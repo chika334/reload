@@ -126,10 +126,13 @@ function PropertyDetails(props) {
 
   useEffect(() => {
     if (finalPaymentSuccess.finalPayment === true) {
+      console.log("working with final payment");
       history.push({
         pathname: `/${process.env.REACT_APP_RELOADNG}/receipt`,
         state: { data: props.location, pay },
       });
+    } else {
+      console.log("bad request from final payment");
     }
   }, [finalPaymentSuccess.finalPayment]);
 

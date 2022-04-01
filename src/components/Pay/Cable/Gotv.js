@@ -86,6 +86,9 @@ function Cable(props) {
         {verifyUserdetails.onclick === false &&
         verifyUserdetails.name === "" ? (
           <div>
+            <p className="text-center mb-2" style={{ color: "red" }}>
+              N.B. Please select your Gotv smart card number
+            </p>
             <VerifyDetails
               billerCode="GOTV"
               productName="GOTV"
@@ -101,6 +104,9 @@ function Cable(props) {
         {verifyUserdetails.onclick === true &&
         verifyUserdetails.name === "Cable" ? (
           <>
+            <p className="text-center mb-2" style={{ color: "red" }}>
+              N.B. Please select your current bouquet plan
+            </p>
             <div className="d-flex align-item-center justify-content-center pt-3">
               <p className="mr-5">Customer Name:</p>
               <p>

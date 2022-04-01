@@ -4,6 +4,7 @@ import Navbar from "./global-components/navbar";
 import Banner from "./section-components/banner";
 import Service from "./section-components/service";
 import WhyChooseUs from "./section-components/why-choose-us";
+import LoanStatus from "./section-components/LoanExplanantion";
 
 const Home_V1 = () => {
   return (
@@ -11,6 +12,7 @@ const Home_V1 = () => {
       {/* <Navbar /> */}
       <Banner />
       <Service />
+      <LoanStatus />
       {/* <RecentProperties /> */}
       {/* <FeaturedPorject /> */}
       <WhyChooseUs />

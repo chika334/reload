@@ -329,7 +329,7 @@ function JosPrepaid(props) {
                     }}
                     disabled={props.disabledUssd}
                   >
-                    Proceed to Card
+                    Proceed
                   </button>
                 )}
               </div>

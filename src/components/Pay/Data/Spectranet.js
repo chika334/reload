@@ -158,9 +158,9 @@ function Smile(props) {
           <>
             <div>
               <VerifyDetails
-                billerCode="SMILE"
-                productName="SMILE"
-                billerSlug="SMILE"
+                billerCode="SPECTRANET"
+                productName="SPECTRANET"
+                billerSlug="SPECTRANET"
                 productType="Data"
                 setLoading={props.setLoading}
               />

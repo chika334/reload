@@ -186,6 +186,8 @@ function Service(props) {
                               {listData.billerCode === "STARTIMES" ||
                               listData.billerCode === "IBEDC_F" ||
                               listData.billerCode === "KEDCO" ||
+                              listData.billerCode === "JAMB" ||
+                              listData.billerCode === "NTELBundle" ||
                               listData.billerCode === null ? (
                                 <Button
                                   className="readmore-btn"

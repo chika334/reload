@@ -73,6 +73,9 @@ function Dstv(props) {
         {verifyUserdetails.onclick === false &&
         verifyUserdetails.name === "" ? (
           <div>
+            <p className="text-center mb-2" style={{ color: "red" }}>
+              N.B. Please select your Dstv smart card number
+            </p>
             <div>
               <div>
                 {fieldsArray.map((allFields, i) =>
@@ -137,6 +140,9 @@ function Dstv(props) {
         {verifyUserdetails.onclick === true &&
         verifyUserdetails.name === "Cable" ? (
           <>
+            <p className="text-center mb-2" style={{ color: "red" }}>
+              N.B. Please select your current bouquet plan
+            </p>
             <div className="d-flex align-item-center justify-content-center pt-3">
               <p className="mr-5">Customer Name:</p>
               <p>

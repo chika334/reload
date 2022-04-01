@@ -126,7 +126,7 @@ const SearchbarDropdown = (props) => {
                                     src={first}
                                     alt="..."
                                     style={{
-                                      webkitTransition: "5s ease-in-out",
+                                      WebkitTransition: "5s ease-in-out",
                                       transition: "5s ease-in-out",
                                     }}
                                   />
@@ -135,8 +135,9 @@ const SearchbarDropdown = (props) => {
                                     <img
                                       src={item}
                                       alt="..."
+                                      key={i}
                                       style={{
-                                        webkitTransition: "5s ease-in-out",
+                                        WebkitTransition: "5s ease-in-out",
                                         transition: "5s ease-in-out",
                                       }}
                                     />

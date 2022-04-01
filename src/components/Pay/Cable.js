@@ -250,9 +250,9 @@ function Cable(props) {
 
           {productDetails.billerCode === "GOTV" ? (
             <>
-              <p className="text-center mb-2" style={{ color: "red" }}>
+              {/* <p className="text-center mb-2" style={{ color: "red" }}>
                 N.B. Please select your current bouquet plan
-              </p>
+              </p> */}
               <Gotv
                 disabledCard={disabledCard}
                 disabledUssd={disabledUssd}
@@ -269,9 +269,9 @@ function Cable(props) {
             <div> */}
           {productDetails.billerCode === "DSTV" ? (
             <>
-              <p className="text-center mb-2" style={{ color: "red" }}>
+              {/* <p className="text-center mb-2" style={{ color: "red" }}>
                 N.B. Please select your current bouquet plan
-              </p>
+              </p> */}
               <Dstv
                 disabledCard={disabledCard}
                 disabledUssd={disabledUssd}

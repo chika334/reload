@@ -29,6 +29,7 @@ import hostedField from './Loan/hostedField'
 import dataValue from "./data";
 import forgotReducer from "./forgotPassword";
 import someSelect from "./selectData/select"
+import productList from "./productListREducer"
 
 export default combineReducers({
   authUser,
@@ -60,5 +61,6 @@ export default combineReducers({
   paymentIntent,
   someData,
   login_success_red,
+  productList
   // switchReg,
 });

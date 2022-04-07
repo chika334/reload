@@ -17,28 +17,29 @@ import {
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { PaymentIntent, clearPayment } from "../../../_action/Payment/index";
 import Alert from "@material-ui/lab/Alert";
-import { pay, paymentButtons } from "../../../_action/Payment/paymentButtons";
+import { pay } from "../../../_action/Payment/paymentButtons";
 import { clearErrors } from "../../../_action/errorAction";
 import { verify } from "../../../_action/verify";
 import "../../../css/input.css";
 import Slide from "@material-ui/core/Slide";
-// import { USSD_KEY, FLUTTERWAVE_KEY } from "../PaymentProcess/hooks";
-// import axios from "axios";
-import gotv from "./jsonData/gotv.json";
 import NewFormData from "../../Form/NewFormData";
 import VerifyDetails from "../PaymentProcess/verifyDetails";
+import { getProductList } from "../../../_action/products";
+// import {clearDetails} from "../../../_action/verify"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function Cable(props) {
+  const dispatch = useDispatch();
   const verifiedUser = useSelector((state) => state.verify);
   const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const [disabledCard, setDisabledCard] = useState(false);
   const [loading, setLoading] = useState(false);
   const [smartCard, setSmartCard] = useState("");
   const productDetails = useSelector((state) => state.someData.detail);
+  const productList = useSelector((state) => state.productList);
 
   const handleOthers = (e, name) => {
     const newValues = { ...smartCard };
@@ -46,26 +47,30 @@ function Cable(props) {
     setSmartCard(newValues);
   };
 
-  // const verifyMeterNumber = async () => {
-  //   const details = {
-  //     product: productDetails.productId,
-  //     billerCode: "GOTV",
-  //     accountNumber: smartCard.customerId,
-  //     extras: {
-  //       billerSlug: "GOTV",
-  //       customerId: smartCard.customerId,
-  //       productName: "GOTV",
-  //     },
-  //   };
+  const verifyMeterNumber = async () => {
+    const details = {
+      product: productDetails.productId,
+      billerCode: "GOTV",
+      accountNumber: smartCard.customerId,
+      extras: {
+        billerSlug: "GOTV",
+        customerId: smartCard.customerId,
+        productName: "GOTV",
+      },
+    };
 
-  //   props.verifySmartcardNumber(details);
-  // };
+    props.verifySmartcardNumber(details);
+  };
 
-  // const SmartNumber = async (e) => {
-  //   e.preventDefault();
-  //   props.setLoading(true);
-  //   let result = verifyMeterNumber();
-  // };
+  const SmartNumber = async (e) => {
+    e.preventDefault();
+    props.setLoading(true);
+    let result = verifyMeterNumber();
+    const data = {
+      productId: productDetails.productId,
+    };
+    dispatch(getProductList(data));
+  };
 
   const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
@@ -83,7 +88,7 @@ function Cable(props) {
   return (
     <div className="property-details-area">
       <div>
-        {verifyUserdetails.onclick === false &&
+        {/* {verifyUserdetails.onclick === false &&
         verifyUserdetails.name === "" ? (
           <div>
             <p className="text-center mb-2" style={{ color: "red" }}>
@@ -96,6 +101,72 @@ function Cable(props) {
               productType="Cable"
               setLoading={props.setLoading}
             />
+          </div>
+        ) : (
+          ""
+        )} */}
+        {verifyUserdetails.onclick === false &&
+        verifyUserdetails.name === "" ? (
+          <div>
+            <p className="text-center mb-2" style={{ color: "red" }}>
+              N.B. Please select your Gotv smart card number
+            </p>
+            <div>
+              <div>
+                {fieldsArray.map((allFields, i) =>
+                  allFields.text === "customerId" &&
+                  allFields.lookup === true ? (
+                    <div
+                      key={i}
+                      className="d-flex align-item-center justify-content-center pt-3"
+                    >
+                      <TextField
+                        className="inputSize"
+                        required
+                        label={
+                          allFields.text === "customerId"
+                            ? "SmartCard Number"
+                            : ""
+                        }
+                        onChange={(e) => handleOthers(e, allFields.text)}
+                        type={allFields.text === "email" ? "email" : "number"}
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment:
+                            allFields.text === "Amount" ? (
+                              <InputAdornment position="start">
+                                ₦
+                              </InputAdornment>
+                            ) : (
+                              ""
+                            ),
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )
+                )}
+              </div>
+            </div>
+
+            <div className="d-flex align-item-center justify-content-center">
+              <Button
+                onClick={SmartNumber}
+                variant="contained"
+                className="p-3"
+                style={{
+                  backgroundColor: "#fda94f",
+                  cursor:
+                    props.disabledUssd === true ? "not-allowed" : "pointer",
+                  color: "#000",
+                  fontSize: "12px",
+                  padding: "11px",
+                }}
+              >
+                Verify
+              </Button>
+            </div>
           </div>
         ) : (
           ""
@@ -128,7 +199,9 @@ function Cable(props) {
               disabledCard={props.disabledCard}
               setDisabledCard={setDisabledCard}
               slug="GOTV"
-              productData={gotv}
+              productData={
+                productList.loaded === true ? productList.ProductList : ""
+              }
             />
           </>
         ) : (

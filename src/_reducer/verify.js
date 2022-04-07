@@ -1,4 +1,4 @@
-import { CLEAR_VERIFIED_DETAILS, DETAILS_VERIFIED } from "../_action/types.js";
+import { CLEAR_VERIFIED_DETAILS, DETAILS_VERIFIED, RESET_REDUX } from "../_action/types.js";
 
 const initialState = {
   name: "",

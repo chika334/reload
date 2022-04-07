@@ -129,3 +129,8 @@ export const HOSTED_FIELD = "HOSTED_FIELD";
 export const DATA_VALUE = "DATA_VALUE";
 
 export const GET_Final_DATA = "GET_Final_DATA"
+
+export const PRODUCTLIST = "PRODUCTLIST"
+export const PRODUCTLIST_error = "PRODUCTLIST_error"
+export const RESET_REDUX = "RESET_REDUX"
+export const CLEAR_PRODUCTS = "CLEAR_PRODUCTS"

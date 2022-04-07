@@ -12,21 +12,21 @@ function NewFormData(props) {
   const { product, slug, productData } = props;
   const dispatch = useDispatch();
   const [values, setValues] = React.useState(null);
-  const verifyUserdetails = useSelector(state => state.verifyUserdetails);
+  const verifyUserdetails = useSelector((state) => state.verifyUserdetails);
   const [buttonValue, setButtonValue] = React.useState(null);
-  const paymentIntent = useSelector(state => state.paymentIntent);
+  const paymentIntent = useSelector((state) => state.paymentIntent);
   const [errors, setErrors] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [disabledCard, setDisabledCard] = React.useState(false);
-  const productDetails = useSelector(state => state.someData.detail);
-  const verifiedUser = useSelector(state => state.verify);
+  const productDetails = useSelector((state) => state.someData.detail);
+  const verifiedUser = useSelector((state) => state.verify);
   const [bouquet, setBouquet] = React.useState(null);
   const [selectDetails, setSelectDetails] = React.useState(null);
-  const dataValue = useSelector(state => state.dataValue);
+  const dataValue = useSelector((state) => state.dataValue);
   const [requeryErrorModal, setRequeryErrorModal] = React.useState(false);
   const [afterRequeryError, setAfterRequeryError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
-  const finalPayment = useSelector(state => state.FinalPayment);
+  const finalPayment = useSelector((state) => state.FinalPayment);
 
   React.useEffect(() => {
     if (dataValue.name === "finalPayment" && dataValue.booleanValue === true) {
@@ -50,7 +50,7 @@ function NewFormData(props) {
     }
   }, [finalPayment.requery]);
 
-  const handleSubmit = value => {
+  const handleSubmit = (value) => {
     setButtonValue(value);
     if (value === "FLUTTERWAVE") {
       setDisabledCard(true);
@@ -120,15 +120,15 @@ function NewFormData(props) {
                     ? ""
                     : bouquet
                   : slug,
-              email: `${values["email"]}`
+              email: `${values["email"]}`,
             },
             references: [
               "email",
               "packageSlug",
               "phoneNumber",
               "customerName",
-              "customerId"
-            ]
+              "customerId",
+            ],
           };
 
           dispatch(PaymentIntent(newValuesObj));
@@ -142,17 +142,19 @@ function NewFormData(props) {
     }
   };
 
-  const handleSelect = e => {
+  const handleSelect = (e) => {
+    // console.log(e.target.value);
     setSelectDetails(e.target.value);
 
-    productData.map(allData => {
+    productData.map((allData) => {
       if (allData.amount === parseInt(e.target.value)) {
         setBouquet(allData.slug);
+        // console.log(allData.slug);
       }
     });
   };
 
-  console.log(product, slug);
+  // console.log(product, slug);
 
   React.useEffect(() => {
     if (paymentIntent.success === true) {
@@ -196,14 +198,13 @@ function NewFormData(props) {
                 : verifiedUser.result.account.accountName
               : values === null
               ? ""
-              : values["email"]
+              : values["email"],
         };
 
         // console.log(detail);
         dispatch(pay(detail));
       }
 
-      // props.dataPay(true, product);
     }
   }, [paymentIntent.success]);
 
@@ -218,6 +219,8 @@ function NewFormData(props) {
     newValues[name] = e.target.value;
     setValues(newValues);
   };
+
+  console.log(productData);
 
   return (
     <div>
@@ -267,7 +270,7 @@ function NewFormData(props) {
                           : ""
                       }
                       // name={allData.text}
-                      onChange={e => handleChange(e, allData.text)}
+                      onChange={(e) => handleChange(e, allData.text)}
                       type={
                         allData.text === "email"
                           ? "email"
@@ -285,13 +288,13 @@ function NewFormData(props) {
               )}
             </>
           ))}
-          {/* bouquet */}
+          {/* bouquet starts */}
           {productData === "null" ? (
             ""
           ) : (
             <>
-              {product === "Cable" ||
-              product === "Electricity" ||
+              {product === "Electricity" ||
+              product === "Cable" ||
               product === "Data" ||
               slug === "SMILE" ? (
                 <div className="">
@@ -301,7 +304,7 @@ function NewFormData(props) {
                         value={
                           selectDetails === null ? "" : selectDetails["name"]
                         }
-                        onChange={e => handleSelect(e)}
+                        onChange={(e) => handleSelect(e)}
                         className="p-3"
                         id="inputSize"
                         style={{ borderRadius: "3px" }}
@@ -325,7 +328,7 @@ function NewFormData(props) {
               )}
             </>
           )}
-
+          {/* bouquet ends */}
           {fieldsArray.map((allData, i) =>
             allData.text === "amount" ? (
               <div className="pt-3" key={i}>
@@ -344,21 +347,32 @@ function NewFormData(props) {
                     placeholder={
                       allData.text === "amount" ? "Enter Amount" : ""
                     }
-                    onChange={e => handleChange(e, allData.text)}
+                    onChange={(e) => handleChange(e, allData.text)}
                     type={allData.text === "amount" ? "number" : ""}
                     variant="outlined"
+                    // value={
+                    //   product === "Data" ||
+                    //   product === "Cable" ||
+                    //   slug === "SMILE"
+                    //     ? selectDetails === null
+                    //       ? ""
+                    //       : selectDetails === "0" ? "" : selectDetails
+                    //     : values === null
+                    //     ? ""
+                    //     : values["amount"] === "0" ? "" : values["amount"]
+                    // }
                     value={
                       product === "Data" ||
-                      product === "Cable" ||
-                      slug === "SMILE"
-                        ? // ||
-                          // product === "Electricity"
-                          selectDetails === null
+                      slug === "SMILE" ||
+                      product === "Cable"
+                        ? selectDetails === null
                           ? ""
+                          : selectDetails === "0"
+                          ? values === null
+                            ? ""
+                            : values["amount"]
                           : selectDetails
-                        : values === null
-                        ? ""
-                        : values["amount"]
+                        : ""
                     }
                   />
                 </div>
@@ -370,7 +384,7 @@ function NewFormData(props) {
           <div className="d-flex justify-content-center">
             {disabledCard === true ? (
               <button
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   window.location.href = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                 }}
@@ -379,7 +393,7 @@ function NewFormData(props) {
               </button>
             ) : (
               <button
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   handleSubmit(FLUTTERWAVE_KEY);
                 }}
@@ -390,7 +404,7 @@ function NewFormData(props) {
                     props.disabledUssd === true ? "not-allowed" : "pointer",
                   color: "#000",
                   fontSize: "12px",
-                  padding: "11px"
+                  padding: "11px",
                 }}
                 disabled={props.disabledUssd}
               >

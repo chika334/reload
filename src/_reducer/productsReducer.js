@@ -2,9 +2,8 @@ import {
   PRODUCT_LOADING,
   PRODUCT_LOADED,
   PRODUCT_FAIL,
-  // GET_PRODUCTBYID_LOADING,
-  // GET_PRODUCT_BYID,
   GET_PRODUCT_FAIL,
+  CLEAR_PRODUCTS,
 } from "../_action/types";
 
 const initialState = {
@@ -18,17 +17,24 @@ const initialState = {
 const products = (state = initialState, action) => {
   switch (action.type) {
     case PRODUCT_LOADING:
-      // case GET_PRODUCTBYID_LOADING:
       return {
         ...state,
         isLoading: true,
       };
     case PRODUCT_LOADED:
-      // case GET_PRODUCT_BYID:
       return {
         ...state,
         isLoading: false,
         listProducts: action.payload,
+      };
+    case CLEAR_PRODUCTS:
+      return {
+        ...state,
+        isLoading: false,
+        listProducts: null,
+        catData: null,
+        cat1: [],
+        cat2: [],
       };
     case PRODUCT_FAIL:
     case GET_PRODUCT_FAIL:

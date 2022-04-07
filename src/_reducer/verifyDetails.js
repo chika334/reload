@@ -2,6 +2,7 @@ import {
   VERIFY_SUCCESS,
   VERIFY_FAILED,
   CLEAR_VERIFIED,
+  RESET_REDUX
 } from "../_action/types";
 
 const initialState = {
@@ -25,6 +26,11 @@ function verifyReducer(state = initialState, action) {
         result: null,
       };
     case CLEAR_VERIFIED:
+      return {
+        verifySuccess: false,
+        result: null,
+      };
+    case RESET_REDUX:
       return {
         verifySuccess: false,
         result: null,

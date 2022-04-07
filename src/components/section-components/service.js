@@ -21,7 +21,7 @@ function getModalStyle() {
   return {
     top: `${top}%`,
     left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`
+    transform: `translate(-${top}%, -${left}%)`,
   };
 }
 
@@ -43,19 +43,19 @@ function SliderArrowNext(props) {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
     width: 400,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3)
-  }
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
 function Service(props) {
-  const getProducts = useSelector(state => state.products);
+  const getProducts = useSelector((state) => state.products);
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -79,17 +79,23 @@ function Service(props) {
     responsive: [
       {
         breakpoint: 599,
-        settings: { slidesToShow: 1, slidesToScroll: 1 }
-      }
-    ]
+        settings: { slidesToShow: 1, slidesToScroll: 1 },
+      },
+    ],
   };
-  const handleMove = details => {
+  const handleMove = (details) => {
     console.log(details);
     if (details.otherData.billerCode === null) {
       setModal(true);
     } else {
       if (
         details.otherData.billerCode === "SMILE" ||
+        details.otherData.billerCode === "STARTIMES" ||
+        details.otherData.billerCode === "IBEDC_F" ||
+        details.otherData.billerCode === "KEDCO" ||
+        details.otherData.billerCode === "JAMB" ||
+        details.otherData.billerCode === "NTELBundle" ||
+        details.otherData.billerCode === null ||
         details.otherData.productId.productname === "Jamb Exams" ||
         details.otherData.productId.productname === "Waec Exams Registration" ||
         details.otherData.productId.productname === "Benin Electricity Prepaid"
@@ -100,7 +106,7 @@ function Service(props) {
         const value =
           getProducts.listProducts === null
             ? ""
-            : getProducts.listProducts.forEach(detail => {
+            : getProducts.listProducts.forEach((detail) => {
                 if (
                   details.otherData.productId.productname ===
                   detail.productId.productname
@@ -113,12 +119,12 @@ function Service(props) {
                     detail,
                     productname: detail.productId.description,
                     productId: details.otherData.productId.id,
-                    billerCode: detail.billerCode
+                    billerCode: detail.billerCode,
                   };
                   dispatch(someData(data));
                   let path = `/${process.env.REACT_APP_RELOADNG}/product-details`;
                   history.push({
-                    pathname: path
+                    pathname: path,
                   });
                 }
               });
@@ -156,7 +162,7 @@ function Service(props) {
           {getProducts.listProducts === null
             ? ""
             : getProducts.listProducts
-                .filter(item => ![12, 15, 21, 23, 32].includes(item.id))
+                .filter((item) => ![12, 15, 21, 23, 32].includes(item.id))
                 .map((listData, i) => (
                   <div key={i}>
                     <Card style={{ height: "300px" }} className="m-4">
@@ -165,14 +171,16 @@ function Service(props) {
                           <div style={{ height: "140px" }}>
                             <div
                               style={{ height: "100px" }}
-                              onClick={e => handleMove({ otherData: listData })}
+                              onClick={(e) =>
+                                handleMove({ otherData: listData })
+                              }
                               style={{ cursor: "pointer" }}
                               className="d-flex justify-content-center"
                             >
                               <img
                                 src={listData.productId.logourl}
                                 style={{
-                                  width: "100px"
+                                  width: "100px",
                                 }}
                                 alt="..."
                               />
@@ -195,9 +203,9 @@ function Service(props) {
                                     backgroundColor: "grey",
                                     color: "#fff",
                                     fontSize: "12px",
-                                    padding: "10px"
+                                    padding: "10px",
                                   }}
-                                  onClick={e =>
+                                  onClick={(e) =>
                                     handleMove({ otherData: listData })
                                   }
                                   disabled
@@ -211,9 +219,9 @@ function Service(props) {
                                     backgroundColor: "#fda94f",
                                     color: "#000",
                                     fontSize: "12px",
-                                    padding: "10px"
+                                    padding: "10px",
                                   }}
-                                  onClick={e =>
+                                  onClick={(e) =>
                                     handleMove({ otherData: listData })
                                   }
                                 >
@@ -235,8 +243,8 @@ function Service(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  exploreProducts: state.exploreProducts
+const mapStateToProps = (state) => ({
+  exploreProducts: state.exploreProducts,
 });
 
 export default withRouter(

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { PaymentIntent } from "../../_action/Payment";
@@ -13,6 +13,8 @@ import Etisalat from "./Data/etisalat";
 import Glo from "./Data/glo";
 import Mtn from "./Data/mtn";
 import Airtel from "./Data/Airtel";
+import { getProductList } from "../../_action/products";
+import { useHistory } from "react-router-dom";
 
 function NewForm(props) {
   const dispatch = useDispatch();
@@ -23,6 +25,8 @@ function NewForm(props) {
   const productDetails = useSelector((state) => state.someData.detail);
   const [loading, setLoading] = useState(false);
   const [valueData, setValueData] = useState(null);
+  const [locationKeys, setLocationKeys] = useState([]);
+  const history = useHistory();
 
   const handleSubmit = (value, data) => {
     setButtonValue(value);
@@ -36,38 +40,27 @@ function NewForm(props) {
     props.PaymentIntent(data);
   };
 
-  // useEffect(() => {
-  //   if (paymentIntent.success === true) {
-  //     setLoading(false);
-  //     const amount = valueData === null ? "" : valueData.amount;
-  //     const email = valueData === null ? "" : valueData.referenceValues.email;
-  //     const customerName =
-  //       valueData === null ? "" : valueData.referenceValues.customerName;
-  //     const customerId =
-  //       valueData === null ? "" : valueData.referenceValues.customerId;
-
-  //     const detail = {
-  //       amount: amount,
-  //       email: email,
-  //       product: productDetails.productname,
-  //       buttonClick: buttonValue,
-  //       transRef: paymentIntent.detail.transRef,
-  //       customerName: customerName,
-  //       customerId: customerId,
-  //     };
-
-  //     dispatch(pay(detail));
-  //     props.dataPay(true, "Data");
-  //   }
-  // }, [paymentIntent.success]);
-
   const item = JSON.parse(productDetails.detail.productvalue);
   const fieldsArray = [];
   for (const data in item) {
     fieldsArray.push(item[data]);
   }
 
-  // console.log("fine", productDetails);
+  useLayoutEffect(() => {
+    const dataValue = {
+      productId: productDetails.productId,
+    };
+    dispatch(getProductList(dataValue));
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (history.action === "POP") {
+        window.location.reload(true);
+        // alert("back")
+      }
+    };
+  }, [history])
 
   return (
     <div>
@@ -130,7 +123,7 @@ function NewForm(props) {
             </div>
 
             <>
-              {productDetails.billerCode === "Airtel-Data_BLACKSILICON" ? (
+              {productDetails.billerCode === "AIRTEL_NIGERIA" ? (
                 <Airtel
                   disabledCard={disabledCard}
                   setLoading={setLoading}
@@ -140,7 +133,7 @@ function NewForm(props) {
               ) : (
                 ""
               )}
-              {productDetails.billerCode === "Mtn-Data_BLACKSILICON" ? (
+              {productDetails.billerCode === "MTN_NIGERIA" ? (
                 <Mtn
                   disabledCard={disabledCard}
                   setLoading={setLoading}
@@ -150,7 +143,7 @@ function NewForm(props) {
               ) : (
                 ""
               )}
-              {productDetails.billerCode === "9mobile-Data_BLACKSILICON" ? (
+              {productDetails.billerCode === "9MOBILE_NIGERIA" ? (
                 <Etisalat
                   disabledCard={disabledCard}
                   setLoading={setLoading}
@@ -160,7 +153,7 @@ function NewForm(props) {
               ) : (
                 ""
               )}
-              {productDetails.billerCode === "Glo-Data_BLACKSILICON" ? (
+              {productDetails.billerCode === "GLO_NIGERIA" ? (
                 <Glo
                   disabledCard={disabledCard}
                   setLoading={setLoading}

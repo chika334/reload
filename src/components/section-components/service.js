@@ -90,7 +90,7 @@ function Service(props) {
     } else {
       if (
         details.otherData.billerCode === "SMILE" ||
-        details.otherData.billerCode === "STARTIMES" ||
+        details.otherData.billerCode === "STARTIMES_BASIC" ||
         details.otherData.billerCode === "IBEDC_F" ||
         details.otherData.billerCode === "KEDCO" ||
         details.otherData.billerCode === "JAMB" ||
@@ -191,7 +191,7 @@ function Service(props) {
                                 {listData.productId.productname}
                               </h5>
                               <hr />
-                              {listData.billerCode === "STARTIMES" ||
+                              {listData.billerCode === "STARTIMES_BASIC" ||
                               listData.billerCode === "IBEDC_F" ||
                               listData.billerCode === "KEDCO" ||
                               listData.billerCode === "JAMB" ||

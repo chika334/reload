@@ -114,7 +114,7 @@ function App(props) {
                                   </button>
                                 ) : (
                                   <> */}
-                                {option.productId.billerCode === "STARTIMES" ||
+                                {option.productId.billerCode === "STARTIMES_BASIC" ||
                                 option.productId.billerCode === "KEDCO" ||
                                 option.productId.billerCode === "IBEDC_F" ||
                                 option.productId.billerCode === "NTELBundle" ||

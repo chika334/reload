@@ -49,6 +49,7 @@ function Property(props) {
         details.otherData.productId.productname ===
           "Ibadan Electricity Prepaid" ||
         details.otherData.productId.productname === "Jamb Exams" ||
+        details.otherData.productId.productname === "STARTIMES_BASIC" ||
         details.otherData.productId.productname === "Waec Exams Registration" ||
         details.otherData.productId.productname === "Benin Electricity Prepaid"
       ) {
@@ -134,6 +135,7 @@ function Property(props) {
                 item.productId.description === "Electricity Prepaid (phed)" ||
                 item.productId.description === "Electricity Prepaid (JED)" ||
                 item.productId.description === "Electricity (KEDCO)" ||
+                item.productId.description === "STARTIMES_BASIC" ||
                 item.productId.description === "Electricity (EEDC)"
             );
       setProductData(filtered);
@@ -334,7 +336,7 @@ function Property(props) {
                                 }}
                                 alt="img"
                               />
-                              <p style={{ fontSize: "15px" }}>Under Test</p>
+                              <p style={{ fontSize: "15px" }}>Unavailable</p>
                             </>
                           ) : (
                             <>

@@ -126,7 +126,7 @@ function PropertyDetails(props) {
 
   useEffect(() => {
     if (finalPaymentSuccess.finalPayment === true) {
-      console.log("working with final payment");
+      // console.log("working with final payment");
       history.push({
         pathname: `/${process.env.REACT_APP_RELOADNG}/receipt`,
         state: { data: props.location, pay },

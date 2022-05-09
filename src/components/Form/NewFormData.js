@@ -204,7 +204,6 @@ function NewFormData(props) {
         // console.log(detail);
         dispatch(pay(detail));
       }
-
     }
   }, [paymentIntent.success]);
 
@@ -350,17 +349,6 @@ function NewFormData(props) {
                     onChange={(e) => handleChange(e, allData.text)}
                     type={allData.text === "amount" ? "number" : ""}
                     variant="outlined"
-                    // value={
-                    //   product === "Data" ||
-                    //   product === "Cable" ||
-                    //   slug === "SMILE"
-                    //     ? selectDetails === null
-                    //       ? ""
-                    //       : selectDetails === "0" ? "" : selectDetails
-                    //     : values === null
-                    //     ? ""
-                    //     : values["amount"] === "0" ? "" : values["amount"]
-                    // }
                     value={
                       product === "Data" ||
                       slug === "SMILE" ||
@@ -372,6 +360,10 @@ function NewFormData(props) {
                             ? ""
                             : values["amount"]
                           : selectDetails
+                        : product === "Airtime"
+                        ? values === null
+                          ? ""
+                          : values["amount"]
                         : ""
                     }
                   />
